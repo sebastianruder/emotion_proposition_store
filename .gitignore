@@ -1,5 +1,8 @@
 *.class
 
+# Annotated Gigaword Corpus files
+*.gz
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
