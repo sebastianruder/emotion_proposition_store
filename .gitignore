@@ -1,5 +1,9 @@
 *.class
 
+# IntelliJ files
+.idea/
+*.iml
+
 # Annotated Gigaword Corpus files
 *.gz
 
