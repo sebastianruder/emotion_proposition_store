@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="agiga-1.5-SNAPSHOT-jar-with-dependencies">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/anno_gigaword/agiga/target/agiga-1.5-SNAPSHOT-jar-with-dependencies.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
