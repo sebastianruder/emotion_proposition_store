@@ -1,22 +1,22 @@
 joy	X be happy that S
 trust	X trust/VBP that/IN S
-fear	X fear NP / (that) S
-fear	X be afraid of NP / (that) S
-fear	X be frightened by NP / of NP / (that) S
-fear	X be scared of NP / S
+fear	X fear [NP|(that)* S]
+fear	X be afraid [of NP|(that)* S]
+fear	X be frightened [by NP|of NP|(that)* S]
+fear	X be scared [of NP|(that)* S]	what about "drowning", etc?
 fear	X feel uneasy when S
-fear	X be spooked by NP / when S
-fear	X be terrified by NP / when S
-fear	X be petrified NP / when S
-surprise	X be surprised that S
-surprise	X be amazed that
-surprise	X be astonished that
-surprise	X be bewildered that
-surprise	X be shocked that
-surprise	X be stupified that
-surprise	X be flabbergasted that
-surprise	X be astounded that
-surprise	X be confounded that
+fear	X be spooked [by NP|when S]
+fear	X be terrified [by NP|when S]
+fear	X be petrified [by NP|when S]
+surprise	X be surprised (that)* S
+surprise	X be amazed (that)*
+surprise	X be astonished (that)*
+surprise	X be bewildered (that)*
+surprise	X be shocked (that)*
+surprise	X be stupified (that)*
+surprise	X be flabbergasted (that)*
+surprise	X be astounded (that)*
+surprise	X be confounded (that)*
 sadness	X be sad that S
 disgust	X (absolutely) hate NP / S
 anger	X be angry about NP / that S / because S
