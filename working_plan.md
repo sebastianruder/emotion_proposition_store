@@ -4,6 +4,14 @@
 Machine: Ubuntu 14.04
 Programming language: Java (IntelliJ IDE)
 
+## Synopsis
+
+* Aim: implement a keyword-based approach for acquiring a proposition store of emotion-tagged state-of-affairs, focusing on linguistic constructs that clearly identify the emotion holder (subject) and the target. Acquired propositions will be filtered, parsed and stored in a proposition store or distributional space, parameterized according to the basic emotion classes. Analysis of the proposition store or semantic space of the acquired propositions will yield the contributing single vs. compound emotion-triggering expressions.
+* Evaluation: against existing emotion-labeled resources, e.g. Borth et al. 13, Mohammad and Turney 2011.
+* Corpus: e.g. GigaWord Corpus (partly tagged for domains)
+* Optional (MA only): linking acquired expressions to an emotion-annotated ontology
+* Optional (MA only): generalization to of near-synonyms of emotion-bearing expressions in the distributional space
+
 ## Steps
 
 1. Compile list of emotion-triggering expression patterns for Plutchik's eight basic emotions. Derive patterns from
