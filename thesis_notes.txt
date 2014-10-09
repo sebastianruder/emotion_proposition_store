@@ -1,0 +1,34 @@
+Observations, steps taken. Should be converted to LaTeX later.
+
+Preliminary output analogous to dependency tree: S[head] V O[head] O2[head], Prep[NP]; identify heads of arguments, adjuncts; optional: also identify modifier head
+
+Overall goal: harvesting; not identify complex, complicated sentence structures
+
+take clear cases which can be structured, leave rest in corpus / discard, e.g. multiple embedinngs, idioms, etc.
+"a lot of" with quantifiable nouns could be reduced later; exclude it at the moment
+
+define filter for extraction: use only such patterns whose proposition has a preferably simple form
+passive can be recognized, diathese normalized
+
+necessary: statistics to estimate how big corpus should be for the amount of possible extractions
+
+examples show that modifiers, etc. are relevant for sentiment.
+
+estimation of length of simple embedded sentences (with,w/o cutting adjuncts [not arguments!]) to determine propositions of acceptable size; take meaning-carrying dependencies for smaller propositions with you
+
+use lemmas for representation
+
+keep index for sentence/syntactic analysis to check back later
+
+plan ahead on how evaluation will be done
+
+think about later steps and make sure early decisions are made in the right way
+
+ultimately: give overview of process, criteria 
+
+
+
+
+
+We haven't talked about (or integrated anything about acquiring more emotion-indicating expressions. This could either be done in 1. on the basis of available lexica (eg. VerbNet, WordNet), or at the end of the first acquisition round, on the basis of acquired propositions using association measures. Not sure to what extent we want to include this. It seems to me that the entire project is already rather ambitious. It might be more interesting to investigate the nature/clarity of Plutchik's emotion classes in contrast to a pure pos/neg/neutral classification. 
+
