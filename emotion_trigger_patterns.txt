@@ -1,37 +1,38 @@
-joy	be/VBP/([0-9]+) happy/JJ/[0-9]+( that/IN/[0-9]+)?	S
+joy	be/VBP/[0-9]+ happy/JJ/([0-9]+)(?!to)( that/IN/[0-9]+)?	S
+joy	be/VBP/[0-9]+ glad/JJ/([0-9]+)(?!to)( that/IN/[0-9]+)?	S	
 trust	trust/VBP/([0-9]+)	NP
 trust	trust/VBP/([0-9]+)( that/IN/[0-9]+)?	S
 fear	fear/VBP/([0-9]+)	NP
 fear	fear/VBP/([0-9]+)( that/IN/[0-9]+)?	S
-fear	be/VBP/([0-9]+) afraid/JJ/[0-9]+ of/IN/[0-9]+	NP
-fear	be/VBP/([0-9]+) afraid/JJ/[0-9]+( that/IN/[0-9]+)?	S
-fear	be/VBP/([0-9]+) frightened/JJ/[0-9]+ by/IN/[0-9]+	NP
-fear	be/VBP/([0-9]+) frightened/JJ/[0-9]+ of/IN/[0-9]+	NP
-fear	be/VBP/([0-9]+) frightened/JJ/[0-9]+( that/IN/[0-9]+)?	S
-fear	be/VBP/([0-9]+) scared/JJ/[0-9]+ of/IN/[0-9]+	NP
-fear	be/VBP/([0-9]+) scared/JJ/[0-9]+ of/IN/[0-9]+	S
-fear	be/VBP/([0-9]+) scared/JJ/[0-9]+( that/IN/[0-9]+)?	S
+fear	be/VBP/[0-9]+ afraid/JJ/([0-9]+) of/IN/[0-9]+	NP
+fear	be/VBP/[0-9]+ afraid/JJ/([0-9]+)( that/IN/[0-9]+)?	S
+fear	be/VBP/[0-9]+ frightened/JJ/([0-9]+) by/IN/[0-9]+	NP
+fear	be/VBP/[0-9]+ frightened/JJ/([0-9]+) of/IN/[0-9]+	NP
+fear	be/VBP/[0-9]+ frightened/JJ/([0-9]+)( that/IN/[0-9]+)?	S
+fear	be/VBP/[0-9]+ scared/JJ/([0-9]+) of/IN/[0-9]+	NP
+fear	be/VBP/[0-9]+ scared/JJ/([0-9]+) of/IN/[0-9]+	S
+fear	be/VBP/[0-9]+ scared/JJ/([0-9]+)( that/IN/[0-9]+)?	S
 fear	feel/VBP/([0-9]+) uneasy/JJ/[0-9]+ when/WRB/[0-9]+	S
-fear	be/VBP/([0-9]+) spooked/JJ/[0-9]+ by/IN/[0-9]+	NP
-fear	be/VBP/([0-9]+) spooked/JJ/[0-9]+ when/IN/[0-9]+	S
-fear	be/VBP/([0-9]+) terrified/JJ/[0-9]+ by/IN/[0-9]+	NP
-fear	be/VBP/([0-9]+) terrified/JJ/[0-9]+ when/IN/[0-9]+	S
-fear	be/VBP/([0-9]+) petrified/JJ/[0-9]+ by/IN/[0-9]+	NP
-fear	be/VBP/([0-9]+) petrified/JJ/[0-9]+ when/IN/[0-9]+	S
-surprise	be/VBP/([0-9]+) surprised/JJ/[0-9]+( that/IN/[0-9]+)?	S
-surprise	be/VBP/([0-9]+) amazed/JJ/[0-9]+( that/IN/[0-9]+)?	S
-surprise	be/VBP/([0-9]+) astonished/JJ/[0-9]+( that/IN/[0-9]+)?	S
-surprise	be/VBP/([0-9]+) shocked/JJ/[0-9]+( that/IN/[0-9]+)?	S
-surprise	be/VBP/([0-9]+) stupified/JJ/[0-9]+( that/IN/[0-9]+)?	S
-surprise	be/VBP/([0-9]+) flabbergasted/JJ/[0-9]+( that/IN/[0-9]+)?	S
-surprise	be/VBP/([0-9]+) astounded/JJ/[0-9]+( that/IN/[0-9]+)?	S
-surprise	be/VBP/([0-9]+) confounded/JJ/[0-9]+( that/IN/[0-9]+)?	S
-sadness	be/VBP/([0-9]+) sad/[0-9]+( that/IN/[0-9]+)?	S
+fear	be/VBP/[0-9]+ spooked/JJ/([0-9]+) by/IN/[0-9]+	NP
+fear	be/VBP/[0-9]+ spooked/JJ/([0-9]+) when/IN/[0-9]+	S
+fear	be/VBP/[0-9]+ terrified/JJ/([0-9]+) by/IN/[0-9]+	NP
+fear	be/VBP/[0-9]+ terrified/JJ/([0-9]+) when/IN/[0-9]+	S
+fear	be/VBP/[0-9]+ petrified/JJ/([0-9]+) by/IN/[0-9]+	NP
+fear	be/VBP/[0-9]+ petrified/JJ/([0-9]+) when/IN/[0-9]+	S
+surprise	be/VBP/[0-9]+ surprised/JJ/([0-9]+)( that/IN/[0-9]+)?	S
+surprise	be/VBP/[0-9]+ amazed/JJ/([0-9]+)( that/IN/[0-9]+)?	S
+surprise	be/VBP/[0-9]+ astonished/JJ/([0-9]+)( that/IN/[0-9]+)?	S
+surprise	be/VBP/[0-9]+ shocked/JJ/([0-9]+)( that/IN/[0-9]+)?	S
+surprise	be/VBP/[0-9]+ stupified/JJ/([0-9]+)( that/IN/[0-9]+)?	S
+surprise	be/VBP/[0-9]+ flabbergasted/JJ/([0-9]+)( that/IN/[0-9]+)?	S
+surprise	be/VBP/[0-9]+ astounded/JJ/([0-9]+)( that/IN/[0-9]+)?	S
+surprise	be/VBP/[0-9]+ confounded/JJ/([0-9]+)( that/IN/[0-9]+)?	S
+sadness	be/VBP/[0-9]+ sad/[0-9]+( that/IN/([0-9]+))?	S
 disgust	hate/VBP/([0-9]+)	NP
 disgust	hate/VBP/([0-9]+)( that/IN/[0-9]+)?	S
 disgust	hate/VBP/([0-9]+) when/WRB/[0-9]+	S
-anger	be/VBP/([0-9]+) angry/JJ/[0-9]+ about/IN/([0-9]+)	NP
-anger	be/VBP/([0-9]+) angry/JJ/[0-9]+( that/IN/[0-9]+)?	S
-anger	be/VBP/([0-9]+) angry/JJ/[0-9]+ because/RB/([0-9]+)	S
+anger	be/VBP/[0-9]+ angry/JJ/([0-9]+) about/IN/([0-9]+)	NP
+anger	be/VBP/[0-9]+ angry/JJ/([0-9]+)( that/IN/[0-9]+)?	S
+anger	be/VBP/[0-9]+ angry/JJ/([0-9]+) because/RB/([0-9]+)	S
 anticipation	anticipate/VBP/([0-9]+)	NP
 anticipation	anticipate/VBP/([0-9]+) that/IN/[0-9]+	S
