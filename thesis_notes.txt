@@ -32,3 +32,18 @@ ultimately: give overview of process, criteria
 
 We haven't talked about (or integrated anything about acquiring more emotion-indicating expressions. This could either be done in 1. on the basis of available lexica (eg. VerbNet, WordNet), or at the end of the first acquisition round, on the basis of acquired propositions using association measures. Not sure to what extent we want to include this. It seems to me that the entire project is already rather ambitious. It might be more interesting to investigate the nature/clarity of Plutchik's emotion classes in contrast to a pure pos/neg/neutral classification. 
 
+
+das ist nun sehr klar und übersichtlich geordnet. Es wird auch klar, dass es eine ganze Menge an Arbeit ist.
+Ich werde Dir in Kürze auch noch eine Empfehlung zum Repräsentationsformat für die Propositionen 
+schicken. Vorerst sollte ein Spaltenformat für die Dependenten ok sein.
+Ich glaube nicht, dass Du 7. in Angriff nehmen solltest. Stattdessen würde es sich eher anbieten, 
+auf Basis der acquirierten Daten eine paar Klassifikationsexperimente vorzunehmen: binär (pos/neg)
+und nach allen 8 Klassen. Das wäre sicher interessant. Allerdings wird man dafür zumindest einen
+kleinen Testdatensatz manuell kontrollieren lassen. Das könnte man auch über ein Amazon Mechanical
+Turc experiment machen. Dh. damit kämen noch 2 Arbeitspakte dazu: Validierung und Klassifikation.
+
+Ich würde aber gerne an der Stelle auch Deine Einschätzung hören, ob Du mit diesem Umfang der Arbeit
+generell einverstanden bist. Auf keinen Fall solltest Du Dich zeitlich unter Druck setzen. Immerhin studierst
+Du in Dublin auch. ;-)
+
+
