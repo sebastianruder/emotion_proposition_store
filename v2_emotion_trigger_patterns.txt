@@ -1,0 +1,152 @@
+# Emotion	emotion word	cause	passiveExists?
+anger	aggravate/VBP	NP	true
+anger	annoy/VBP	NP	true
+anger	antagonize/VBP	NP	true
+anger	arouse/VBP	NP	true
+anger	displease/VBP	NP	true
+anger	embitter/VBP	NP	true
+anger	enrage/VBP	NP	true
+anger	exacerbate/VBP	NP	true
+anger	exasperate/VBP	NP	true
+anger	excite/VBP	NP	true
+anger	incense/VBP	NP	true
+anger	inflame/VBP	NP	true
+anger	infuriate/VBP	NP	true
+anger	irritate/VBP		NP	true
+anger	offend/VBP	NP	true
+anger	outrage/VBP	NP	true
+anger	provoke/VBP	NP	true
+anger	rankle/VBP	NP	true
+anger	rile/VBP	NP	true
+anger	be/VBP angry/JJ that/IN	S	false
+anger	be/VBP wrathful/JJ that/IN	S	false
+anger	be/VBP irate/JJ that/IN	S	false
+anticipation	expect/VBP	NP	false
+anticipation	expect/VBP that/IN	S	false
+anticipation	predict/VBP	NP	false
+anticipation	predict/VBP that/IN	S	false
+anticipation	assume/VBP	NP	false
+anticipation	assume/VBP that/IN	S	false
+anticipation	await/VBP	NP	false
+anticipation	await/VBP	that/IN S	false
+anticipation	count/VBP on/IN	NP	false
+anticipation	count/VBP on/IN	S	false
+anticipation	forecast/VBP	NP	false
+anticipation	forecast/VBP that/IN	S	false
+anticipation	foresee/VBP	NP	false
+anticipation	foresee/VBP that/IN	S	false
+anticipation	prepare/VBP for/IN	NP	false
+anticipation	prepare/VBP for/IN	S	false
+# anticipation	see/VBP	NP	false
+# anticipation	see/VBP that/IN	S	false
+anticipation	anticipate/VBP	NP	false
+anticipation	hope for/VBP	NP/S	false
+anticipation	look forward to/VBP	NP	false
+anticipation	look forward to/VBP	S	false
+disgust	be/VBP averse/JJ to/IN	NP	false
+disgust	disgust/VBP	NP	true
+disgust	bother/VBP	NP	true
+disgust	disenchant/VBP	NP	true
+disgust	dislike/VBP	NP	false
+disgust	displease/VBP	NP	true
+disgust	disturb/VBP	NP	true
+disgust	insult/VBP	NP	true
+disgust	irk/VBP	NP	true
+disgust	loathe/VBP	NP	false
+disgust	nauseate/VBP	NP	true
+disgust	offend/VBP	NP	true
+disgust	outrage/VBP	NP	true
+disgust	put off/VBP	NP	true
+disgust	repulse/VBP	NP	true
+disgust	revolt/VBP	NP	true
+disgust	shock/VBP	NP	true
+disgust	sicken/VBP	NP	true
+disgust	turn off/VBP	NP	true
+disgust	upset/VBP	NP	true
+disgust	hate/VBP	NP	false
+disgust	hate/VBP that/IN	S	false
+fear	alarm/VBP	NP	true
+# fear	anticipate/VBP	NP	false
+fear	avoid/VBP	NP	false
+fear	dread/VBP	NP	false
+# fear	expect/VBP	NP	false
+# fear	foresee/VBP	NP	false
+fear	shun/VBP	NP	false
+# fear	suspect/VBP	NP	false
+fear	worry/VBP	NP	true
+fear	fear/VBP	NP	false
+fear	fear/VBP that/IN	S	false
+fear	be/VBP afraid/JJ of/IN	NP	false
+fear	be/VBP afraid/JJ that/IN	S	false
+fear	be/VBP apprehensive/JJ about/IN	S	false
+fear	frighten/VBP	NP	true
+fear	be/VBP frightened/JJ that/IN	S	false
+fear	scare/VBP	NP	true
+fear	be/VBP scared/JJ of/IN	NP	false
+fear	be/VBP scared/JJ that/IN	S	false
+fear	spook/VBP	NP	true
+fear	terrify/VBP	NP	true
+fear	petrify/VBP	NP	true
+fear	intimidate/VBP	NP	true
+fear	alarm/VBP	NP	true
+joy	revel in/VBP	NP	false
+joy	delight/VBP	NP	true
+joy	amuse/VBP	NP	true
+joy	attract/VBP	NP	true
+joy	charm/VBP	NP	true
+joy	cheer/VBP	NP	true
+joy	delight/VBP	NP	true
+joy	enchant/VBP	NP	true
+joy	enrapture/VBP	NP	true
+joy	entertain/VBP	NP	true
+joy	enjoy/VBP	NP	false
+joy	enjoy/VBP	S	false
+joy	take/VBP pleasure/NPB in/IN	S	false
+joy	fascinate/VBP	NP	true
+joy	gratify/VBP	NP	true
+joy	please/VBP	NP	true
+joy	rejoice/VBP	that/IN	S	false
+joy	satisfy/VBP	NP	true
+joy	thrill/VBP	NP	true
+joy	wow/VBP	NP	true
+joy	be/VBP happy/JJ (?!to) that/IN	S	false
+joy	be/VBP glad/JJ (?!to) that/IN	S	false
+joy	be/VBP content/JJ (?!to) that/IN	S	false
+sadness	sadden/VBP	NP	true
+sadness	discourage/VBP	NP	true
+sadness	dishearten/VBP	NP	true
+sadness	dispirit/VBP	NP	true
+sadness	grieve/VBP that/IN	S	false
+sadness	be/VBP sad/JJ that/VBP	S	false
+sadness	be/VBP melancholic/JJ that/IN	S	false
+sadness	feel/VBP sorrow/NN that/IN	S	false
+sadness	mourn/VBP	NP/S	false
+surprise	astonish/VBP	NP	true
+surprise	amaze/VBP	NP	true
+surprise	astound/VBP	NP	true
+surprise	awe/VBP	NP	true
+surprise	bewilder/VBP	NP	true
+surprise	confound/VBP	NP	true
+surprise	confuse/VBP	NP	true
+surprise	dazzle/VBP	NP	true
+surprise	disconcert/VBP	NP	true
+surprise	dismay/VBP	NP	true
+surprise	dumbfound/VBP	NP	true
+surprise	flabbergast/VBP	NP	true
+surprise	overwhelm/VBP	NP	true
+surprise	perplex/VBP	NP	true
+surprise	rattle/VBP	NP	true
+surprise	shock/VBP	NP	true
+surprise	surprise/VBP	NP	true
+surprise	startle/VBP	NP	true
+surprise	stun/VBP	NP	true
+surprise	unsettle/VBP	NP	true
+surprise	stupify/VBP	NP	true
+trust	count/VBP on/IN	NP	false
+trust	depend/VBP on/IN	NP	false
+trust	look/VBP to/IN	NP	false
+trust	trust/VBP	NP	false
+trust	trust/VBP in/IN	NP	false
+trust	trust/VBP that/IN	S	false
+trust	rely/VBP on/IN	NP	false
+trust	place/VBP reliance/NN on/IN	NP	false
