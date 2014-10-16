@@ -122,24 +122,4 @@ public class EmotionPatternExtractor {
         }
         return emotionMap;
     }
-
-    public static void main(String[] args) throws IOException {
-
-        // TODO: put this workflow in main of AgigaReader
-        String filePath = "/home/sebastian/git/sentiment_analysis/v2_emotion_trigger_patterns.txt";
-        EmotionPatternExtractor emotionExtractor = new EmotionPatternExtractor();
-        Map<String, Map<Pattern, Map<String, Boolean>>> map = emotionExtractor.extractEmotions(filePath);
-        Matcher m;
-        for (Map<Pattern, Map<String, Boolean>> emotionMap: map.values()) {
-            for (Pattern pattern : emotionMap.keySet()) {
-                Boolean isNP = emotionMap.get(pattern).get("isNP");
-                m = pattern.matcher("sentence");
-                while (m.find()) {
-                    // TODO: do something
-                    System.out.println(String.format("Group 1: %s, group 2: %s", m.group(1), m.group(2)));
-                    // note: m.group(0) is whole string
-                }
-            }
-        }
-    }
 }
