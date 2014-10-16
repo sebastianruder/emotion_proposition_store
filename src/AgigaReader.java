@@ -1,5 +1,6 @@
 import edu.jhu.agiga.*;
 import edu.stanford.nlp.ling.CoreAnnotations;
+import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.semgraph.SemanticGraph;
 import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations;
 import edu.stanford.nlp.trees.*;
@@ -7,6 +8,8 @@ import edu.stanford.nlp.util.ArrayMap;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -48,10 +51,26 @@ public class AgigaReader {
         log.info("Parsing XML");
 
         // extract emotions
-        String filePath = "/home/sebastian/git/sentiment_analysis/emotion_trigger_patterns.txt";
+        String filePath = "/home/sebastian/git/sentiment_analysis/v2_emotion_trigger_patterns.txt";
         EmotionPatternExtractor emotionExtractor = new EmotionPatternExtractor();
-        Map<String, Map<Pattern, String>> map = emotionExtractor.extractEmotions(filePath);
+        Map<String, Map<Pattern, Map<String, Boolean>>> map = emotionExtractor.extractEmotions(filePath);
         Matcher m;
+
+        // map listing each pattern with the number of times it has found a successful match (experiencer + cause)
+        Map<Pattern, Map<String, Integer>> resultMap = new ArrayMap<Pattern, Map<String, Integer>>();
+        for (String emotion: map.keySet()) {
+            for (Pattern pattern : map.get(emotion).keySet()) {
+                Map<String, Integer> integerMap = new ArrayMap<String, Integer>();
+                integerMap.put("occurences", 0);
+                integerMap.put("matches", 0);
+                resultMap.put(pattern, integerMap);
+            }
+        }
+
+        // number of successful matches (experiencer + cause)
+        int matches = 0;
+
+        PrintWriter writer = new PrintWriter("results.txt", "UTF-8");
 
         // Iterate over the documents
         for (AgigaDocument doc : agigaReader) {
@@ -59,6 +78,9 @@ public class AgigaReader {
 
             // Iterate over the sentences
             for (AgigaSentence sent : sentences) {
+
+                // only retrieve one emotion trigger per sentence; if pattern is found, continue
+                boolean patternFound = false;
 
                 // TODO: calculate average String size to prevent unnecessary reallocation
                 StringBuilder sb = new StringBuilder(16);
@@ -76,99 +98,169 @@ public class AgigaReader {
                     sb.append(" ");
                 }
                 String sentence = sb.toString();
-                Tree tree = sent.getStanfordContituencyTree();
+                Tree root = sent.getStanfordContituencyTree();
 
                 for (String emotion: map.keySet()) {
                     for (Pattern pattern : map.get(emotion).keySet()) {
+                        if (patternFound) {
+                            break;
+                        }
                         // S or NP
-                        String rightConstituent = map.get(emotion).get(pattern);
+                        Boolean isNP = map.get(emotion).get(pattern).get("isNP");
                         m = pattern.matcher(sentence);
 
                         if (m.find()) {
+                            // counts occurences
+                            resultMap.get(pattern).put("occurences", resultMap.get(pattern).get("occurences") + 1);
+
                             // System.out.println(sent.getParseText());
                             System.out.println(String.format("#%d: %s", agigaReader.getNumSents(), sentence));
-
                             // get indexes
-                            int leftIdx = Integer.parseInt(m.group(1));
-                            int rightIdx = Integer.parseInt(m.group(0).split("/")[m.group(0).split("/").length - 1]);
-                            System.out.println(String.format("Pattern found: %s, constituent: %s, ids: %d, %d",
-                                    m.group(0), rightConstituent, leftIdx, rightIdx));
+                            int headIdx = Integer.parseInt(m.group(1));
+                            // get rightmost index; is this necessary at all?
+                            // int rightIdx = Integer.parseInt(m.group(0).split("/")[m.group(0).split("/").length - 1]);
+                            System.out.println(String.format("Pattern found: %s, constituent: %s",
+                                    m.group(0), isNP ? "NP" : "S"));
+                            AgigaToken headToken = tokens.get(headIdx);
 
-                            AgigaToken leftToken = tokens.get(leftIdx);
-                            AgigaToken rightToken = tokens.get(rightIdx);
+                            for (Tree leaf : root.getLeaves()) {
+                                if (leaf.toString().equals(headToken.getWord())) {
+                                    Boolean passiveExists = map.get(emotion).get(pattern).get("passiveExists");
+                                    // System.out.println(sent.getParseText());
 
-                            // TODO: matching with node numbers
-                            for (Tree leaf : tree.getLeaves()) {
-                                if (leaf.toString().equals(leftToken.getWord())) {
-                                    System.out.println(checkLabelOfAncestorChild(tree, leaf, "NP", true));
-                                    System.out.println(checkLabelOfAncestorChild(tree, leaf, rightConstituent, false));
+                                    String experiencer, cause;
+                                    List<Integer> experiencerSpan, causeSpan;
+                                    // if a passive form exists, experiencer is dependent, cause is subject
+                                    if (passiveExists) {
+                                        experiencerSpan = checkLabelOfAncestorChild(root, leaf, isNP ? "NP" : "S", false);
+                                        causeSpan = checkLabelOfAncestorChild(root, leaf, "NP", true);
+                                    }
+                                    // if no passive form exists, experiencer is subject, cause is dependent
+                                    else {
+                                        experiencerSpan = checkLabelOfAncestorChild(root, leaf, "NP", true);
+                                        causeSpan = checkLabelOfAncestorChild(root, leaf, isNP ? "NP" : "S", false);
+                                    }
+                                    System.out.println("Experiencer span: " + experiencerSpan + ", cause span: " +
+                                            causeSpan);
+
+                                    if (experiencerSpan != null && causeSpan != null) {
+                                        patternFound = true;
+                                        resultMap.get(pattern).put("matches", resultMap.get(pattern).get("matches") + 1);
+                                        matches++;
+
+                                        // lemmatize string
+                                        experiencer = getLeafString(experiencerSpan.get(0), experiencerSpan.get(1),
+                                                tokens, true);
+                                        cause = getLeafString(causeSpan.get(0), causeSpan.get(1), tokens, true);
+
+                                        System.out.println(String.format("#%d.%d/%d Emotion: '%s', " +
+                                                        "experiencer: '%s', cause: '%s'",
+                                                matches, resultMap.get(pattern).get("matches"),
+                                                resultMap.get(pattern).get("occurences"), emotion, experiencer, cause));
+
+                                        /* write output to file; output is of the form:
+                                        sentence number tab pattern tab pattern matched tab number of matches tab
+                                        number of occurences tab emotion tab experiencer tab cause
+                                        (number of total matches is line number)*/
+                                        writer.println(String.format("%d\t%s\t%s\t%d\t%d\t%s\t%s\t%s",
+                                                agigaReader.getNumSents(), pattern, m.group(0),
+                                                resultMap.get(pattern).get("matches"),
+                                                resultMap.get(pattern).get("occurences"), emotion, experiencer, cause));
+                                        writer.flush();
+                                    }
                                 }
                             }
-
+                            /*
                             Map<String, String> outputMap;
-                            // TODO: check if leftIdx is always correct idx
-                            if (rightConstituent.equals("NP")) {
-                                outputMap = extractVerbArguments(leftIdx, sent, false);
+                            // at the moment, headIdx is used as only index; pretty sure this is always correct,
+                            // but should maybe be looked into
+                            if (isNP) {
+                                outputMap = extractVerbArguments(headIdx, sent, false);
                             }
                             else {
-                                outputMap = extractVerbArguments(leftIdx, sent, true);
+                                outputMap = extractVerbArguments(headIdx, sent, true);
                             }
 
                             System.out.println(String.format("%s\t%s\t%s",
                                     outputMap.get("subject"), emotion, outputMap.get("cause")));
-
+                            */
                             System.out.println();
                         }
                     }
                 }
-
             }
-
-            // log.info("Number of sentences: " + agigaReader.getNumSents());
         }
+        writer.close();
     }
 
-    public static String checkLabelOfAncestorChild(Tree root, Tree leaf, String label, boolean left) {
+
+    public static List<Integer> checkLabelOfAncestorChild(Tree root, Tree leaf, String label, boolean left) {
+
+        // TODO: retrieve spans better, avoid spans intersect in higher function
 
         Tree child;
-        if (left) {
-            System.out.println("Left:");
-        }
-        else {
-            System.out.println("Right:");
-        }
-
-        // at height 2 is the first ancestor, limited height experimentally to 4
-        for (int height = 2; height <= 4; height++) {
-
+        // at height 2 is the first ancestor, set maximum height experimentally to 4
+        for (int height = 2; height <= 4; height++)
             try {
-                Tree leftChild = leaf.ancestor(height, root).getChild(0);
-                Tree rightChild = leaf.ancestor(height, root).getChild(1);
-                System.out.println(String.format("Left child: %s, right child: %s", leftChild, rightChild));
-                if (left) {
+                if (left) { // left child
                     child = leaf.ancestor(height, root).getChild(0);
-                } else {
+                } else { // right child
                     child = leaf.ancestor(height, root).getChild(1);
                 }
+                // System.out.println(String.format("%s child: %s", left ? "left" : "right", child));
 
                 // SBAR label is also frequent
                 if (child.label().toString().equals(label) || child.label().toString().equals(label + "BAR")) {
+                    // index the leaves to retrieve index
+                    root.indexLeaves();
 
-                    StringBuilder sb = new StringBuilder();
+                    List<Integer> idxList = new ArrayList<Integer>();
+                    int idx = 0;
+                    boolean start = true;
                     for (Tree node : child.getLeaves()) {
-                        sb.append(node.toString());
-                        sb.append(" ");
+                        if (!start) {
+                            idx++;
+                            }
+                        else {
+                            start = false;
+                            CoreLabel coreLabel = (CoreLabel) node.label();
+                            // set index to start index; label index starts at 1
+                            idx = coreLabel.get(CoreAnnotations.IndexAnnotation.class) - 1;
+                            // add end index to list
+                            idxList.add(idx);
+                        }
                     }
-                    // System.out.println("Correct child: " + sb.toString());
-                    return sb.toString();
+                    // add end index to list
+                    idxList.add(idx);
+                    // make sure that list only contains start and end index
+                    assert(idxList.size() == 2);
+                    // return list containing start index, end index
+                    return idxList;
                 }
-
             } catch (ArrayIndexOutOfBoundsException exception) {
                 log.info(String.format("Node %s has no child.", leaf.ancestor(height, root)));
             }
-
-        }
         return null;
+    }
+
+    public static String getLeafString(int startIdx, int endIdx, List<AgigaToken> tokens, boolean lemma) {
+
+        StringBuilder sb = new StringBuilder();
+        boolean start = true;
+
+        for (int i = startIdx; i <= endIdx; i++) {
+            AgigaToken token = tokens.get(i);
+            String s = token.getWord();
+            if (lemma) {
+                s = token.getLemma();
+            }
+            if (!start) {
+                sb.append(" ");
+            }
+            sb.append(s);
+            start = false;
+        }
+        return sb.toString();
     }
 
     /**
