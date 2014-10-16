@@ -1,8 +1,6 @@
 import edu.jhu.agiga.*;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.ling.CoreLabel;
-import edu.stanford.nlp.semgraph.SemanticGraph;
-import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations;
 import edu.stanford.nlp.trees.*;
 import edu.stanford.nlp.util.ArrayMap;
 
@@ -10,7 +8,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -20,23 +17,34 @@ import java.util.regex.Pattern;
 /**
  * Created by sebastian on 29/09/14.
  * Adapted from Eva. TODO: include note/reference
+ *
+ * A class to read annotated gigaword documents and extract emotion-triggering expressions from them
  */
 public class AgigaReader {
-
+    // initialize logger for logging, duh
     private static Logger log = Logger.getLogger(StreamingSentenceReader.class.getName());
 
+    /**
+     * Main method iterating over the annotated gigaword documents
+     * @param args
+     * @throws IOException
+     */
     public static void main(String[] args) throws IOException {
         // note: file name must end with /
         String agigaPath = "/home/sebastian/git/sentiment_analysis/anno_gigaword/";
         String[] fileNames = new File(agigaPath).list();
-        //ok, if in the directory there are only agiga gz-compressed files (otherwise, take a FilenameFilter)
+        // works if in the directory there are only agiga gz-compressed files (otherwise, take a FilenameFilter)
         for (String fileName : fileNames) {
             readAgiga(agigaPath + fileName);
         }
     }
 
+    /**
+     * Reads in a document using a StreamingDocumentReader and extracts expressions
+     * @param agigaFileNameWithPath: absolute file path of the file that should be read in
+     * @throws IOException
+     */
     private static void readAgiga(String agigaFileNameWithPath) throws IOException {
-
         // Preferences of what should be read
         AgigaPrefs readingPrefs = new AgigaPrefs(); // all extraction is set to true per default
         // modify preferences individually if needed
@@ -50,11 +58,10 @@ public class AgigaReader {
 
         log.info("Parsing XML");
 
-        // extract emotions
+        // store the emotion-triggering patterns in a map
         String filePath = "/home/sebastian/git/sentiment_analysis/v2_emotion_trigger_patterns.txt";
         EmotionPatternExtractor emotionExtractor = new EmotionPatternExtractor();
         Map<String, Map<Pattern, Map<String, Boolean>>> map = emotionExtractor.extractEmotions(filePath);
-        Matcher m;
 
         // map listing each pattern with the number of times it has found a successful match (experiencer + cause)
         Map<Pattern, Map<String, Integer>> resultMap = new ArrayMap<Pattern, Map<String, Integer>>();
@@ -67,9 +74,11 @@ public class AgigaReader {
             }
         }
 
-        // number of successful matches (experiencer + cause)
+        // count number of successful matches (experiencer & cause have been found)
         int matches = 0;
 
+        // TODO: write collocations
+        // create writer to write to output file with statistics/collocations
         PrintWriter writer = new PrintWriter("results.txt", "UTF-8");
 
         // Iterate over the documents
@@ -78,13 +87,13 @@ public class AgigaReader {
 
             // Iterate over the sentences
             for (AgigaSentence sent : sentences) {
-
                 // only retrieve one emotion trigger per sentence; if pattern is found, continue
                 boolean patternFound = false;
 
                 // TODO: calculate average String size to prevent unnecessary reallocation
                 StringBuilder sb = new StringBuilder(16);
                 List<AgigaToken> tokens = sent.getTokens();
+                // create a lemma string with pos and indices
                 for (int j=0; j<tokens.size(); j++) {
                     AgigaToken tok = tokens.get(j);
                     String lemma = tok.getLemma();
@@ -98,37 +107,39 @@ public class AgigaReader {
                     sb.append(" ");
                 }
                 String sentence = sb.toString();
+                // extract sentence root
                 Tree root = sent.getStanfordContituencyTree();
 
                 for (String emotion: map.keySet()) {
+                    // iterate over all the patterns
                     for (Pattern pattern : map.get(emotion).keySet()) {
                         if (patternFound) {
                             break;
                         }
-                        // S or NP
-                        Boolean isNP = map.get(emotion).get(pattern).get("isNP");
-                        m = pattern.matcher(sentence);
+
+                        Matcher m = pattern.matcher(sentence);
 
                         if (m.find()) {
                             // counts occurences
                             resultMap.get(pattern).put("occurences", resultMap.get(pattern).get("occurences") + 1);
 
-                            // System.out.println(sent.getParseText());
                             System.out.println(String.format("#%d: %s", agigaReader.getNumSents(), sentence));
-                            // get indexes
+                            // get indices
                             int headIdx = Integer.parseInt(m.group(1));
-                            // get rightmost index; is this necessary at all?
+                            // get rightmost index; TODO: is this necessary at all? maybe. optimize!
                             // int rightIdx = Integer.parseInt(m.group(0).split("/")[m.group(0).split("/").length - 1]);
                             System.out.println(String.format("Pattern found: %s, constituent: %s",
-                                    m.group(0), isNP ? "NP" : "S"));
+                                    m.group(0), map.get(emotion).get(pattern).get("isNP")));
                             AgigaToken headToken = tokens.get(headIdx);
 
+                            // iterate over all leaves, i.e. terminals
                             for (Tree leaf : root.getLeaves()) {
                                 if (leaf.toString().equals(headToken.getWord())) {
+                                    // pattern can have a passive form; if so, experiencer and cause are reversed
                                     Boolean passiveExists = map.get(emotion).get(pattern).get("passiveExists");
-                                    // System.out.println(sent.getParseText());
+                                    // cause of emotion is either an NP or S
+                                    Boolean isNP = map.get(emotion).get(pattern).get("isNP");
 
-                                    String experiencer, cause;
                                     List<Integer> experiencerSpan, causeSpan;
                                     // if a passive form exists, experiencer is dependent, cause is subject
                                     if (passiveExists) {
@@ -148,10 +159,12 @@ public class AgigaReader {
                                         resultMap.get(pattern).put("matches", resultMap.get(pattern).get("matches") + 1);
                                         matches++;
 
+                                        // TODO: remove PPs
+
                                         // lemmatize string
-                                        experiencer = getLeafString(experiencerSpan.get(0), experiencerSpan.get(1),
-                                                tokens, true);
-                                        cause = getLeafString(causeSpan.get(0), causeSpan.get(1), tokens, true);
+                                        String experiencer = getLeafString(experiencerSpan.get(0),
+                                                experiencerSpan.get(1), tokens, true);
+                                        String cause = getLeafString(causeSpan.get(0), causeSpan.get(1), tokens, true);
 
                                         System.out.println(String.format("#%d.%d/%d Emotion: '%s', " +
                                                         "experiencer: '%s', cause: '%s'",
@@ -193,10 +206,18 @@ public class AgigaReader {
         writer.close();
     }
 
-
+    /**
+     * Retrieves span of first sibling/cousin node having a given label on either side of a leaf node.
+     * Performs a cut at a height of 4 (height of leaf is 1).
+     * @param root: root node of tree
+     * @param leaf: leaf node whose sibling should be retrieved
+     * @param label: label of wanted node
+     * @param left: if node should be looked for on the left side of the sibling node
+     * @return a list containing the start index and the end index of the span of the wanted node
+     */
     public static List<Integer> checkLabelOfAncestorChild(Tree root, Tree leaf, String label, boolean left) {
 
-        // TODO: retrieve spans better, avoid spans intersect in higher function
+        // TODO: retrieve spans better, avoid spans intersect in higher function; see above using rightmost node
 
         Tree child;
         // at height 2 is the first ancestor, set maximum height experimentally to 4
@@ -209,9 +230,9 @@ public class AgigaReader {
                 }
                 // System.out.println(String.format("%s child: %s", left ? "left" : "right", child));
 
-                // SBAR label is also frequent
+                // label of child should equal label; SBAR label is also frequent
                 if (child.label().toString().equals(label) || child.label().toString().equals(label + "BAR")) {
-                    // index the leaves to retrieve index
+                    // index the leaves to retrieve indices
                     root.indexLeaves();
 
                     List<Integer> idxList = new ArrayList<Integer>();
@@ -226,7 +247,7 @@ public class AgigaReader {
                             CoreLabel coreLabel = (CoreLabel) node.label();
                             // set index to start index; label index starts at 1
                             idx = coreLabel.get(CoreAnnotations.IndexAnnotation.class) - 1;
-                            // add end index to list
+                            // add start index to list
                             idxList.add(idx);
                         }
                     }
@@ -243,8 +264,15 @@ public class AgigaReader {
         return null;
     }
 
+    /**
+     * Returns a string containing the word forms/lemmas of the leaves that are in the given span of the given node.
+     * @param startIdx: start index of the span
+     * @param endIdx: end index of the span
+     * @param tokens: a list of AgigaTokens of the sentence of the node
+     * @param lemma: if lemmas should be retrieved
+     * @return a lemma or word form string
+     */
     public static String getLeafString(int startIdx, int endIdx, List<AgigaToken> tokens, boolean lemma) {
-
         StringBuilder sb = new StringBuilder();
         boolean start = true;
 
@@ -264,12 +292,13 @@ public class AgigaReader {
     }
 
     /**
-     *
+     * Extracts certain verb arguments of a given sentence. Not sure if necessary.
      * @param verbIdx
      * @param sent
      * @param ccomp
      * @return
      */
+    /*
     public static Map<String, String> extractVerbArguments(int verbIdx, AgigaSentence sent, boolean ccomp) {
 
         Map<String, String> map = new ArrayMap<String, String>();
@@ -317,11 +346,11 @@ public class AgigaReader {
             } else if (type.equals("nsubj") && dependency.getGovIdx() == verbIdx) {
                 map.put("subject", tokens.get(dependency.getDepIdx()).getLemma());
             }
-            /*
-            System.out.println(String.format("Relation: %s(%s, %s)", type, tokens.get(dependency.getGovIdx()).getLemma(),
-                    tokens.get(dependency.getDepIdx()).getLemma()));
 
-            */
+            //System.out.println(String.format("Relation: %s(%s, %s)", type, tokens.get(dependency.getGovIdx()).getLemma(),
+            //        tokens.get(dependency.getDepIdx()).getLemma()));
+
+
             // if argument of verb is a ccomp
             if (ccomp) {
                 // extract subject, direct and indirect objects of ccomp, if applicable
@@ -390,4 +419,5 @@ public class AgigaReader {
         }
         return map;
     }
+    */
 }
