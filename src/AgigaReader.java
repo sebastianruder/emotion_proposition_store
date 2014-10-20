@@ -125,8 +125,8 @@ public class AgigaReader {
                             // get leftmost and rightmost indices of pattern
                             int leftIdx = Integer.parseInt(patternWords[0].split("/")[2]);
                             int rightIdx = Integer.parseInt(patternWords[patternWords.length - 1].split("/")[2]);
-                            System.out.println(String.format("Pattern found: %s, constituent: %s",
-                                    m.group(0), map.get(emotion).get(pattern).get("isNP") ? "NP" : "S"));
+                            /*System.out.println(String.format("Pattern found: %s, constituent: %s",
+                                    m.group(0), map.get(emotion).get(pattern).get("isNP") ? "NP" : "S"));*/
 
                             // Penn string shows phrase structur tree
                             // String pennString = root.pennString();
@@ -188,7 +188,7 @@ public class AgigaReader {
                                 collWriter.println(String.format("%d\t%s", agigaReader.getNumSents(), cleanString));
                                 collWriter.flush();
                             }
-                            System.out.println();
+                            // System.out.println();
                         }
                     }
                 }
@@ -224,8 +224,8 @@ public class AgigaReader {
                         break;
                     }
 
-                    System.out.println(String.format("%s child: %s, ancestor: %s" +
-                            "",left ? "left" : "right", child, leaf.ancestor(height, root)));
+                    /*System.out.println(String.format("%s child: %s, ancestor: %s" +
+                            "",left ? "left" : "right", child, leaf.ancestor(height, root)));*/
 
                     // label of child should equal label; SBAR label is also frequent
                     if (child.label().toString().equals(label) || child.label().toString().equals(label + "BAR")) {
@@ -236,9 +236,8 @@ public class AgigaReader {
                         if (withoutPP) {
                             preorderTraverse(child, root, startIdxList, endIdxList);
                         }
-
+                        // building the experiencer or cause string, as lemma, without PPs
                         StringBuilder sb = new StringBuilder();
-
                         boolean inPP = false;
                         for (int j = span.getSource(); j <= span.getTarget(); j++) {
                             if (startIdxList.contains(j)) {
@@ -263,7 +262,6 @@ public class AgigaReader {
                         return s.trim();
                     }
                 }
-
             } catch (ArrayIndexOutOfBoundsException exception) {
                 log.info(String.format("Node %s has no child.", leaf.ancestor(height, root)));
             }
@@ -284,7 +282,7 @@ public class AgigaReader {
                 // extracts PPs and SBARs
                 String label = child.label().value();
                 if (label.equals("PP") || label.equals("SBAR")) {
-                    System.out.println(child.nodeNumber(root) + ": " + child.getSpan() + " : " + child.toString());
+                    // System.out.println(child.nodeNumber(root) + ": " + child.getSpan() + ": " + child.toString());
                     startIdxList.add(child.getSpan().getSource());
                     endIdxList.add(child.getSpan().getTarget());
                 }
