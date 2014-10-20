@@ -50,6 +50,9 @@ public class EmotionPatternExtractor {
         InputStream inputStream = new FileInputStream(emotionTriggersFile);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
 
+        // writer to write the created patterns
+        PrintWriter writer = new PrintWriter("patterns.txt", "UTF-8");
+
         String line = reader.readLine();
         while (line != null) {
             // skip comments
@@ -64,62 +67,77 @@ public class EmotionPatternExtractor {
 
             Boolean passiveExists = Boolean.valueOf(lineList[3]);
 
-            // pattern remembers the head, i.e. the verb so it can be later retrieved more easily
-            int count = 0;
+            // pattern remembers the head, i.e. the verb or adjective so it can be later retrieved more easily
             for (String word : patternWords) {
-                // make 'that' optional TODO: for some necessary, check generalisability
+                // make 'that' optional
                 if (word.startsWith("that")) {
                     patternBuilder.append(String.format("( %s/[0-9]+)?", word));
                     continue;
                 }
-                if (word.startsWith("(")) {
+                // adds words without modifying that should be skipped in certain context, e.g. 'to' in 'be happy to'
+                else if (word.startsWith("(?!")) {
                     patternBuilder.append(word);
                     continue;
                 }
-                if (count > 0) {
-                    patternBuilder.append(" ");
+                // account for adverbs modifying adjectives; adjectives shouldn't be negated
+                else if (word.equals("RB")) {
+                    patternBuilder.append("(?! not)(?! never)( [a-z]+/RB/[0-9]+)?");
+                    continue;
                 }
+                patternBuilder.append(" ");
                 patternBuilder.append(word);
-                // for (?!to)
-                if (word.endsWith("VBP")) {
-                    patternBuilder.append("/([0-9]+)");
-                }
-                else {
-                    patternBuilder.append("/[0-9]+");
-                }
-                count++;
+                patternBuilder.append("/[0-9]+");
             }
 
-            Pattern emotionPattern = Pattern.compile(patternBuilder.toString());
+            Pattern emotionPattern = Pattern.compile(patternBuilder.toString().trim());
+            // extract feature if cause is an NP or an S
             Boolean isNP = lineList[2].equals("NP") ? true : false;
+
+            writer.println(String.format(
+                    "%s\t%s\t%s", emotionWord, patternBuilder.toString().trim(), isNP ? "NP" : "S"));
 
             Map<String, Boolean> booleanMap = new ArrayMap<String, Boolean>();
             // puts boolean indicating if cause is an NP or not
             booleanMap.put("isNP", isNP);
             // puts boolean indicating if pattern is passive or not
             booleanMap.put("passiveExists", passiveExists);
-
             emotionMap.get(emotionWord).put(emotionPattern, booleanMap);
 
             // creates passive pattern if a passive form exists
             if (passiveExists) {
-                // creates pattern with 'by'
+                // create pattern with 'that' and 'by'
                 String passiveLemmaForm = patternWords[0].replace("/VBP", "/VBN");
-                emotionPattern = Pattern.compile(String.format("be/VBP/([0-9]+) %s/[0-9]+ by/IN/[0-9]+",
-                        passiveLemmaForm));
-                booleanMap = new ArrayMap<String, Boolean>();
-                booleanMap.put("isNP", true);
-                booleanMap.put("passiveExists", false);
-                emotionMap.get(emotionWord).put(emotionPattern, booleanMap);
-                // creates pattern with 'that'; cause is 'S'
-                booleanMap.put("isNP", false);
-                emotionPattern = Pattern.compile(String.format("be/VBP/([0-9]+) %s/[0-9]+( that/IN/[0-9]+)?",
-                        passiveLemmaForm));
-                emotionMap.get(emotionWord).put(emotionPattern, booleanMap);
+                createPassive("that", passiveLemmaForm, emotionWord, writer, emotionMap);
+                createPassive("by", passiveLemmaForm, emotionWord, writer, emotionMap);
             }
             // read next line
             line = reader.readLine();
+            writer.flush();
         }
+        writer.close();
         return emotionMap;
+    }
+
+    /**
+     * Creates the passive form if a passive form exists. Can be created with different prepositions, though 'by'
+     * takes an NP as cause, while 'that' takes an S.
+     * @param writer: a writer
+     * @param prep: the preposition for the pattern, at the moment either 'by' or 'that'
+     * @param passiveLemmaForm: the lemma + pos tag, i.e. "frighten/VBN"
+     * @param emotionWord: the emotion word
+     * @param emotionMap: the emotion map
+     */
+    public static void createPassive(String prep, String passiveLemmaForm, String emotionWord, PrintWriter writer,
+                                      Map<String, Map<Pattern, Map<String, Boolean>>> emotionMap) {
+        String pattern = String.format("be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? %s/[0-9]+ %s/IN/[0-9]+",
+                passiveLemmaForm, prep);
+        Pattern emotionPattern = Pattern.compile(pattern);
+        Map<String, Boolean> booleanMap = new ArrayMap<String, Boolean>();
+        // if preposition is by, cause of emotion is an NP; if preposition is that, cause is a clause, i.e. S
+        booleanMap.put("isNP", prep.equals("by") ? true : false);
+        booleanMap.put("passiveExists", false);
+
+        emotionMap.get(emotionWord).put(emotionPattern, booleanMap);
+        writer.println(String.format("%s\t%s\t%s", emotionWord, pattern, prep.equals("by") ? "NP" : "S"));
     }
 }
