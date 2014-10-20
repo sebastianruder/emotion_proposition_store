@@ -61,8 +61,8 @@ public class AgigaReader {
             }
         }
 
-        // count number of successful matches (experiencer & cause have been found)
-        int matches = 0;
+        int matches = 0; // count number of successful matches (experiencer & cause have been found)
+        int count = 0; // count number of sentences spanning all documents
 
         PrintWriter resultWriter = new PrintWriter("results.txt", "UTF-8");
         PrintWriter collWriter = new PrintWriter("collocations.txt", "UTF-8");
@@ -75,6 +75,7 @@ public class AgigaReader {
 
                 // Iterate over the sentences
                 for (AgigaSentence sent : sentences) {
+                    count++;
                     // only retrieve one emotion trigger per sentence; if pattern is found, continue
                     boolean patternFound = false;
 
@@ -107,7 +108,7 @@ public class AgigaReader {
                             if (m.find()) {
                                 // counts occurences
                                 resultMap.get(pattern).put("occurences", resultMap.get(pattern).get("occurences") + 1);
-                                //System.out.println(String.format("#%d: %s", agigaReader.getNumSents(), sentence));
+                                //System.out.println(String.format("#%d: %s", count, sentence));
 
                                 // index the leaves to retrieve indices
                                 root.indexLeaves();
@@ -166,10 +167,10 @@ public class AgigaReader {
                                         cleanBuilder.append(" ");
                                     }
                                     String cleanString = cleanBuilder.toString().trim();
-                                    collWriter.println(String.format("%d\t%s", agigaReader.getNumSents(), cleanString));
+                                    collWriter.println(String.format("%d\t%s", count, cleanString));
                                     collWriter.flush();
 
-                                    System.out.println(String.format("%d\t%s", agigaReader.getNumSents(), cleanString));
+                                    System.out.println(String.format("%d\t%s", count, cleanString));
                                     System.out.println(String.format("#%d.%d/%d Emotion: '%s', " +
                                                     "experiencer: '%s', cause: '%s'",
                                             matches, resultMap.get(pattern).get("matches"),
@@ -180,8 +181,7 @@ public class AgigaReader {
                                         number of occurences tab emotion tab experiencer tab cause
                                         (number of total matches is line number)*/
                                     resultWriter.println(String.format("%d\t%s\t%d\t%d\t%s\t%s\t%s",
-                                            agigaReader.getNumSents(), m.group(0),
-                                            resultMap.get(pattern).get("matches"),
+                                            count, m.group(0), resultMap.get(pattern).get("matches"),
                                             resultMap.get(pattern).get("occurences"), emotion, experiencer, cause));
                                     resultWriter.flush();
                                 }
