@@ -1,9 +1,8 @@
+import edu.jhu.agiga.Util;
 import edu.stanford.nlp.util.ArrayMap;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -53,6 +52,9 @@ public class EmotionPatternExtractor {
         // writer to write the created patterns
         PrintWriter writer = new PrintWriter("patterns.txt", "UTF-8");
 
+        // hashmap for writing patterns in a random order to measure annotator agreement
+        Map<Double, String> randomPatternMap = new HashMap<Double, String>();
+
         String line = reader.readLine();
         while (line != null) {
             // skip comments
@@ -62,6 +64,9 @@ public class EmotionPatternExtractor {
             }
             String[] lineList = line.split("\t");
             String emotionWord = lineList[0];
+
+            // randomPatternMap.put(Math.random(), lineList[1]);
+
             String[] patternWords = lineList[1].split(" ");
             StringBuilder patternBuilder = new StringBuilder();
 
@@ -115,6 +120,13 @@ public class EmotionPatternExtractor {
             writer.flush();
         }
         writer.close();
+        /*
+        PrintWriter randomWriter = new PrintWriter("random_patterns.txt", "UTF-8");
+        for (double d : asSortedList(randomPatternMap.keySet())) {
+            randomWriter.println(randomPatternMap.get(d));
+        }
+        randomWriter.close();
+        */
         return emotionMap;
     }
 
@@ -139,5 +151,11 @@ public class EmotionPatternExtractor {
 
         emotionMap.get(emotionWord).put(emotionPattern, booleanMap);
         writer.println(String.format("%s\t%s\t%s", emotionWord, pattern, prep.equals("by") ? "NP" : "S"));
+    }
+
+    public static <T extends Comparable<? super T>> List<T> asSortedList(Collection<T> c) {
+        List<T> list = new ArrayList<T>(c);
+        java.util.Collections.sort(list);
+        return list;
     }
 }

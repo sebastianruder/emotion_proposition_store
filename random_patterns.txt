@@ -1,0 +1,145 @@
+unsettle/VBP
+delight/VBP
+be/VBP irate/JJ that/IN
+outrage/VBP
+be/VBP averse/JJ to/IN
+delight/VBP
+enjoy/VBP
+attract/VBP
+annoy/VBP
+flabbergast/VBP
+place/VBP reliance/NN on/IN
+confound/VBP
+scare/VBP
+feel/VBP sorrow/NN that/IN
+stupify/VBP
+prepare/VBP for/IN
+trust/VBP that/IN
+avoid/VBP
+fascinate/VBP
+expect/VBP that/IN
+petrify/VBP
+bewilder/VBP
+hate/VBP
+rile/VBP
+amaze/VBP
+terrify/VBP
+hate/VBP that/IN
+be/VBP sad/JJ that/VBP
+repulse/VBP
+embitter/VBP
+look forward to/VBP
+foresee/VBP that/IN
+loathe/VBP
+forecast/VBP
+fear/VBP
+insult/VBP
+enjoy/VBP
+dislike/VBP
+inflame/VBP
+dread/VBP
+exasperate/VBP
+disturb/VBP
+be/VBP angry/JJ that/IN
+amuse/VBP
+bother/VBP
+irritate/VBP
+cheer/VBP
+thrill/VBP
+frighten/VBP
+forecast/VBP that/IN
+astound/VBP
+shock/VBP
+startle/VBP
+count/VBP on/IN
+disenchant/VBP
+antagonize/VBP
+expect/VBP
+intimidate/VBP
+turn off/VBP
+offend/VBP
+assume/VBP that/IN
+upset/VBP
+displease/VBP
+put off/VBP
+excite/VBP
+dismay/VBP
+look/VBP to/IN
+rankle/VBP
+be/VBP RB afraid/JJ of/IN
+entertain/VBP
+hope for/VBP
+offend/VBP
+please/VBP
+rely/VBP on/IN
+surprise/VBP
+count/VBP on/IN
+spook/VBP
+anticipate/VBP
+alarm/VBP
+outrage/VBP
+infuriate/VBP
+awe/VBP
+disconcert/VBP
+revel in/VBP
+dispirit/VBP
+provoke/VBP
+perplex/VBP
+dumbfound/VBP
+predict/VBP that/IN
+be/VBP RB apprehensive/JJ about/IN
+await/VBP
+stun/VBP
+trust/VBP
+shock/VBP
+sadden/VBP
+predict/VBP
+nauseate/VBP
+assume/VBP
+aggravate/VBP
+grieve/VBP that/IN
+rattle/VBP
+dazzle/VBP
+displease/VBP
+be/VBP RB happy/JJ (?!to) (?!\d) that/IN
+fear/VBP that/IN
+discourage/VBP
+enrapture/VBP
+enchant/VBP
+incense/VBP
+be/VBP RB glad/JJ (?!to) (?!\d) that/IN
+await/VBP
+depend/VBP on/IN
+wow/VBP
+be/VBP RB scared/JJ of/IN
+worry/VBP
+count/VBP on/IN
+revolt/VBP
+satisfy/VBP
+astonish/VBP
+confuse/VBP
+be/VBP RB frightened/JJ that/IN
+take/VBP pleasure/NPB in/IN
+charm/VBP
+arouse/VBP
+overwhelm/VBP
+irk/VBP
+rejoice/VBP
+disgust/VBP
+exacerbate/VBP
+be/VBP RB content/JJ (?!to) (?!\d) that/IN
+foresee/VBP
+sicken/VBP
+be/VBP RB afraid/JJ that/IN
+look forward to/VBP
+prepare/VBP for/IN
+be/VBP RB scared/JJ that/IN
+shun/VBP
+be/VBP melancholic/JJ that/IN
+gratify/VBP
+enrage/VBP
+trust/VBP in/IN
+alarm/VBP
+be/VBP wrathful/JJ that/IN
+dishearten/VBP
+mourn/VBP
