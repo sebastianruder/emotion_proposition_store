@@ -33,17 +33,7 @@ public class AgigaReader {
         String agigaPath = "/home/sebastian/git/sentiment_analysis/anno_gigaword/";
         String[] fileNames = new File(agigaPath).list();
         // works if in the directory there are only agiga gz-compressed files (otherwise, take a FilenameFilter)
-        for (String fileName : fileNames) {
-            readAgiga(agigaPath + fileName);
-        }
-    }
 
-    /**
-     * Reads in a document using a StreamingDocumentReader and extracts expressions
-     * @param agigaFileNameWithPath: absolute file path of the file that should be read in
-     * @throws IOException
-     */
-    private static void readAgiga(String agigaFileNameWithPath) throws IOException {
         // Preferences of what should be read
         AgigaPrefs readingPrefs = new AgigaPrefs(); // all extraction is set to true per default
         // modify preferences individually if needed
@@ -51,10 +41,8 @@ public class AgigaReader {
         readingPrefs.setBasicDeps(false);
         readingPrefs.setColCcprocDeps(false);
 
-        //Get the document reader - this "entails" all the documents within the gz-compressed file
+        // Get the document reader - this "entails" all the documents within the gz-compressed file
         StreamingDocumentReader agigaReader;
-        agigaReader = new StreamingDocumentReader(agigaFileNameWithPath, readingPrefs);
-
         log.info("Parsing XML");
 
         // store the emotion-triggering patterns in a map
@@ -79,116 +67,126 @@ public class AgigaReader {
         PrintWriter resultWriter = new PrintWriter("results.txt", "UTF-8");
         PrintWriter collWriter = new PrintWriter("collocations.txt", "UTF-8");
 
-        // Iterate over the documents
-        for (AgigaDocument doc : agigaReader) {
-            List<AgigaSentence> sentences = doc.getSents();
+        for (String fileName : fileNames) {
+            agigaReader = new StreamingDocumentReader(agigaPath + fileName, readingPrefs);
+            // Iterate over the documents
+            for (AgigaDocument doc : agigaReader) {
+                List<AgigaSentence> sentences = doc.getSents();
 
-            // Iterate over the sentences
-            for (AgigaSentence sent : sentences) {
-                // only retrieve one emotion trigger per sentence; if pattern is found, continue
-                boolean patternFound = false;
+                // Iterate over the sentences
+                for (AgigaSentence sent : sentences) {
+                    // only retrieve one emotion trigger per sentence; if pattern is found, continue
+                    boolean patternFound = false;
 
-                StringBuilder sb = new StringBuilder();
-                List<AgigaToken> tokens = sent.getTokens();
-                // create a lemma string with pos and indices
-                for (int j=0; j<tokens.size(); j++) {
-                    AgigaToken tok = tokens.get(j);
-                    String lemma = tok.getLemma();
-                    String pos = tok.getPosTag();
-                    int idx = tok.getTokIdx();
-                    sb.append(lemma); sb.append("/"); sb.append(pos); sb.append("/"); sb.append(idx); sb.append(" ");
-                }
-                String sentence = sb.toString();
-                // extract sentence root
-                Tree root = sent.getStanfordContituencyTree();
+                    StringBuilder sb = new StringBuilder();
+                    List<AgigaToken> tokens = sent.getTokens();
+                    // create a lemma string with pos and indices
+                    for (int j = 0; j < tokens.size(); j++) {
+                        AgigaToken tok = tokens.get(j);
+                        String lemma = tok.getLemma();
+                        String pos = tok.getPosTag();
+                        int idx = tok.getTokIdx();
+                        sb.append(lemma);
+                        sb.append("/");
+                        sb.append(pos);
+                        sb.append("/");
+                        sb.append(idx);
+                        sb.append(" ");
+                    }
+                    String sentence = sb.toString();
+                    // extract sentence root
+                    Tree root = sent.getStanfordContituencyTree();
 
-                for (String emotion: map.keySet()) {
-                    // iterate over all the patterns
-                    for (Pattern pattern : map.get(emotion).keySet()) {
-                        if (patternFound) {
-                            break;
-                        }
-                        Matcher m = pattern.matcher(sentence);
-                        if (m.find()) {
-                            // counts occurences
-                            resultMap.get(pattern).put("occurences", resultMap.get(pattern).get("occurences") + 1);
-                            //System.out.println(String.format("#%d: %s", agigaReader.getNumSents(), sentence));
+                    for (String emotion : map.keySet()) {
+                        // iterate over all the patterns
+                        for (Pattern pattern : map.get(emotion).keySet()) {
+                            if (patternFound) {
+                                break;
+                            }
+                            Matcher m = pattern.matcher(sentence);
+                            if (m.find()) {
+                                // counts occurences
+                                resultMap.get(pattern).put("occurences", resultMap.get(pattern).get("occurences") + 1);
+                                //System.out.println(String.format("#%d: %s", agigaReader.getNumSents(), sentence));
 
-                            // index the leaves to retrieve indices
-                            root.indexLeaves();
-                            // set the spans to retrieve spans
-                            root.setSpans();
+                                // index the leaves to retrieve indices
+                                root.indexLeaves();
+                                // set the spans to retrieve spans
+                                root.setSpans();
 
-                            // words look like this: ["fear/VBD/15", ...]
-                            String[] patternWords = m.group(0).split(" ");
+                                // words look like this: ["fear/VBD/15", ...]
+                                String[] patternWords = m.group(0).split(" ");
 
-                            // get leftmost and rightmost indices of pattern
-                            int leftIdx = Integer.parseInt(patternWords[0].split("/")[2]);
-                            int rightIdx = Integer.parseInt(patternWords[patternWords.length - 1].split("/")[2]);
+                                // get leftmost and rightmost indices of pattern
+                                int leftIdx = Integer.parseInt(patternWords[0].split("/")[2]);
+                                int rightIdx = Integer.parseInt(patternWords[patternWords.length - 1].split("/")[2]);
                             /*System.out.println(String.format("Pattern found: %s, constituent: %s",
                                     m.group(0), map.get(emotion).get(pattern).get("isNP") ? "NP" : "S"));*/
 
-                            // Penn string shows phrase structur tree
-                            // String pennString = root.pennString();
-                            // System.out.println(pennString);
+                                // Penn string shows phrase structur tree
+                                // String pennString = root.pennString();
+                                // System.out.println(pennString);
 
-                            List<Tree> leaves = root.getLeaves();
-                            Tree leftNode = leaves.get(leftIdx);
-                            Tree rightNode = leaves.get(rightIdx);
+                                List<Tree> leaves = root.getLeaves();
+                                Tree leftNode = leaves.get(leftIdx);
+                                Tree rightNode = leaves.get(rightIdx);
                             /*
                             System.out.println(String.format("Left node (%s): %s; right node (%s): %s",
                                     leftNode.ancestor(1, root).getSpan(), leftNode.toString(),
                                     rightNode.ancestor(1, root).getSpan(), rightNode.toString()));
                             */
-                            // pattern can have a passive form; if so, experiencer and cause are reversed
-                            Boolean passiveExists = map.get(emotion).get(pattern).get("passiveExists");
-                            // cause of emotion is either an NP or S
-                            Boolean isNP = map.get(emotion).get(pattern).get("isNP");
+                                // pattern can have a passive form; if so, experiencer and cause are reversed
+                                Boolean passiveExists = map.get(emotion).get(pattern).get("passiveExists");
+                                // cause of emotion is either an NP or S
+                                Boolean isNP = map.get(emotion).get(pattern).get("isNP");
 
-                            String experiencer, cause;
-                            // if a passive form exists, experiencer is dependent, cause is subject
-                            if (passiveExists) {
-                                experiencer = findExperiencerOrCause(root, rightNode, isNP ? "NP" : "S", tokens,
-                                        false, true, true);
-                                cause = findExperiencerOrCause(root, leftNode, "NP", tokens, true, true, true);
-                            }
-                            // if no passive form exists, experiencer is subject, cause is dependent
-                            else {
-                                experiencer = findExperiencerOrCause(root, leftNode, "NP", tokens, true, true, true);
-                                cause = findExperiencerOrCause(root, rightNode, isNP ? "NP" : "S", tokens, false,
-                                        true, true);
-                            }
+                                String experiencer, cause;
+                                // if a passive form exists, experiencer is dependent, cause is subject
+                                if (passiveExists) {
+                                    experiencer = findExperiencerOrCause(root, rightNode, isNP ? "NP" : "S", tokens,
+                                            false, true, true);
+                                    cause = findExperiencerOrCause(root, leftNode, "NP", tokens, true, true, true);
+                                }
+                                // if no passive form exists, experiencer is subject, cause is dependent
+                                else {
+                                    experiencer = findExperiencerOrCause(root, leftNode, "NP", tokens, true, true, true);
+                                    cause = findExperiencerOrCause(root, rightNode, isNP ? "NP" : "S", tokens, false,
+                                            true, true);
+                                }
 
-                            if (experiencer != null && cause != null) {
-                                patternFound = true;
-                                resultMap.get(pattern).put("matches", resultMap.get(pattern).get("matches") + 1);
-                                matches++;
+                                if (experiencer != null && cause != null) {
+                                    patternFound = true;
+                                    resultMap.get(pattern).put("matches", resultMap.get(pattern).get("matches") + 1);
+                                    matches++;
 
-                                System.out.println(String.format("#%d.%d/%d Emotion: '%s', " +
-                                                "experiencer: '%s', cause: '%s'",
-                                        matches, resultMap.get(pattern).get("matches"),
-                                        resultMap.get(pattern).get("occurences"), emotion, experiencer, cause));
+                                    // build clean string for collocations file
+                                    StringBuilder cleanBuilder = new StringBuilder();
+                                    for (int j = 0; j < tokens.size(); j++) {
+                                        cleanBuilder.append(tokens.get(j).getWord());
+                                        cleanBuilder.append(" ");
+                                    }
+                                    String cleanString = cleanBuilder.toString().trim();
+                                    collWriter.println(String.format("%d\t%s", agigaReader.getNumSents(), cleanString));
+                                    collWriter.flush();
+
+                                    System.out.println(String.format("%d\t%s", agigaReader.getNumSents(), cleanString));
+                                    System.out.println(String.format("#%d.%d/%d Emotion: '%s', " +
+                                                    "experiencer: '%s', cause: '%s'",
+                                            matches, resultMap.get(pattern).get("matches"),
+                                            resultMap.get(pattern).get("occurences"), emotion, experiencer, cause));
 
                                         /* write output to file; output is of the form:
                                         sentence number tab pattern tab pattern matched tab number of matches tab
                                         number of occurences tab emotion tab experiencer tab cause
                                         (number of total matches is line number)*/
-                                resultWriter.println(String.format("%d\t%s\t%d\t%d\t%s\t%s\t%s",
-                                        agigaReader.getNumSents(), m.group(0),
-                                        resultMap.get(pattern).get("matches"),
-                                        resultMap.get(pattern).get("occurences"), emotion, experiencer, cause));
-                                resultWriter.flush();
-
-                                // build clean string for collocations file
-                                StringBuilder cleanBuilder = new StringBuilder();
-                                for (int j=0; j<tokens.size(); j++) {
-                                    cleanBuilder.append(tokens.get(j).getWord()); cleanBuilder.append(" ");
+                                    resultWriter.println(String.format("%d\t%s\t%d\t%d\t%s\t%s\t%s",
+                                            agigaReader.getNumSents(), m.group(0),
+                                            resultMap.get(pattern).get("matches"),
+                                            resultMap.get(pattern).get("occurences"), emotion, experiencer, cause));
+                                    resultWriter.flush();
                                 }
-                                String cleanString = cleanBuilder.toString().trim();
-                                collWriter.println(String.format("%d\t%s", agigaReader.getNumSents(), cleanString));
-                                collWriter.flush();
+                                // System.out.println();
                             }
-                            // System.out.println();
                         }
                     }
                 }
