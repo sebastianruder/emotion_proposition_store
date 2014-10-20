@@ -317,28 +317,4 @@ public class AgigaReader {
             }
         }
     }
-
-
-    /**
-     * Returns a string containing the word forms/lemmas of the leaves that are in the given span of the given node.
-     * @param startIdx: start index of the span
-     * @param endIdx: end index of the span
-     * @param tokens: a list of AgigaTokens of the sentence of the node
-     * @param asLemma: if lemmas should be retrieved
-     * @return a lemma or word form string
-     */
-    public static String getLeafString(int startIdx, int endIdx, List<AgigaToken> tokens, boolean asLemma) {
-        StringBuilder sb = new StringBuilder();
-
-        for (int i = startIdx; i <= endIdx; i++) {
-            AgigaToken token = tokens.get(i);
-            String s = token.getWord();
-            if (asLemma) {
-                s = token.getLemma();
-            }
-            sb.append(" ");
-            sb.append(s);
-        }
-        return sb.toString().trim();
-    }
 }
