@@ -129,8 +129,11 @@ public class AgigaReader {
                             // get rightmost index; TODO: is this necessary at all? maybe. optimize!
                             // int rightIdx = Integer.parseInt(m.group(0).split("/")[m.group(0).split("/").length - 1]);
                             System.out.println(String.format("Pattern found: %s, constituent: %s",
-                                    m.group(0), map.get(emotion).get(pattern).get("isNP")));
+                                    m.group(0), map.get(emotion).get(pattern).get("isNP") ? "NP" : "S"));
                             AgigaToken headToken = tokens.get(headIdx);
+
+                            String pennString = root.pennString();
+                            System.out.println(pennString);
 
                             // iterate over all leaves, i.e. terminals
                             for (Tree leaf : root.getLeaves()) {
@@ -217,52 +220,86 @@ public class AgigaReader {
      */
     public static List<Integer> checkLabelOfAncestorChild(Tree root, Tree leaf, String label, boolean left) {
 
-        // TODO: retrieve spans better, avoid spans intersect in higher function; see above using rightmost node
+
+        // TODO: keep another file just with the index and the sentence of which patterns were found
 
         Tree child;
         // at height 2 is the first ancestor, set maximum height experimentally to 4
         for (int height = 2; height <= 4; height++)
             try {
-                if (left) { // left child
-                    child = leaf.ancestor(height, root).getChild(0);
-                } else { // right child
-                    child = leaf.ancestor(height, root).getChild(1);
-                }
-                // System.out.println(String.format("%s child: %s", left ? "left" : "right", child));
-
-                // label of child should equal label; SBAR label is also frequent
-                if (child.label().toString().equals(label) || child.label().toString().equals(label + "BAR")) {
-                    // index the leaves to retrieve indices
-                    root.indexLeaves();
-
-                    List<Integer> idxList = new ArrayList<Integer>();
-                    int idx = 0;
-                    boolean start = true;
-                    for (Tree node : child.getLeaves()) {
-                        if (!start) {
-                            idx++;
-                            }
-                        else {
-                            start = false;
-                            CoreLabel coreLabel = (CoreLabel) node.label();
-                            // set index to start index; label index starts at 1
-                            idx = coreLabel.get(CoreAnnotations.IndexAnnotation.class) - 1;
-                            // add start index to list
-                            idxList.add(idx);
-                        }
+                // iterate over the children, start with the second child if looking on the right
+                for (int i = left ? 0 : 1; i < leaf.ancestor(height, root).getChildrenAsList().size(); i++) {
+                    child = leaf.ancestor(height, root).getChild(i);
+                    // break so as not to look to the right side of the leaf when searching left
+                    if (left && child.getLeaves().contains((leaf))) {
+                        break;
                     }
-                    // add end index to list
-                    idxList.add(idx);
-                    // make sure that list only contains start and end index
-                    assert(idxList.size() == 2);
-                    // return list containing start index, end index
-                    return idxList;
+
+                    System.out.println(String.format("%s child: %s, ancestor: %s" +
+                            "",left ? "left" : "right", child, leaf.ancestor(height, root)));
+
+                    // label of child should equal label; SBAR label is also frequent
+                    if (child.label().toString().equals(label) || child.label().toString().equals(label + "BAR")) {
+                        // index the leaves to retrieve indices
+                        root.indexLeaves();
+
+                        List<Integer> idxList = new ArrayList<Integer>();
+                        int idx = 0;
+                        boolean start = true;
+
+                        List<Integer> PPNodeList = new ArrayList<Integer>();
+
+                        preorderTraverse(child, root, PPNodeList);
+
+                        for (int PPNodeIdx : PPNodeList) {
+                            System.out.println(root.getNodeNumber(PPNodeIdx).toString());
+                        }
+
+                        for (Tree node : child.getLeaves()) {
+
+
+                            if (!start) {
+                                idx++;
+                            }
+                            else {
+                                start = false;
+                                CoreLabel coreLabel = (CoreLabel) node.label();
+                                // set index to start index; label index starts at 1
+                                idx = coreLabel.get(CoreAnnotations.IndexAnnotation.class) - 1;
+                                // add start index to list
+                                idxList.add(idx);
+                            }
+                        }
+                        // add end index to list
+                        idxList.add(idx);
+                        // make sure that list only contains start and end index
+                        assert(idxList.size() == 2);
+                        // return list containing start index, end index
+                        return idxList;
+                    }
                 }
+
             } catch (ArrayIndexOutOfBoundsException exception) {
                 log.info(String.format("Node %s has no child.", leaf.ancestor(height, root)));
             }
         return null;
     }
+
+    // public static Tree removePPs(int startIdx, int endIdx)
+    // depth-first search
+
+    public static void preorderTraverse(Tree node, Tree root, List<Integer> PPNodeList) {
+        if (!node.isPreTerminal()) {
+            for (Tree child : node.getChildrenAsList()) {
+                if (child.label().value().equals("PP")) {
+                    System.out.println(child.nodeNumber(root) + ": " + child.toString());
+                    PPNodeList.add(child.nodeNumber(root));
+                }
+                preorderTraverse(child, root, PPNodeList);
+            }
+        }
+    }
+
 
     /**
      * Returns a string containing the word forms/lemmas of the leaves that are in the given span of the given node.
