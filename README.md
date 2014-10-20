@@ -15,4 +15,3 @@ In anno_gigaword the following command can be used to display the part-of-speech
 java -cp agiga/target/agiga-1.5-SNAPSHOT-jar-with-dependencies.jar:lib/* edu.jhu.agiga.AgigaPrinter pos afp_eng_199405.xml.gz
 ```
 
-Employ StreamingSentenceReader to read in files.
