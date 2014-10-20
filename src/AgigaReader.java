@@ -1,6 +1,4 @@
 import edu.jhu.agiga.*;
-import edu.stanford.nlp.ling.CoreAnnotations;
-import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.trees.*;
 import edu.stanford.nlp.util.ArrayMap;
 import edu.stanford.nlp.util.IntPair;
@@ -17,7 +15,7 @@ import java.util.regex.Pattern;
 
 /**
  * Created by sebastian on 29/09/14.
- * Adapted from Eva. TODO: include note/reference
+ * Adapted from Eva Mujdricza-Maydt (mujdricz@cl.uni-heidelberg.de).
  *
  * A class to read annotated gigaword documents and extract emotion-triggering expressions from them
  */
@@ -78,9 +76,6 @@ public class AgigaReader {
         // count number of successful matches (experiencer & cause have been found)
         int matches = 0;
 
-        // TODO: write collocations
-
-        // create writer to write to output file with statistics/collocations
         PrintWriter resultWriter = new PrintWriter("results.txt", "UTF-8");
         PrintWriter collWriter = new PrintWriter("collocations.txt", "UTF-8");
 
@@ -93,8 +88,7 @@ public class AgigaReader {
                 // only retrieve one emotion trigger per sentence; if pattern is found, continue
                 boolean patternFound = false;
 
-                // TODO: calculate average String size to prevent unnecessary reallocation
-                StringBuilder sb = new StringBuilder(16);
+                StringBuilder sb = new StringBuilder();
                 List<AgigaToken> tokens = sent.getTokens();
                 // create a lemma string with pos and indices
                 for (int j=0; j<tokens.size(); j++) {
@@ -114,41 +108,38 @@ public class AgigaReader {
                         if (patternFound) {
                             break;
                         }
-
                         Matcher m = pattern.matcher(sentence);
-
                         if (m.find()) {
                             // counts occurences
                             resultMap.get(pattern).put("occurences", resultMap.get(pattern).get("occurences") + 1);
-
-                            System.out.println(String.format("#%d: %s", agigaReader.getNumSents(), sentence));
+                            //System.out.println(String.format("#%d: %s", agigaReader.getNumSents(), sentence));
 
                             // index the leaves to retrieve indices
                             root.indexLeaves();
                             // set the spans to retrieve spans
                             root.setSpans();
 
-                            // get indices
                             // words look like this: ["fear/VBD/15", ...]
                             String[] patternWords = m.group(0).split(" ");
 
+                            // get leftmost and rightmost indices of pattern
                             int leftIdx = Integer.parseInt(patternWords[0].split("/")[2]);
                             int rightIdx = Integer.parseInt(patternWords[patternWords.length - 1].split("/")[2]);
                             System.out.println(String.format("Pattern found: %s, constituent: %s",
                                     m.group(0), map.get(emotion).get(pattern).get("isNP") ? "NP" : "S"));
 
-                            String pennString = root.pennString();
-                            System.out.println(pennString);
+                            // Penn string shows phrase structur tree
+                            // String pennString = root.pennString();
+                            // System.out.println(pennString);
 
                             List<Tree> leaves = root.getLeaves();
                             Tree leftNode = leaves.get(leftIdx);
                             Tree rightNode = leaves.get(rightIdx);
-
-                            System.out.println(String.format("left Node (%s): %s; right Node (%s): %s",
+                            /*
+                            System.out.println(String.format("Left node (%s): %s; right node (%s): %s",
                                     leftNode.ancestor(1, root).getSpan(), leftNode.toString(),
                                     rightNode.ancestor(1, root).getSpan(), rightNode.toString()));
-
-
+                            */
                             // pattern can have a passive form; if so, experiencer and cause are reversed
                             Boolean passiveExists = map.get(emotion).get(pattern).get("passiveExists");
                             // cause of emotion is either an NP or S
@@ -157,14 +148,14 @@ public class AgigaReader {
                             String experiencer, cause;
                             // if a passive form exists, experiencer is dependent, cause is subject
                             if (passiveExists) {
-                                experiencer = checkLabelOfAncestorChild(root, rightNode, isNP ? "NP" : "S", tokens,
+                                experiencer = findExperiencerOrCause(root, rightNode, isNP ? "NP" : "S", tokens,
                                         false, true, true);
-                                cause = checkLabelOfAncestorChild(root, leftNode, "NP", tokens, true, true, true);
+                                cause = findExperiencerOrCause(root, leftNode, "NP", tokens, true, true, true);
                             }
                             // if no passive form exists, experiencer is subject, cause is dependent
                             else {
-                                experiencer = checkLabelOfAncestorChild(root, leftNode, "NP", tokens, true, true, true);
-                                cause = checkLabelOfAncestorChild(root, rightNode, isNP ? "NP" : "S", tokens, false,
+                                experiencer = findExperiencerOrCause(root, leftNode, "NP", tokens, true, true, true);
+                                cause = findExperiencerOrCause(root, rightNode, isNP ? "NP" : "S", tokens, false,
                                         true, true);
                             }
 
@@ -188,31 +179,15 @@ public class AgigaReader {
                                         resultMap.get(pattern).get("occurences"), emotion, experiencer, cause));
                                 resultWriter.flush();
 
+                                // build clean string for collocations file
                                 StringBuilder cleanBuilder = new StringBuilder();
                                 for (int j=0; j<tokens.size(); j++) {
                                     cleanBuilder.append(tokens.get(j).getWord()); cleanBuilder.append(" ");
                                 }
                                 String cleanString = cleanBuilder.toString().trim();
-
                                 collWriter.println(String.format("%d\t%s", agigaReader.getNumSents(), cleanString));
-
                                 collWriter.flush();
                             }
-
-                            /*
-                            Map<String, String> outputMap;
-                            // at the moment, headIdx is used as only index; pretty sure this is always correct,
-                            // but should maybe be looked into
-                            if (isNP) {
-                                outputMap = extractVerbArguments(headIdx, sent, false);
-                            }
-                            else {
-                                outputMap = extractVerbArguments(headIdx, sent, true);
-                            }
-
-                            System.out.println(String.format("%s\t%s\t%s",
-                                    outputMap.get("subject"), emotion, outputMap.get("cause")));
-                            */
                             System.out.println();
                         }
                     }
@@ -229,17 +204,16 @@ public class AgigaReader {
      * @param root: root node of tree
      * @param leaf: leaf node whose sibling should be retrieved
      * @param label: label of wanted node
+     * @param tokens: a list of the tokens of the sentence
      * @param left: if node should be looked for on the left side of the sibling node
+     * @param asLemma: if the experiencer or cause should be returned as a lemma string
+     * @param withoutPP: if PPs and SBARs should be removed
      * @return a list containing the start index and the end index of the span of the wanted node
      */
-    public static String checkLabelOfAncestorChild(Tree root, Tree leaf, String label, List<AgigaToken> tokens,
+    public static String findExperiencerOrCause(Tree root, Tree leaf, String label, List<AgigaToken> tokens,
                                                           boolean left, boolean asLemma, boolean withoutPP) {
-
-        // TODO: keep another file just with the index and the sentence of which patterns were found
-
         Tree child;
-        // at height 1 from leaf node is preterminal, at height 2 is the first ancestor
-        // set maximum height to 4
+        // at height 1 from leaf node is preterminal, at height 2 is the first ancestor, set maximum height to 4
         for (int height = 2; height <= 4; height++)
             try {
                 // iterate over the children, start with the second child if looking on the right
@@ -254,15 +228,14 @@ public class AgigaReader {
                             "",left ? "left" : "right", child, leaf.ancestor(height, root)));
 
                     // label of child should equal label; SBAR label is also frequent
-                    if (child.label().toString().equals(label)
-                            || child.label().toString().equals(label + "BAR")
-                    )
-                    {
+                    if (child.label().toString().equals(label) || child.label().toString().equals(label + "BAR")) {
                         IntPair span = child.getSpan();
 
                         List<Integer> startIdxList = new ArrayList<Integer>();
                         List<Integer> endIdxList = new ArrayList<Integer>();
-                        preorderTraverse(child, root, startIdxList, endIdxList);
+                        if (withoutPP) {
+                            preorderTraverse(child, root, startIdxList, endIdxList);
+                        }
 
                         StringBuilder sb = new StringBuilder();
 
@@ -297,10 +270,14 @@ public class AgigaReader {
         return null;
     }
 
-    // public static Tree removePPs(int startIdx, int endIdx)
-    // depth-first search
-    // tree is only traversed further if not a PP or SBAR, PP or SBAR thus don't overlap
-
+    /**
+     * Performs preorder-traversal, i.e. depth-first search from a node. Extracts PPs and SBARs that are dominated
+     * by the node. Nodes dominated by PPs or SBARs are skipped, so that PPs and SBARs don't overlap.
+     * @param node
+     * @param root
+     * @param startIdxList
+     * @param endIdxList
+     */
     public static void preorderTraverse(Tree node, Tree root, List<Integer> startIdxList, List<Integer> endIdxList) {
         if (!node.isPreTerminal()) {
             for (Tree child : node.getChildrenAsList()) {
