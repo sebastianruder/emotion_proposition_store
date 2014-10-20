@@ -76,14 +76,14 @@ fear	shun/VBP	NP	false
 fear	worry/VBP	NP	true
 fear	fear/VBP	NP	false
 fear	fear/VBP that/IN	S	false
-fear	be/VBP afraid/JJ of/IN	NP	false
-fear	be/VBP afraid/JJ that/IN	S	false
-fear	be/VBP apprehensive/JJ about/IN	S	false
+fear	be/VBP RB afraid/JJ of/IN	NP	false
+fear	be/VBP RB afraid/JJ that/IN	S	false
+fear	be/VBP RB apprehensive/JJ about/IN	S	false
 fear	frighten/VBP	NP	true
-fear	be/VBP frightened/JJ that/IN	S	false
+fear	be/VBP RB frightened/JJ that/IN	S	false
 fear	scare/VBP	NP	true
-fear	be/VBP scared/JJ of/IN	NP	false
-fear	be/VBP scared/JJ that/IN	S	false
+fear	be/VBP RB scared/JJ of/IN	NP	false
+fear	be/VBP RB scared/JJ that/IN	S	false
 fear	spook/VBP	NP	true
 fear	terrify/VBP	NP	true
 fear	petrify/VBP	NP	true
@@ -109,9 +109,9 @@ joy	rejoice/VBP	that/IN	S	false
 joy	satisfy/VBP	NP	true
 joy	thrill/VBP	NP	true
 joy	wow/VBP	NP	true
-joy	be/VBP happy/JJ (?!to) that/IN	S	false
-joy	be/VBP glad/JJ (?!to) that/IN	S	false
-joy	be/VBP content/JJ (?!to) that/IN	S	false
+joy	be/VBP RB happy/JJ (?!to) (?!\d) that/IN	S	false
+joy	be/VBP RB glad/JJ (?!to) (?!\d) that/IN	S	false
+joy	be/VBP RB content/JJ (?!to) (?!\d) that/IN	S	false
 sadness	sadden/VBP	NP	true
 sadness	discourage/VBP	NP	true
 sadness	dishearten/VBP	NP	true
