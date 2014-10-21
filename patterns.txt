@@ -1,0 +1,313 @@
+anger	aggravate/VBP/[0-9]+	NP
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? aggravate/VBN/[0-9]+ that/IN/[0-9]+	S
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? aggravate/VBN/[0-9]+ by/IN/[0-9]+	NP
+anger	annoy/VBP/[0-9]+	NP
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? annoy/VBN/[0-9]+ that/IN/[0-9]+	S
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? annoy/VBN/[0-9]+ by/IN/[0-9]+	NP
+anger	antagonize/VBP/[0-9]+	NP
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? antagonize/VBN/[0-9]+ that/IN/[0-9]+	S
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? antagonize/VBN/[0-9]+ by/IN/[0-9]+	NP
+anger	arouse/VBP/[0-9]+	NP
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? arouse/VBN/[0-9]+ that/IN/[0-9]+	S
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? arouse/VBN/[0-9]+ by/IN/[0-9]+	NP
+anger	displease/VBP/[0-9]+	NP
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? displease/VBN/[0-9]+ that/IN/[0-9]+	S
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? displease/VBN/[0-9]+ by/IN/[0-9]+	NP
+anger	embitter/VBP/[0-9]+	NP
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? embitter/VBN/[0-9]+ that/IN/[0-9]+	S
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? embitter/VBN/[0-9]+ by/IN/[0-9]+	NP
+anger	enrage/VBP/[0-9]+	NP
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? enrage/VBN/[0-9]+ that/IN/[0-9]+	S
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? enrage/VBN/[0-9]+ by/IN/[0-9]+	NP
+anger	exacerbate/VBP/[0-9]+	NP
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? exacerbate/VBN/[0-9]+ that/IN/[0-9]+	S
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? exacerbate/VBN/[0-9]+ by/IN/[0-9]+	NP
+anger	exasperate/VBP/[0-9]+	NP
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? exasperate/VBN/[0-9]+ that/IN/[0-9]+	S
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? exasperate/VBN/[0-9]+ by/IN/[0-9]+	NP
+anger	excite/VBP/[0-9]+	NP
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? excite/VBN/[0-9]+ that/IN/[0-9]+	S
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? excite/VBN/[0-9]+ by/IN/[0-9]+	NP
+anger	incense/VBP/[0-9]+	NP
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? incense/VBN/[0-9]+ that/IN/[0-9]+	S
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? incense/VBN/[0-9]+ by/IN/[0-9]+	NP
+anger	inflame/VBP/[0-9]+	NP
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? inflame/VBN/[0-9]+ that/IN/[0-9]+	S
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? inflame/VBN/[0-9]+ by/IN/[0-9]+	NP
+anger	infuriate/VBP/[0-9]+	NP
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? infuriate/VBN/[0-9]+ that/IN/[0-9]+	S
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? infuriate/VBN/[0-9]+ by/IN/[0-9]+	NP
+anger	irritate/VBP/[0-9]+	S
+anger	offend/VBP/[0-9]+	NP
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? offend/VBN/[0-9]+ that/IN/[0-9]+	S
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? offend/VBN/[0-9]+ by/IN/[0-9]+	NP
+anger	outrage/VBP/[0-9]+	NP
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? outrage/VBN/[0-9]+ that/IN/[0-9]+	S
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? outrage/VBN/[0-9]+ by/IN/[0-9]+	NP
+anger	provoke/VBP/[0-9]+	NP
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? provoke/VBN/[0-9]+ that/IN/[0-9]+	S
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? provoke/VBN/[0-9]+ by/IN/[0-9]+	NP
+anger	rankle/VBP/[0-9]+	NP
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? rankle/VBN/[0-9]+ that/IN/[0-9]+	S
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? rankle/VBN/[0-9]+ by/IN/[0-9]+	NP
+anger	rile/VBP/[0-9]+	NP
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? rile/VBN/[0-9]+ that/IN/[0-9]+	S
+anger	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? rile/VBN/[0-9]+ by/IN/[0-9]+	NP
+anger	be/VBP/[0-9]+ angry/JJ/[0-9]+( that/IN/[0-9]+)?	S
+anger	be/VBP/[0-9]+ wrathful/JJ/[0-9]+( that/IN/[0-9]+)?	S
+anger	be/VBP/[0-9]+ irate/JJ/[0-9]+( that/IN/[0-9]+)?	S
+anticipation	expect/VBP/[0-9]+	NP
+anticipation	expect/VBP/[0-9]+( that/IN/[0-9]+)?	S
+anticipation	predict/VBP/[0-9]+	NP
+anticipation	predict/VBP/[0-9]+( that/IN/[0-9]+)?	S
+anticipation	assume/VBP/[0-9]+	NP
+anticipation	assume/VBP/[0-9]+( that/IN/[0-9]+)?	S
+anticipation	await/VBP/[0-9]+	NP
+anticipation	await/VBP/[0-9]+	S
+anticipation	count/VBP/[0-9]+ on/IN/[0-9]+	NP
+anticipation	count/VBP/[0-9]+ on/IN/[0-9]+	S
+anticipation	forecast/VBP/[0-9]+	NP
+anticipation	forecast/VBP/[0-9]+( that/IN/[0-9]+)?	S
+anticipation	foresee/VBP/[0-9]+	NP
+anticipation	foresee/VBP/[0-9]+( that/IN/[0-9]+)?	S
+anticipation	prepare/VBP/[0-9]+ for/IN/[0-9]+	NP
+anticipation	prepare/VBP/[0-9]+ for/IN/[0-9]+	S
+anticipation	anticipate/VBP/[0-9]+	NP
+anticipation	hope/[0-9]+ for/VBP/[0-9]+	S
+anticipation	look/[0-9]+ forward/[0-9]+ to/VBP/[0-9]+	NP
+anticipation	look/[0-9]+ forward/[0-9]+ to/VBP/[0-9]+	S
+disgust	be/VBP/[0-9]+ averse/JJ/[0-9]+ to/IN/[0-9]+	NP
+disgust	disgust/VBP/[0-9]+	NP
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? disgust/VBN/[0-9]+ that/IN/[0-9]+	S
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? disgust/VBN/[0-9]+ by/IN/[0-9]+	NP
+disgust	bother/VBP/[0-9]+	NP
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? bother/VBN/[0-9]+ that/IN/[0-9]+	S
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? bother/VBN/[0-9]+ by/IN/[0-9]+	NP
+disgust	disenchant/VBP/[0-9]+	NP
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? disenchant/VBN/[0-9]+ that/IN/[0-9]+	S
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? disenchant/VBN/[0-9]+ by/IN/[0-9]+	NP
+disgust	dislike/VBP/[0-9]+	NP
+disgust	displease/VBP/[0-9]+	NP
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? displease/VBN/[0-9]+ that/IN/[0-9]+	S
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? displease/VBN/[0-9]+ by/IN/[0-9]+	NP
+disgust	disturb/VBP/[0-9]+	NP
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? disturb/VBN/[0-9]+ that/IN/[0-9]+	S
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? disturb/VBN/[0-9]+ by/IN/[0-9]+	NP
+disgust	insult/VBP/[0-9]+	NP
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? insult/VBN/[0-9]+ that/IN/[0-9]+	S
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? insult/VBN/[0-9]+ by/IN/[0-9]+	NP
+disgust	irk/VBP/[0-9]+	NP
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? irk/VBN/[0-9]+ that/IN/[0-9]+	S
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? irk/VBN/[0-9]+ by/IN/[0-9]+	NP
+disgust	loathe/VBP/[0-9]+	NP
+disgust	nauseate/VBP/[0-9]+	NP
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? nauseate/VBN/[0-9]+ that/IN/[0-9]+	S
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? nauseate/VBN/[0-9]+ by/IN/[0-9]+	NP
+disgust	offend/VBP/[0-9]+	NP
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? offend/VBN/[0-9]+ that/IN/[0-9]+	S
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? offend/VBN/[0-9]+ by/IN/[0-9]+	NP
+disgust	outrage/VBP/[0-9]+	NP
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? outrage/VBN/[0-9]+ that/IN/[0-9]+	S
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? outrage/VBN/[0-9]+ by/IN/[0-9]+	NP
+disgust	put/[0-9]+ off/VBP/[0-9]+	NP
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? put/[0-9]+ that/IN/[0-9]+	S
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? put/[0-9]+ by/IN/[0-9]+	NP
+disgust	repulse/VBP/[0-9]+	NP
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? repulse/VBN/[0-9]+ that/IN/[0-9]+	S
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? repulse/VBN/[0-9]+ by/IN/[0-9]+	NP
+disgust	revolt/VBP/[0-9]+	NP
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? revolt/VBN/[0-9]+ that/IN/[0-9]+	S
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? revolt/VBN/[0-9]+ by/IN/[0-9]+	NP
+disgust	shock/VBP/[0-9]+	NP
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? shock/VBN/[0-9]+ that/IN/[0-9]+	S
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? shock/VBN/[0-9]+ by/IN/[0-9]+	NP
+disgust	sicken/VBP/[0-9]+	NP
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? sicken/VBN/[0-9]+ that/IN/[0-9]+	S
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? sicken/VBN/[0-9]+ by/IN/[0-9]+	NP
+disgust	turn/[0-9]+ off/VBP/[0-9]+	NP
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? turn/[0-9]+ that/IN/[0-9]+	S
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? turn/[0-9]+ by/IN/[0-9]+	NP
+disgust	upset/VBP/[0-9]+	NP
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? upset/VBN/[0-9]+ that/IN/[0-9]+	S
+disgust	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? upset/VBN/[0-9]+ by/IN/[0-9]+	NP
+disgust	hate/VBP/[0-9]+	NP
+disgust	hate/VBP/[0-9]+( that/IN/[0-9]+)?	S
+fear	alarm/VBP/[0-9]+	NP
+fear	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? alarm/VBN/[0-9]+ that/IN/[0-9]+	S
+fear	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? alarm/VBN/[0-9]+ by/IN/[0-9]+	NP
+fear	avoid/VBP/[0-9]+	NP
+fear	dread/VBP/[0-9]+	NP
+fear	shun/VBP/[0-9]+	NP
+fear	worry/VBP/[0-9]+	NP
+fear	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? worry/VBN/[0-9]+ that/IN/[0-9]+	S
+fear	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? worry/VBN/[0-9]+ by/IN/[0-9]+	NP
+fear	fear/VBP/[0-9]+	NP
+fear	fear/VBP/[0-9]+( that/IN/[0-9]+)?	S
+fear	be/VBP/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? afraid/JJ/[0-9]+ of/IN/[0-9]+	NP
+fear	be/VBP/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? afraid/JJ/[0-9]+( that/IN/[0-9]+)?	S
+fear	be/VBP/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? apprehensive/JJ/[0-9]+ about/IN/[0-9]+	S
+fear	frighten/VBP/[0-9]+	NP
+fear	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? frighten/VBN/[0-9]+ that/IN/[0-9]+	S
+fear	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? frighten/VBN/[0-9]+ by/IN/[0-9]+	NP
+fear	be/VBP/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? frightened/JJ/[0-9]+( that/IN/[0-9]+)?	S
+fear	scare/VBP/[0-9]+	NP
+fear	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? scare/VBN/[0-9]+ that/IN/[0-9]+	S
+fear	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? scare/VBN/[0-9]+ by/IN/[0-9]+	NP
+fear	be/VBP/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? scared/JJ/[0-9]+ of/IN/[0-9]+	NP
+fear	be/VBP/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? scared/JJ/[0-9]+( that/IN/[0-9]+)?	S
+fear	spook/VBP/[0-9]+	NP
+fear	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? spook/VBN/[0-9]+ that/IN/[0-9]+	S
+fear	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? spook/VBN/[0-9]+ by/IN/[0-9]+	NP
+fear	terrify/VBP/[0-9]+	NP
+fear	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? terrify/VBN/[0-9]+ that/IN/[0-9]+	S
+fear	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? terrify/VBN/[0-9]+ by/IN/[0-9]+	NP
+fear	petrify/VBP/[0-9]+	NP
+fear	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? petrify/VBN/[0-9]+ that/IN/[0-9]+	S
+fear	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? petrify/VBN/[0-9]+ by/IN/[0-9]+	NP
+fear	intimidate/VBP/[0-9]+	NP
+fear	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? intimidate/VBN/[0-9]+ that/IN/[0-9]+	S
+fear	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? intimidate/VBN/[0-9]+ by/IN/[0-9]+	NP
+fear	alarm/VBP/[0-9]+	NP
+fear	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? alarm/VBN/[0-9]+ that/IN/[0-9]+	S
+fear	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? alarm/VBN/[0-9]+ by/IN/[0-9]+	NP
+joy	revel/[0-9]+ in/VBP/[0-9]+	NP
+joy	delight/VBP/[0-9]+	NP
+joy	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? delight/VBN/[0-9]+ that/IN/[0-9]+	S
+joy	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? delight/VBN/[0-9]+ by/IN/[0-9]+	NP
+joy	amuse/VBP/[0-9]+	NP
+joy	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? amuse/VBN/[0-9]+ that/IN/[0-9]+	S
+joy	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? amuse/VBN/[0-9]+ by/IN/[0-9]+	NP
+joy	attract/VBP/[0-9]+	NP
+joy	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? attract/VBN/[0-9]+ that/IN/[0-9]+	S
+joy	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? attract/VBN/[0-9]+ by/IN/[0-9]+	NP
+joy	charm/VBP/[0-9]+	NP
+joy	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? charm/VBN/[0-9]+ that/IN/[0-9]+	S
+joy	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? charm/VBN/[0-9]+ by/IN/[0-9]+	NP
+joy	cheer/VBP/[0-9]+	NP
+joy	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? cheer/VBN/[0-9]+ that/IN/[0-9]+	S
+joy	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? cheer/VBN/[0-9]+ by/IN/[0-9]+	NP
+joy	delight/VBP/[0-9]+	NP
+joy	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? delight/VBN/[0-9]+ that/IN/[0-9]+	S
+joy	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? delight/VBN/[0-9]+ by/IN/[0-9]+	NP
+joy	enchant/VBP/[0-9]+	NP
+joy	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? enchant/VBN/[0-9]+ that/IN/[0-9]+	S
+joy	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? enchant/VBN/[0-9]+ by/IN/[0-9]+	NP
+joy	enrapture/VBP/[0-9]+	NP
+joy	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? enrapture/VBN/[0-9]+ that/IN/[0-9]+	S
+joy	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? enrapture/VBN/[0-9]+ by/IN/[0-9]+	NP
+joy	entertain/VBP/[0-9]+	NP
+joy	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? entertain/VBN/[0-9]+ that/IN/[0-9]+	S
+joy	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? entertain/VBN/[0-9]+ by/IN/[0-9]+	NP
+joy	enjoy/VBP/[0-9]+	NP
+joy	enjoy/VBP/[0-9]+	S
+joy	take/VBP/[0-9]+ pleasure/NPB/[0-9]+ in/IN/[0-9]+	S
+joy	fascinate/VBP/[0-9]+	NP
+joy	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? fascinate/VBN/[0-9]+ that/IN/[0-9]+	S
+joy	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? fascinate/VBN/[0-9]+ by/IN/[0-9]+	NP
+joy	gratify/VBP/[0-9]+	NP
+joy	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? gratify/VBN/[0-9]+ that/IN/[0-9]+	S
+joy	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? gratify/VBN/[0-9]+ by/IN/[0-9]+	NP
+joy	please/VBP/[0-9]+	NP
+joy	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? please/VBN/[0-9]+ that/IN/[0-9]+	S
+joy	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? please/VBN/[0-9]+ by/IN/[0-9]+	NP
+joy	rejoice/VBP/[0-9]+	S
+joy	satisfy/VBP/[0-9]+	NP
+joy	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? satisfy/VBN/[0-9]+ that/IN/[0-9]+	S
+joy	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? satisfy/VBN/[0-9]+ by/IN/[0-9]+	NP
+joy	thrill/VBP/[0-9]+	NP
+joy	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? thrill/VBN/[0-9]+ that/IN/[0-9]+	S
+joy	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? thrill/VBN/[0-9]+ by/IN/[0-9]+	NP
+joy	wow/VBP/[0-9]+	NP
+joy	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? wow/VBN/[0-9]+ that/IN/[0-9]+	S
+joy	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? wow/VBN/[0-9]+ by/IN/[0-9]+	NP
+joy	be/VBP/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? happy/JJ/[0-9]+(?!to)(?!\d)( that/IN/[0-9]+)?	S
+joy	be/VBP/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? glad/JJ/[0-9]+(?!to)(?!\d)( that/IN/[0-9]+)?	S
+joy	be/VBP/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? content/JJ/[0-9]+(?!to)(?!\d)( that/IN/[0-9]+)?	S
+sadness	sadden/VBP/[0-9]+	NP
+sadness	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? sadden/VBN/[0-9]+ that/IN/[0-9]+	S
+sadness	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? sadden/VBN/[0-9]+ by/IN/[0-9]+	NP
+sadness	discourage/VBP/[0-9]+	NP
+sadness	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? discourage/VBN/[0-9]+ that/IN/[0-9]+	S
+sadness	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? discourage/VBN/[0-9]+ by/IN/[0-9]+	NP
+sadness	dishearten/VBP/[0-9]+	NP
+sadness	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? dishearten/VBN/[0-9]+ that/IN/[0-9]+	S
+sadness	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? dishearten/VBN/[0-9]+ by/IN/[0-9]+	NP
+sadness	dispirit/VBP/[0-9]+	NP
+sadness	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? dispirit/VBN/[0-9]+ that/IN/[0-9]+	S
+sadness	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? dispirit/VBN/[0-9]+ by/IN/[0-9]+	NP
+sadness	grieve/VBP/[0-9]+( that/IN/[0-9]+)?	S
+sadness	be/VBP/[0-9]+ sad/JJ/[0-9]+( that/VBP/[0-9]+)?	S
+sadness	be/VBP/[0-9]+ melancholic/JJ/[0-9]+( that/IN/[0-9]+)?	S
+sadness	feel/VBP/[0-9]+ sorrow/NN/[0-9]+( that/IN/[0-9]+)?	S
+sadness	mourn/VBP/[0-9]+	S
+surprise	astonish/VBP/[0-9]+	NP
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? astonish/VBN/[0-9]+ that/IN/[0-9]+	S
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? astonish/VBN/[0-9]+ by/IN/[0-9]+	NP
+surprise	amaze/VBP/[0-9]+	NP
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? amaze/VBN/[0-9]+ that/IN/[0-9]+	S
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? amaze/VBN/[0-9]+ by/IN/[0-9]+	NP
+surprise	astound/VBP/[0-9]+	NP
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? astound/VBN/[0-9]+ that/IN/[0-9]+	S
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? astound/VBN/[0-9]+ by/IN/[0-9]+	NP
+surprise	awe/VBP/[0-9]+	NP
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? awe/VBN/[0-9]+ that/IN/[0-9]+	S
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? awe/VBN/[0-9]+ by/IN/[0-9]+	NP
+surprise	bewilder/VBP/[0-9]+	NP
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? bewilder/VBN/[0-9]+ that/IN/[0-9]+	S
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? bewilder/VBN/[0-9]+ by/IN/[0-9]+	NP
+surprise	confound/VBP/[0-9]+	NP
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? confound/VBN/[0-9]+ that/IN/[0-9]+	S
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? confound/VBN/[0-9]+ by/IN/[0-9]+	NP
+surprise	confuse/VBP/[0-9]+	NP
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? confuse/VBN/[0-9]+ that/IN/[0-9]+	S
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? confuse/VBN/[0-9]+ by/IN/[0-9]+	NP
+surprise	dazzle/VBP/[0-9]+	NP
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? dazzle/VBN/[0-9]+ that/IN/[0-9]+	S
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? dazzle/VBN/[0-9]+ by/IN/[0-9]+	NP
+surprise	disconcert/VBP/[0-9]+	NP
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? disconcert/VBN/[0-9]+ that/IN/[0-9]+	S
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? disconcert/VBN/[0-9]+ by/IN/[0-9]+	NP
+surprise	dismay/VBP/[0-9]+	NP
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? dismay/VBN/[0-9]+ that/IN/[0-9]+	S
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? dismay/VBN/[0-9]+ by/IN/[0-9]+	NP
+surprise	dumbfound/VBP/[0-9]+	NP
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? dumbfound/VBN/[0-9]+ that/IN/[0-9]+	S
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? dumbfound/VBN/[0-9]+ by/IN/[0-9]+	NP
+surprise	flabbergast/VBP/[0-9]+	NP
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? flabbergast/VBN/[0-9]+ that/IN/[0-9]+	S
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? flabbergast/VBN/[0-9]+ by/IN/[0-9]+	NP
+surprise	overwhelm/VBP/[0-9]+	NP
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? overwhelm/VBN/[0-9]+ that/IN/[0-9]+	S
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? overwhelm/VBN/[0-9]+ by/IN/[0-9]+	NP
+surprise	perplex/VBP/[0-9]+	NP
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? perplex/VBN/[0-9]+ that/IN/[0-9]+	S
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? perplex/VBN/[0-9]+ by/IN/[0-9]+	NP
+surprise	rattle/VBP/[0-9]+	NP
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? rattle/VBN/[0-9]+ that/IN/[0-9]+	S
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? rattle/VBN/[0-9]+ by/IN/[0-9]+	NP
+surprise	shock/VBP/[0-9]+	NP
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? shock/VBN/[0-9]+ that/IN/[0-9]+	S
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? shock/VBN/[0-9]+ by/IN/[0-9]+	NP
+surprise	surprise/VBP/[0-9]+	NP
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? surprise/VBN/[0-9]+ that/IN/[0-9]+	S
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? surprise/VBN/[0-9]+ by/IN/[0-9]+	NP
+surprise	startle/VBP/[0-9]+	NP
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? startle/VBN/[0-9]+ that/IN/[0-9]+	S
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? startle/VBN/[0-9]+ by/IN/[0-9]+	NP
+surprise	stun/VBP/[0-9]+	NP
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? stun/VBN/[0-9]+ that/IN/[0-9]+	S
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? stun/VBN/[0-9]+ by/IN/[0-9]+	NP
+surprise	unsettle/VBP/[0-9]+	NP
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? unsettle/VBN/[0-9]+ that/IN/[0-9]+	S
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? unsettle/VBN/[0-9]+ by/IN/[0-9]+	NP
+surprise	stupify/VBP/[0-9]+	NP
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? stupify/VBN/[0-9]+ that/IN/[0-9]+	S
+surprise	be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? stupify/VBN/[0-9]+ by/IN/[0-9]+	NP
+trust	count/VBP/[0-9]+ on/IN/[0-9]+	NP
+trust	depend/VBP/[0-9]+ on/IN/[0-9]+	NP
+trust	look/VBP/[0-9]+ to/IN/[0-9]+	NP
+trust	trust/VBP/[0-9]+	NP
+trust	trust/VBP/[0-9]+ in/IN/[0-9]+	NP
+trust	trust/VBP/[0-9]+( that/IN/[0-9]+)?	S
+trust	rely/VBP/[0-9]+ on/IN/[0-9]+	NP
+trust	place/VBP/[0-9]+ reliance/NN/[0-9]+ on/IN/[0-9]+	NP

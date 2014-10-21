@@ -4,6 +4,7 @@ import edu.stanford.nlp.util.ArrayMap;
 import edu.stanford.nlp.util.IntPair;
 
 import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -31,8 +32,13 @@ public class AgigaReader {
     public static void main(String[] args) throws IOException {
         // note: file name must end with /
         String agigaPath = "/home/sebastian/git/sentiment_analysis/anno_gigaword/";
-        String[] fileNames = new File(agigaPath).list();
-        // works if in the directory there are only agiga gz-compressed files (otherwise, take a FilenameFilter)
+        // filters .gz files
+        String[] fileNames = new File(agigaPath).list(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.endsWith(".gz");
+            }
+        });
 
         // Preferences of what should be read
         AgigaPrefs readingPrefs = new AgigaPrefs(); // all extraction is set to true per default
@@ -262,6 +268,8 @@ public class AgigaReader {
                 }
             } catch (ArrayIndexOutOfBoundsException exception) {
                 log.info(String.format("Node %s has no child.", leaf.ancestor(height, root)));
+            } catch (NullPointerException exception) {
+                log.info(String.format("Ancestor is null."));
             }
         return null;
     }
