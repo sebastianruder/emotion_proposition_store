@@ -89,6 +89,12 @@ public class EmotionPatternExtractor {
                     patternBuilder.append("(?! not)(?! never)( [a-z]+/RB/[0-9]+)?");
                     continue;
                 }
+                /* Stanford verb tags: VBD = past tense; VBG = present participle/gerund; VBN = past participle;
+                 VBP = present tense, no 3rd person singular; VBZ = present tense, 3rd person singular
+                 All tags (except past participle) are possible. */
+                else if (word.endsWith("Verb")) {
+                    word = word.replace("Verb", "VB[DGPZ]");
+                }
                 patternBuilder.append(" ");
                 patternBuilder.append(word);
                 patternBuilder.append("/[0-9]+");
@@ -111,7 +117,7 @@ public class EmotionPatternExtractor {
             // creates passive pattern if a passive form exists
             if (passiveExists) {
                 // create pattern with 'that' and 'by'
-                String passiveLemmaForm = patternWords[0].replace("/VBP", "/VBN");
+                String passiveLemmaForm = patternWords[0].replace("Verb", "VBN");
                 createPassive("that", passiveLemmaForm, emotionWord, writer, emotionMap);
                 createPassive("by", passiveLemmaForm, emotionWord, writer, emotionMap);
             }
@@ -130,6 +136,8 @@ public class EmotionPatternExtractor {
         return emotionMap;
     }
 
+    // TODO: 'fear for'
+
     /**
      * Creates the passive form if a passive form exists. Can be created with different prepositions, though 'by'
      * takes an NP as cause, while 'that' takes an S.
@@ -141,7 +149,7 @@ public class EmotionPatternExtractor {
      */
     public static void createPassive(String prep, String passiveLemmaForm, String emotionWord, PrintWriter writer,
                                       Map<String, Map<Pattern, Map<String, Boolean>>> emotionMap) {
-        String pattern = String.format("be/VBP/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? %s/[0-9]+ %s/IN/[0-9]+",
+        String pattern = String.format("be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? %s/[0-9]+ %s/IN/[0-9]+",
                 passiveLemmaForm, prep);
         Pattern emotionPattern = Pattern.compile(pattern);
         Map<String, Boolean> booleanMap = new ArrayMap<String, Boolean>();
