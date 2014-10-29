@@ -7,9 +7,7 @@ import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -63,6 +61,7 @@ public class AgigaReader {
                 Map<String, Integer> integerMap = new ArrayMap<String, Integer>();
                 integerMap.put("occurences", 0);
                 integerMap.put("matches", 0);
+                integerMap.put("isNP", map.get(emotion).get(pattern).get("isNP") ? 1 : 0);
                 resultMap.put(pattern, integerMap);
             }
         }
@@ -81,6 +80,30 @@ public class AgigaReader {
 
                 // Iterate over the sentences
                 for (AgigaSentence sent : sentences) {
+                    if (count >= 2000000) {
+                        PrintWriter statWriter = new PrintWriter("stats.txt", "UTF-8");
+                        Map<Pattern, Integer> statMap = new HashMap<Pattern, Integer>();
+                        for (Pattern pattern : resultMap.keySet()) {
+                            statMap.put(pattern, resultMap.get(pattern).get("matches"));
+                        }
+                        statMap = MapUtil.sortByValue(statMap);
+
+                        for (Pattern pattern : statMap.keySet()) {
+                            if (pattern != null) {
+                                statWriter.println(String.format("%s\t%s\t%d\t%d", pattern,
+                                        resultMap.get(pattern).get("isNP") == 1 ? "NP" : "S",
+                                        resultMap.get(pattern).get("matches"),
+                                        resultMap.get(pattern).get("occurences")));
+
+                            }
+                        }
+
+                        statWriter.close();
+                        resultWriter.close();
+                        collWriter.close();
+                        System.exit(0);
+                    }
+
                     count++;
                     // only retrieve one emotion trigger per sentence; if pattern is found, continue
                     boolean patternFound = false;
@@ -273,6 +296,8 @@ public class AgigaReader {
             }
         return null;
     }
+
+    // TODO: cut off subordinate sentences based on length
 
     /**
      * Performs preorder-traversal, i.e. depth-first search from a node. Extracts PPs and SBARs that are dominated
