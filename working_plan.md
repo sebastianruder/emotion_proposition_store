@@ -52,7 +52,10 @@ Programming language: Java (IntelliJ IDE)
    2. Evaluation re. pos/neg emotion (with mapping of classes to pos/neg) for overlapping expressions
    3. Evaluation of our acquision approach with regard to existing lexicons; answering the question: How many of the existing lexicon's expressions can we obtain on a given corpus size? This requires choosing a representative nb of test expressions to compare.
 
-7. Evaluate against event-aligned GW corpus by Michael Roth to identify events with diverging sentiments. Here one needs to identify overlapping emotion words/expressions from the set of acquired propositions and the aligned events. Cannot be easily estimated at early stages.
+7. Evaluate against event-aligned GW corpus by Michael Roth to identify events with diverging sentiments.
+Here one needs to identify overlapping emotion words/expressions from the set of acquired propositions and the aligned
+events. Cannot be easily estimated at early stages. Possibly overly complex. Other option: Classification experiments; 
+binary (pos/neg), all 8 classes. Requires test data set. Possible with Amazon Mechanical Turk.
 
 1. (optional:) Derive new emotion-triggering patterns from homogeneous expressions using bootstrapping.
 1. (optional:) Apply approach to other domains
