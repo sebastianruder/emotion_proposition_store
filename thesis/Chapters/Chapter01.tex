@@ -154,6 +154,16 @@ EmoLex (crowd-sourced word-emotion association lexicon)
 SentiWordNet
 Helpful, doesn't yield any additional insights, though
 
+
+\subsection{Adjectives}
+
+- Adjectives are more indicate of emotion than nouns or verbs (see also what Anette said)
+
+- In WordNet, nouns and verbs are clustered in synsets and supersenses. No taxonomic hierarchy for adjectives. \cite{adjective_supersenses} induce supersenses for adjectives taking GermaNet's guidelines\footnote{http://www.sfs.uni-tuebingen.de/lsd/adjectives.shtml} as inspiration.
+
+- They build a weakly supervised classifier that labels adjective types (irrespective of context), which they train on a small set of seed examples, some of them translations of GermaNet. We take the translations that pertain to FEELING and manually label them with Plutchik's 8 emotion classes. Furthermore, they released 7511 WordNet adjectives tagged by their classifier with a an adjective type vector. From these we derive the XXX adjectives that are labeled with the adjective type FEELING; we take the label as indicative of the emotion, as the classifier has a high accuracy (k-4 accuracy of 91\%).
+
+
 \section{Compilation}
 
 From the previously mentioned sources, we derive now the patterns. We end up with the following initial patterns:
@@ -369,13 +379,26 @@ part-of-speech labeling is important, as e.g. trust or fear can function both as
 
 - both corpus as well as indicating expressions matter (see above)
 
+\subsection{Domain}
+
+According to Eva Sourjikova:
+Semantic content of a text / Subject
+Domain is determined by the semantic subject of the text mesage. It can be classified under one
+or more general topic and into a set of specific sub-topics or also a combination of more topics.
+Some words (terms) are more likely to appear for a given domain, so called domain terms. As
+a conceptual ontology, we can imagine a hierarchy of domain specific texts. Some possible tasks:
+text classification, topic detection, controlled vocabulary. terms exhibit a degree of domain independence. Some terms are more likely to appear for a given topics, while other terms are far more
+generic and will appear in almost every topic regardless of how similar the topics are
+
 \section{Remaining questions}
 
 Look at indicating expressions themselves.
 Many of categories more related to adjectival or predicative expressions and less clearly related to verb constructions
 --> useful to include constructions that involve adjectives, e.g. be glad that; be afraid that; ..
 
-!!paper \citep{tsvetkov2014augmenting} induce supersenses for adjectives. One class is emotion. These should be very useful trigger words. And it would be interesting if one can classify them into these 8 emotion classes. 
+!!paper \citep{adjective_supersenses} induce supersenses for adjectives. One class is emotion. These should be very useful trigger words. And it would be interesting if one can classify them into these 8 emotion classes. 
+
+
 
 \section{Next steps}
 
@@ -386,6 +409,7 @@ adjectives: in most cases still able to identify bearer of emotion (ask for advi
 nouns: nominalized verbs from NomBank; possibly more matches in standard text genres, more difficult to identify the bearer of the emotion; often implicit
 adjectives are most promising
 
+Anette:
 When I looked at the sentence examples, and also the cut-down predicates of the embedded sentences, I was wondering whether extracting verb argument structures from the acquired propositions is the right way to go. Maybe it will be possible with a better filtering technique (getting more data - and there should be enough - but cleaning it by better filters). But we could, in a first step, also use the bare embedded material and apply topic modeling to them. This would mean we induce topics for embedded contexts that are pre-labelled with the embedding emotion indicating predicates. This way, we should be able to induce topics that reflect these emotions, and more filtering could be applied then, to sharpen these contexts or topics in better ways. This is related to the work I did with Matthias Hartung \cite{hartung2011exploring}. It's a kind of distant supervision for inducing semantically constrained LDA topics.
 
 But also using some association statistics for detecting collocations could be a first step to see what we can get out of these contexts.
