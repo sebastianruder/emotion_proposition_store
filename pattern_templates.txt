@@ -1,4 +1,6 @@
 # Emotion	emotion word	cause	passiveExists?
+# Words are in lemma form, e.g. no participles
+# Where passiveExists? == true, pattern is converted in passive
 anger	aggravate/Verb	NP	true
 anger	annoy/Verb	NP	true
 anger	antagonize/Verb	NP	true
@@ -37,12 +39,10 @@ anticipation	foresee/Verb	NP	false
 anticipation	foresee/Verb that/IN	S	false
 anticipation	prepare/Verb for/IN	NP	false
 anticipation	prepare/Verb for/IN	S	false
-# anticipation	see/Verb	NP	false
-# anticipation	see/Verb that/IN	S	false
 anticipation	anticipate/Verb	NP	false
-anticipation	hope for/Verb	NP/S	false
-anticipation	look forward to/Verb	NP	false
-anticipation	look forward to/Verb	S	false
+anticipation	hope/Verb for/IN	NP/S	false
+anticipation    hope/Verb that/IN   S   false
+anticipation	look/Verb forward/RB to/IN	NP/S	false
 disgust	be/Verb averse/JJ to/IN	NP	false
 disgust	disgust/Verb	NP	true
 disgust	bother/Verb	NP	true
@@ -66,14 +66,12 @@ disgust	upset/Verb	NP	true
 disgust	hate/Verb	NP	false
 disgust	hate/Verb that/IN	S	false
 fear	alarm/Verb	NP	true
-# fear	anticipate/Verb	NP	false
 fear	avoid/Verb	NP	false
 fear	dread/Verb	NP	false
-# fear	expect/Verb	NP	false
-# fear	foresee/Verb	NP	false
 fear	shun/Verb	NP	false
-# fear	suspect/Verb	NP	false
 fear	worry/Verb	NP	true
+fear    worry/Verb about/IN NP  false
+fear    be/Verb RB worry/VBN about/IN   NP/S    false
 fear	fear/Verb	NP	false
 fear	fear/Verb that/IN	S	false
 fear	be/Verb RB afraid/JJ of/IN	NP	false
@@ -110,6 +108,7 @@ joy	satisfy/Verb	NP	true
 joy	thrill/Verb	NP	true
 joy	wow/Verb	NP	true
 joy	be/Verb RB happy/JJ (?! to) (?!\d) that/IN	S	false
+joy be/Verb RB happy/JJ about/IN    NP/S    false
 joy	be/Verb RB glad/JJ (?! to) (?!\d) that/IN	S	false
 joy	be/Verb RB content/JJ (?! to) (?!\d) that/IN	S	false
 sadness	sadden/Verb	NP	true
@@ -148,10 +147,76 @@ surprise	stun/Verb	NP	true
 surprise	unsettle/Verb	NP	true
 surprise	stupefy/Verb	NP	true
 trust	count/Verb on/IN	NP	false
-# trust	depend/Verb on/IN	NP	false
 trust	look/Verb to/IN	NP	false
 trust	trust/Verb	NP	false
 trust	trust/Verb in/IN	NP	false
 trust	trust/Verb that/IN	S	false
 trust	rely/Verb on/IN	NP	false
 trust	place/Verb reliance/NN on/IN	NP	false
+# adjectives taken from Tsvetkov et al.
+sadness	afflict/Verb    NP  true
+disgust	annoy/Verb  NP  true
+fear	be/Verb RB anxious/JJ about/IN  NP false
+fear    be/Verb RB anxious/JJ that/IN  S   false
+anticipation    be/Verb RB anxious/JJ for/IN   NP  false
+disgust	appall/Verb NP  true
+anticipation	be/Verb RB apprehensive/JJ about/IN    NP  false
+anticipation    be/Verb RB apprehensive/JJ that/IN    S  false
+disgust	be/Verb RB ashamed/JJ of/IN    NP/S  false
+disgust	feel/Verb RB bitter/JJ about/IN    NP  false
+disgust be/Verb RB gutted/JJ about/IN  NP  false
+trust	take/Verb comfort/NN in/IN  NP/S  false
+joy take/Verb pleasure/NN in/IN NP/S  false
+anticipation	concern/Verb    NP  false
+anticipation    be/Verb RB concerned/VBN about/IN  NP/S  false
+anticipation    be/Verb RB confident/JJ of/IN  NP/S  false
+anticipation	be/Verb RB curious/JJ about/IN NP/S  false
+sadness	depress/Verb    NP  true
+anticipation	be/Verb RB desperate/JJ to/IN  S   false
+sadness	disappoint/Verb NP  true
+sadness be/Verb RB disappoint/VBN that/IN    NP  false
+sadness	discourage/Verb NP  true
+disgust	disgust/Verb    NP  true
+sadness	dissatisfy/Verb NP  true
+sadness	disillusion/Verb   NP  true
+fear	distress/Verb   NP  true
+anticipation	be/Verb RB eager/JJ for/IN NP  false
+anticipation    be/Verb RB eager/JJ to/IN  S   false
+joy	be/Verb RB ecstatic/JJ that/IN S   false
+joy	be/Verb RB elated/JJ that/IN S false
+fear	embarrass/Verb  NP  false
+fear    be/Verb RB embarrass/VBN about/IN    NP  false
+fear    be/Verb RB embarrass/VBN for/IN    NP  false
+trust	encourage/Verb  NP  true
+joy	be/Verb RB enthusiastic/JJ about/IN    NP  false
+disgust	envy/Verb   NP  false
+disgust be/Verb RB envious/JJ of/IN    NP  false
+joy	be/Verb RB excite/VBN about/IN    NP  false
+joy	fascinate/Verb  NP  true
+joy be/Verb RB fascinate/VBN with/IN  NP  true
+sadness	frustrate/Verb  NP  true
+sadness be/Verb RB frustrate/VBN with/IN  NP  false
+anger	be/Verb RB furious/JJ about/IN NP/S  false
+anticipation	be/Verb RB hesitant/JJ to/IN   S   false
+anticipation	be/Verb RB hopeful/JJ that/IN  S   false
+fear    horrify/Verb    NP  true
+sadness	humiliated/Verb NP  true
+sadness	hurt/Verb   NP  true
+anger	incense/Verb    NP  true
+anger	be/Verb RB indignant/JJ over/IN    NP  true
+anticipation	be/Verb RB intent/JJ on/IN S   false
+anticipation	intrigue/Verb   NP  true
+joy	be/Verb RB joyful/JJ about/IN  NP/S    false
+anticipation	be/Verb RB keen/JJ on/IN   NP/S    false
+anticipation	be/Verb RB keen/JJ to/IN   S    false
+anticipation	long/Verb RB for/IN    NP  false
+anticipation    long/Verb RB to/IN S   false
+joy	be/Verb RB lucky/JJ that/IN    S   false
+anger	be/Verb RB mad/JJ about/IN NP/S    false
+fear	menace/Verb NP  true
+sadness	be/Verb RB miserable/JJ that/IN    S   false
+anticipation	be/Verb RB optimistic/JJ that/IN   S   false
+joy	be/Verb RB overjoyed/JJ that/IN    S   false
+joy	be/Verb RB proud/JJ of/IN  NP/S    false
+sadness	be/Verb RB unhappy/JJ about/IN  NP/S    false
+sadness	be/Verb RB unhappy/JJ that/IN  NP/S    false
