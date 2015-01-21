@@ -73,9 +73,11 @@ anticipation	foresee/VB[DGPZ]/[0-9]+( that/IN/[0-9]+)?	S
 anticipation	prepare/VB[DGPZ]/[0-9]+ for/IN/[0-9]+	NP
 anticipation	prepare/VB[DGPZ]/[0-9]+ for/IN/[0-9]+	S
 anticipation	anticipate/VB[DGPZ]/[0-9]+	NP
-anticipation	hope/[0-9]+ for/VB[DGPZ]/[0-9]+	S
-anticipation	look/[0-9]+ forward/[0-9]+ to/VB[DGPZ]/[0-9]+	NP
-anticipation	look/[0-9]+ forward/[0-9]+ to/VB[DGPZ]/[0-9]+	S
+anticipation	hope/VB[DGPZ]/[0-9]+ for/IN/[0-9]+	NP
+anticipation	hope/VB[DGPZ]/[0-9]+ for/IN/[0-9]+	S
+anticipation	hope/VB[DGPZ]/[0-9]+ for/IN/[0-9]+	S
+anticipation	look/VB[DGPZ]/[0-9]+ forward/RB/[0-9]+ to/IN/[0-9]+	NP
+anticipation	look/VB[DGPZ]/[0-9]+ forward/RB/[0-9]+ to/IN/[0-9]+	S
 disgust	be/VB[DGPZ]/[0-9]+ averse/JJ/[0-9]+ to/IN/[0-9]+	NP
 disgust	disgust/VB[DGPZ]/[0-9]+	NP
 disgust	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? disgust/VBN/[0-9]+ that/IN/[0-9]+	S
@@ -141,6 +143,9 @@ fear	shun/VB[DGPZ]/[0-9]+	NP
 fear	worry/VB[DGPZ]/[0-9]+	NP
 fear	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? worry/VBN/[0-9]+ that/IN/[0-9]+	S
 fear	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? worry/VBN/[0-9]+ by/IN/[0-9]+	NP
+fear	worry/VB[DGPZ]/[0-9]+ about/IN/[0-9]+	NP
+fear	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? worry/VBN/[0-9]+ about/IN/[0-9]+	NP
+fear	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? worry/VBN/[0-9]+ about/IN/[0-9]+	S
 fear	fear/VB[DGPZ]/[0-9]+	NP
 fear	fear/VB[DGPZ]/[0-9]+( that/IN/[0-9]+)?	S
 fear	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? afraid/JJ/[0-9]+ of/IN/[0-9]+	NP
@@ -221,6 +226,8 @@ joy	wow/VB[DGPZ]/[0-9]+	NP
 joy	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? wow/VBN/[0-9]+ that/IN/[0-9]+	S
 joy	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? wow/VBN/[0-9]+ by/IN/[0-9]+	NP
 joy	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? happy/JJ/[0-9]+(?! to)/[0-9]+(?!\d)( that/IN/[0-9]+)?	S
+joy	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? happy/JJ/[0-9]+ about/IN/[0-9]+	NP
+joy	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? happy/JJ/[0-9]+ about/IN/[0-9]+	S
 joy	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? glad/JJ/[0-9]+(?! to)/[0-9]+(?!\d)( that/IN/[0-9]+)?	S
 joy	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? content/JJ/[0-9]+(?! to)/[0-9]+(?!\d)( that/IN/[0-9]+)?	S
 sadness	sadden/VB[DGPZ]/[0-9]+	NP
@@ -315,3 +322,121 @@ trust	trust/VB[DGPZ]/[0-9]+ in/IN/[0-9]+	NP
 trust	trust/VB[DGPZ]/[0-9]+( that/IN/[0-9]+)?	S
 trust	rely/VB[DGPZ]/[0-9]+ on/IN/[0-9]+	NP
 trust	place/VB[DGPZ]/[0-9]+ reliance/NN/[0-9]+ on/IN/[0-9]+	NP
+sadness	afflict/VB[DGPZ]/[0-9]+	NP
+sadness	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? afflict/VBN/[0-9]+ that/IN/[0-9]+	S
+sadness	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? afflict/VBN/[0-9]+ by/IN/[0-9]+	NP
+disgust	annoy/VB[DGPZ]/[0-9]+	NP
+disgust	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? annoy/VBN/[0-9]+ that/IN/[0-9]+	S
+disgust	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? annoy/VBN/[0-9]+ by/IN/[0-9]+	NP
+fear	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? anxious/JJ/[0-9]+ about/IN/[0-9]+	NP
+fear	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? anxious/JJ/[0-9]+( that/IN/[0-9]+)?	S
+anticipation	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? anxious/JJ/[0-9]+ for/IN/[0-9]+	NP
+disgust	appall/VB[DGPZ]/[0-9]+	NP
+disgust	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? appall/VBN/[0-9]+ that/IN/[0-9]+	S
+disgust	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? appall/VBN/[0-9]+ by/IN/[0-9]+	NP
+anticipation	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? apprehensive/JJ/[0-9]+ about/IN/[0-9]+	NP
+anticipation	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? apprehensive/JJ/[0-9]+( that/IN/[0-9]+)?	S
+disgust	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? ashamed/JJ/[0-9]+ of/IN/[0-9]+	NP
+disgust	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? ashamed/JJ/[0-9]+ of/IN/[0-9]+	S
+disgust	feel/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? bitter/JJ/[0-9]+ about/IN/[0-9]+	NP
+disgust	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? gutted/JJ/[0-9]+ about/IN/[0-9]+	NP
+trust	take/VB[DGPZ]/[0-9]+ comfort/NN/[0-9]+ in/IN/[0-9]+	NP
+trust	take/VB[DGPZ]/[0-9]+ comfort/NN/[0-9]+ in/IN/[0-9]+	S
+joy	take/VB[DGPZ]/[0-9]+ pleasure/NN/[0-9]+ in/IN/[0-9]+	NP
+joy	take/VB[DGPZ]/[0-9]+ pleasure/NN/[0-9]+ in/IN/[0-9]+	S
+anticipation	concern/VB[DGPZ]/[0-9]+	NP
+anticipation	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? concerned/VBN/[0-9]+ about/IN/[0-9]+	NP
+anticipation	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? concerned/VBN/[0-9]+ about/IN/[0-9]+	S
+anticipation	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? confident/JJ/[0-9]+ of/IN/[0-9]+	NP
+anticipation	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? confident/JJ/[0-9]+ of/IN/[0-9]+	S
+anticipation	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? curious/JJ/[0-9]+ about/IN/[0-9]+	NP
+anticipation	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? curious/JJ/[0-9]+ about/IN/[0-9]+	S
+sadness	depress/VB[DGPZ]/[0-9]+	NP
+sadness	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? depress/VBN/[0-9]+ that/IN/[0-9]+	S
+sadness	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? depress/VBN/[0-9]+ by/IN/[0-9]+	NP
+anticipation	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? desperate/JJ/[0-9]+ to/IN/[0-9]+	S
+sadness	disappoint/VB[DGPZ]/[0-9]+	NP
+sadness	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? disappoint/VBN/[0-9]+ that/IN/[0-9]+	S
+sadness	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? disappoint/VBN/[0-9]+ by/IN/[0-9]+	NP
+sadness	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? disappoint/VBN/[0-9]+( that/IN/[0-9]+)?	NP
+sadness	discourage/VB[DGPZ]/[0-9]+	NP
+sadness	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? discourage/VBN/[0-9]+ that/IN/[0-9]+	S
+sadness	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? discourage/VBN/[0-9]+ by/IN/[0-9]+	NP
+disgust	disgust/VB[DGPZ]/[0-9]+	NP
+disgust	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? disgust/VBN/[0-9]+ that/IN/[0-9]+	S
+disgust	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? disgust/VBN/[0-9]+ by/IN/[0-9]+	NP
+sadness	dissatisfy/VB[DGPZ]/[0-9]+	NP
+sadness	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? dissatisfy/VBN/[0-9]+ that/IN/[0-9]+	S
+sadness	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? dissatisfy/VBN/[0-9]+ by/IN/[0-9]+	NP
+sadness	disillusion/VB[DGPZ]/[0-9]+	NP
+sadness	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? disillusion/VBN/[0-9]+ that/IN/[0-9]+	S
+sadness	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? disillusion/VBN/[0-9]+ by/IN/[0-9]+	NP
+fear	distress/VB[DGPZ]/[0-9]+	NP
+fear	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? distress/VBN/[0-9]+ that/IN/[0-9]+	S
+fear	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? distress/VBN/[0-9]+ by/IN/[0-9]+	NP
+anticipation	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? eager/JJ/[0-9]+ for/IN/[0-9]+	NP
+anticipation	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? eager/JJ/[0-9]+ to/IN/[0-9]+	S
+joy	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? ecstatic/JJ/[0-9]+( that/IN/[0-9]+)?	S
+joy	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? elated/JJ/[0-9]+( that/IN/[0-9]+)?	S
+fear	embarrass/VB[DGPZ]/[0-9]+	NP
+fear	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? embarrass/VBN/[0-9]+ about/IN/[0-9]+	NP
+fear	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? embarrass/VBN/[0-9]+ for/IN/[0-9]+	NP
+trust	encourage/VB[DGPZ]/[0-9]+	NP
+trust	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? encourage/VBN/[0-9]+ that/IN/[0-9]+	S
+trust	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? encourage/VBN/[0-9]+ by/IN/[0-9]+	NP
+joy	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? enthusiastic/JJ/[0-9]+ about/IN/[0-9]+	NP
+disgust	envy/VB[DGPZ]/[0-9]+	NP
+disgust	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? envious/JJ/[0-9]+ of/IN/[0-9]+	NP
+joy	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? excite/VBN/[0-9]+ about/IN/[0-9]+	NP
+joy	fascinate/VB[DGPZ]/[0-9]+	NP
+joy	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? fascinate/VBN/[0-9]+ that/IN/[0-9]+	S
+joy	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? fascinate/VBN/[0-9]+ by/IN/[0-9]+	NP
+joy	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? fascinate/VBN/[0-9]+ with/IN/[0-9]+	NP
+joy	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? be/VBN/[0-9]+ that/IN/[0-9]+	S
+joy	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? be/VBN/[0-9]+ by/IN/[0-9]+	NP
+sadness	frustrate/VB[DGPZ]/[0-9]+	NP
+sadness	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? frustrate/VBN/[0-9]+ that/IN/[0-9]+	S
+sadness	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? frustrate/VBN/[0-9]+ by/IN/[0-9]+	NP
+sadness	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? frustrate/VBN/[0-9]+ with/IN/[0-9]+	NP
+anger	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? furious/JJ/[0-9]+ about/IN/[0-9]+	NP
+anger	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? furious/JJ/[0-9]+ about/IN/[0-9]+	S
+anticipation	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? hesitant/JJ/[0-9]+ to/IN/[0-9]+	S
+anticipation	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? hopeful/JJ/[0-9]+( that/IN/[0-9]+)?	S
+fear	horrify/VB[DGPZ]/[0-9]+	NP
+fear	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? horrify/VBN/[0-9]+ that/IN/[0-9]+	S
+fear	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? horrify/VBN/[0-9]+ by/IN/[0-9]+	NP
+sadness	humiliated/VB[DGPZ]/[0-9]+	NP
+sadness	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? humiliated/VBN/[0-9]+ that/IN/[0-9]+	S
+sadness	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? humiliated/VBN/[0-9]+ by/IN/[0-9]+	NP
+anger	incense/VB[DGPZ]/[0-9]+	NP
+anger	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? incense/VBN/[0-9]+ that/IN/[0-9]+	S
+anger	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? incense/VBN/[0-9]+ by/IN/[0-9]+	NP
+anger	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? indignant/JJ/[0-9]+ over/IN/[0-9]+	NP
+anger	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? be/VBN/[0-9]+ that/IN/[0-9]+	S
+anger	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? be/VBN/[0-9]+ by/IN/[0-9]+	NP
+anticipation	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? intent/JJ/[0-9]+ on/IN/[0-9]+	S
+anticipation	intrigue/VB[DGPZ]/[0-9]+	NP
+anticipation	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? intrigue/VBN/[0-9]+ that/IN/[0-9]+	S
+anticipation	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? intrigue/VBN/[0-9]+ by/IN/[0-9]+	NP
+joy	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? joyful/JJ/[0-9]+ about/IN/[0-9]+	NP
+joy	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? joyful/JJ/[0-9]+ about/IN/[0-9]+	S
+anticipation	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? keen/JJ/[0-9]+ on/IN/[0-9]+	NP
+anticipation	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? keen/JJ/[0-9]+ on/IN/[0-9]+	S
+anticipation	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? keen/JJ/[0-9]+ to/IN/[0-9]+	S
+anticipation	long/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? for/IN/[0-9]+	NP
+anticipation	long/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? to/IN/[0-9]+	S
+joy	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? lucky/JJ/[0-9]+( that/IN/[0-9]+)?	S
+anger	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? mad/JJ/[0-9]+ about/IN/[0-9]+	NP
+anger	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? mad/JJ/[0-9]+ about/IN/[0-9]+	S
+fear	menace/VB[DGPZ]/[0-9]+	NP
+fear	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? menace/VBN/[0-9]+ that/IN/[0-9]+	S
+fear	be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? menace/VBN/[0-9]+ by/IN/[0-9]+	NP
+sadness	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? miserable/JJ/[0-9]+( that/IN/[0-9]+)?	S
+anticipation	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? optimistic/JJ/[0-9]+( that/IN/[0-9]+)?	S
+joy	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? overjoyed/JJ/[0-9]+( that/IN/[0-9]+)?	S
+joy	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? proud/JJ/[0-9]+ of/IN/[0-9]+	NP
+joy	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? proud/JJ/[0-9]+ of/IN/[0-9]+	S
+sadness	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? unhappy/JJ/[0-9]+ about/IN/[0-9]+	NP
+sadness	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? unhappy/JJ/[0-9]+ about/IN/[0-9]+	S
+sadness	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? unhappy/JJ/[0-9]+( that/IN/[0-9]+)?	NP
+sadness	be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? unhappy/JJ/[0-9]+( that/IN/[0-9]+)?	S
