@@ -155,13 +155,37 @@ SentiWordNet
 Helpful, doesn't yield any additional insights, though
 
 
+\subsection{FrameNet}
+
+FrameNet has a frame hierarchy and frame-to-frame relations.
+
+In FrameNet emotions are conceptualized in the Emotions frame, which describes an Experiencer in a particular emotional State that was provoked by a Stimulus.
+
+The frame Emotions is used by 10 other frames. Of these, we investigate more closely the Desiring, Emotion\_active, Emotion\_directed, and Experiencer\_obj frames.
+
+In the Desiring frame, the Experiencer desires that an Event occur. We derive 20 verbs from the Desiring frame, all of whom we label with anticipation.
+
+In the Experiencer\_obj frame, some phenomenon (the Stimulus) provokes a particular emotion in the Experiencer. Experiencer and stimulus (cause) are core frame elements, making this frame ideal for our purposes. We derive 132 verbs from this frame.
+
+The Emotion\_active frame is similar to Experiencer\_obj, but in this frame the verbs are more active. We derive 9 verbs from this frame.
+
+Finally, the Emotion\_directed frame focuses on adjectives and nouns describing an Experiencer's emotional response to a Stimulus. We keep a few of these, convert some into verbs, and discard the rest, resulting in 12 verbs and adjectives from this frame.
+
+Furthermore, Emotions is inherited by the Emotions\_by\_stimulus frame that is in turn inherited by the Annoyance, Emotions\_by\_possibility, i.e. Fear, Emotions\_of\_mental\_activity, Emotions\_of\_success\_or\_failure, Just\_found\_out, i.e. surprise, Others\_situation\_as\_stimulus frames.
+
+While these frames all refer to emotions, we have obtained most of their lexical entries already from other sources and thus don't make use of them.
+
 \subsection{Adjectives}
 
 - Adjectives are more indicate of emotion than nouns or verbs (see also what Anette said)
 
 - In WordNet, nouns and verbs are clustered in synsets and supersenses. No taxonomic hierarchy for adjectives. \cite{adjective_supersenses} induce supersenses for adjectives taking GermaNet's guidelines\footnote{http://www.sfs.uni-tuebingen.de/lsd/adjectives.shtml} as inspiration.
 
-- They build a weakly supervised classifier that labels adjective types (irrespective of context), which they train on a small set of seed examples, some of them translations of GermaNet. We take the translations that pertain to FEELING and manually label them with Plutchik's 8 emotion classes. Furthermore, they released 7511 WordNet adjectives tagged by their classifier with a an adjective type vector. From these we derive the XXX adjectives that are labeled with the adjective type FEELING; we take the label as indicative of the emotion, as the classifier has a high accuracy (k-4 accuracy of 91\%).
+- They build a weakly supervised classifier that labels adjective types (irrespective of context), which they train on a small set of seed examples, some of them translations of GermaNet. We take the translations that pertain to FEELING and manually label them with Plutchik's 8 emotion classes. Furthermore, they released 7511 WordNet adjectives tagged by their classifier with a an adjective type vector. From these we derive the 920 adjectives that are labeled with the adjective type FEELING; we take the label as indicative of the emotion, as the classifier has a high accuracy (k-4 accuracy of 91\%).
+
+- The 920 adjectives contain instances like unknown, unreal, etc. and thus prove not useful.
+
+- We instead take the 126 adjectives. 
 
 
 \section{Compilation}
