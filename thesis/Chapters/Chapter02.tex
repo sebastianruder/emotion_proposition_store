@@ -13,7 +13,7 @@ Intuitively, we would want to employ mainly transitive constructions in which th
 
 \subsection{Introspection}
 
-
+We derive initial patterns from introspection and making use of online dictionaries and thesauri.
 
 \subsection{Emotions in VerbNet, FrameNet}
 VerbNet is not really useful because we don't care about particular verbs, but emotions and propositions. VerbNet doesn't differentiate between different emotions only between different alternations, e.g. "fear" is a member of the "admire" class.
@@ -56,39 +56,14 @@ Most of the time, first sense was taken
 	\item Anger: \textit{The active feeling provoked against the agent; passion, rage; wrath, ire, hot displeasure.}
 	\item Anticipation: \textit{The action of looking forward to, expectation.}
 \end{itemize}
-joy	be satisfied that
-joy	be pleased that
-joy	be delighted that
-joy	be glad that
-sadness	feel sorrow that
-sadness mourn
-disgust	loathe
-disgust dislike
-disgust be repulsed by
-disgust be aversed to
-anger	be enraged
-anger	be wrathful
-anger	be irate
-anticipation	look forward to
-anticipation expect
-
+a dozen words
 
 The Free Dictionary
-joy	enjoy
-joy	take pleasure in
-joy	be content
-joy	rejoice
-fear	be uneasy about
-fear	be apprehensive about
-fear	dread
-trust	rely on
-trust	have/place reliance
-trust	depend
-sad	be melancholic that
 
+a dozen words
 
 Merriam-Webster
-synonyms for verbs
+synonyms for verbs 
 anger: enrage, incense, inflame (also enflame), infuriate, ire, madden, outrage, rankle, rile, roil, steam up, tick off
 fear: bother, fear, fret, fuss, stew, stress, sweat, trouble
 joy (rejoice): crow, delight, exuberate, glory, jubilate, joy, kvell, rejoice, triumph
@@ -96,7 +71,6 @@ sadness (sadden): bum (out), burden, dash, deject, get down, oppress, sadden, we
 anticipation (anticipate): anticipate, await, hope (for), watch (for)
 disgust: gross out, nauseate, put off, repel, repulse, revolt, sicken, turn off
 
-Note: allow for one modifier of adjective
 
 
 Roget's Thesaurus (thesaurus.com)
@@ -111,10 +85,6 @@ disgust: bother, disenchant, displease, disturb, insult, irk, nauseate, offend, 
 surprise: astonish, amaze, astound, awe, bewilder, confound, confuse, dazzle, disconcert, dismay, dumbfound, flabbergast, overwhelm, perplex, rattle, shock, startle, stun, unsettle
 trust: count on, depend on, look to
 
-write program that converts list such as:
-joy	be happy (that) S
-
-to regex format
 
 
 \subsection{Sentiment lexica (highly associated verbs)}
@@ -194,167 +164,9 @@ Adjectives, verbs, and adverbs are related to nouns. For these, the category of 
 
 \section{Compilation}
 
-From the previously mentioned sources, we derive now the patterns. We end up with the following initial patterns:
+From the previously mentioned sources, we derive now the pattern templates. We list the pattern in lemma form along with its emotion and its Stanford part-of-speech tags. We also list information about the constituent of the cause of emotion, if it is an NP or an S. Finally, we list if a passive form exists that can be used as an additional pattern.
 
-trust	count on	NP	false
-trust	depend on	NP	false
-trust	look to	NP	false
-trust	trust (in)	NP	false
-trust	trust that	S	false
-trust	rely on	NP	false
-trust	place reliance on	NP	false
-
-anticipation	expect	NP	false
-anticipation	expect that	S	false
-anticipation	predict	NP	false
-anticipation	predict that	S	false
-anticipation	assume NP	false
-anticipation	assume that	S	false
-anticipation	await	NP	false
-anticipation	await	that S	false
-anticipation	count on	NP	false
-anticipation	count on	S	false
-anticipation	forecast	NP	false
-anticipation	forecast that S	false
-anticipation	foresee	NP	false
-anticipation	foresee that	S	false
-anticipation	prepare for	NP	false
-anticipation	prepare for	S	false
-anticipation	see	NP	false
-anticipation	see that	S	false
-anticipation	anticipate	NP	false
-anticipation	hope for	NP/S	false
-anticipation	look forward to	NP/S	false
-
-
-anger	aggravate	NP	true
-anger	annoy	NP	true
-anger	antagonize	NP	true
-anger	arouse	NP	true
-anger	displease	NP	true
-anger	embitter	NP	true
-anger	enrage	NP	true
-anger	exacerbate	NP	true
-anger	exasperate	NP	true
-anger	excite	NP	true
-anger	incense	NP	true
-anger	inflame	NP	true
-anger	infuriate	NP	true
-anger	irritate		NP	true
-anger	offend	NP	true
-anger	outrage	NP	true
-anger	provoke	NP	true
-anger	rankle	NP	true
-anger	rile	NP	true
-anger	be angry that	S	false
-anger	be wrathful that	S	false
-anger	be irate that	S	false
-
-fear	alarm	NP	true
-fear	scare	NP	true
-fear	anticipate	NP	false
-fear	avoid	NP	false
-fear	dread	NP	false
-fear	expect	NP	false
-fear	foresee	NP	false
-fear	shun	NP	false
-fear	suspect	NP	false
-fear	worry	NP	true
-fear	fear	NP	false
-fear	fear that	S	false
-fear	be afraid of	NP	false
-fear	be afraid that	S	false
-fear	be apprehensive about	S	false
-fear	frighten	NP	true
-fear	be frightened by	NP	false
-fear	be frightened that	S	false
-fear	scare	NP	true
-fear	be scared of	NP	false
-fear	be scared that	S	false
-fear	spook	NP	true
-fear	terrify	NP	true
-fear	petrify	NP	true
-fear	intimidate	NP	true
-fear	alarm	NP	true
-
-joy	revel in	NP	false
-joy	delight	NP	true
-joy	amuse	NP	true
-joy	attract	NP	true
-joy	charm	NP	true
-joy	cheer	NP	true
-joy	delight	NP	true
-joy	enchant	NP	true
-joy	enrapture	NP	true
-joy	entertain	NP	true
-joy	enjoy	NP/S	false
-joy	take pleasure in	S	false
-joy	fascinate	NP	true
-joy	gratify	NP	true
-joy	please	NP	true
-joy	rejoice	that	S	false
-joy	satisfy	NP	true
-joy	thrill	NP	true
-joy	wow	NP	true
-joy	be happy (?!to) that	S
-joy	be glad (?!to) that	S
-joy	be content (?!to) that	S
-
-
-sadness	sadden	NP	true
-sadness	discourage	NP	true
-sadness	dishearted	NP	true
-sadness	dispirit	NP	true
-sadness	grieve that S	false
-sadness	be sad that	S	false
-sadness	be melancholic that	S	false
-sadness	feel sorrow that	S	false
-sadness	mourn	NP/S	false
-
-disgust	be averse to	NP	false
-disgust	disgust	NP	true
-disgust	bother	NP	true
-disgust	disenchant	NP	true
-disgust	dislike	NP	false
-disgust	displease	NP	true
-disgust	disturb	NP	true
-disgust	insult	NP	true
-disgust	irk	NP	true
-disgust	loathe	NP	false
-disgust	nauseate	NP	true
-disgust	offend	NP	true
-disgust	outrage	NP	true
-disgust	put off	NP	true
-disgust	repulse	NP	true
-disgust	revolt	NP	true
-disgust	shock	NP	true
-disgust	sicken	NP	true
-disgust	turn off	NP	true
-disgust	upset	NP	true
-disgust	hate	NP	false
-disgust	hate that	S	false
-
-surprise	astonish	NP	true
-surprise	amaze	NP	true
-surprise	astound	NP	true
-surprise	awe	NP	true
-surprise	bewilder	NP	true
-surprise	confound	NP	true
-surprise	confuse	NP	true
-surprise	dazzle	NP	true
-surprise	disconcert	NP	true
-surprise	dismay	NP	true
-surprise	dumbfound	NP	true
-surprise	flabbergast	NP	true
-surprise	overwhelm	NP	true
-surprise	perplex	NP	true
-surprise	rattle	NP	true
-surprise	shock	NP	true
-surprise	surprise	NP	true
-surprise	startle	NP	true
-surprise	stun	NP	true
-surprise	unsettle	NP	true
-suprise	stupify	NP	true
+We convert the pattern templates into regular expressions that can be matched against the Gigaword corpus. We allow adjectives to be modified, but exclude negation.
 
 \section{Selection of corpus}
 
