@@ -58,7 +58,7 @@ public class EmotionPatternExtractor {
         String line = reader.readLine();
         while (line != null) {
             // skip comments
-            if (line.startsWith("#")) {
+            if (line.startsWith("#") || line.equals("")) {
                 line = reader.readLine();
                 continue;
             }
