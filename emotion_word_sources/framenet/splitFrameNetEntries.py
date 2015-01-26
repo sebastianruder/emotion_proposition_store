@@ -11,4 +11,3 @@ with open(sys.argv[1], "r") as doc:
 			lineList = line.strip("\n").split(" ")
 			for item in lineList:
 				doc2.write(item.split(".")[0] + "\n")
-

@@ -7,6 +7,7 @@ In this directory I collect different sources for emotion words.
     - `germanet_feeling.txt`: words with adjective type FEELING translated from GermaNet by the authors
     - `word_types.feeling`: words with adjective type FEELING extracted from the subsequent data
     - `word_types.predicted`: adjective types predicted by the classifier
+    - `splitFrameNetEntries`: script to separate lexical entries from FrameNet
 
 * [FrameNet](https://framenet.icsi.berkeley.edu/fndrupal/)
 	- `experiencer_obj.labeled`: lexical units belonging to the [Experiencer_obj](https://framenet2.icsi.berkeley.edu/fnReports/data/frame/Experiencer_obj.xml)
@@ -25,3 +26,10 @@ In this directory I collect different sources for emotion words.
 	frame labeled with the emotion type joy. Def.: "An Experiencer can be described as having an emotion as induced by
 	a Stimulus." The frame inherits from [Emotions_by_stimulus](https://framenet2.icsi.berkeley.edu/fnReports/data/frame/Emotions_by_stimulus.xml)
 	which inherits from [Emotions](https://framenet2.icsi.berkeley.edu/fnReports/data/frame/Emotions.xml).
+
+* [WordNet-Affect](http://wndomains.fbk.eu/wnaffect.html)
+	- `a-hierarchy_plutchik.xml`: the category hierarchy of WordNet-Affect a-labels mapped to Plutchik's 8 emotions
+	- `a-synsets-30.xml`: the WordNet-Affect categorized synsets mapped (requested from Carlo Strapparava, as original file
+	contained WordNet-1.6 ids instead of WordNet-3.0)
+	- `extractSynsets.py`: script to extract the synset lemmas using NLTK
+	- `wn-affect-lemmas.labeled`: the extracted lemmas mapped to Plutchik's 8 emotions
