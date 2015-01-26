@@ -14,16 +14,16 @@ anger	excite/Verb	NP	true
 anger	incense/Verb	NP	true
 anger	inflame/Verb	NP	true
 anger	infuriate/Verb	NP	true
-anger	irritate/Verb		NP	true
+anger	irritate/Verb	NP	true
 anger	offend/Verb	NP	true
 anger	outrage/Verb	NP	true
 anger	provoke/Verb	NP	true
 anger	rankle/Verb	NP	true
 anger	rile/Verb	NP	true
 anger	be/Verb angry/JJ that/IN	S	false
-anger	be/Verb	angry/JJ about/IN	NP	false
-anger	be/Verb	angry/JJ with/IN	NP	false
-anger	be/Verb	angry/JJ at/IN	NP	false
+anger	be/Verb angry/JJ about/IN	S	false
+anger	be/Verb angry/JJ with/IN	S	false
+anger	be/Verb angry/JJ at/IN	S	false
 anger	be/Verb wrathful/JJ that/IN	S	false
 anger	be/Verb irate/JJ that/IN	S	false
 anticipation	expect/Verb	NP	false
@@ -210,7 +210,7 @@ anticipation	be/Verb RB hesitant/JJ to/IN	S	false
 anticipation	be/Verb RB hopeful/JJ that/IN	S	false
 fear	horrify/Verb	NP	true
 sadness	humiliate/Verb	NP	true
-anger	be/Verb RB indignant/JJ over/IN	NP	true
+anger	be/Verb RB indignant/JJ over/IN	NP	false
 anticipation	be/Verb RB intent/JJ on/IN	S	false
 anticipation	intrigue/Verb	NP	true
 joy	be/Verb RB joyful/JJ about/IN	NP	false
@@ -293,7 +293,6 @@ trust	conciliate/Verb	NP	true
 sadness	devastate/Verb	NP	true
 sadness	disappoint/Verb	NP	true
 sadness	discomfit/Verb	NP	true
-trust	engage/Verb	NP	true
 trust	enthrall/Verb	NP	true
 joy	exhilarate/Verb	NP	true
 fear	faze/Verb	NP	true
