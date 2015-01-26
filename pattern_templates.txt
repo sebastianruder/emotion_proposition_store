@@ -21,6 +21,9 @@ anger	provoke/Verb	NP	true
 anger	rankle/Verb	NP	true
 anger	rile/Verb	NP	true
 anger	be/Verb angry/JJ that/IN	S	false
+anger	be/Verb	angry/JJ about/IN	NP	false
+anger	be/Verb	angry/JJ with/IN	NP	false
+anger	be/Verb	angry/JJ at/IN	NP	false
 anger	be/Verb wrathful/JJ that/IN	S	false
 anger	be/Verb irate/JJ that/IN	S	false
 anticipation	expect/Verb	NP	false
@@ -160,7 +163,6 @@ fear	be/Verb RB anxious/JJ about/IN	NP	false
 fear	be/Verb RB anxious/JJ that/IN	S	false
 anticipation	be/Verb RB anxious/JJ for/IN	NP	false
 disgust	appall/Verb	NP	true
-anticipation	be/Verb RB apprehensive/JJ about/IN	NP	false
 anticipation	be/Verb RB apprehensive/JJ that/IN	S	false
 disgust	be/Verb RB ashamed/JJ of/IN	NP	false
 disgust	be/Verb RB ashamed/JJ of/IN	S	false
@@ -190,6 +192,7 @@ anticipation	be/Verb RB eager/JJ for/IN	NP	false
 anticipation	be/Verb RB eager/JJ to/IN	S	false
 joy	be/Verb RB ecstatic/JJ that/IN	S	false
 joy	be/Verb RB elated/JJ that/IN	S	false
+joy	elate/Verb	NP	true
 fear	embarrass/Verb	NP	false
 fear	be/Verb RB embarrass/VBN about/IN	NP	false
 fear	be/Verb RB embarrass/VBN for/IN	NP	false
@@ -326,3 +329,23 @@ sadness	trouble/Verb	NP	true
 fear	unnerve/Verb	NP	true
 fear	unsettle/Verb	NP	true
 anger	vex/Verb	NP	true
+
+# WordNet-Affect
+disgust	alienate/Verb	NP	true
+disgust	estrange/Verb	NP	true
+anticipation	be/Verb RB nervous/JJ about/IN	NP	false
+fear	awe/Verb	NP	true
+fear	demoralize/Verb	NP	true
+fear	demoralise/Verb	NP	true
+disgust	abhor/Verb	NP	false
+disgust	abominate/Verb	NP	false
+disgust	execrate/Verb	NP	false
+sadness	repent/Verb	NP	false
+sadness	rue/Verb	NP	false
+anger	chagrin/Verb	NP	true
+anger	abase/Verb	NP	true
+joy	inspire/Verb	NP	true
+disgust	contemn/Verb	NP	false
+disgust	despise/Verb	NP	false
+disgust	scorn/Verb	NP	false
+disgust	disdain/Verb	NP	false
