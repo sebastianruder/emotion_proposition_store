@@ -1,0 +1,792 @@
+
+# noun-syn-list
+anger	wrath
+trust	worship adoration
+sadness	world-weariness Weltschmerz
+surprise	wonder wonderment admiration
+sadness	woe woefulness
+sadness	weight
+sadness	weepiness tearfulness
+trust	weakness
+disgust	warpath
+trust	warmheartedness warmth
+disgust	vindictiveness vengefulness
+anticipation	unrest
+disgust	unfriendliness
+fear	unassertiveness
+anger	umbrage offense offence
+anticipation	tumult turmoil
+joy	triumph
+fear	trepidation
+joy	togetherness
+joy	titillation
+fear	timidity timidness timorousness
+anticipation	suspense
+fear	suspense
+surprise	surprise
+disgust	sulkiness huffishness
+surprise	stupefaction
+anticipation	stir
+fear	stewing
+fear	stage_fright
+sadness	sorrow regret rue ruefulness
+sadness	sorrow
+fear	solicitude solicitousness
+trust	softheartedness tenderness
+trust	soft_spot
+joy	smugness
+fear	sinking sinking_feeling
+fear	shyness
+disgust	shamefacedness sheepishness
+disgust	shame
+fear	shadow
+anticipation	sensation
+sadness	self-pity
+disgust	self-disgust self-hatred
+disgust	self-depreciation
+disgust	self-consciousness uneasiness uncomfortableness
+fear	scruple qualm misgiving
+fear	scare panic_attack
+joy	satisfaction
+anticipation	sanguinity sanguineness
+sadness	sadness unhappiness
+fear	fear reverence awe veneration
+fear	resignation surrender
+disgust	resentment bitterness gall rancor rancour
+disgust	repugnance repulsion revulsion horror
+sadness	repentance penitence penance
+joy	rejoicing
+trust	regard respect
+trust	puppy_love calf_love crush infatuation
+trust	protectiveness
+joy	pride
+joy	pride pridefulness
+fear	presage
+trust	preference penchant predilection taste
+sadness	plaintiveness
+anger	pique temper irritation
+fear	pessimism
+fear	panic terror affright
+anticipation	optimism
+sadness	oppression oppressiveness
+disgust	nausea
+disgust	murderousness
+sadness	mournfulness sorrowfulness ruthfulness
+disgust	misopedia
+disgust	misoneism
+disgust	misology
+disgust	misogyny misogynism
+disgust	misogamy
+disgust	misocainea
+sadness	misery
+disgust	misanthropy
+sadness	melancholy
+disgust	meekness submission
+disgust	malice maliciousness spite spitefulness venom
+disgust	malevolence malignity
+disgust	maleficence
+trust	loyalty
+trust	lovingness caring
+trust	love
+anger	lividity
+trust	liking
+sadness	joylessness
+joy	joy joyousness joyfulness
+joy	jollity jolliness joviality
+joy	jocundity jocularity
+fear	jitteriness jumpiness nervousness restiveness
+disgust	jealousy green-eyed_monster
+disgust	isolation
+anger	irascibility short_temper spleen quick_temper
+fear	intimidation
+fear	intimidation
+fear	insecurity
+anger	infuriation enragement
+anger	indignation outrage
+fear	impatience
+fear	hysteria
+disgust	humility humbleness
+anger	huffiness
+disgust	hostility enmity ill_will
+fear	horror
+fear	hopelessness
+anticipation	hopefulness
+anticipation	hope
+anticipation	hope
+joy	hilarity mirth mirthfulness glee gleefulness
+fear	hesitance hesitancy
+trust	hero_worship
+sadness	helplessness
+sadness	heavyheartedness
+fear	heartlessness coldheartedness hardheartedness
+disgust	heartburning
+disgust	hate hatred
+anger	harassment torment
+joy	happiness
+joy	gusto relish zest zestfulness
+sadness	guilt guilty_conscience guilt_feelings guilt_trip
+disgust	grudge score grievance
+sadness	grief heartache heartbreak brokenheartedness
+trust	gratitude
+trust	gratefulness thankfulness appreciativeness
+trust	good_will goodwill
+sadness	gloom gloominess somberness sombreness
+joy	gloat gloating glee
+joy	gladness gladfulness gladsomeness
+joy	gaiety playfulness
+joy	gaiety merriment
+anger	fury rage madness
+joy	fulfillment fulfilment
+anger	frustration
+anticipation	frisson shiver chill quiver shudder thrill tingle
+trust	friendliness
+sadness	forlornness loneliness desolation
+fear	foreboding premonition presentiment boding
+trust	fondness fancy partiality
+anger	fit tantrum scene conniption
+fear	fidget fidgetiness restlessness
+anticipation	fever
+fear	fear fearfulness fright
+trust	favor favour
+joy	exultation jubilance jubilancy jubilation
+joy	exuberance
+joy	exhilaration excitement
+joy	euphoria euphory
+disgust	envy enviousness
+joy	enthusiasm
+anticipation	encouragement
+disgust	embarrassment
+anticipation	electricity
+joy	elation high_spirits lightness
+fear	edginess uneasiness inquietude disquietude
+joy	eagerness avidity avidness keenness
+sadness	dysphoria
+anger	dudgeon high_dudgeon
+sadness	downheartedness dejectedness low-spiritedness lowness dispiritedness
+sadness	dolor dolour
+sadness	dolefulness
+fear	worry trouble
+anger	displeasure
+disgust	dislike
+disgust	disinclination
+disgust	disgust
+fear	discouragement disheartenment dismay
+fear	discomfiture discomposure disconcertion disconcertment
+disgust	disapproval
+fear	diffidence self-doubt self-distrust
+trust	devotion devotedness
+sadness	despondency despondence heartsickness disconsolateness
+disgust	despisal despising
+fear	despair
+sadness	depression
+sadness	demoralization demoralisation
+fear	defeatism
+anger	dander hackles
+fear	cynicism
+fear	cruelty mercilessness pitilessness ruthlessness
+fear	creeps
+disgust	covetousness
+joy	contentment
+disgust	contempt disdain scorn despite
+disgust	conscience
+disgust	confusion discombobulation
+trust	concern
+fear	concern care fear
+sadness	compunction remorse self-reproach
+joy	complacency complacence self-complacency self-satisfaction
+joy	comfortableness
+joy	closeness intimacy
+disgust	class_feeling
+fear	chill pall
+sadness	cheerlessness uncheerfulness
+joy	cheerfulness blitheness
+disgust	chagrin humiliation mortification
+joy	carefreeness insouciance lightheartedness lightsomeness
+trust	captivation enchantment enthrallment fascination
+joy	buoyancy perkiness
+anticipation	buck_fever
+trust	brotherhood
+joy	bonheur
+sadness	blues blue_devils megrims vapors vapours
+trust	benevolence
+trust	beneficence
+joy	belonging
+disgust	belligerence belligerency
+joy	bang boot charge rush flush thrill kick
+anger	bad_temper ill_temper
+surprise	awe
+sadness	attrition contrition contriteness
+trust	attachment fond_regard
+surprise	astonishment amazement
+trust	ardor ardour
+joy	ardor ardour elan zeal
+trust	approval
+fear	apprehension apprehensiveness dread
+fear	anxiousness disquiet
+fear	anxiety
+disgust	antipathy aversion distaste
+anticipation	anticipation expectancy
+disgust	antagonism
+anger	annoyance chafe vexation
+disgust	animosity animus bad_blood
+anger	anger choler ire
+trust	amorousness enamoredness
+trust	amicability amicableness
+disgust	alienation disaffection estrangement
+fear	alarm dismay consternation
+anticipation	agitation
+disgust	aggression aggressiveness
+anger	aggravation exasperation
+trust	affection affectionateness fondness tenderness heart warmness warmheartedness philia
+trust	admiration esteem
+disgust	abhorrence abomination detestation execration loathing odium
+disgust	abashment bashfulness
+fear	angst
+
+# adj-syn-list
+fear	impatient
+fear	impatient raring
+disgust	hideous horrid horrific outrageous
+disgust	self-conscious
+disgust	self-deprecating
+disgust	discredited disgraced dishonored shamed
+fear	cliff-hanging suspenseful suspensive nail-biting
+anticipation	cliff-hanging suspenseful suspensive nail-biting
+trust	admirable
+trust	admirable
+trust	affectional affective emotive
+anger	aggravated provoked
+anticipation	agitated
+fear	alarmed
+disgust	alienated estranged
+disgust	alienated anomic disoriented
+trust	amicable
+trust	amatory amorous romantic
+trust	amative amorous
+anger	angry
+anger	angered enraged furious infuriated maddened
+anger	annoying bothersome galling irritating nettlesome pesky pestering pestiferous plaguy plaguey teasing vexatious vexing
+anger	annoyed harassed harried pestered vexed
+anger	annoyed irritated miffed nettled peeved pissed pissed_off riled roiled steamed stung
+disgust	afraid
+fear	anxious nervous queasy uneasy unquiet
+fear	apprehensive worried
+fear	anxious nervous queasy uneasy unquiet
+fear	apprehensive worried
+fear	apprehensive
+fear	apprehensive worried
+trust	approving affirmative approbative approbatory plausive
+trust	approved sanctioned
+surprise	astonishing astounding staggering stupefying
+surprise	amazing astonishing
+surprise	amazed astonied astonished astounded stunned
+surprise	awed awestruck awestricken
+surprise	awed awful
+disgust	aggressive belligerent
+trust	beneficent
+trust	beneficed
+trust	benefic
+trust	charitable benevolent kindly sympathetic good-hearted openhearted large-hearted
+trust	brotherly brotherlike fraternal
+trust	beguiled captivated charmed delighted enthralled entranced
+trust	captivated charmed
+trust	bewitching captivating enchanting enthralling entrancing fascinating
+joy	carefree unworried
+disgust	abashed chagrined embarrassed
+joy	cheerful
+joy	cheerful
+sadness	depressing cheerless uncheerful
+sadness	depressing cheerless uncheerful
+fear	chilling scarey scary shivery shuddery
+joy	close
+joy	comfortable
+joy	complacent self-satisfied self-complacent
+fear	concerned
+disgust	confusing
+disgust	broken confused disordered upset
+joy	contented content
+joy	happy
+disgust	avaricious covetous grabby grasping greedy prehensile
+disgust	covetous envious jealous
+fear	unkind
+fear	cynical misanthropic misanthropical
+fear	defeated disappointed discomfited foiled frustrated thwarted
+sadness	demoralizing demoralising disheartening dispiriting
+sadness	demoralized demoralised discouraged disheartened
+sadness	gloomy grim blue depressed dispirited down downcast downhearted down_in_the_mouth low low-spirited
+sadness	depressing cheerless uncheerful
+fear	despairing desperate
+sadness	despondent heartsick
+trust	devoted
+fear	diffident
+disgust	discouraging
+disgust	disapproving
+fear	abashed chagrined embarrassed
+fear	discouraging
+fear	discouraged
+fear	demoralized demoralised discouraged disheartened
+disgust	disgusting disgustful distasteful foul loathly loathsome repellent repellant repelling revolting skanky wicked yucky
+disgust	disgusted fed_up sick sick_of tired_of
+disgust	disinclined
+disgust	dislikable
+anger	displeasing
+anger	displeased
+fear	afraid
+fear	distressing distressful disturbing perturbing troubling worrisome worrying
+fear	disquieted distressed disturbed upset worried
+fear	dysphoric distressed unhappy
+sadness	doleful mournful
+sadness	doleful mournful
+sadness	gloomy grim blue depressed dispirited down downcast downhearted down_in_the_mouth low low-spirited
+sadness	dysphoric distressed unhappy
+joy	avid zealous
+fear	edgy high-strung highly_strung jittery jumpy nervy overstrung restive uptight
+joy	elated gleeful joyful jubilant
+joy	elated
+joy	elating exhilarating
+anticipation	electrifying thrilling
+disgust	awkward embarrassing sticky unenviable
+disgust	embarrassing mortifying
+disgust	embarrassed humiliated mortified
+anticipation	encouraging
+anticipation	bucked_up encouraged
+joy	exciting
+joy	enthusiastic
+disgust	enviable
+disgust	covetous envious jealous
+disgust	grudging
+joy	euphoriant
+joy	euphoric
+joy	gladdened exhilarated
+joy	exhilarating stimulating
+joy	exultant exulting jubilant prideful rejoicing triumphal triumphant
+trust	favorable favourable
+fear	fearful
+fear	fearful frightful
+fear	awful dire direful dread dreaded dreadful fearful fearsome frightening horrendous horrific terrible
+fear	afraid
+anticipation	feverish hectic
+anticipation	fevered
+fear	antsy fidgety fretful itchy
+trust	affectionate fond lovesome tender warm
+sadness	forlorn
+trust	friendly favorable well-disposed
+anger	frustrating
+anger	discouraged
+anger	exasperating infuriating maddening vexing
+anger	angered enraged furious infuriated maddened
+joy	gay festal festive merry
+joy	gay jocund jolly jovial merry mirthful
+joy	cheery gay sunny
+joy	gay festal festive merry
+joy	gay jocund jolly jovial merry mirthful
+joy	cheery gay sunny
+joy	gladsome
+joy	beaming glad
+joy	beaming glad
+joy	glad
+joy	glad
+joy	glad
+sadness	blue dark dingy disconsolate dismal gloomy grim sorry drab drear dreary
+sadness	glum
+sadness	dark dour glowering glum moody morose saturnine sour sullen
+sadness	depressing cheerless uncheerful
+sadness	blue dark dingy disconsolate dismal gloomy grim sorry drab drear dreary
+sadness	gloomy grim blue depressed dispirited down downcast downhearted down_in_the_mouth low low-spirited
+sadness	glooming gloomy gloomful sulky
+trust	grateful thankful
+trust	grateful thankful
+sadness	grievous heartbreaking heartrending
+sadness	grievous heartbreaking heartrending
+sadness	bereaved bereft grief-stricken grieving mourning sorrowing
+sadness	guilty hangdog shamefaced shamed
+joy	euphoric
+joy	pleased
+joy	happy
+disgust	hateful
+fear	hardhearted heartless
+sadness	heavyhearted
+joy	hilarious screaming uproarious
+joy	hilarious screaming uproarious
+anticipation	hopeful
+anticipation	hopeful
+anticipation	hopeful
+anticipation	hopeful
+fear	hopeless
+fear	atrocious frightful horrifying horrible ugly
+fear	horrified horror-stricken horror-struck
+fear	awful dire direful dread dreaded dreadful fearful fearsome frightening horrendous horrific terrible
+fear	hideous horrid horrific outrageous
+fear	atrocious frightful horrifying horrible ugly
+disgust	hostile
+anger	huffish sulky
+anger	huffy mad sore
+disgust	demeaning humbling humiliating mortifying
+disgust	embarrassed humiliated mortified
+fear	hysterical
+anger	indignant incensed outraged umbrageous
+anger	exasperating infuriating maddening vexing
+anger	angered enraged furious infuriated maddened
+fear	insecure
+fear	hangdog
+fear	intimidated
+anger	choleric irascible
+disgust	detached isolated separated set-apart
+disgust	jealous green-eyed overjealous
+disgust	covetous envious jealous
+fear	edgy high-strung highly_strung jittery jumpy nervy overstrung restive uptight
+joy	gay jocund jolly jovial merry mirthful
+joy	gay jocund jolly jovial merry mirthful
+joy	joyous
+joy	elated gleeful joyful jubilant
+joy	joyful
+joy	joyful
+trust	likable likeable
+anger	livid
+trust	loving
+disgust	malefic malevolent malign evil
+disgust	malevolent
+disgust	malevolent
+sadness	melancholy melancholic
+sadness	melancholy melancholic
+disgust	misanthropic misanthropical
+sadness	hapless miserable misfortunate pathetic piteous pitiable pitiful poor wretched
+sadness	miserable suffering wretched
+disgust	misogynic
+sadness	doleful mournful
+sadness	doleful mournful
+sadness	mournful plaintive
+disgust	nauseating nauseous noisome queasy loathsome offensive sickening vile
+disgust	nauseated nauseous queasy sick sickish
+sadness	oppressive tyrannical tyrannous
+sadness	laden oppressed
+sadness	downtrodden
+anticipation	optimistic
+fear	panicky panicked panic-stricken panic-struck terrified frightened
+fear	pessimistic
+sadness	mournful plaintive
+joy	exultant exulting jubilant prideful rejoicing triumphal triumphant
+joy	proud
+joy	exultant exulting jubilant prideful rejoicing triumphal triumphant
+trust	protective
+joy	exultant exulting jubilant prideful rejoicing triumphal triumphant
+sadness	penitent repentant
+disgust	hideous repulsive
+disgust	abhorrent detestable obscene repugnant repulsive
+disgust	resentful
+fear	reverent
+sadness	sad
+sadness	unhappy
+sadness	unhappy
+sadness	sad
+sadness	sad
+anticipation	sanguine
+joy	comforting cheering satisfying
+joy	pleasing
+joy	satisfied
+joy	satiable satisfiable
+joy	satisfactory
+fear	chilling scarey scary shivery shuddery
+fear	frightened scared
+anticipation	scandalmongering sensationalistic yellow
+anticipation	sensational
+disgust	disgraceful scandalous shameful shocking
+disgust	black disgraceful ignominious inglorious opprobrious shameful
+disgust	shamefaced sheepish
+disgust	guilty hangdog shamefaced shamed
+disgust	ashamed
+disgust	guilty hangdog shamefaced shamed
+disgust	shamefaced sheepish
+fear	shy
+fear	diffident shy timid unsure
+joy	smug self-satisfied
+trust	softhearted soft-boiled
+fear	solicitous
+sadness	bereaved bereft grief-stricken grieving mourning sorrowing
+sadness	sorrowful
+sadness	contrite remorseful rueful ruthful
+sadness	regretful sorry bad
+surprise	astonishing astounding staggering stupefying
+surprise	stupefying
+surprise	dazed stunned stupefied stupid
+surprise	dumbfounded dumfounded flabbergasted stupefied thunderstruck dumbstruck dumbstricken
+disgust	huffish sulky
+surprise	surprising
+surprise	surprised
+fear	diffident shy timid unsure
+fear	timid
+joy	titillating
+joy	teased titillated
+fear	fearful timorous trepid
+joy	exultant exulting jubilant prideful rejoicing triumphal triumphant
+anger	indignant incensed outraged umbrageous
+fear	unassertive
+disgust	unfriendly inimical
+disgust	unfriendly
+disgust	despiteful spiteful vindictive
+trust	warmhearted
+sadness	dolorous dolourous lachrymose tearful weeping
+sadness	deplorable execrable miserable woeful wretched
+sadness	woebegone woeful
+surprise	fantastic grand howling marvelous marvellous rattling terrific tremendous wonderful wondrous
+sadness	bored world-weary
+trust	adoring worshipful
+anger	wrathful wroth wrothful
+
+# verb-syn-list
+disgust	abhor loathe abominate execrate
+trust	admire look_up_to
+trust	affect impress move strike
+anger	exacerbate exasperate aggravate
+anticipation	agitate foment stir_up
+fear	alarm alert
+fear	dismay alarm appal appall horrify
+disgust	estrange alienate alien disaffect
+anger	anger see_red
+anger	anger
+anger	annoy rag get_to bother get_at irritate rile nark nettle gravel vex chafe devil
+anticipation	anticipate look_for look_to
+trust	approve
+surprise	amaze astonish astound
+sadness	repent regret rue
+surprise	awe
+trust	capture enamour trance catch becharm enamor captivate beguile charm fascinate bewitch entrance enchant
+disgust	humiliate mortify chagrin humble abase
+joy	cheer root_on inspire urge barrack urge_on exhort pep_up
+joy	cheer
+joy	cheer hearten recreate embolden
+joy	cheer cheer_up chirk_up
+joy	cheer cheer_up jolly_along jolly_up
+fear	chill
+joy	comfort soothe console solace
+fear	concern interest occupy worry
+trust	concern interest occupy worry
+disgust	confuse flurry disconcert put_off
+disgust	contemn despise scorn disdain
+joy	content
+joy	content
+disgust	covet
+fear	fawn crawl creep cringe cower grovel
+fear	get_the_better_of overcome defeat
+sadness	depress deject cast_down get_down dismay dispirit demoralize demoralise
+sadness	depress deject cast_down get_down dismay dispirit demoralize demoralise
+fear	despair
+disgust	contemn despise scorn disdain
+disgust	disapprove reject
+fear	upset discompose untune disconcert discomfit
+fear	discourage
+disgust	disgust revolt nauseate sicken churn_up
+disgust	disgust gross_out revolt repel
+disgust	indispose disincline
+disgust	dislike
+anger	displease
+fear	brood dwell
+fear	worry
+fear	distress
+joy	elate lift_up uplift pick_up intoxicate
+joy	elate lift_up uplift pick_up intoxicate
+disgust	embarrass abash
+anticipation	encourage
+disgust	envy begrudge
+disgust	envy
+joy	exhilarate tickle_pink inebriate thrill exalt beatify
+joy	exuberate exult rejoice triumph jubilate
+joy	exult walk_on_air be_on_cloud_nine jump_for_joy
+trust	favor favour
+fear	fear
+fear	fear
+fear	fear dread
+fear	fear
+anger	torment rag bedevil crucify dun frustrate
+joy	satisfy fulfill fulfil live_up_to
+anger	infuriate exasperate incense
+joy	gladden
+joy	gladden joy
+sadness	grieve aggrieve
+sadness	grieve sorrow
+disgust	stew grudge
+anger	harass hassle harry chivy chivvy chevy chevvy beset plague molest provoke
+disgust	hate detest
+anticipation	hope trust desire
+anticipation	hope
+anticipation	hope
+fear	dismay alarm appal appall horrify
+fear	dismay alarm appal appall horrify
+disgust	humiliate mortify chagrin humble abase
+anger	infuriate exasperate incense
+fear	intimidate
+joy	kid chaff jolly josh banter
+joy	gladden joy
+joy	rejoice joy
+trust	like
+trust	like
+trust	love
+trust	love enjoy
+trust	love
+disgust	sicken nauseate turn_one's_stomach
+disgust	disgust revolt nauseate sicken churn_up
+sadness	harass hassle harry chivy chivvy chevy chevvy beset plague molest provoke
+fear	panic
+fear	panic
+anger	pique offend
+joy	preen congratulate
+joy	wallow rejoice triumph
+joy	exuberate exult rejoice triumph jubilate
+joy	rejoice joy
+sadness	repent regret rue
+disgust	disgust gross_out revolt repel
+disgust	repel repulse
+fear	resign reconcile submit
+fear	idolize idolise worship hero-worship revere
+fear	reverence fear revere venerate
+sadness	sadden
+joy	satisfy gratify
+fear	daunt dash scare_off pall frighten_off scare_away frighten_away scare
+fear	frighten fright scare affright
+disgust	shame
+disgust	shame
+sadness	grieve sorrow
+sadness	grieve sorrow
+anticipation	touch stir
+anticipation	stimulate shake shake_up excite stir
+anticipation	incite instigate set_off stir_up
+anticipation	inflame stir_up wake ignite heat fire_up
+surprise	stun stupefy
+surprise	perplex vex stick get puzzle mystify baffle beat pose bewilder flummox stupefy nonplus gravel amaze dumbfound
+surprise	besot stupefy
+disgust	sulk pout brood
+disgust	brood hover loom bulk_large
+surprise	surprise
+joy	titillate
+joy	exuberate exult rejoice triumph jubilate
+joy	wallow rejoice triumph
+surprise	wonder marvel
+
+# adv-syn-list
+trust	admirably laudably praiseworthily commendable
+trust	amicably
+anger	angrily
+fear	anxiously uneasily apprehensively
+fear	anxiously uneasily apprehensively
+fear	anxiously uneasily apprehensively
+sadness	ruefully contritely remorsefully
+disgust	belligerently hostilely
+trust	beneficially
+trust	benevolently
+joy	cheerfully
+joy	cheerfully
+sadness	cheerlessly
+sadness	cheerlessly
+joy	near nigh close
+joy	comfortably
+disgust	confusedly
+disgust	enviously covetously jealously
+fear	cruelly
+fear	despairingly despondently
+sadness	despairingly despondently
+fear	diffidently
+disgust	disgustingly distastefully revoltingly sickeningly
+anger	displeasingly
+fear	worryingly
+fear	painfully distressingly
+fear	distressfully
+sadness	dolefully sorrowfully
+joy	eagerly thirstily
+disgust	embarrassingly
+anticipation	encouragingly
+joy	enthusiastically
+disgust	enviously covetously jealously
+disgust	enviably
+joy	ebulliently exuberantly expansively
+joy	exuberantly riotously
+joy	exultantly exultingly
+trust	favorably favourably
+fear	fearfully
+fear	fearfully
+anticipation	feverishly
+sadness	forlornly
+anger	furiously
+joy	gloatingly
+sadness	gloomily
+trust	appreciatively gratefully
+trust	appreciatively gratefully
+sadness	grievously
+sadness	grievously
+joy	happily merrily mirthfully gayly blithely jubilantly
+disgust	hatefully
+fear	heartlessly
+fear	hesitantly hesitatingly
+joy	hilariously uproariously
+joy	hilariously uproariously
+anticipation	hopefully
+anticipation	hopefully
+anticipation	hopefully
+anticipation	hopefully
+anticipation	hopefully
+anticipation	hopefully
+fear	dispiritedly hopelessly
+fear	hopelessly
+fear	horrifyingly
+fear	dreadfully awfully horribly
+fear	hideously horridly monstrously
+disgust	belligerently hostilely
+anger	huffily
+disgust	humiliatingly demeaningly
+disgust	humiliatingly demeaningly
+fear	hysterically
+fear	impatiently
+anger	indignantly
+anger	furiously
+fear	insecurely
+disgust	enviously covetously jealously
+disgust	jealously
+sadness	joylessly
+sadness	joylessly
+anger	lividly
+trust	fondly lovingly
+trust	adorably endearingly
+disgust	malevolently
+disgust	maliciously
+sadness	mournfully
+sadness	mournfully
+disgust	amok amuck murderously
+sadness	oppressively
+anticipation	optimistically
+fear	pessimistically
+sadness	plaintively
+joy	proudly
+joy	proudly
+trust	protectively
+sadness	penitently penitentially repentantly
+disgust	detestably repulsively abominably odiously
+disgust	resentfully
+fear	abjectly resignedly
+fear	resignedly
+fear	reverentially reverently
+sadness	deplorably lamentably sadly woefully
+sadness	sadly
+joy	gratifyingly satisfyingly
+joy	satisfactorily
+fear	frighteningly scarily
+disgust	self-consciously
+anticipation	sensationally
+disgust	disgracefully ingloriously ignominiously discreditably shamefully dishonorably dishonourably
+disgust	shamefacedly
+disgust	shamefacedly
+fear	solicitously
+sadness	dolefully sorrowfully
+sadness	sorrowfully
+sadness	dolefully sorrowfully
+sadness	sorrowfully
+surprise	amazingly surprisingly astonishingly
+surprise	surprisingly
+surprise	surprisedly
+fear	shyly timidly bashfully
+fear	timorously trepidly
+joy	triumphantly
+fear	unassertively
+disgust	revengefully vengefully vindictively
+sadness	deplorably lamentably sadly woefully
+sadness	deplorably lamentably sadly woefully
+surprise	wonderfully wondrous wondrously superbly toppingly marvellously terrifically marvelously
+anger	wrathfully
