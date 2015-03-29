@@ -1,12 +1,8 @@
 import edu.jhu.agiga.*;
 import edu.stanford.nlp.trees.*;
-import edu.stanford.nlp.util.ArrayMap;
 import edu.stanford.nlp.util.IntPair;
 
-import java.io.File;
-import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.*;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -24,12 +20,12 @@ public class AgigaReader {
 
     /**
      * Main method iterating over the annotated gigaword documents
-     * @param args
+     * @param args input parameters
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
         // note: file name must end with /
-        String agigaPath = "/home/sebastian/git/sentiment_analysis/anno_gigaword/";
+        String agigaPath = "/media/sebastian/Data/";
         // filters .gz files
         String[] fileNames = new File(agigaPath).list(new FilenameFilter() {
             @Override
@@ -52,25 +48,17 @@ public class AgigaReader {
         // store the emotion-triggering patterns in a map
         String filePath = "/home/sebastian/git/sentiment_analysis/pattern_templates.txt";
         EmotionPatternExtractor emotionExtractor = new EmotionPatternExtractor();
-        Map<String, Map<Pattern, Map<String, Boolean>>> map = emotionExtractor.extractEmotions(filePath);
+        Map<String, Map<Pattern, Map<String, Boolean>>> emotionMap = emotionExtractor.extractEmotions(filePath);
 
         // map listing each pattern with the number of times it has found a successful match (experiencer + cause)
-        Map<Pattern, Map<String, Integer>> resultMap = new ArrayMap<Pattern, Map<String, Integer>>();
-        for (String emotion: map.keySet()) {
-            for (Pattern pattern : map.get(emotion).keySet()) {
-                Map<String, Integer> integerMap = new ArrayMap<String, Integer>();
-                integerMap.put("occurences", 0);
-                integerMap.put("matches", 0);
-                integerMap.put("isNP", map.get(emotion).get(pattern).get("isNP") ? 1 : 0);
-                resultMap.put(pattern, integerMap);
-            }
-        }
+        Map<Pattern, Map<String, Integer>> resultMap = Stats.createResultMap(emotionMap);
 
         int matches = 0; // count number of successful matches (experiencer & cause have been found)
         int count = 0; // count number of sentences spanning all documents
 
-        PrintWriter resultWriter = new PrintWriter("results.txt", "UTF-8");
-        PrintWriter collWriter = new PrintWriter("collocations.txt", "UTF-8");
+        // check if writers need to be closed or if wrapping in bufferedwriter is sufficient
+        PrintWriter resultWriter = new PrintWriter(new BufferedWriter(new FileWriter("results.txt")));
+        PrintWriter collWriter = new PrintWriter(new BufferedWriter(new FileWriter("collocations.txt")));
 
         for (String fileName : fileNames) {
             agigaReader = new StreamingDocumentReader(agigaPath + fileName, readingPrefs);
@@ -81,24 +69,10 @@ public class AgigaReader {
                 // Iterate over the sentences
                 for (AgigaSentence sent : sentences) {
                     if (count >= 2000000) {
-                        PrintWriter statWriter = new PrintWriter("stats.txt", "UTF-8");
-                        Map<Pattern, Integer> statMap = new HashMap<Pattern, Integer>();
-                        for (Pattern pattern : resultMap.keySet()) {
-                            statMap.put(pattern, resultMap.get(pattern).get("matches"));
-                        }
-                        statMap = MapUtil.sortByValue(statMap);
 
-                        for (Pattern pattern : statMap.keySet()) {
-                            if (pattern != null) {
-                                statWriter.println(String.format("%s\t%s\t%d\t%d", pattern,
-                                        resultMap.get(pattern).get("isNP") == 1 ? "NP" : "S",
-                                        resultMap.get(pattern).get("matches"),
-                                        resultMap.get(pattern).get("occurences")));
+                        // write the stats to a file
+                        Stats.writeStats(resultMap, "stats.txt");
 
-                            }
-                        }
-
-                        statWriter.close();
                         resultWriter.close();
                         collWriter.close();
                         System.exit(0);
@@ -108,35 +82,25 @@ public class AgigaReader {
                     // only retrieve one emotion trigger per sentence; if pattern is found, continue
                     boolean patternFound = false;
 
-                    StringBuilder sb = new StringBuilder();
                     List<AgigaToken> tokens = sent.getTokens();
+
                     // create a lemma string with pos and indices
-                    for (int j = 0; j < tokens.size(); j++) {
-                        AgigaToken tok = tokens.get(j);
-                        String lemma = tok.getLemma();
-                        String pos = tok.getPosTag();
-                        int idx = tok.getTokIdx();
-                        sb.append(lemma);
-                        sb.append("/");
-                        sb.append(pos);
-                        sb.append("/");
-                        sb.append(idx);
-                        sb.append(" ");
-                    }
-                    String sentence = sb.toString();
+                    String sentence = CreateStringFromTokens(tokens, true, true, true);
+
                     // extract sentence root
                     Tree root = sent.getStanfordContituencyTree();
 
-                    for (String emotion : map.keySet()) {
+                    for (String emotion : emotionMap.keySet()) {
                         // iterate over all the patterns
-                        for (Pattern pattern : map.get(emotion).keySet()) {
+                        for (Pattern pattern : emotionMap.get(emotion).keySet()) {
                             if (patternFound) {
                                 break;
                             }
                             Matcher m = pattern.matcher(sentence);
                             if (m.find()) {
-                                // counts occurences
-                                resultMap.get(pattern).put("occurences", resultMap.get(pattern).get("occurences") + 1);
+                                // counts occurrences
+                                resultMap.get(pattern).put(Enums.Stats.occurrences.toString(),
+                                        resultMap.get(pattern).get(Enums.Stats.occurrences.toString()) + 1);
                                 //System.out.println(String.format("#%d: %s", count, sentence));
 
                                 // index the leaves to retrieve indices
@@ -153,7 +117,7 @@ public class AgigaReader {
                             /*System.out.println(String.format("Pattern found: %s, constituent: %s",
                                     m.group(0), map.get(emotion).get(pattern).get("isNP") ? "NP" : "S"));*/
 
-                                // Penn string shows phrase structur tree
+                                // Penn string shows phrase structure tree
                                 // String pennString = root.pennString();
                                 // System.out.println(pennString);
 
@@ -166,9 +130,10 @@ public class AgigaReader {
                                     rightNode.ancestor(1, root).getSpan(), rightNode.toString()));
                             */
                                 // pattern can have a passive form; if so, experiencer and cause are reversed
-                                Boolean passiveExists = map.get(emotion).get(pattern).get("passiveExists");
+                                Boolean passiveExists = emotionMap.get(emotion).get(pattern).get(
+                                        Enums.Features.passiveExists.toString());
                                 // cause of emotion is either an NP or S
-                                Boolean isNP = map.get(emotion).get(pattern).get("isNP");
+                                Boolean isNP = emotionMap.get(emotion).get(pattern).get(Enums.Features.isNP.toString());
 
                                 String experiencer, cause;
                                 // if a passive form exists, experiencer is dependent, cause is subject
@@ -186,32 +151,29 @@ public class AgigaReader {
 
                                 if (experiencer != null && cause != null) {
                                     patternFound = true;
-                                    resultMap.get(pattern).put("matches", resultMap.get(pattern).get("matches") + 1);
+                                    resultMap.get(pattern).put(Enums.Stats.matches.toString(),
+                                            resultMap.get(pattern).get(Enums.Stats.matches.toString()) + 1);
                                     matches++;
 
-                                    // build clean string for collocations file
-                                    StringBuilder cleanBuilder = new StringBuilder();
-                                    for (int j = 0; j < tokens.size(); j++) {
-                                        cleanBuilder.append(tokens.get(j).getWord());
-                                        cleanBuilder.append(" ");
-                                    }
-                                    String cleanString = cleanBuilder.toString().trim();
-                                    collWriter.println(String.format("%d\t%s", count, cleanString));
+                                    // write clean sentence to collocations file
+                                    String cleanSent = CreateStringFromTokens(tokens, false, false, false);
+                                    collWriter.println(String.format("%d\t%s", count, cleanSent));
                                     collWriter.flush();
 
-                                    System.out.println(String.format("%d\t%s", count, cleanString));
+                                    System.out.println(String.format("%d\t%s", count, cleanSent));
                                     System.out.println(String.format("#%d.%d/%d Emotion: '%s', " +
                                                     "experiencer: '%s', cause: '%s'",
-                                            matches, resultMap.get(pattern).get("matches"),
-                                            resultMap.get(pattern).get("occurences"), emotion, experiencer, cause));
+                                            matches, resultMap.get(pattern).get(Enums.Stats.matches.toString()),
+                                            resultMap.get(pattern).get(
+                                                    Enums.Stats.occurrences.toString()), emotion, experiencer, cause));
 
                                         /* write output to file; output is of the form:
                                         sentence number tab pattern tab pattern matched tab number of matches tab
-                                        number of occurences tab emotion tab experiencer tab cause
+                                        number of occurrences tab emotion tab experiencer tab cause
                                         (number of total matches is line number)*/
                                     resultWriter.println(String.format("%d\t%s\t%d\t%d\t%s\t%s\t%s",
-                                            count, m.group(0), resultMap.get(pattern).get("matches"),
-                                            resultMap.get(pattern).get("occurences"), emotion, experiencer, cause));
+                                            count, m.group(0), resultMap.get(pattern).get(Enums.Stats.matches.toString()),
+                                            resultMap.get(pattern).get(Enums.Stats.matches.toString()), emotion, experiencer, cause));
                                     resultWriter.flush();
                                 }
                                 // System.out.println();
@@ -223,6 +185,34 @@ public class AgigaReader {
         }
         resultWriter.close();
         collWriter.close();
+    }
+
+    /**
+     * Create a string from a list of tokens. Tokens are separated by whitespace; part-of-speech and index are
+     * separated by a slash from tokens.
+     * @param tokens a list of Agiga tokens
+     * @param lemma a boolean indicating if tokens should be outputted as lemmas
+     * @param pos a boolean indicating if part-of-speech should be added
+     * @param idx a boolean indicating if indexes should be added
+     * @return the concatenated token string
+     */
+    public static String CreateStringFromTokens(List<AgigaToken> tokens, boolean lemma, boolean pos, boolean idx) {
+
+        StringBuilder sb = new StringBuilder();
+
+        for (AgigaToken tok : tokens) {
+            String lemmaString = tok.getLemma();
+            String posString = tok.getPosTag();
+            int idxInt = tok.getTokIdx();
+
+            if (lemma) { sb.append(lemmaString); }
+            else { sb.append(tok.getWord()); }
+            if (pos) { sb.append("/"); sb.append(posString); }
+            if (idx) { sb.append("/"); sb.append(idxInt); }
+            sb.append(" ");
+        }
+
+        return sb.toString().trim();
     }
 
     /**
@@ -250,43 +240,21 @@ public class AgigaReader {
                     if (child.getLeaves().contains((leaf))) {
                         break;
                     }
-
                     /*System.out.println(String.format("%s child: %s, ancestor: %s" +
                             "",left ? "left" : "right", child, leaf.ancestor(height, root)));*/
-
                     // label of child should equal label; SBAR label is also frequent
                     if (child.label().toString().equals(label) || child.label().toString().equals(label + "BAR")) {
                         IntPair span = child.getSpan();
 
-                        List<Integer> startIdxList = new ArrayList<Integer>();
-                        List<Integer> endIdxList = new ArrayList<Integer>();
+                        // lists of start indixes and end index of PPs and SBARs which should
+                        List<Integer> startIdxExcludeList = new ArrayList<Integer>();
+                        List<Integer> endIdxExcludeList = new ArrayList<Integer>();
                         if (withoutPP) {
-                            preorderTraverse(child, root, startIdxList, endIdxList);
+                            preorderTraverse(child, root, startIdxExcludeList, endIdxExcludeList);
                         }
-                        // building the experiencer or cause string, as lemma, without PPs
-                        StringBuilder sb = new StringBuilder();
-                        boolean inPP = false;
-                        for (int j = span.getSource(); j <= span.getTarget(); j++) {
-                            if (startIdxList.contains(j)) {
-                                inPP = true;
-                            }
-                            else if (endIdxList.contains(j)) {
-                                inPP = false;
-                                continue;
-                            }
-                            if (inPP) {
-                                continue;
-                            }
-                            AgigaToken token = tokens.get(j);
-                            String s = token.getWord();
-                            if (asLemma) {
-                                s = token.getLemma();
-                            }
-                            sb.append(" ");
-                            sb.append(s);
-                        }
-                        String s = sb.toString();
-                        return s.trim();
+                        // building the experiencer or cause string, as lemma
+                        return BuildStringFromSpan(tokens, span.getSource(), span.getTarget(), asLemma,
+                                startIdxExcludeList, endIdxExcludeList);
                     }
                 }
             } catch (ArrayIndexOutOfBoundsException exception) {
@@ -302,10 +270,10 @@ public class AgigaReader {
     /**
      * Performs preorder-traversal, i.e. depth-first search from a node. Extracts PPs and SBARs that are dominated
      * by the node. Nodes dominated by PPs or SBARs are skipped, so that PPs and SBARs don't overlap.
-     * @param node
-     * @param root
-     * @param startIdxList
-     * @param endIdxList
+     * @param node the start node from which traversal shoud be performed
+     * @param root the root node of the tree
+     * @param startIdxList list which stores start indexes of PPs and SBARs
+     * @param endIdxList list which stores end indexes of PPs and SBARs
      */
     public static void preorderTraverse(Tree node, Tree root, List<Integer> startIdxList, List<Integer> endIdxList) {
         if (!node.isPreTerminal()) {
@@ -322,5 +290,45 @@ public class AgigaReader {
                 }
             }
         }
+    }
+
+
+    /**
+     * Builds the experiencer or cause string. Excludes tokens that are specified in the spans of start and end indexes
+     * in the exclude lists.
+     * @param tokens a list of Agiga tokens
+     * @param start the start index of the span from which the string should be extracted
+     * @param end the end index of the span from which the string should be extracted
+     * @param asLemma if the string should be returned in lemma form
+     * @param startIdxExcludeList a list of indices that start spans that should be excluded
+     * @param endIdxExcludeList a list of indices that end spans that should be excluded
+     * @return a whitespace-delimited string in the specified span from which the specified spans have been removed
+     */
+    public static String BuildStringFromSpan(List<AgigaToken> tokens, int start, int end, boolean asLemma,
+                                             List<Integer> startIdxExcludeList, List<Integer> endIdxExcludeList) {
+
+        StringBuilder sb = new StringBuilder();
+        boolean inPP = false;
+        for (int i = start; i <= end; i++) {
+            if (startIdxExcludeList.contains(i)) {
+                inPP = true;
+            }
+            else if (endIdxExcludeList.contains(i)) {
+                inPP = false;
+                continue;
+            }
+            if (inPP) {
+                continue;
+            }
+            AgigaToken token = tokens.get(i);
+            String s = token.getWord();
+            if (asLemma) {
+                s = token.getLemma();
+            }
+            sb.append(" ");
+            sb.append(s);
+        }
+
+        return sb.toString().trim();
     }
 }
