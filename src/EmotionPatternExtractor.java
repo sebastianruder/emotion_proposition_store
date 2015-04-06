@@ -41,10 +41,12 @@ public class EmotionPatternExtractor {
      * storing these expressions as patterns in lists pertaining to the respective emotion.
      *
      * @param emotionTriggersFile: file path string of file containing emotion trigger expressions
+     * @param random: if a random pattern files should be written to test inter-annotator agreement
      * @return map (key: emotion word, value: map of emotion patterns and their respective right constituent)
      * @throws IOException
      */
-    public Map<String, Map<Pattern, Map<String, Boolean>>> extractEmotions(String emotionTriggersFile) throws IOException {
+    public Map<String, Map<Pattern, Map<String, Boolean>>> extractEmotions(File emotionTriggersFile, boolean random)
+            throws IOException {
 
         InputStream inputStream = new FileInputStream(emotionTriggersFile);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
@@ -52,7 +54,7 @@ public class EmotionPatternExtractor {
         // writer to write the created patterns
         PrintWriter writer = new PrintWriter("patterns.txt", "UTF-8");
 
-        // hashmap for writing patterns in a random order to measure annotator agreement
+        // hashmap for writing patterns in a random order to measure inter-annotator agreement
         Map<Double, String> randomPatternMap = new HashMap<Double, String>();
 
         String line = reader.readLine();
@@ -65,7 +67,7 @@ public class EmotionPatternExtractor {
             String[] lineList = line.split("\t");
             String emotionWord = lineList[0];
 
-            // randomPatternMap.put(Math.random(), lineList[1]);
+            if (random) { randomPatternMap.put(Math.random(), lineList[1]); }
 
             String[] patternWords = lineList[1].split(" ");
             StringBuilder patternBuilder = new StringBuilder();
@@ -126,17 +128,17 @@ public class EmotionPatternExtractor {
             writer.flush();
         }
         writer.close();
-        /*
-        PrintWriter randomWriter = new PrintWriter("random_patterns.txt", "UTF-8");
-        for (double d : asSortedList(randomPatternMap.keySet())) {
-            randomWriter.println(randomPatternMap.get(d));
+
+        if (random) {
+            PrintWriter randomWriter = new PrintWriter("random_patterns.txt", "UTF-8");
+            for (double d : asSortedList(randomPatternMap.keySet())) {
+                randomWriter.println(randomPatternMap.get(d));
+            }
+            randomWriter.close();
         }
-        randomWriter.close();
-        */
+
         return emotionMap;
     }
-
-    // TODO: 'fear for'
 
     /**
      * Creates the passive form if a passive form exists. Can be created with different prepositions, though 'by'
