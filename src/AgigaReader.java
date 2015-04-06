@@ -24,10 +24,45 @@ public class AgigaReader {
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-        // note: file name must end with /
-        String agigaPath = "/media/sebastian/Data/";
+
+
+        args = new String[3];
+        args[0] = "/media/sebastian/Data";
+        args[1] = "/home/sebastian/git/sentiment_analysis/pattern_templates.txt";
+        args[2] = "/home/sebastian/git/sentiment_analysis";
+        // java -jar sentiment.jar /media/sebastian/Data /home/sebastian/git/sentiment_analysis/pattern_templates.txt /home/sebastian/git/sentiment_analysis
+
+
+        if (args.length != 3) {
+            System.out.println("Too few or too many arguments. sentiment.jar takes exactly 3 arguments.\n" +
+                    "Usage: java -jar sentiment.jar gigawordDirPath patternTemplatesFilePath outDirPath");
+            System.exit(1);
+        }
+
+        File gigaDir = new File(args[0]);
+        if (!gigaDir.isDirectory()) {
+            System.out.println(String.format("{0} is no directory or directory doesn't exist.", args[0]));
+            System.exit(1);
+        }
+
+        File templatesFile = new File(args[1]);
+        if (!templatesFile.exists()) {
+            System.out.println(String.format("{0} doesn't exist.", args[1]));
+            System.exit(1);
+        }
+
+        File outDir = new File(args[2]);
+        if (!outDir.isDirectory()) {
+            System.out.println(String.format("{0} is no directory or directory doesn't exist.", args[2]));
+            System.exit(1);
+        }
+
+        // append / to file names if missing
+        String agigaPath = args[0].endsWith("/") ? args[0] : args[0] + "/";
+        String outPath = args[2].endsWith("/") ? args[2] : args[2] + "/";
+
         // filters .gz files
-        String[] fileNames = new File(agigaPath).list(new FilenameFilter() {
+        String[] fileNames = gigaDir.list(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
                 return name.endsWith(".gz");
@@ -46,9 +81,10 @@ public class AgigaReader {
         log.info("Parsing XML");
 
         // store the emotion-triggering patterns in a map
-        String filePath = "/home/sebastian/git/sentiment_analysis/pattern_templates.txt";
+
         EmotionPatternExtractor emotionExtractor = new EmotionPatternExtractor();
-        Map<String, Map<Pattern, Map<String, Boolean>>> emotionMap = emotionExtractor.extractEmotions(filePath);
+        Map<String, Map<Pattern, Map<String, Boolean>>> emotionMap =
+                emotionExtractor.extractEmotions(templatesFile, false);
 
         // map listing each pattern with the number of times it has found a successful match (experiencer + cause)
         Map<Pattern, Map<String, Integer>> resultMap = Stats.createResultMap(emotionMap);
@@ -57,8 +93,8 @@ public class AgigaReader {
         int count = 0; // count number of sentences spanning all documents
 
         // check if writers need to be closed or if wrapping in bufferedwriter is sufficient
-        PrintWriter resultWriter = new PrintWriter(new BufferedWriter(new FileWriter("results.txt")));
-        PrintWriter collWriter = new PrintWriter(new BufferedWriter(new FileWriter("collocations.txt")));
+        PrintWriter resultWriter = new PrintWriter(new BufferedWriter(new FileWriter(outPath + "results.txt")));
+        PrintWriter collWriter = new PrintWriter(new BufferedWriter(new FileWriter(outPath + "collocations.txt")));
 
         for (String fileName : fileNames) {
             agigaReader = new StreamingDocumentReader(agigaPath + fileName, readingPrefs);
@@ -71,7 +107,7 @@ public class AgigaReader {
                     if (count >= 2000000) {
 
                         // write the stats to a file
-                        Stats.writeStats(resultMap, "stats.txt");
+                        Stats.writeStats(resultMap, outPath + "stats.txt");
 
                         resultWriter.close();
                         collWriter.close();
@@ -85,7 +121,7 @@ public class AgigaReader {
                     List<AgigaToken> tokens = sent.getTokens();
 
                     // create a lemma string with pos and indices
-                    String sentence = CreateStringFromTokens(tokens, true, true, true);
+                    String sentence = createStringFromTokens(tokens, true, true, true);
 
                     // extract sentence root
                     Tree root = sent.getStanfordContituencyTree();
@@ -156,7 +192,7 @@ public class AgigaReader {
                                     matches++;
 
                                     // write clean sentence to collocations file
-                                    String cleanSent = CreateStringFromTokens(tokens, false, false, false);
+                                    String cleanSent = createStringFromTokens(tokens, false, false, false);
                                     collWriter.println(String.format("%d\t%s", count, cleanSent));
                                     collWriter.flush();
 
@@ -196,7 +232,7 @@ public class AgigaReader {
      * @param idx a boolean indicating if indexes should be added
      * @return the concatenated token string
      */
-    public static String CreateStringFromTokens(List<AgigaToken> tokens, boolean lemma, boolean pos, boolean idx) {
+    public static String createStringFromTokens(List<AgigaToken> tokens, boolean lemma, boolean pos, boolean idx) {
 
         StringBuilder sb = new StringBuilder();
 
@@ -253,7 +289,7 @@ public class AgigaReader {
                             preorderTraverse(child, root, startIdxExcludeList, endIdxExcludeList);
                         }
                         // building the experiencer or cause string, as lemma
-                        return BuildStringFromSpan(tokens, span.getSource(), span.getTarget(), asLemma,
+                        return buildStringFromSpan(tokens, span.getSource(), span.getTarget(), asLemma,
                                 startIdxExcludeList, endIdxExcludeList);
                     }
                 }
@@ -304,7 +340,7 @@ public class AgigaReader {
      * @param endIdxExcludeList a list of indices that end spans that should be excluded
      * @return a whitespace-delimited string in the specified span from which the specified spans have been removed
      */
-    public static String BuildStringFromSpan(List<AgigaToken> tokens, int start, int end, boolean asLemma,
+    public static String buildStringFromSpan(List<AgigaToken> tokens, int start, int end, boolean asLemma,
                                              List<Integer> startIdxExcludeList, List<Integer> endIdxExcludeList) {
 
         StringBuilder sb = new StringBuilder();
