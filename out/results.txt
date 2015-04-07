@@ -1,0 +1,23 @@
+234	await/VBZ/8	1	1	anticipation	he	trial
+389	fear/VBP/3	1	1	fear	Clinton administration official	that could grow
+407	expect/VBD/12 that/IN/13	1	1	anticipation	few outsider	Milosevic would attempt the wholesale removal
+554	embarrass/VBG/13	1	1	fear	we	ourselves
+714	expect/VBD/1	2	2	anticipation	some	Shurmur to retire , what
+742	take/VBZ/1 pleasure/NN/2 in/IN/3	1	1	joy	McCoy	pleasure
+873	expect/VBZ/13	3	3	anticipation	he	to continue put in plenty
+972	enjoy/VBZ/3	1	1	joy	the KLA	widespread support
+999	enjoy/VBZ/3	2	2	joy	the KLA	widespread support
+1057	annoy/VBD/3	1	1	anger	he	Milutin Garasanin
+1112	annoy/VBD/3	2	2	anger	he	Milutin Garasanin
+1168	entertain/VBD/15	1	1	joy	its viewer	Belgrade state television
+1203	entertain/VBD/15	2	2	joy	its viewer	Belgrade state television
+1316	enjoy/VBD/8	3	3	joy	the lake	a 50-50 split
+1368	await/VBG/15	2	2	anticipation	3,000 german soldier	order
+1370	enjoy/VBG/21	4	4	joy	a movement	national fame
+1415	await/VBG/15	3	3	anticipation	3,000 german soldier	order
+1417	enjoy/VBG/21	5	5	joy	a movement	national fame
+1465	attract/VBG/46	1	1	joy	ever-increasing number	this week
+1485	attract/VBG/46	2	2	joy	ever-increasing number	this week
+1584	predict/VBZ/16 that/IN/17	1	1	anticipation	the federal government 's essential computer system	Americans will have difficulty reach some foreign country next year ,
+1725	surprise/VBD/7	1	1	surprise	many	he
+1726	stun/VBD/2	1	1	surprise	the industry	he
