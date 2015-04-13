@@ -3,7 +3,7 @@ import java.util.*;
 /**
  * Taken from http://stackoverflow.com/questions/109383/how-to-sort-a-mapkey-value-on-the-values-in-java on 29/10/14.
  */
-public class MapUtil
+public class ExtensionMethods
 {
     public static <K, V extends Comparable<? super V>> Map<K, V>
     sortByValue( Map<K, V> map )
