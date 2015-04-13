@@ -1,0 +1,662 @@
+expect that	S	2928
+fear that	S	1153
+enjoy	NP	1148
+predict that	S	988
+attract	NP	655
+rely on	NP	624
+await	NP	611
+expect	NP	580
+assume that	S	555
+avoid	NP	506
+prepare for	NP	456
+be afraid that	S	430
+hate	NP	386
+concern	NP	374
+fear	NP	367
+worry about	NP	337
+hate that	S	321
+enjoy that	S	304
+regret that	S	290
+look forward to	NP	283
+encourage	NP	263
+predict	NP	244
+be proud of	NP	235
+inspire	NP	233
+assume	NP	228
+be lucky that	S	211
+surprise	NP	211
+bother	NP	192
+anticipate	NP	185
+hope for	NP	170
+scare	NP	170
+provoke	NP	157
+cheer	NP	150
+be hopeful that	S	144
+worry	NP	140
+trust	NP	126
+stun	NP	125
+look forward to	S	119
+regret	NP	116
+overwhelm	NP	115
+shock	NP	109
+dislike	NP	107
+be afraid of	NP	107
+appeal	NP	104
+discourage	NP	103
+be anxious that	S	98
+entertain	NP	96
+relish	NP	95
+impress	NP	95
+shun	NP	87
+count on	NP	81
+harass	NP	81
+be optimistic that	S	77
+reassure	NP	76
+mourn	NP	72
+trust that	S	71
+foresee	NP	67
+count on	S	67
+irritate	NP	64
+be intent on	S	64
+be angry that	S	63
+infuriate	NP	63
+be sad that erb	S	63
+forecast	NP	63
+alienate	NP	60
+savor	NP	60
+devastate	NP	57
+confuse	NP	54
+be disappoint that	NP	54
+upset	NP	54
+please	NP	54
+satisfy	NP	53
+forecast that	S	51
+be unhappy that	S	49
+be happy about	NP	48
+be enthusiastic about	NP	48
+offend	NP	46
+crave	NP	45
+frighten	NP	43
+annoy	NP	41
+frustrate	NP	41
+be proud of	S	41
+disturb	NP	40
+long for	NP	40
+grate	NP	38
+arouse	NP	37
+despise	NP	36
+insult	NP	35
+baffle	NP	35
+loathe	NP	35
+hope for	S	35
+covet	NP	33
+captivate	NP	33
+deplore	NP	33
+excite	NP	32
+delight	NP	31
+embarrass	NP	31
+pine for	NP	31
+wow	NP	31
+trouble	NP	31
+rankle	NP	30
+depress	NP	29
+puzzle	NP	29
+aspire to	NP	29
+yearn for	NP	28
+fret about	NP	28
+dread	NP	27
+rattle	NP	27
+confound	NP	27
+enrage	NP	27
+unnerve	NP	26
+amaze	NP	24
+stagger	NP	24
+fascinate	NP	24
+repel	NP	23
+be frightened that	S	23
+exacerbate	NP	23
+disappoint	NP	22
+inflame	NP	22
+soothe	NP	22
+aggravate	NP	22
+startle	NP	21
+be satisfy that	S	21
+intrigue	NP	21
+be curious about	NP	21
+amuse	NP	20
+intimidate	NP	20
+irk	NP	20
+be scared of	NP	20
+scorn	NP	19
+sting	NP	19
+afflict	NP	19
+be eager for	NP	19
+shame	NP	18
+comfort	NP	18
+envy	NP	18
+disdain	NP	18
+outrage	NP	18
+be unhappy about	NP	18
+boggle	NP	17
+be angry about	S	17
+be scared that	S	17
+torment	NP	17
+abhor	NP	17
+mourn that	S	16
+desire	NP	16
+humiliate	NP	16
+be ecstatic that	S	16
+calm	NP	15
+await	S	15
+ache for	NP	14
+be anxious about	NP	14
+be nervous about	NP	14
+horrify	NP	14
+deplore that	S	14
+enchant	NP	13
+be thrill that	S	13
+rejoice	S	13
+be mad about	NP	12
+agonize	NP	12
+be ashamed of	S	12
+be curious about	S	12
+hunger for	NP	12
+disgust	NP	12
+agonize over	NP	11
+spook	NP	11
+fulfill	NP	11
+terrify	NP	10
+aspire	NP	10
+alarm	NP	9
+be confident of	NP	9
+be upset by	NP	9
+charm	NP	9
+trust in	NP	9
+repulse	NP	8
+lust after	NP	8
+be stun that	S	8
+be ashamed of	NP	8
+be alarm that	S	8
+thrill	NP	8
+be apprehensive about	S	8
+astound	NP	8
+be furious about	NP	8
+displease	NP	8
+menace	NP	8
+be unhappy that	NP	7
+bore	NP	7
+antagonize	NP	7
+be elate that	S	7
+astonish	NP	6
+take comfort in	NP	6
+demoralize	NP	6
+be confident of	S	6
+faze	NP	6
+be angry at	S	6
+prepare for	S	6
+mystify	NP	6
+sadden	NP	6
+exasperate	NP	6
+grieve that	S	6
+gall	NP	5
+be thrill by	NP	5
+be terrify that	S	5
+unsettle	NP	5
+be keen on	S	5
+dazzle	NP	5
+embitter	NP	5
+be miserable that	S	5
+be anxious for	NP	5
+foresee that	S	4
+be elated that	S	4
+be disappoint by	NP	4
+be happy about	S	4
+take pleasure in	S	4
+thirst for	NP	4
+rue	NP	4
+dishearten	NP	4
+lust for	NP	4
+be scare that	S	4
+distress	NP	4
+vex	NP	4
+be alarm by	NP	4
+be devastate by	NP	4
+gratify	NP	4
+be apprehensive that	S	4
+be envious of	NP	3
+be embarrass for	NP	3
+be flabbergast that	S	3
+traumatize	NP	3
+hearten	NP	3
+be sadden that	S	3
+be startle by	NP	3
+take pleasure in	NP	3
+be bewilder that	S	2
+mortify	NP	2
+be fascinate that	S	2
+nauseate	NP	2
+floor	NP	2
+be incense that	S	2
+disillusion	NP	2
+be satisfy by	NP	2
+be confuse by	NP	2
+be angry with	S	2
+placate	NP	2
+enrapture	NP	2
+elate	NP	2
+be irate that	S	2
+be disturb by	NP	2
+dismay	NP	2
+disconcert	NP	2
+revolt	NP	2
+be bore by	NP	2
+be perplex that	S	2
+enthrall	NP	1
+rile	NP	1
+sicken	NP	1
+be incense by	NP	1
+be chagrin that	S	1
+be embarrass about	NP	1
+be furious about	S	1
+be charm that	S	1
+perplex	NP	1
+be baffle by	NP	1
+be frustrate by	NP	1
+bewilder	NP	1
+repent	NP	1
+flummox	NP	1
+take comfort in	S	1
+nettle	NP	1
+hanker for	NP	1
+be amaze that	S	1
+be exasperate that	S	1
+awe	NP	1
+be worry that	S	1
+be horrify that	S	1
+fluster	NP	1
+be bother by	NP	1
+stupefy	NP	1
+be puzzle that	S	1
+perturb	NP	1
+be floor by	NP	1
+madden	NP	1
+be encourage that	S	1
+fuss about	NP	1
+be surprise by	NP	1
+dissatisfy	NP	1
+be frustrate with	NP	1
+long to	S	1
+affront	NP	1
+be mad about	S	1
+be insult by	NP	0
+be antagonize that	S	0
+be agonize that	S	0
+be annoy by	NP	0
+be sting by	NP	0
+be stupefy that	S	0
+be fluster that	S	0
+be menace that	S	0
+be revolt by	NP	0
+be enthrall by	NP	0
+be appeal by	NP	0
+be devastate that	S	0
+be affront that	S	0
+be floor that	S	0
+be worry by	NP	0
+be stagger by	NP	0
+be annoy that	S	0
+be disconcert that	S	0
+be gratify that	S	0
+nonplus	NP	0
+be desperate to	S	0
+be spook that	S	0
+be mystify that	S	0
+be overwhelm by	NP	0
+be abase by	NP	0
+exhilarate	NP	0
+be abase that	S	0
+have an itch to	NP	0
+be befuddle by	NP	0
+be awe by	NP	0
+be obsess with	NP	0
+be perturb that	S	0
+be repel by	NP	0
+be dismay by	NP	0
+be flabbergast by	NP	0
+be disgust that	S	0
+be infuriate that	S	0
+hope for	S	0
+be overjoyed that	S	0
+be unhappy about	S	0
+feel bitter about	NP	0
+be enthrall that	S	0
+be shame that	S	0
+be exhilarate by	NP	0
+make a fuss of	NP	0
+put off	NP	0
+feel sorrow that	S	0
+be perplex by	NP	0
+be aggravate by	NP	0
+be chagrin by	NP	0
+be reassure by	NP	0
+be frighten that	S	0
+be worry about	S	0
+be gratify by	NP	0
+be provoke by	NP	0
+be excite about	NP	0
+be encourage by	NP	0
+be dishearten by	NP	0
+be charm by	NP	0
+charm	NP	0
+be calm by	NP	0
+be excite that	S	0
+be trouble that	S	0
+be astonish at	NP	0
+take pleasure in	S	0
+be fascinate with	NP	0
+be entertain by	NP	0
+be dazzle by	NP	0
+be averse to	NP	0
+be confound by	NP	0
+turn off	NP	0
+be shock that	S	0
+be antagonize by	NP	0
+be gall that	S	0
+be offend that	S	0
+be put that	S	0
+incense	NP	0
+be outrage by	NP	0
+be surprise that	S	0
+be disgust by	NP	0
+be dazzle that	S	0
+be gladden by	NP	0
+be demoralize by	NP	0
+be confound that	S	0
+be awe that	S	0
+discourage	NP	0
+be inflame by	NP	0
+abash	NP	0
+be unnerve by	NP	0
+be petrify by	NP	0
+be overwhelm that	S	0
+be dispirit by	NP	0
+be rile that	S	0
+be irritate that	S	0
+be be that	S	0
+be astonish that	S	0
+be hearten by	NP	0
+be dumbfound by	NP	0
+be annoy that	S	0
+be irk by	NP	0
+be inflame that	S	0
+be discomfit by	NP	0
+abase	NP	0
+be mollify that	S	0
+be affront by	NP	0
+be bore that	S	0
+appall	NP	0
+be afflict that	S	0
+look to	NP	0
+be content that	S	0
+be vex that	S	0
+be conciliate that	S	0
+be shock that	S	0
+gladden	NP	0
+be nonplus that	S	0
+be infuriate by	NP	0
+be dispirit that	S	0
+abominate	NP	0
+be comfort that	S	0
+be stagger that	S	0
+be captivate that	S	0
+be arouse that	S	0
+be estrange that	S	0
+aggrieve	NP	0
+be disturb that	S	0
+unsettle	NP	0
+be intimidate by	NP	0
+disappoint	NP	0
+be calm that	S	0
+be eager to	S	0
+be insult that	S	0
+be revolt that	S	0
+be put by	NP	0
+be shock by	NP	0
+be displease by	NP	0
+be madden by	NP	0
+be alienate that	S	0
+count on	NP	0
+savour	NP	0
+be cheer that	S	0
+be mortify by	NP	0
+be flummox by	NP	0
+be harass that	S	0
+be demoralise that	S	0
+be fluster by	NP	0
+be abash by	NP	0
+be disappoint that	S	0
+place reliance on	NP	0
+be arouse by	NP	0
+befuddle	NP	0
+be gutted about	NP	0
+be amuse that	S	0
+be traumatize by	NP	0
+be fulfill that	S	0
+be nettle that	S	0
+be puzzle by	NP	0
+be shock by	NP	0
+be glad that	S	0
+be awe by	NP	0
+be exacerbate that	S	0
+be hearten that	S	0
+be estrange by	NP	0
+be outrage that	S	0
+be repel that	S	0
+be appall that	S	0
+be bewitch that	S	0
+be delight by	NP	0
+be abash that	S	0
+disenchant	NP	0
+be please that	S	0
+be displease that	S	0
+be exasperate by	NP	0
+be discourage by	NP	0
+be antagonize that	S	0
+be wow by	NP	0
+be unsettle that	S	0
+be appall by	NP	0
+be grate by	NP	0
+be frustrate that	S	0
+chagrin	NP	0
+be baffle that	S	0
+be captivate by	NP	0
+be discourage that	S	0
+be elate by	NP	0
+be disillusion by	NP	0
+be nauseate by	NP	0
+be astound by	NP	0
+be intrigue by	NP	0
+conciliate	NP	0
+be rattle by	NP	0
+be reassure that	S	0
+be astonish by	NP	0
+be keen to	S	0
+be cheer by	NP	0
+be frighten by	NP	0
+be intimidate that	S	0
+be confuse that	S	0
+estrange	NP	0
+disgust	NP	0
+solace	NP	0
+be wow that	S	0
+be keen on	NP	0
+be enchant by	NP	0
+be inspire that	S	0
+bewitch	NP	0
+be dismay that	S	0
+be sadden by	NP	0
+antagonize	NP	0
+annoy	NP	0
+flabbergast	NP	0
+be concerned about	NP	0
+be turn by	NP	0
+be rile by	NP	0
+be intrigue that	S	0
+be provoke that	S	0
+be loath to	NP	0
+be sting that	S	0
+be beguile by	NP	0
+be repulse that	S	0
+be startle that	S	0
+demoralise	NP	0
+be menace by	NP	0
+be irritate by	NP	0
+be enrage by	NP	0
+be embitter that	S	0
+be dissatisfy that	S	0
+agitate	NP	0
+be amaze by	NP	0
+be mortify that	S	0
+shock	NP	0
+be excite by	NP	0
+be placate by	NP	0
+be enrage that	S	0
+be torment by	NP	0
+be mollify by	NP	0
+hanker after	NP	0
+be concerned about	S	0
+be turn that	S	0
+be dumbfound that	S	0
+be befuddle that	S	0
+be trouble by	NP	0
+be aggrieve by	NP	0
+be boggle by	NP	0
+be attract by	NP	0
+be astound that	S	0
+be bother that	S	0
+be inspire by	NP	0
+be rankle by	NP	0
+be offend by	NP	0
+mollify	NP	0
+be demoralise by	NP	0
+be fulfill by	NP	0
+be unsettle that	S	0
+be humiliate by	NP	0
+agonise over	NP	0
+be disconcert by	NP	0
+be discomfit that	S	0
+be charm by	NP	0
+be disappoint by	NP	0
+be enrapture that	S	0
+be hesitant to	S	0
+be distress that	S	0
+be comfort by	NP	0
+be depress that	S	0
+be torment that	S	0
+be gladden that	S	0
+be repulse by	NP	0
+be terrify by	NP	0
+be petrify that	S	0
+discomfit	NP	0
+be agonize by	NP	0
+be exhilarate that	S	0
+be arouse by	NP	0
+revel in	NP	0
+be boggle that	S	0
+be happy that	S	0
+be sicken that	S	0
+be mystify by	NP	0
+awe	NP	0
+be solace that	S	0
+be agitate by	NP	0
+be discourage by	NP	0
+be faze by	NP	0
+be unsettle by	NP	0
+be dissatisfy by	NP	0
+dumbfound	NP	0
+be rankle that	S	0
+petrify	NP	0
+be harass by	NP	0
+be beguile that	S	0
+be sicken by	NP	0
+be worry about	NP	0
+be spook by	NP	0
+be afflict by	NP	0
+be unsettle by	NP	0
+be rattle that	S	0
+be disgust by	NP	0
+be embitter by	NP	0
+be solace by	NP	0
+be appall at	NP	0
+be aggravate that	S	0
+be impress by	NP	0
+be grate that	S	0
+be delight that	S	0
+be enrapture by	NP	0
+be flummox that	S	0
+be appeal that	S	0
+execrate	NP	0
+be alienate by	NP	0
+be disenchant that	S	0
+be madden that	S	0
+be discourage that	S	0
+be amuse by	NP	0
+be placate that	S	0
+be upset that	S	0
+be gall by	NP	0
+make a fuss about	NP	0
+be demoralize that	S	0
+crave for	NP	0
+be nauseate that	S	0
+be please by	NP	0
+be aggrieve that	S	0
+be perturb by	NP	0
+be antagonize by	NP	0
+be irk that	S	0
+be disappoint that	S	0
+be arouse that	S	0
+be shame by	NP	0
+be joyful about	S	0
+be dishearten that	S	0
+be soothe that	S	0
+be attract that	S	0
+be scare by	NP	0
+be exacerbate by	NP	0
+be humiliate that	S	0
+be disillusion that	S	0
+be joyful about	NP	0
+aspire after	NP	0
+be agitate that	S	0
+arouse	NP	0
+be charm that	S	0
+be conciliate by	NP	0
+be bewitch by	NP	0
+dispirit	NP	0
+be bewilder by	NP	0
+be be by	NP	0
+be annoy by	NP	0
+be traumatize that	S	0
+be nonplus by	NP	0
+make a fuss over	NP	0
+be entertain that	S	0
+be indignant over	NP	0
+be stun by	NP	0
+be wrathful that	S	0
+be unnerve that	S	0
+be stupefy by	NP	0
+be depress by	NP	0
+be horrify by	NP	0
+be disenchant by	NP	0
+be impress that	S	0
+be melancholic that	S	0
+be enchant that	S	0
+beguile	NP	0
+be fascinate by	NP	0
+be vex by	NP	0
+be disgust that	S	0
+contemn	NP	0
+be faze that	S	0
+be awe that	S	0
+be soothe by	NP	0
+be distress by	NP	0
+be nettle by	NP	0
