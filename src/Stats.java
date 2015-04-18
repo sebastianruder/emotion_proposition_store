@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -20,7 +21,6 @@ public class Stats {
         for (String emotion: emotionMap.keySet()) {
             for (Pattern pattern : emotionMap.get(emotion).keySet()) {
                 Map<String, Integer> integerMap = new ArrayMap<String, Integer>();
-                integerMap.put(Enums.Stats.occurrences.toString(), 0);
                 integerMap.put(Enums.Stats.matches.toString(), 0);
                 integerMap.put(Enums.Features.isNP.toString(),
                         emotionMap.get(emotion).get(pattern).get(Enums.Features.isNP.toString()) ? 1 : 0);
@@ -39,20 +39,27 @@ public class Stats {
      */
     public static void writeStats(Map<Pattern, Map<String, Integer>> resultMap, String fileName) throws IOException {
 
-        PrintWriter statWriter = new PrintWriter(new BufferedWriter(new FileWriter("stats.txt")));
+        PrintWriter statWriter = new PrintWriter(new BufferedWriter(new FileWriter(fileName)));
 
         Map<Pattern, Integer> statMap = new HashMap<Pattern, Integer>();
         for (Pattern pattern : resultMap.keySet()) {
             statMap.put(pattern, resultMap.get(pattern).get(Enums.Stats.matches.toString()));
         }
-        statMap = MapUtil.sortByValue(statMap);
+        statMap = ExtensionMethods.sortByValue(statMap);
+        Pattern patternCleaner = Pattern.compile("[a-z]+?(?=/)");
 
         for (Pattern pattern : statMap.keySet()) {
             if (pattern != null) {
-                statWriter.println(String.format("%s\t%s\t%d\t%d", pattern,
+                StringBuilder sb = new StringBuilder();
+                Matcher m = patternCleaner.matcher(pattern.toString());
+                while (m.find()) {
+                    sb.append(m.group().toString());
+                    sb.append(" ");
+                }
+
+                statWriter.printf("%s\t%s\t%d\n", sb.toString().trim(),
                         resultMap.get(pattern).get(Enums.Features.isNP.toString()) == 1 ? "NP" : "S",
-                        resultMap.get(pattern).get(Enums.Stats.matches.toString()),
-                        resultMap.get(pattern).get(Enums.Stats.occurrences.toString())));
+                        resultMap.get(pattern).get(Enums.Stats.matches.toString()));
             }
         }
 
