@@ -1,9 +1,7 @@
-import edu.jhu.agiga.Util;
 import edu.stanford.nlp.util.ArrayMap;
 
 import java.io.*;
 import java.util.*;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
@@ -41,18 +39,19 @@ public class EmotionPatternExtractor {
      * storing these expressions as patterns in lists pertaining to the respective emotion.
      *
      * @param emotionTriggersFile: file path string of file containing emotion trigger expressions
+     * @param outPath: output path of the files
      * @param random: if a random pattern files should be written to test inter-annotator agreement
      * @return map (key: emotion word, value: map of emotion patterns and their respective right constituent)
      * @throws IOException
      */
-    public Map<String, Map<Pattern, Map<String, Boolean>>> extractEmotions(File emotionTriggersFile, boolean random)
+    public Map<String, Map<Pattern, Map<String, Boolean>>> extractEmotions(File emotionTriggersFile, String outPath, boolean random)
             throws IOException {
 
         InputStream inputStream = new FileInputStream(emotionTriggersFile);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
 
         // writer to write the created patterns
-        PrintWriter writer = new PrintWriter("patterns.txt", "UTF-8");
+        PrintWriter writer = new PrintWriter(outPath + "patterns.txt", "UTF-8");
 
         // hashmap for writing patterns in a random order to measure inter-annotator agreement
         Map<Double, String> randomPatternMap = new HashMap<Double, String>();
@@ -67,12 +66,10 @@ public class EmotionPatternExtractor {
             String[] lineList = line.split("\t");
             String emotionWord = lineList[0];
 
-            if (random) { randomPatternMap.put(Math.random(), lineList[1]); }
+            if (random) { randomPatternMap.put(Math.random(), emotionWord + "\t" + lineList[1]); }
 
             String[] patternWords = lineList[1].split(" ");
             StringBuilder patternBuilder = new StringBuilder();
-
-            Boolean passiveExists = Boolean.valueOf(lineList[3]);
 
             // pattern remembers the head, i.e. the verb or adjective so it can be later retrieved more easily
             for (String word : patternWords) {
@@ -102,19 +99,23 @@ public class EmotionPatternExtractor {
                 patternBuilder.append("/[0-9]+");
             }
 
-            Pattern emotionPattern = Pattern.compile(patternBuilder.toString().trim());
+            // look-behind for whitespace, so that words are only matched separately, e.g. not "grate" in "integrate"
+            Pattern emotionPattern = Pattern.compile("(?<= )" + patternBuilder.toString().trim());
             // extract feature if cause is an NP or an S
-            Boolean isNP = lineList[2].equals("NP") ? true : false;
+            Boolean isNP = lineList[2].equals("NP");
 
-            writer.println(String.format(
-                    "%s\t%s\t%s", emotionWord, patternBuilder.toString().trim(), isNP ? "NP" : "S"));
+            writer.printf("%s\t%s\t%s\n", emotionWord, patternBuilder.toString().trim(), isNP ? "NP" : "S");
 
             Map<String, Boolean> booleanMap = new ArrayMap<String, Boolean>();
             // puts boolean indicating if cause is an NP or not
-            booleanMap.put("isNP", isNP);
-            // puts boolean indicating if pattern is passive or not
-            booleanMap.put("passiveExists", passiveExists);
+            booleanMap.put(Enums.Features.isNP.toString(), isNP);
+
+            Boolean passiveExists = Boolean.valueOf(lineList[3]);
+
+            // puts boolean indicating if pattern is passive; always false; passive patterns with true are created
+            booleanMap.put(Enums.Features.orderIsReversed.toString(), passiveExists);
             emotionMap.get(emotionWord).put(emotionPattern, booleanMap);
+
 
             // creates passive pattern if a passive form exists
             if (passiveExists) {
@@ -130,14 +131,32 @@ public class EmotionPatternExtractor {
         writer.close();
 
         if (random) {
-            PrintWriter randomWriter = new PrintWriter("random_patterns.txt", "UTF-8");
-            for (double d : asSortedList(randomPatternMap.keySet())) {
-                randomWriter.println(randomPatternMap.get(d));
-            }
-            randomWriter.close();
+            writeRandom(randomPatternMap, outPath);
         }
 
         return emotionMap;
+    }
+
+    /**
+     * Given a map of random numbers and strings containing emotion words and the patterns, writes the patterns
+     * randomly to a file to check inter-annotator agreement. Creates a second file for cross-checking.
+     * @param randomPatternMap map of doubles (random numbers) and strings (emotion_word tab pattern)
+     * @param outPath
+     * @throws IOException
+     */
+    private void writeRandom(Map<Double, String> randomPatternMap, String outPath) throws IOException {
+
+        PrintWriter randomWriter = new PrintWriter(outPath + "random_patterns.txt", "UTF-8");
+        PrintWriter randomCheckWriter = new PrintWriter(outPath + "random_check_patterns.txt", "UTF-8");
+        String columnNames = "emotion word\tpattern";
+        randomWriter.println(columnNames);
+        randomCheckWriter.println(columnNames);
+        for (double d : ExtensionMethods.asSortedList(randomPatternMap.keySet())) {
+            randomWriter.println("\t" + randomPatternMap.get(d).split("\t")[1]);
+            randomCheckWriter.println(randomPatternMap.get(d));
+        }
+        randomWriter.close();
+        randomCheckWriter.close();
     }
 
     /**
@@ -149,23 +168,17 @@ public class EmotionPatternExtractor {
      * @param emotionWord: the emotion word
      * @param emotionMap: the emotion map
      */
-    public static void createPassive(String prep, String passiveLemmaForm, String emotionWord, PrintWriter writer,
+    private static void createPassive(String prep, String passiveLemmaForm, String emotionWord, PrintWriter writer,
                                       Map<String, Map<Pattern, Map<String, Boolean>>> emotionMap) {
-        String pattern = String.format("be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? %s/[0-9]+ %s/IN/[0-9]+",
+        String pattern = String.format("(?<= )be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? %s/[0-9]+ %s/IN/[0-9]+",
                 passiveLemmaForm, prep);
         Pattern emotionPattern = Pattern.compile(pattern);
         Map<String, Boolean> booleanMap = new ArrayMap<String, Boolean>();
         // if preposition is by, cause of emotion is an NP; if preposition is that, cause is a clause, i.e. S
-        booleanMap.put("isNP", prep.equals("by") ? true : false);
-        booleanMap.put("passiveExists", false);
+        booleanMap.put(Enums.Features.isNP.toString(), prep.equals("by"));
+        booleanMap.put(Enums.Features.orderIsReversed.toString(), false);
 
         emotionMap.get(emotionWord).put(emotionPattern, booleanMap);
         writer.println(String.format("%s\t%s\t%s", emotionWord, pattern, prep.equals("by") ? "NP" : "S"));
-    }
-
-    public static <T extends Comparable<? super T>> List<T> asSortedList(Collection<T> c) {
-        List<T> list = new ArrayList<T>(c);
-        java.util.Collections.sort(list);
-        return list;
     }
 }
