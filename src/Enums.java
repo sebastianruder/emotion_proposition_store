@@ -4,11 +4,11 @@
 public class Enums {
 
     public enum Stats {
-        occurrences, matches
+        matches
     }
 
     public enum Features {
-        isNP, passiveExists
+        isNP, orderIsReversed
     }
 
 
