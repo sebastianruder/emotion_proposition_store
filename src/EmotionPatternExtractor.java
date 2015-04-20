@@ -24,14 +24,14 @@ public class EmotionPatternExtractor {
      * Initializes emotion map storing patterns pertaining to Plutchik's eight basic emotions
      */
     public EmotionPatternExtractor() {
-        emotionMap.put("joy", joyPatterns);
-        emotionMap.put("trust", trustPatterns);
-        emotionMap.put("fear", fearPatterns);
-        emotionMap.put("surprise", surprisePatterns);
-        emotionMap.put("sadness", sadnessPatterns);
-        emotionMap.put("disgust", disgustPatterns);
-        emotionMap.put("anger", angerPatterns);
-        emotionMap.put("anticipation", anticipationPatterns);
+        emotionMap.put(Enums.Emotions.joy.toString(), joyPatterns);
+        emotionMap.put(Enums.Emotions.trust.toString(), trustPatterns);
+        emotionMap.put(Enums.Emotions.fear.toString(), fearPatterns);
+        emotionMap.put(Enums.Emotions.surprise.toString(), surprisePatterns);
+        emotionMap.put(Enums.Emotions.sadness.toString(), sadnessPatterns);
+        emotionMap.put(Enums.Emotions.disgust.toString(), disgustPatterns);
+        emotionMap.put(Enums.Emotions.anger.toString(), angerPatterns);
+        emotionMap.put(Enums.Emotions.anticipation.toString(), anticipationPatterns);
     }
 
     /**
@@ -66,7 +66,7 @@ public class EmotionPatternExtractor {
             String[] lineList = line.split("\t");
             String emotionWord = lineList[0];
 
-            if (random) { randomPatternMap.put(Math.random(), emotionWord + "\t" + lineList[1]); }
+            if (random) { randomPatternMap.put(Math.random(), emotionWord + "\t" + lineList[1].split("/")[0]); }
 
             String[] patternWords = lineList[1].split(" ");
             StringBuilder patternBuilder = new StringBuilder();
@@ -115,7 +115,6 @@ public class EmotionPatternExtractor {
             // puts boolean indicating if pattern is passive; always false; passive patterns with true are created
             booleanMap.put(Enums.Features.orderIsReversed.toString(), passiveExists);
             emotionMap.get(emotionWord).put(emotionPattern, booleanMap);
-
 
             // creates passive pattern if a passive form exists
             if (passiveExists) {
