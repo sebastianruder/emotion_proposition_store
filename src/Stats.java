@@ -14,17 +14,18 @@ import java.util.regex.Pattern;
  */
 public class Stats {
 
-    public static Map<Pattern, Map<String, Integer>> createResultMap(
+    public static Map<Pattern, Map<String, String>> createResultMap(
             Map<String, Map<Pattern, Map<String, Boolean>>> emotionMap) {
 
-        Map<Pattern, Map<String, Integer>> resultMap = new ArrayMap<Pattern, Map<String, Integer>>();
+        Map<Pattern, Map<String, String>> resultMap = new ArrayMap<Pattern, Map<String, String>>();
         for (String emotion: emotionMap.keySet()) {
             for (Pattern pattern : emotionMap.get(emotion).keySet()) {
-                Map<String, Integer> integerMap = new ArrayMap<String, Integer>();
-                integerMap.put(Enums.Stats.matches.toString(), 0);
-                integerMap.put(Enums.Features.isNP.toString(),
-                        emotionMap.get(emotion).get(pattern).get(Enums.Features.isNP.toString()) ? 1 : 0);
-                resultMap.put(pattern, integerMap);
+                Map<String, String> featureMap = new ArrayMap<String, String>();
+                featureMap.put(Enums.Stats.matches.toString(), "0");
+                featureMap.put(Enums.Features.isNP.toString(),
+                        emotionMap.get(emotion).get(pattern).get(Enums.Features.isNP.toString()) ? "NP" : "S");
+                featureMap.put(Enums.Stats.emotion.toString(), emotion);
+                resultMap.put(pattern, featureMap);
             }
         }
 
@@ -37,13 +38,23 @@ public class Stats {
      * @param fileName the name of the file to which should be written
      * @throws IOException
      */
-    public static void writeStats(Map<Pattern, Map<String, Integer>> resultMap, String fileName) throws IOException {
+    public static void writeStats(Map<Pattern, Map<String, String>> resultMap, String outDir) throws IOException {
 
-        PrintWriter statWriter = new PrintWriter(new BufferedWriter(new FileWriter(fileName)));
+        PrintWriter patternStatWriter = new PrintWriter(new BufferedWriter(new FileWriter(outDir + "pattern_stats.txt")));
+        PrintWriter emotionStatWriter = new PrintWriter(new BufferedWriter(new FileWriter(outDir + "emotion_stats.txt")));
+
+        // create map for keeping track of the stats concerning emotions
+        Map<String, Map<Pattern, Integer>> emotionStatMap = new HashMap<String, Map<Pattern, Integer>>();
+        for (Enum emotionEnum : Enums.Emotions.values()) {
+            emotionStatMap.put(emotionEnum.toString(), new HashMap<Pattern, Integer>());
+        }
 
         Map<Pattern, Integer> statMap = new HashMap<Pattern, Integer>();
+
         for (Pattern pattern : resultMap.keySet()) {
-            statMap.put(pattern, resultMap.get(pattern).get(Enums.Stats.matches.toString()));
+            int matches = Integer.parseInt(resultMap.get(pattern).get(Enums.Stats.matches.toString()));
+            statMap.put(pattern, matches);
+            emotionStatMap.get(resultMap.get(pattern).get(Enums.Stats.emotion.toString())).put(pattern, matches);
         }
         statMap = ExtensionMethods.sortByValue(statMap);
         Pattern patternCleaner = Pattern.compile("[a-z]+?(?=/)");
@@ -57,12 +68,32 @@ public class Stats {
                     sb.append(" ");
                 }
 
-                statWriter.printf("%s\t%s\t%d\n", sb.toString().trim(),
-                        resultMap.get(pattern).get(Enums.Features.isNP.toString()) == 1 ? "NP" : "S",
-                        resultMap.get(pattern).get(Enums.Stats.matches.toString()));
+                String emotion = resultMap.get(pattern).get(Enums.Stats.emotion.toString());
+                patternStatWriter.printf("%s\t%s\t%s\t%d\n", emotion, sb.toString().trim(),
+                        resultMap.get(pattern).get(Enums.Features.isNP.toString()),
+                        statMap.get(pattern));
             }
         }
 
-        statWriter.close();
+        for (String emotion : emotionStatMap.keySet()) {
+            Map<Pattern, Integer> sortedEmotionMap = ExtensionMethods.sortByValue(emotionStatMap.get(emotion));
+            for (Pattern pattern : sortedEmotionMap.keySet()) {
+                if (pattern != null) {
+                    StringBuilder sb = new StringBuilder();
+                    Matcher m = patternCleaner.matcher(pattern.toString());
+                    while (m.find()) {
+                        sb.append(m.group().toString());
+                        sb.append(" ");
+                    }
+
+                    emotionStatWriter.printf("%s\t%s\t%s\t%d\n", emotion, sb.toString().trim(),
+                            resultMap.get(pattern).get(Enums.Features.isNP.toString()),
+                            sortedEmotionMap.get(pattern));
+                }
+            }
+        }
+
+        patternStatWriter.close();
+        emotionStatWriter.close();
     }
 }
