@@ -18,11 +18,11 @@ public class AgigaReader {
     // initialize logger for logging, duh
     private static Logger log = Logger.getLogger(StreamingSentenceReader.class.getName());
 
-    private static boolean asLemma = false;
+    private static boolean asLemma = true;
 
     private static boolean replaceCoref = true;
 
-    private static boolean replaceNE = false;
+    private static boolean addNER = true;
 
     /**
      * Main method iterating over the annotated gigaword documents
@@ -92,7 +92,7 @@ public class AgigaReader {
                 emotionExtractor.extractEmotions(templatesFile, outPath, true);
 
         // map listing each pattern with the number of times it has found a successful match (experiencer + cause)
-        Map<Pattern, Map<String, Integer>> resultMap = Stats.createResultMap(emotionMap);
+        Map<Pattern, Map<String, String>> resultMap = Stats.createResultMap(emotionMap);
 
         int matches = 0; // count number of successful matches (experiencer & cause have been found)
         int count = 0; // count number of sentences spanning all documents
@@ -116,7 +116,7 @@ public class AgigaReader {
                     if (count >= 2000000) {
 
                         // write the stats to a file
-                        Stats.writeStats(resultMap, outPath + "stats.txt");
+                        Stats.writeStats(resultMap, outPath);
 
                         resultWriter.close();
                         collWriter.close();
@@ -172,33 +172,86 @@ public class AgigaReader {
                                 // cause of emotion is either an NP or S
                                 Boolean isNP = emotionMap.get(emotion).get(pattern).get(Enums.Features.isNP.toString());
 
-                                Tree holderNode, causeNode;
-                                // order is reversed, i.e. cause of emotion is subject (i.e. fascinate, anger, rile, etc.)
-                                if (orderIsReversed) {
-                                    causeNode = TreeTokenUtils.findHolderOrCause(root, leftNode, "NP", true, null);
-                                    holderNode = TreeTokenUtils.findHolderOrCause(root, rightNode, isNP ? "NP" : "S", false, causeNode);
-                                }
-                                // if order is normal, experiencer is subject, cause is dependent
-                                else {
-                                    holderNode = TreeTokenUtils.findHolderOrCause(root, leftNode, "NP", true, null);
-                                    causeNode = TreeTokenUtils.findHolderOrCause(root, rightNode, isNP ? "NP" : "S", false, holderNode);
-                                }
+                                Tree subjectNode = null;
+                                Tree objectNode = null;
+                                // search first in collapsed dependencies
+                                List<AgigaTypedDependency> colDeps = sent.getColDeps();
+                                for (AgigaTypedDependency dep : colDeps) {
+//                                    if (!dep.getType().equals("root")) {
+//                                        System.out.printf("Dep type: %s, gov: %s, dep: %s\n",
+//                                                dep.getType(), tokens.get(dep.getGovIdx()).getWord(), tokens.get(dep.getDepIdx()).getWord());
+//                                    }
 
-                                if (holderNode != null && causeNode != null) {
-
-                                    List<AgigaTypedDependency> basicDeps = sent.getBasicDeps();
-
-                                    for (AgigaTypedDependency dep : basicDeps) {
-
-                                        if (!dep.getType().equals("root")) {
-                                            System.out.printf("Dep type: %s, gov: %s, dep: %s\n",
-                                                    dep.getType(), tokens.get(dep.getGovIdx()).getWord(), tokens.get(dep.getDepIdx()).getWord());
+                                    if ((dep.getType().equals("nsubj") || dep.getType().equals("nsubjpass"))&& dep.getGovIdx() == leftIdx) {
+                                        Tree nsubjNode = leaves.get(dep.getDepIdx());
+                                        if (nsubjNode.ancestor(3, root).label().toString().equals("NP")) {
+                                            subjectNode = nsubjNode.ancestor(3, root);
+                                        }
+                                        else {
+                                            subjectNode = nsubjNode.ancestor(2, root);
+                                        }
+                                        System.out.println("Nsubj: " + subjectNode);
+                                    }
+                                    else if (isNP && (dep.getType().equals("dobj") || dep.getType().equals("pobj")) && dep.getGovIdx() == rightIdx) {
+                                        Tree dobjNode = leaves.get(dep.getDepIdx());
+                                        if (dobjNode.ancestor(3, root).label().toString().equals("NP")) {
+                                            objectNode = dobjNode.ancestor(3, root);
+                                        }
+                                        else {
+                                            objectNode = dobjNode.ancestor(2, root);
                                         }
 
-
+                                        System.out.println("Dobj: " + objectNode);
                                     }
+                                    else if (!isNP && (dep.getType().equals("ccomp") || dep.getType().equals("xcomp")) && dep.getGovIdx() == rightIdx) {
+                                        Tree compNode = leaves.get(dep.getDepIdx());
+                                        try {
+                                            for (int i = 2; i < 6; i++) {
+                                                Tree ancestor = compNode.ancestor(i, root);
+                                                if (ancestor.label().toString().equals("SBAR") || ancestor.label().toString().equals("S")) {
+                                                    objectNode = compNode.ancestor(i, root);
+                                                    System.out.println("Comp: " + objectNode);
+                                                    break;
+                                                }
 
+                                            }
+                                        }
+                                        catch (NullPointerException ex) {
+                                        }
+                                    }
+                                }
 
+                                if (subjectNode == null) {
+                                    subjectNode = TreeTokenUtils.findHolderOrCause(root, leftNode, "NP", true, null);
+                                }
+
+                                if (objectNode == null) {
+                                    objectNode = TreeTokenUtils.findHolderOrCause(root, rightNode, isNP ? "NP" : "S", false, subjectNode);
+                                }
+
+                                Tree holderNode, causeNode;
+
+                                if (orderIsReversed) {
+                                    holderNode = objectNode;
+                                    causeNode = subjectNode;
+                                }
+                                else {
+                                    holderNode = subjectNode;
+                                    causeNode = objectNode;
+                                }
+
+//                                // order is reversed, i.e. cause of emotion is subject (i.e. fascinate, anger, rile, etc.)
+//                                if (orderIsReversed) {
+//                                    causeNode = TreeTokenUtils.findHolderOrCause(root, leftNode, "NP", true, null);
+//                                    holderNode = TreeTokenUtils.findHolderOrCause(root, rightNode, isNP ? "NP" : "S", false, causeNode);
+//                                }
+//                                // if order is normal, experiencer is subject, cause is dependent
+//                                else {
+//                                    holderNode = TreeTokenUtils.findHolderOrCause(root, leftNode, "NP", true, null);
+//                                    causeNode = TreeTokenUtils.findHolderOrCause(root, rightNode, isNP ? "NP" : "S", false, holderNode);
+//                                }
+
+                                if (holderNode != null && causeNode != null) {
 
                                     StringWriter stringWriter = new StringWriter();
                                     sent.writeNerTags(stringWriter);
@@ -210,8 +263,8 @@ public class AgigaReader {
                                         mentionPairs = mentionMap.get(sentIdx);
                                     }
 
-                                    String holder = TreeTokenUtils.getStringFromSpan(holderNode, tokens, sentences, mentionPairs, NEtokens, asLemma, replaceCoref, replaceNE);
-                                    String cause = TreeTokenUtils.getStringFromSpan(causeNode, tokens, sentences, mentionPairs, NEtokens, asLemma, replaceCoref, replaceNE);
+                                    String holder = TreeTokenUtils.getStringFromSpan(holderNode, tokens, sentences, mentionPairs, NEtokens, asLemma, replaceCoref, addNER);
+                                    String cause = TreeTokenUtils.getStringFromSpan(causeNode, tokens, sentences, mentionPairs, NEtokens, asLemma, replaceCoref, addNER);
 
                                     // clean pattern
                                     String[] cleanPatternTokens = m.group(0).split(" ");
@@ -225,7 +278,7 @@ public class AgigaReader {
 
                                     patternFound = true;
                                     resultMap.get(pattern).put(Enums.Stats.matches.toString(),
-                                            resultMap.get(pattern).get(Enums.Stats.matches.toString()) + 1);
+                                            String.valueOf(Integer.parseInt(resultMap.get(pattern).get(Enums.Stats.matches.toString())) + 1));
                                     matches++;
 
                                     // write clean sentence to collocations file
