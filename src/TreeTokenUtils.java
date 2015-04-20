@@ -158,9 +158,16 @@ public class TreeTokenUtils {
                 String label = child.label().value();
 
                 // don't remove PPs that are only three tokens long
-                if (label.equals("PP") && child.getSpan().getSource() + 3 > child.getSpan().getTarget()) {
+                //if (label.equals("PP") && child.getSpan().getSource() + 3 > child.getSpan().getTarget()) {
+                //}
+                if (label.equals("PP")) {
+                    for (Tree ppChild : child.getChildrenAsList()) {
+                        if (!ppChild.label().toString().equals("IN") || ppChild.label().toString().equals("TO")) {
+                            preorderTraverse(ppChild, startIdxList, endIdxList);
+                        }
+                    }
                 }
-                else if (label.equals("PP") || label.equals("SBAR") || label.equals(":") || label.equals(",") ||
+                else if (label.equals("SBAR") || label.equals(":") || label.equals(",") ||
                         label.equals("''") || label.equals("_") || label.equals("``")) {
                     startIdxList.add(child.getSpan().getSource());
                     endIdxList.add(child.getSpan().getTarget());
@@ -186,7 +193,7 @@ public class TreeTokenUtils {
     public static String buildStringFromSpan(List<AgigaToken> tokens, List<AgigaSentence> sentences, int start, int end,
                                              List<Map.Entry<AgigaMention, AgigaMention>> mentionPairs, String[] NEtokens,
                                              List<Integer> startIdxExcludeList, List<Integer> endIdxExcludeList,
-                                             boolean asLemma, boolean replaceCoref, boolean replaceNE) {
+                                             boolean asLemma, boolean replaceCoref, boolean addNER) {
 
         StringBuilder sb = new StringBuilder();
         boolean inPP = false;
@@ -204,10 +211,11 @@ public class TreeTokenUtils {
 
             AgigaToken token = tokens.get(i);
             String str = token.getWord();
+            String NEtoken = NEtokens[i].split("/")[1];
 
-            // if token is a NE, replace it with NE tag
-            if (replaceNE && NEtags.contains(NEtokens[i].split("/")[1])) {
-                str = NEtokens[i].split("/")[1];
+            // replace numbers
+            if (NEtoken.equals("NUMBER")) {
+                str = "NUMBER";
             }
             // if mention is pronoun, replace with representative mention if exists
             else if (replaceCoref && pronouns.contains(token.getWord())) {
@@ -223,7 +231,6 @@ public class TreeTokenUtils {
                         // representative mention may not be longer than 4 tokens
                         if (repStart + 5 > repEnd) {
                             str = createStringFromTokens(repSentTokens.subList(rep.getStartTokenIdx(), rep.getEndTokenIdx()), false, false, false);
-                            i = mention.getEndTokenIdx();
                             break;
                         }
                     };
@@ -235,6 +242,11 @@ public class TreeTokenUtils {
 
             sb.append(" ");
             sb.append(str);
+
+            if (addNER && !NEtoken.equals("NUMBER") && NEtags.contains(NEtoken)) {
+                sb.append("/");
+                sb.append(NEtokens[i].split("/")[1]);
+            }
         }
 
         return sb.toString().trim();
