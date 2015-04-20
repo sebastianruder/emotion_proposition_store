@@ -4,20 +4,17 @@
 public class Enums {
 
     public enum Stats {
-        matches
+        matches, emotion
     }
 
     public enum Features {
         isNP, orderIsReversed
     }
 
-
     /**
-     * Created by sebastian on 29/09/14.
      * Enum containing Plutchik's eight emotions that are used.
-     * Not needed yet; not sure if this will be useful.
      */
-    public enum Emotion {
-        JOY, TRUST, FEAR, SURPRISE, SADNESS, DISGUST, ANGER, ANTICIPATION
+    public enum Emotions {
+        joy, trust, fear, surprise, sadness, disgust, anger, anticipation
     }
 }
