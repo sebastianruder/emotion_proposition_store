@@ -1,0 +1,255 @@
+Annotation of emotions
+Please annotate the following expressions with the most closely associated emotion among the following:
+Joy, trust, fear, surprise, sadness, disgust, anger, and anticipation.
+If an expression clearly pertains to only emotion, assign just one. If you associate two emotions with an expression,assign the most and the second-most closely associated emotion. Delimit expressions and emotions with tabs.
+Please keep Plutchik's wheel of emotions (http://www.fractal.org/Bewustzijns-Besturings-Model/Plutchikfig6.gif) visible while undertaking this task to assist you in differentiating the emotions. Thank you for your time!
+
+expression	1st emotion	(2nd emotion)
+cyst
+count on
+scare
+reassure
+gall
+discourage
+be satisfy that
+hope for
+impress
+thrill
+abandon
+predict
+look forward to
+disdain
+bonus
+be angry about
+aggravate
+enjoy
+long for
+grate
+terrify
+grieve that
+take pleasure in
+be angry at
+experienced
+expect that
+abhor
+heyday
+delivery
+be happy about
+be reassure that
+insult
+crave
+disappoint
+be thrill that
+fret about
+happily
+comfort
+trust that
+forecast
+overwhelm
+be incense that
+outrage
+be nervous about
+baffle
+foresee
+vex
+irreparable
+count on
+be frightened that
+charm
+sting
+alienate
+delight
+be scare that
+aspire
+mourn that
+disappoint
+unnerve
+desire
+aspire to
+be encourage that
+be alarm that
+quagmire
+inflame
+breakup
+ache for
+satisfy
+encourage
+be intent on
+be unhappy about
+frighten
+annoy
+felicity
+intrigue
+pine for
+puzzle
+entertain
+surprise
+savor
+convent
+coercion
+confound
+stun
+paralyzed
+agonize over
+toxin
+hate that
+be hopeful that
+cheer
+exacerbate
+captivate
+rejoice
+bother
+be unhappy that
+worry about
+be mad about
+be flabbergast that
+dawn
+embarrass
+slayer
+fulfill
+regularity
+be bewilder that
+yearn for
+mourn
+worry
+be disappoint that
+trash
+shun
+rattle
+be scared of
+idiotic
+disturb
+be happy about
+be proud of
+please
+achieve
+wow
+be lucky that
+swerve
+covet
+horrify
+trust
+shock
+be enthusiastic about
+be scared that
+be eager for
+futile
+conscientious
+enchant
+predict that
+envy
+enrage
+hate
+nettle
+be ecstatic that
+grotesque
+be angry with
+guerilla
+be anxious that
+duplicity
+disgust
+arouse
+transcendence
+relish
+devastate
+glide
+scorn
+rely on
+stroke
+fear that
+be angry that
+be optimistic that
+scum
+appeal
+excitement
+be curious about
+look forward to
+honesty
+be terrify that
+spotless
+intimidate
+be stun that
+spook
+be curious about
+sour
+rankle
+startle
+harass
+deplore
+be anxious about
+be amaze that
+amaze
+afflict
+be sad that
+stagger
+excite
+renovation
+boggle
+be unhappy about
+confuse
+hope for
+be sadden that
+humiliate
+take comfort in
+be proud of
+trouble
+fear
+superstition
+upset
+await
+irritate
+alarm
+clean
+eradication
+soothe
+await
+prepare for
+infuriate
+captivate
+incredulous
+repel
+irreconcilable
+be ashamed of
+diamond
+depress
+regret
+irk
+be elate that
+be afraid that
+dread
+provoke
+loathe
+boisterous
+hunger for
+be apprehensive about
+collapse
+despise
+regret that
+offend
+serpent
+calm
+creature
+fascinate
+enjoy that
+dislike
+torment
+shame
+be irate that
+concern
+displease
+prepare for
+expect
+be afraid of
+amuse
+anticipate
+livid
+frustrate
+forecast that
+
+Final question: Do the following sentences correspond with the sentiments you marked? Indicate yes/no.
+rely on: Most big managed care plans rely on advice from panels of medical experts to recommend acceptance or rejection of new technology .
+look forward to: I support a hefty tax cut , and I look forward to working with the members of the House and Senate .
+overwhelm: Two years ago , he overwhelmed Augusta National , but that happens perhaps once in a lifetime because Augusta is too canny and cunning .
+expect: He said he expects the subscriber levels to grow now that AT&T has assumed control of the cable company .
+regret that: He also said he regrets that China has failed to open talks with the Dalai Lama , the exiled spiritual leader of Tibet .
+

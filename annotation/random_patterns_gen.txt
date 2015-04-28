@@ -1,0 +1,190 @@
+disgust	hate	NP	636
+disgust	bother	NP	244
+disgust	hate that	S	175
+disgust	dislike	NP	156
+disgust	shock	NP	137
+disgust	alienate	NP	68
+disgust	upset	NP	62
+disgust	despise	NP	53
+disgust	annoy	NP	52
+disgust	disturb	NP	43
+disgust	loathe	NP	40
+disgust	insult	NP	37
+disgust	repel	NP	27
+disgust	abhor	NP	27
+disgust	envy	NP	26
+disgust	disdain	NP	26
+disgust	scorn	NP	26
+disgust	irk	NP	23
+disgust	shame	NP	21
+disgust	be ashamed of	S	12
+disgust	disgust	NP	12
+sadness	regret that	S	297
+sadness	regret	NP	148
+sadness	discourage	NP	115
+sadness	devastate	NP	71
+sadness	be sad that	S	63
+sadness	frustrate	NP	61
+sadness	deplore	NP	59
+sadness	mourn that	S	57
+sadness	be disappoint that	NP	55
+sadness	afflict	NP	54
+sadness	be unhappy that	S	52
+sadness	trouble	NP	48
+sadness	mourn	NP	46
+sadness	depress	NP	38
+sadness	disappoint	NP	24
+sadness	sting	NP	20
+sadness	humiliate	NP	17
+sadness	be unhappy about	NP	16
+sadness	agonize over	NP	15
+sadness	grieve that	S	14
+sadness	be sadden that	S	3
+sadness	be unhappy about	S	2
+anger	provoke	NP	197
+anger	harass	NP	89
+anger	irritate	NP	80
+anger	infuriate	NP	75
+anger	be angry that	S	67
+anger	offend	NP	57
+anger	grate	NP	38
+anger	excite	NP	36
+anger	rankle	NP	34
+anger	fret about	NP	30
+anger	enrage	NP	29
+anger	inflame	NP	26
+anger	exacerbate	NP	24
+anger	aggravate	NP	24
+anger	outrage	NP	19
+anger	be angry about	S	17
+anger	displease	NP	12
+anger	gall	NP	12
+anger	be mad about	NP	12
+anger	vex	NP	12
+anger	be angry at	S	6
+anger	be irate that	S	2
+anger	be angry with	S	2
+anger	be incense that	S	2
+trust	rely on	NP	707
+trust	encourage	NP	326
+trust	count on	NP	145
+trust	trust	NP	141
+trust	appeal	NP	121
+trust	impress	NP	117
+trust	reassure	NP	83
+trust	trust that	S	82
+trust	captivate	NP	40
+trust	soothe	NP	22
+trust	calm	NP	19
+trust	take comfort in	S	1
+trust	be encourage that	S	1
+trust	be reassure that	S	1
+joy	enjoy	NP	1408
+joy	enjoy that	S	263
+joy	be proud of	NP	234
+joy	be lucky that	S	212
+joy	cheer	NP	175
+joy	relish	NP	111
+joy	entertain	NP	102
+joy	please	NP	79
+joy	satisfy	NP	68
+joy	savor	NP	68
+joy	arouse	NP	62
+joy	be happy about	NP	49
+joy	be enthusiastic about	NP	48
+joy	delight	NP	46
+joy	be proud of	S	40
+joy	wow	NP	39
+joy	fascinate	NP	35
+joy	be satisfy that	S	27
+joy	amuse	NP	23
+joy	comfort	NP	23
+joy	rejoice	S	16
+joy	be ecstatic that	S	16
+joy	be thrill that	S	16
+joy	enchant	NP	13
+joy	fulfill	NP	12
+joy	charm	NP	11
+joy	thrill	NP	10
+joy	be elate that	S	7
+joy	take pleasure in	S	6
+joy	be happy about	S	4
+anticipation	expect that	S	2642
+anticipation	expect	NP	1338
+anticipation	predict that	S	1246
+anticipation	prepare for	NP	445
+anticipation	await	NP	441
+anticipation	concern	NP	399
+anticipation	look forward to	NP	243
+anticipation	await	S	240
+anticipation	anticipate	NP	233
+anticipation	predict	NP	224
+anticipation	hope for	NP	181
+anticipation	look forward to	S	167
+anticipation	be hopeful that	S	154
+anticipation	foresee	NP	88
+anticipation	be optimistic that	S	85
+anticipation	forecast that	S	80
+anticipation	crave	NP	76
+anticipation	covet	NP	67
+anticipation	be intent on	S	64
+anticipation	forecast	NP	48
+anticipation	long for	NP	42
+anticipation	aspire to	NP	39
+anticipation	desire	NP	39
+anticipation	prepare for	S	37
+anticipation	hope for	S	35
+anticipation	pine for	NP	32
+anticipation	yearn for	NP	30
+anticipation	intrigue	NP	29
+anticipation	aspire	NP	24
+anticipation	be curious about	NP	21
+anticipation	be eager for	NP	20
+anticipation	count on	S	17
+anticipation	be nervous about	NP	15
+anticipation	ache for	NP	14
+anticipation	hunger for	NP	13
+anticipation	be curious about	S	12
+surprise	surprise	NP	263
+surprise	stun	NP	155
+surprise	overwhelm	NP	131
+surprise	confuse	NP	55
+surprise	baffle	NP	42
+surprise	stagger	NP	35
+surprise	rattle	NP	35
+surprise	puzzle	NP	33
+surprise	amaze	NP	31
+surprise	confound	NP	30
+surprise	startle	NP	25
+surprise	boggle	NP	18
+surprise	be stun that	S	8
+surprise	be flabbergast that	S	3
+surprise	be amaze that	S	3
+surprise	be bewilder that	S	2
+fear	fear that	S	1380
+fear	be afraid that	S	445
+fear	fear	NP	348
+fear	worry about	NP	298
+fear	worry	NP	237
+fear	scare	NP	185
+fear	shun	NP	112
+fear	be afraid of	NP	107
+fear	be anxious that	S	102
+fear	frighten	NP	63
+fear	embarrass	NP	31
+fear	dread	NP	29
+fear	unnerve	NP	27
+fear	be frightened that	S	24
+fear	be scared of	NP	20
+fear	intimidate	NP	19
+fear	be scared that	S	17
+fear	torment	NP	17
+fear	be anxious about	NP	14
+fear	horrify	NP	14
+fear	terrify	NP	12
+fear	spook	NP	11
+fear	alarm	NP	11
+fear	be alarm that	S	9
+fear	be terrify that	S	5
+fear	be apprehensive about	S	5
+fear	be scare that	S	4
