@@ -1,0 +1,50 @@
+fear	sadness	abandon
+joy	trust	achieve
+disgust	scum
+anticipation	trust	regularity
+disgust	quagmire
+anger	fear	sadness	surprise	paralyzed
+anger	fear	sadness	irreconcilable
+anger	disgust	incredulous
+anger	disgust	idiotic
+anticipation	joy	trust	heyday
+joy	happily
+disgust	grotesque
+anticipation	joy	glide
+trust	experienced
+anger	disgust	fear	eradication
+anger	duplicity
+anger	disgust	sadness	disappoint
+fear	sadness	cyst
+trust	conscientious
+disgust	fear	sadness	collapse
+joy	trust	clean
+joy	surprise	trust	captivate
+sadness	breakup
+anger	anticipation	joy	boisterous
+anticipation	joy	surprise	bonus
+anger	disgust	sadness	coercion
+trust	convent
+disgust	fear	creature
+anticipation	joy	surprise	trust	dawn
+anticipation	delivery
+joy	diamond
+anticipation	joy	surprise	excitement
+joy	felicity
+sadness	futile
+fear	guerilla
+trust	honesty
+fear	sadness	irreparable
+anger	disgust	livid
+anger	disgust	nettle
+anticipation	joy	renovation
+disgust	fear	serpent
+anger	disgust	fear	sadness	surprise	slayer
+disgust	sour
+trust	spotless
+fear	sadness	stroke
+fear	superstition
+fear	surprise	swerve
+fear	toxin
+anticipation	joy	surprise	trust	transcendence
+disgust	sadness	trash
