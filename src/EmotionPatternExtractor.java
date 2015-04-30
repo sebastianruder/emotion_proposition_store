@@ -53,9 +53,6 @@ public class EmotionPatternExtractor {
         // writer to write the created patterns
         PrintWriter writer = new PrintWriter(outPath + "patterns.txt", "UTF-8");
 
-        // hashmap for writing patterns in a random order to measure inter-annotator agreement
-        Map<Double, String> randomPatternMap = new HashMap<Double, String>();
-
         String line = reader.readLine();
         while (line != null) {
             // skip comments
@@ -65,8 +62,6 @@ public class EmotionPatternExtractor {
             }
             String[] lineList = line.split("\t");
             String emotionWord = lineList[0];
-
-            if (random) { randomPatternMap.put(Math.random(), emotionWord + "\t" + lineList[1].split("/")[0]); }
 
             String[] patternWords = lineList[1].split(" ");
             StringBuilder patternBuilder = new StringBuilder();
@@ -129,33 +124,7 @@ public class EmotionPatternExtractor {
         }
         writer.close();
 
-        if (random) {
-            writeRandom(randomPatternMap, outPath);
-        }
-
         return emotionMap;
-    }
-
-    /**
-     * Given a map of random numbers and strings containing emotion words and the patterns, writes the patterns
-     * randomly to a file to check inter-annotator agreement. Creates a second file for cross-checking.
-     * @param randomPatternMap map of doubles (random numbers) and strings (emotion_word tab pattern)
-     * @param outPath
-     * @throws IOException
-     */
-    private void writeRandom(Map<Double, String> randomPatternMap, String outPath) throws IOException {
-
-        PrintWriter randomWriter = new PrintWriter(outPath + "random_patterns.txt", "UTF-8");
-        PrintWriter randomCheckWriter = new PrintWriter(outPath + "random_check_patterns.txt", "UTF-8");
-        String columnNames = "emotion word\tpattern";
-        randomWriter.println(columnNames);
-        randomCheckWriter.println(columnNames);
-        for (double d : ExtensionMethods.asSortedList(randomPatternMap.keySet())) {
-            randomWriter.println("\t" + randomPatternMap.get(d).split("\t")[1]);
-            randomCheckWriter.println(randomPatternMap.get(d));
-        }
-        randomWriter.close();
-        randomCheckWriter.close();
     }
 
     /**
