@@ -1,7 +1,4 @@
-import edu.jhu.agiga.AgigaCoref;
-import edu.jhu.agiga.AgigaMention;
-import edu.jhu.agiga.AgigaSentence;
-import edu.jhu.agiga.AgigaToken;
+import edu.jhu.agiga.*;
 import edu.stanford.nlp.trees.Tree;
 
 import java.util.*;
@@ -57,7 +54,7 @@ public class TreeTokenUtils {
      * @param left: if node should be looked for on the left side of the sibling node
      * @return a list containing the start index and the end index of the span of the wanted node
      */
-    public static Tree findHolderOrCause(Tree root, Tree leaf, String label, boolean left, Tree node) {
+    public static Tree findHolderOrCause(Tree root, Tree leaf, String label, boolean left) {
         Tree child;
         // at height 1 from leaf node is preterminal, at height 2 is the first ancestor
         for (int height = 2; height <= 6; height++)
@@ -88,8 +85,7 @@ public class TreeTokenUtils {
                         if (i + 1 < ancestor.getChildrenAsList().size() && ancestor.getChild(i + 1).label().toString().equals(",")) {
 
                         }
-                        // emotion holder and cause shouldn't be identical
-                        else if (!child.equals(node))
+                        else
                         {
                             return child;
                         }
@@ -157,17 +153,7 @@ public class TreeTokenUtils {
                 // extracts PPs and SBARs
                 String label = child.label().value();
 
-                // don't remove PPs that are only three tokens long
-                //if (label.equals("PP") && child.getSpan().getSource() + 3 > child.getSpan().getTarget()) {
-                //}
-                if (label.equals("PP")) {
-                    for (Tree ppChild : child.getChildrenAsList()) {
-                        if (!ppChild.label().toString().equals("IN") || ppChild.label().toString().equals("TO")) {
-                            preorderTraverse(ppChild, startIdxList, endIdxList);
-                        }
-                    }
-                }
-                else if (label.equals("SBAR") || label.equals(":") || label.equals(",") ||
+                if (label.equals("PP") || label.equals("SBAR") || label.equals(":") || label.equals(",") ||
                         label.equals("''") || label.equals("_") || label.equals("``")) {
                     startIdxList.add(child.getSpan().getSource());
                     endIdxList.add(child.getSpan().getTarget());
@@ -177,6 +163,122 @@ public class TreeTokenUtils {
                 }
             }
         }
+    }
+
+    public static String compToString(int gov, List<AgigaTypedDependency> colDeps, List<AgigaToken> tokens,
+                                     List<AgigaSentence> sentences, List<Map.Entry<AgigaMention,
+                                     AgigaMention>> mentionPairs, String[] NEtokens,
+                                     boolean addPObj, boolean replaceCoref, boolean asLemma, boolean addNER) {
+
+        String nsubj = "";
+        String dobj = "";
+        for (AgigaTypedDependency dep : colDeps) {
+            String type = dep.getType();
+            if ((type.equals("nsubj") || type.equals("nsubjpass"))&& dep.getGovIdx() == gov) {
+                nsubj = depToString(dep.getDepIdx(), colDeps, tokens, sentences, mentionPairs, NEtokens, addPObj, replaceCoref, asLemma, addNER);
+            }
+            else if ((type.equals("dobj") || dep.getType().equals("pobj")) && dep.getGovIdx() == gov) {
+                dobj = depToString(dep.getDepIdx(), colDeps, tokens, sentences, mentionPairs, NEtokens, addPObj, replaceCoref, asLemma, addNER);
+            }
+        }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(nsubj);
+        sb.append(" ");
+        sb.append(tokens.get(gov).getLemma());
+        sb.append(" ");
+        sb.append(dobj);
+
+        if (addPObj) {
+            Map<String, List<Integer>> pObjs = extractPObjs(gov, colDeps);
+            for (String prep : pObjs.keySet()) {
+                sb.append("\t");
+                sb.append(prep);
+                sb.append(": ");
+                sb.append(buildString(pObjs.get(prep), colDeps, tokens, sentences, mentionPairs, NEtokens, replaceCoref, asLemma, addNER));
+            }
+        }
+
+        return sb.toString().trim();
+    }
+
+    public static String buildString(List<Integer> idxs, List<AgigaTypedDependency> colDeps, List<AgigaToken> tokens,
+                                     List<AgigaSentence> sentences, List<Map.Entry<AgigaMention, AgigaMention>> mentionPairs,
+                                     String[] NEtokens, boolean replaceCoref, boolean asLemma, boolean addNER) {
+        StringBuilder sb = new StringBuilder();
+        for (int i : idxs) {
+
+            AgigaToken token = tokens.get(i);
+            String str = token.getWord();
+            String NEtoken = NEtokens[i].split("/")[1];
+
+            // replace numbers
+            if (NEtoken.equals("NUMBER")) {
+                str = "NUMBER";
+            }
+            // if mention is pronoun, replace with representative mention if exists
+            else if (replaceCoref && pronouns.contains(token.getWord())) {
+                str = replaceCoref(str, i, sentences, mentionPairs);
+            }
+            else if (asLemma && !possessivePronouns.contains(token.getWord())) {
+                str = token.getLemma();
+            }
+
+            sb.append(" ");
+            sb.append(str);
+
+            if (addNER && !NEtoken.equals("NUMBER") && NEtags.contains(NEtoken)) {
+                sb.append("/");
+                sb.append(NEtokens[i].split("/")[1]);
+            }
+        }
+
+        return sb.toString().trim();
+    }
+
+    public static String depToString(int gov, List<AgigaTypedDependency> colDeps, List<AgigaToken> tokens,
+                                     List<AgigaSentence> sentences, List<Map.Entry<AgigaMention,
+                                     AgigaMention>> mentionPairs, String[] NEtokens,
+                                     boolean addPObj, boolean replaceCoref, boolean asLemma, boolean addNER) {
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(buildString(addModifiers(gov, colDeps), colDeps, tokens, sentences, mentionPairs, NEtokens, replaceCoref, asLemma, addNER));
+
+        if (addPObj) {
+            Map<String, List<Integer>> pObjs = extractPObjs(gov, colDeps);
+            for (String prep : pObjs.keySet()) {
+                sb.append(" ");
+                sb.append(prep.substring(5).replace("_", " "));
+                sb.append(" ");
+                sb.append(buildString(pObjs.get(prep), colDeps, tokens, sentences, mentionPairs, NEtokens, replaceCoref, asLemma, addNER));
+            }
+        }
+
+        return sb.toString().trim();
+    }
+
+    private static List<Integer> addModifiers(int gov, List<AgigaTypedDependency> colDeps) {
+        List<Integer> mods = new ArrayList<Integer>();
+        mods.add(gov);
+        for (AgigaTypedDependency dep : colDeps) {
+            if ((dep.getType().equals("nn") || dep.getType().equals("amod")) && dep.getGovIdx() == gov) {
+                mods.add(dep.getDepIdx());
+            }
+        }
+
+        Collections.sort(mods);
+        return mods;
+    }
+
+    public static Map<String, List<Integer>> extractPObjs(int gov, List<AgigaTypedDependency> colDeps) {
+        Map<String, List<Integer>> pObjs = new HashMap<String, List<Integer>>();
+        for (AgigaTypedDependency dep : colDeps) {
+            if (dep.getType().startsWith("prep_") && dep.getGovIdx() == gov) {
+                pObjs.put(dep.getType(), addModifiers(dep.getDepIdx(), colDeps));
+            }
+        }
+
+        return pObjs;
     }
 
     /**
@@ -219,22 +321,7 @@ public class TreeTokenUtils {
             }
             // if mention is pronoun, replace with representative mention if exists
             else if (replaceCoref && pronouns.contains(token.getWord())) {
-                for (Map.Entry<AgigaMention, AgigaMention> pair : mentionPairs) {
-                    AgigaMention mention = pair.getKey();
-                    AgigaMention rep = pair.getValue();
-
-                    if (mention.getStartTokenIdx() == i) {
-                        List<AgigaToken> repSentTokens = sentences.get(rep.getSentenceIdx()).getTokens();
-                        int repStart = rep.getStartTokenIdx();
-                        int repEnd = rep.getEndTokenIdx();
-
-                        // representative mention may not be longer than 4 tokens
-                        if (repStart + 5 > repEnd) {
-                            str = createStringFromTokens(repSentTokens.subList(rep.getStartTokenIdx(), rep.getEndTokenIdx()), false, false, false);
-                            break;
-                        }
-                    };
-                }
+                str = replaceCoref(str, i, sentences, mentionPairs);
             }
             else if (asLemma && !possessivePronouns.contains(token.getWord())) {
                 str = token.getLemma();
@@ -250,5 +337,26 @@ public class TreeTokenUtils {
         }
 
         return sb.toString().trim();
+    }
+
+    private static String replaceCoref(String input, int idx, List<AgigaSentence> sentences,
+                                       List<Map.Entry<AgigaMention, AgigaMention>> mentionPairs) {
+        for (Map.Entry<AgigaMention, AgigaMention> pair : mentionPairs) {
+            AgigaMention mention = pair.getKey();
+            AgigaMention rep = pair.getValue();
+
+            if (mention.getStartTokenIdx() == idx) {
+                List<AgigaToken> repSentTokens = sentences.get(rep.getSentenceIdx()).getTokens();
+                int repStart = rep.getStartTokenIdx();
+                int repEnd = rep.getEndTokenIdx();
+
+                // representative mention may not be longer than 4 tokens
+                if (repStart + 5 > repEnd) {
+                    return createStringFromTokens(repSentTokens.subList(rep.getStartTokenIdx(), rep.getEndTokenIdx()), false, false, false);
+                }
+            };
+        }
+
+        return input;
     }
 }
