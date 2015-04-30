@@ -1,5 +1,6 @@
 import edu.jhu.agiga.*;
 import edu.stanford.nlp.trees.*;
+import edu.stanford.nlp.util.StringUtils;
 
 import java.io.*;
 import java.util.*;
@@ -158,6 +159,12 @@ public class AgigaReader {
                                 int leftIdx = Integer.parseInt(patternWords[0].split("/")[2]);
                                 int rightIdx = Integer.parseInt(patternWords[patternWords.length - 1].split("/")[2]);
 
+                                // rightIdx for dependencies if that is present
+                                int rightDepIdx = -2;
+                                if (tokens.get(rightIdx).getWord().equals("that")) {
+                                    rightDepIdx = Integer.parseInt(patternWords[patternWords.length - 2].split("/")[2]);
+                                }
+
                                 // Penn string shows phrase structure tree
 //                                String pennString = root.pennString();
 //                                System.out.println(pennString);
@@ -172,99 +179,105 @@ public class AgigaReader {
                                 // cause of emotion is either an NP or S
                                 Boolean isNP = emotionMap.get(emotion).get(pattern).get(Enums.Features.isNP.toString());
 
-                                Tree subjectNode = null;
-                                Tree objectNode = null;
+
+                                StringWriter stringWriter = new StringWriter();
+                                sent.writeNerTags(stringWriter);
+                                String[] NEtokens = stringWriter.toString().split(" ");
+
+                                int sentIdx = sent.getSentIdx();
+                                List<Map.Entry<AgigaMention, AgigaMention>> mentionPairs = new ArrayList<Map.Entry<AgigaMention, AgigaMention>>();
+                                if (mentionMap.containsKey(sentIdx)) {
+                                    mentionPairs = mentionMap.get(sentIdx);
+                                }
+
+                                String subject = null;
+                                String object = null;
                                 // search first in collapsed dependencies
                                 List<AgigaTypedDependency> colDeps = sent.getColDeps();
                                 for (AgigaTypedDependency dep : colDeps) {
-//                                    if (!dep.getType().equals("root")) {
-//                                        System.out.printf("Dep type: %s, gov: %s, dep: %s\n",
-//                                                dep.getType(), tokens.get(dep.getGovIdx()).getWord(), tokens.get(dep.getDepIdx()).getWord());
-//                                    }
 
-                                    if ((dep.getType().equals("nsubj") || dep.getType().equals("nsubjpass"))&& dep.getGovIdx() == leftIdx) {
-                                        Tree nsubjNode = leaves.get(dep.getDepIdx());
-                                        if (nsubjNode.ancestor(3, root).label().toString().equals("NP")) {
-                                            subjectNode = nsubjNode.ancestor(3, root);
-                                        }
-                                        else {
-                                            subjectNode = nsubjNode.ancestor(2, root);
-                                        }
-                                        System.out.println("Nsubj: " + subjectNode);
+                                    String type = dep.getType();
+                                    if (subject == null && dep.getGovIdx() == leftIdx &&
+                                            (type.equals("nsubj") || type.equals("nsubjpass"))) {
+                                        subject = TreeTokenUtils.depToString(dep.getDepIdx(), colDeps, tokens, sentences,
+                                                mentionPairs, NEtokens, true, replaceCoref, asLemma, addNER);
                                     }
-                                    else if (isNP && (dep.getType().equals("dobj") || dep.getType().equals("pobj")) && dep.getGovIdx() == rightIdx) {
-                                        Tree dobjNode = leaves.get(dep.getDepIdx());
-                                        if (dobjNode.ancestor(3, root).label().toString().equals("NP")) {
-                                            objectNode = dobjNode.ancestor(3, root);
-                                        }
-                                        else {
-                                            objectNode = dobjNode.ancestor(2, root);
-                                        }
+                                    else if (object == null && isNP && dep.getGovIdx() == rightIdx &&
+                                                (type.equals("dobj") || type.equals("pobj"))) {
+                                        object = TreeTokenUtils.depToString(dep.getDepIdx(), colDeps, tokens, sentences,
+                                                mentionPairs, NEtokens, true, replaceCoref, asLemma, addNER);
+                                    }
+                                    // if dependent is a sentence part, it is either a ccomp, xcomp, or a dep in a VP
+                                    else if (object == null & !isNP &&
+                                            (dep.getGovIdx() == rightIdx || dep.getGovIdx() == rightDepIdx) &&
+                                            (type.equals("ccomp") || type.equals("xcomp"))) {
 
-                                        System.out.println("Dobj: " + objectNode);
+                                        object = TreeTokenUtils.compToString(dep.getDepIdx(), colDeps, tokens, sentences,
+                                                mentionPairs, NEtokens, true, replaceCoref, asLemma, addNER);
                                     }
-                                    else if (!isNP && (dep.getType().equals("ccomp") || dep.getType().equals("xcomp")) && dep.getGovIdx() == rightIdx) {
-                                        Tree compNode = leaves.get(dep.getDepIdx());
-                                        try {
-                                            for (int i = 2; i < 6; i++) {
-                                                Tree ancestor = compNode.ancestor(i, root);
-                                                if (ancestor.label().toString().equals("SBAR") || ancestor.label().toString().equals("S")) {
-                                                    objectNode = compNode.ancestor(i, root);
-                                                    System.out.println("Comp: " + objectNode);
-                                                    break;
+                                }
+
+                                // if subject hasn't been found, check for conjunction
+                                if (subject == null) {
+                                    for (AgigaTypedDependency dep : colDeps) {
+                                        if (dep.getType().equals("conj_and") && dep.getDepIdx() == leftIdx) {
+                                            for (AgigaTypedDependency dep2 : colDeps) {
+                                                if (dep2.getType().equals("nsubj") && dep.getGovIdx() == dep2.getGovIdx()) {
+                                                    subject = TreeTokenUtils.depToString(dep.getDepIdx(), colDeps, tokens, sentences,
+                                                            mentionPairs, NEtokens, true, replaceCoref, asLemma, addNER);
                                                 }
-
                                             }
                                         }
-                                        catch (NullPointerException ex) {
+                                    }
+                                }
+
+                                if (object == null && !isNP) {
+                                    for (AgigaTypedDependency dep : colDeps) {
+                                        if (dep.getType().equals("dep") &&
+                                                leaves.get(dep.getDepIdx()).ancestor(2, root).label().toString().equals("VP") &&
+                                                (dep.getGovIdx() == rightIdx || dep.getGovIdx() == rightDepIdx)) {
+                                            object = TreeTokenUtils.compToString(dep.getDepIdx(), colDeps, tokens, sentences,
+                                                    mentionPairs, NEtokens, true, replaceCoref, asLemma, addNER);
                                         }
                                     }
                                 }
 
-                                if (subjectNode == null) {
-                                    subjectNode = TreeTokenUtils.findHolderOrCause(root, leftNode, "NP", true, null);
-                                }
-
-                                if (objectNode == null) {
-                                    objectNode = TreeTokenUtils.findHolderOrCause(root, rightNode, isNP ? "NP" : "S", false, subjectNode);
-                                }
-
-                                Tree holderNode, causeNode;
-
-                                if (orderIsReversed) {
-                                    holderNode = objectNode;
-                                    causeNode = subjectNode;
-                                }
-                                else {
-                                    holderNode = subjectNode;
-                                    causeNode = objectNode;
-                                }
-
-//                                // order is reversed, i.e. cause of emotion is subject (i.e. fascinate, anger, rile, etc.)
-//                                if (orderIsReversed) {
-//                                    causeNode = TreeTokenUtils.findHolderOrCause(root, leftNode, "NP", true, null);
-//                                    holderNode = TreeTokenUtils.findHolderOrCause(root, rightNode, isNP ? "NP" : "S", false, causeNode);
-//                                }
-//                                // if order is normal, experiencer is subject, cause is dependent
-//                                else {
-//                                    holderNode = TreeTokenUtils.findHolderOrCause(root, leftNode, "NP", true, null);
-//                                    causeNode = TreeTokenUtils.findHolderOrCause(root, rightNode, isNP ? "NP" : "S", false, holderNode);
-//                                }
-
-                                if (holderNode != null && causeNode != null) {
-
-                                    StringWriter stringWriter = new StringWriter();
-                                    sent.writeNerTags(stringWriter);
-                                    String[] NEtokens = stringWriter.toString().split(" ");
-
-                                    int sentIdx = sent.getSentIdx();
-                                    List<Map.Entry<AgigaMention, AgigaMention>> mentionPairs = new ArrayList<Map.Entry<AgigaMention, AgigaMention>>();
-                                    if (mentionMap.containsKey(sentIdx)) {
-                                        mentionPairs = mentionMap.get(sentIdx);
+                                if (subject == null) {
+                                    Tree subjectNode = TreeTokenUtils.findHolderOrCause(root, leftNode, "NP", true);
+                                    if (subjectNode != null) {
+                                        subject = TreeTokenUtils.getStringFromSpan(subjectNode, tokens, sentences, mentionPairs, NEtokens, asLemma, replaceCoref, addNER);
                                     }
+                                }
 
-                                    String holder = TreeTokenUtils.getStringFromSpan(holderNode, tokens, sentences, mentionPairs, NEtokens, asLemma, replaceCoref, addNER);
-                                    String cause = TreeTokenUtils.getStringFromSpan(causeNode, tokens, sentences, mentionPairs, NEtokens, asLemma, replaceCoref, addNER);
+                                if (object == null) {
+                                    Tree objectNode = TreeTokenUtils.findHolderOrCause(root, rightNode, isNP ? "NP" : "S", false);
+                                    if (objectNode != null) {
+                                        object = TreeTokenUtils.getStringFromSpan(objectNode, tokens, sentences, mentionPairs, NEtokens, asLemma, replaceCoref, addNER);
+                                    }
+                                }
+//
+//                                if (subject == null || object == null) {
+//                                    System.out.println(TreeTokenUtils.createStringFromTokens(tokens, false, false, false));
+//                                    for (AgigaTypedDependency dep : colDeps) {
+//                                        if (!dep.getType().equals("root"))
+//                                        {
+//                                            System.out.printf("type: %s, gov: %s, dep: %s\n", dep.getType(), tokens.get(dep.getGovIdx()).getWord(), tokens.get(dep.getDepIdx()).getWord());
+//                                        }
+//
+//                                    }
+//                                }
+
+                                if (subject != null && object != null) {
+
+                                    String holder, cause;
+                                    if (orderIsReversed) {
+                                        holder = object;
+                                        cause = subject;
+                                    }
+                                    else {
+                                        holder = subject;
+                                        cause = object;
+                                    }
 
                                     // clean pattern
                                     String[] cleanPatternTokens = m.group(0).split(" ");
