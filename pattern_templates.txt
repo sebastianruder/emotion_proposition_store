@@ -30,8 +30,6 @@ anticipation	expect/Verb	NP	false
 anticipation	expect/Verb that/IN	S	false
 anticipation	predict/Verb	NP	false
 anticipation	predict/Verb that/IN	S	false
-anticipation	assume/Verb	NP	false
-anticipation	assume/Verb that/IN	S	false
 anticipation	await/Verb	NP	false
 anticipation	await/Verb	that/IN S	false
 anticipation	count/Verb on/IN	NP	false
@@ -68,7 +66,6 @@ disgust	upset/Verb	NP	true
 disgust	hate/Verb	NP	false
 disgust	hate/Verb that/IN	S	false
 fear	alarm/Verb	NP	true
-fear	avoid/Verb	NP	false
 fear	dread/Verb	NP	false
 fear	shun/Verb	NP	false
 fear	worry/Verb	NP	true
@@ -92,7 +89,6 @@ fear	intimidate/Verb	NP	true
 joy	revel in/Verb	NP	false
 joy	delight/Verb	NP	true
 joy	amuse/Verb	NP	true
-joy	attract/Verb	NP	true
 joy	charm/Verb	NP	true
 joy	cheer/Verb	NP	true
 joy	enchant/Verb	NP	true
@@ -118,7 +114,7 @@ sadness	discourage/Verb	NP	true
 sadness	dishearten/Verb	NP	true
 sadness	dispirit/Verb	NP	true
 sadness	grieve/Verb that/IN	S	false
-sadness	be/Verb sad/JJ that/Verb	S	false
+sadness	be/Verb sad/JJ that/IN	S	false
 sadness	be/Verb melancholic/JJ that/IN	S	false
 sadness	feel/Verb sorrow/NN that/IN	S	false
 sadness	mourn/Verb	NP	false
@@ -343,7 +339,6 @@ sadness	repent/Verb	NP	false
 sadness	rue/Verb	NP	false
 anger	chagrin/Verb	NP	true
 anger	abase/Verb	NP	true
-joy	inspire/Verb	NP	true
 disgust	contemn/Verb	NP	false
 disgust	despise/Verb	NP	false
 disgust	scorn/Verb	NP	false
