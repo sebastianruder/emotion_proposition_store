@@ -5,8 +5,9 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 /**
- * EmotionPatternExtractor extracts emotion triggering expressions from a file and stores these as patterns in a list
- * pertaining to the respective emotions which are stored in a map for better retrieval
+ * EmotionPatternExtractor extracts emotion triggering expressions from a file and converts them into regular expression
+ * patterns pertaining to the respective emotions. It stores them in a map for look-up and writes them to a file
+ * for reference.
  */
 public class EmotionPatternExtractor {
 
@@ -21,7 +22,8 @@ public class EmotionPatternExtractor {
     Map<String, Map<Pattern, Map<String, Boolean>>> emotionMap = new ArrayMap<String, Map<Pattern, Map<String, Boolean>>>();
 
     /**
-     * Initializes emotion map storing patterns pertaining to Plutchik's eight basic emotions
+     * Initializes an instance of the EmotionPatternExtractor class. Adds the individual emotion maps which will store
+     * regex patterns pertaining to Plutchik's eight basic emotions to the general emotion map.
      */
     public EmotionPatternExtractor() {
         emotionMap.put(Enums.Emotions.joy.toString(), joyPatterns);
@@ -35,16 +37,15 @@ public class EmotionPatternExtractor {
     }
 
     /**
-     * Takes file containing emotion trigger expressions as input and returns an emotion map
+     * Takes a file containing emotion trigger expressions as input and returns an emotion map
      * storing these expressions as patterns in lists pertaining to the respective emotion.
      *
-     * @param emotionTriggersFile: file path string of file containing emotion trigger expressions
-     * @param outPath: output path of the files
-     * @param random: if a random pattern files should be written to test inter-annotator agreement
+     * @param emotionTriggersFile file path string of file containing emotion trigger expressions
+     * @param outPath output path of the files
      * @return map (key: emotion word, value: map of emotion patterns and their respective right constituent)
      * @throws IOException
      */
-    public Map<String, Map<Pattern, Map<String, Boolean>>> extractEmotions(File emotionTriggersFile, String outPath, boolean random)
+    public Map<String, Map<Pattern, Map<String, Boolean>>> extractEmotions(File emotionTriggersFile, String outPath)
             throws IOException {
 
         InputStream inputStream = new FileInputStream(emotionTriggersFile);
@@ -88,6 +89,7 @@ public class EmotionPatternExtractor {
                  All tags (except past participle) are possible. */
                 else if (word.endsWith("Verb")) {
                     word = word.replace("Verb", "VB[DGPZ]");
+                    word = "(?! not)(?! never)" + word; // exclude negations for verbs
                 }
                 patternBuilder.append(" ");
                 patternBuilder.append(word);
@@ -105,9 +107,12 @@ public class EmotionPatternExtractor {
             // puts boolean indicating if cause is an NP or not
             booleanMap.put(Enums.Features.isNP.toString(), isNP);
 
+            /* for some predicates, i.e. 'scare', 'surprise', etc. the emotion holder is the object; for these
+            verbs we create a passive form to capture the case when the emotion holder is subject */
             Boolean passiveExists = Boolean.valueOf(lineList[3]);
 
-            // puts boolean indicating if pattern is passive; always false; passive patterns with true are created
+            /* for 'scare' patterns as well as passive patterns, normal order, i.e. ;
+            emotion holder := subject; cause := object is reversed */
             booleanMap.put(Enums.Features.orderIsReversed.toString(), passiveExists);
             emotionMap.get(emotionWord).put(emotionPattern, booleanMap);
 
@@ -128,13 +133,13 @@ public class EmotionPatternExtractor {
     }
 
     /**
-     * Creates the passive form if a passive form exists. Can be created with different prepositions, though 'by'
+     * Creates the passive form if a passive form exists. Can be created with different prepositions; 'by'
      * takes an NP as cause, while 'that' takes an S.
-     * @param writer: a writer
-     * @param prep: the preposition for the pattern, at the moment either 'by' or 'that'
-     * @param passiveLemmaForm: the lemma + pos tag, i.e. "frighten/VBN"
+     * @param prep the preposition for the pattern, at the moment either 'by' or 'that'
+     * @param passiveLemmaForm the lemma + pos tag, i.e. "frighten/VBN"
      * @param emotionWord: the emotion word
-     * @param emotionMap: the emotion map
+     * @param writer the writer that is used
+     * @param emotionMap the emotion map
      */
     private static void createPassive(String prep, String passiveLemmaForm, String emotionWord, PrintWriter writer,
                                       Map<String, Map<Pattern, Map<String, Boolean>>> emotionMap) {
@@ -142,11 +147,11 @@ public class EmotionPatternExtractor {
                 passiveLemmaForm, prep);
         Pattern emotionPattern = Pattern.compile(pattern);
         Map<String, Boolean> booleanMap = new ArrayMap<String, Boolean>();
-        // if preposition is by, cause of emotion is an NP; if preposition is that, cause is a clause, i.e. S
+        // if preposition is 'by', cause of emotion is an NP; if preposition is that, cause is a clause, i.e. S
         booleanMap.put(Enums.Features.isNP.toString(), prep.equals("by"));
         booleanMap.put(Enums.Features.orderIsReversed.toString(), false);
 
         emotionMap.get(emotionWord).put(emotionPattern, booleanMap);
-        writer.println(String.format("%s\t%s\t%s", emotionWord, pattern, prep.equals("by") ? "NP" : "S"));
+        writer.printf("%s\t%s\t%s\n", emotionWord, pattern, prep.equals("by") ? "NP" : "S");
     }
 }
