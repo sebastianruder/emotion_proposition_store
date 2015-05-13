@@ -5,6 +5,8 @@ import java.util.*;
  */
 public class Extensions
 {
+    private static List<String> punctuation = Arrays.asList(new String[] {":", ",", "''", "''", "``"});
+
     /**
      * Sorts a map by its values and returns it.
      * @param map the map that should be sorted
@@ -59,7 +61,7 @@ public class Extensions
             if (sb == null) {
                 sb = new StringBuilder();
             }
-            else if (!element.equals("")) {
+            else if (!element.equals("") || punctuation.contains(element)) {
                 sb.append(sep);
             }
 
