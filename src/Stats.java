@@ -10,10 +10,16 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * Class to store and write emotion and pattern statistics.
  * Created by sebastian on 28/03/15.
  */
 public class Stats {
 
+    /**
+     * Creates a map storing the number of matches of a pattern and its features from an emotion map.
+     * @param emotionMap
+     * @return
+     */
     public static Map<Pattern, Map<String, String>> createResultMap(
             Map<String, Map<Pattern, Map<String, Boolean>>> emotionMap) {
 
@@ -59,7 +65,7 @@ public class Stats {
         }
 
         // sort the pattern, count map and write the patterns to a file
-        statMap = ExtensionMethods.sortByValue(statMap);
+        statMap = Extensions.sortByValue(statMap);
         for (Pattern pattern : statMap.keySet()) {
             if (pattern != null) {
                 String emotion = resultMap.get(pattern).get(Enums.Stats.emotion.toString());
@@ -76,7 +82,7 @@ public class Stats {
             int totalFreq = 0;
             int totalFreq10 = 0;
             int patterns10 = 0;
-            Map<Pattern, Integer> sortedEmotionMap = ExtensionMethods.sortByValue(emotionStatMap.get(emotion));
+            Map<Pattern, Integer> sortedEmotionMap = Extensions.sortByValue(emotionStatMap.get(emotion));
             for (Pattern pattern : sortedEmotionMap.keySet()) {
                 if (pattern != null) {
                     int freq = sortedEmotionMap.get(pattern);

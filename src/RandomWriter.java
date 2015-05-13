@@ -1,15 +1,20 @@
 import java.io.*;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Class to write patterns from file in a random order and produce two output files: for annotation and checking.
+ * Class to write patterns from a file and terms from the NRC emotion lexicon in a random order to a file including
+ * instructions for annotation. The annotated file is used to check inter-annotator agreement.
  *
  * Created by sebastian on 28/04/15.
  */
 public class RandomWriter {
 
+    /**
+     * Main method for reading in a pattern file and a file containing NRC terms and writing them in random order.
+     * @param args the pattern file, the nrc terms file, the output file
+     * @throws IOException
+     */
     public static void main(String[] args) throws IOException {
 
         // hashmap for writing patterns in a random order to measure inter-annotator agreement; key: random, value: pattern
@@ -19,6 +24,7 @@ public class RandomWriter {
         InputStream inputStream = new FileInputStream(path + "random_patterns_gen.txt");
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
 
+        // read in the pattern file and add the patterns to the map; format: emotion tab expression tab isNP tab freq
         String line = reader.readLine();
         while (line != null) {
             String pattern = line.split("\t")[1];
@@ -27,9 +33,9 @@ public class RandomWriter {
             line = reader.readLine();
         }
 
+        // read in the NRC terms file and add the patterns to the map; format: (emotion tab)+ expression
         inputStream = new FileInputStream(path + "nrc_terms.txt");
         reader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
-
         line = reader.readLine();
         while (line != null) {
             String[] lineSplit = line.split("\t");
@@ -39,20 +45,30 @@ public class RandomWriter {
             line = reader.readLine();
         }
 
+        // write instructions
         PrintWriter randomWriter = new PrintWriter(path + "patterns_to_annotate.txt", "UTF-8");
         randomWriter.println("Annotation of emotions\n" +
-                "Please annotate the following expressions with the most closely associated emotion among the following:\n" +
+                "Please annotate the following expressions with the most closely associated emotion and its degree among the following:\n" +
                 "Joy, trust, fear, surprise, sadness, disgust, anger, and anticipation.\n" +
-                "If an expression clearly pertains to only emotion, assign just one. If you associate two emotions with an expression," +
-                "assign the most and the second-most closely associated emotion. Delimit expressions and emotions with tabs.\n" +
                 "Please keep Plutchik's wheel of emotions (http://www.fractal.org/Bewustzijns-Besturings-Model/Plutchikfig6.gif)" +
-                " visible while undertaking this task to assist you in differentiating the emotions. Thank you for your time!\n");
+                " visible while undertaking this task to assist you in differentiating the emotions.\n" +
+                "Please also specify the degree of emotion on Plutchik's wheel like this: joy_I (inner wheel), joy_II (middle wheel), " +
+                "joy_III (outer wheel).\n" +
+                "If an expression clearly pertains to only emotion, assign just one. If no emotion can be clearly associated " +
+                "with an expression, label it with 'none'. If you associate two emotions with an expression, " +
+                "assign the most and the second-most closely associated emotion. Delimit expressions and emotions with tabs.\n" +
+                "E.g. funfair   joy_II\n" +
+                "pessimist  sadness_III fear_III\n" +
+                "Please annotate only the first 30-40 patterns at the beginning. After these, we will meet briefly to " +
+                "discuss problems and ambiguities. Thank you for your time!\n");
 
+        // write the expressions in a random order
         randomWriter.println("expression\t1st emotion\t(2nd emotion)");
-        for (double d : ExtensionMethods.asSortedList(randomPatternMap.keySet())) {
+        for (double d : Extensions.asSortedList(randomPatternMap.keySet())) {
             randomWriter.println(randomPatternMap.get(d));
         }
 
+        // write the controll questions
         randomWriter.println("\nFinal question: Do the following sentences correspond with the sentiments you marked? " +
                 "Indicate yes/no.\n" +
                 "rely on: Most big managed care plans rely on advice from panels of medical experts to recommend acceptance or rejection of new technology .\n" +
