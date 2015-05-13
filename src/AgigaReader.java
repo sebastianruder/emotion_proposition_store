@@ -1,6 +1,5 @@
 import edu.jhu.agiga.*;
 import edu.stanford.nlp.trees.*;
-import edu.stanford.nlp.util.StringUtils;
 
 import java.io.*;
 import java.util.*;
@@ -12,23 +11,43 @@ import java.util.regex.Pattern;
  * Created by sebastian on 29/09/14.
  * Adapted from Eva Mujdricza-Maydt (mujdricz@cl.uni-heidelberg.de).
  *
- * A class to read annotated gigaword documents and extract emotion-triggering expressions from them
+ * A class to read annotated Gigaword documents and extract emotion-triggering expressions from them.
  */
 public class AgigaReader {
 
-    // initialize logger for logging, duh
+    /*
+    The logger used for logging
+     */
     private static Logger log = Logger.getLogger(StreamingSentenceReader.class.getName());
 
+    /*
+    A boolean indicating if emotion holders and causes should be output in lemma form.
+     */
     private static boolean asLemma = true;
 
+    /*
+    A boolean indicating if pronouns in the emotion holders and causes should be replaced with the most representative
+    coreferent.
+     */
     private static boolean replaceCoref = true;
 
+    /*
+    A boolean indicating if named entity tags should be added to the emotion holders and causes.
+     */
     private static boolean addNER = true;
 
     /**
-     * Main method iterating over the annotated gigaword documents
+     * A regex for matching pronouns, this, and what in the output string.
+     */
+    private static String pronounRegex = String.format("(?<=^)(%s|what|this|that)(?=$)", Extensions.join((String[]) Utils.pronouns.toArray(), "|"));
+
+    private static List<String> prepositionsThat = Arrays.asList(new String[] {"that", "of", "to", "about", "on"});
+
+
+    /**
+     * Main method iterating over the annotated Gigaword documents
      *
-     * @param args input parameters
+     * @param args the directory of the Gigaword files, the pattern templates file, the output directory
      * @throws java.io.IOException
      */
     public static void main(String[] args) throws IOException {
@@ -38,6 +57,7 @@ public class AgigaReader {
         args[2] = "/home/sebastian/git/sentiment_analysis/out";
         // java -jar sentiment.jar /media/sebastian/Data /home/sebastian/git/sentiment_analysis/pattern_templates.txt /home/sebastian/git/sentiment_analysis/out
 
+        // validation of input parameters
         if (args.length != 3) {
             System.out.println("Too few or too many arguments. sentiment.jar takes exactly 3 arguments.\n" +
                     "Usage: java -jar sentiment.jar gigawordDirPath patternTemplatesFilePath outDirPath");
@@ -62,7 +82,7 @@ public class AgigaReader {
             System.exit(1);
         }
 
-        // append / to file names if missing
+        // append / to file names if missing; TODO could probably be solved by Java class; Path?
         String agigaPath = args[0].endsWith("/") ? args[0] : args[0] + "/";
         String outPath = args[2].endsWith("/") ? args[2] : args[2] + "/";
 
@@ -77,11 +97,11 @@ public class AgigaReader {
         // Preferences of what should be read
         AgigaPrefs readingPrefs = new AgigaPrefs(); // all extraction is set to true per default
         // modify preferences individually if needed
-        readingPrefs.setColDeps(true);
+        readingPrefs.setColDeps(true); // collapsed dependencies
         readingPrefs.setBasicDeps(true);
         readingPrefs.setColCcprocDeps(true);
-        readingPrefs.setNer(true);
-        readingPrefs.setCoref(true);
+        readingPrefs.setNer(true); // adds NE annotation
+        readingPrefs.setCoref(true); // adds coreference annotation
 
         // Get the document reader - this "entails" all the documents within the gz-compressed file
         StreamingDocumentReader agigaReader;
@@ -90,7 +110,7 @@ public class AgigaReader {
         // store the emotion-triggering patterns in a map
         EmotionPatternExtractor emotionExtractor = new EmotionPatternExtractor();
         Map<String, Map<Pattern, Map<String, Boolean>>> emotionMap =
-                emotionExtractor.extractEmotions(templatesFile, outPath, true);
+                emotionExtractor.extractEmotions(templatesFile, outPath);
 
         // map listing each pattern with the number of times it has found a successful match (experiencer + cause)
         Map<Pattern, Map<String, String>> resultMap = Stats.createResultMap(emotionMap);
@@ -98,9 +118,11 @@ public class AgigaReader {
         int matches = 0; // count number of successful matches (experiencer & cause have been found)
         int count = 0; // count number of sentences spanning all documents
 
-        // check if writers need to be closed or if wrapping in bufferedwriter is sufficient
         PrintWriter resultWriter = new PrintWriter(new BufferedWriter(new FileWriter(outPath + "results.txt")));
         PrintWriter collWriter = new PrintWriter(new BufferedWriter(new FileWriter(outPath + "collocations.txt")));
+
+        // write headline for result writer
+        resultWriter.printf("# ID\tEmotion\tPattern\tEmotion Holder\t(NP-Cause)\t(Subj S-Cause)\t(Pred S-Cause)\t(Dobj S-Cause)\t[Pobjs S-Cause]\t[BoW Cause]\n");
 
         for (String fileName : fileNames) {
             agigaReader = new StreamingDocumentReader(agigaPath + fileName, readingPrefs);
@@ -110,11 +132,13 @@ public class AgigaReader {
                 List<AgigaCoref> corefs = doc.getCorefs();
 
                 // maps sentence indexes to a list of mentions and their representatives
-                Map<Integer, List<Map.Entry<AgigaMention, AgigaMention>>> mentionMap = TreeTokenUtils.createMentionMap(corefs);
+                Map<Integer, List<Map.Entry<AgigaMention, AgigaMention>>> mentionMap = Utils.createMentionMap(corefs);
 
                 // Iterate over the sentences
                 for (AgigaSentence sent : sentences) {
-                    if (count >= 2000000) {
+
+                    // cut-off point for testing and investigation
+                    if (count++ >= 2000000) {
 
                         // write the stats to a file
                         Stats.writeStats(resultMap, outPath);
@@ -125,14 +149,12 @@ public class AgigaReader {
                     }
 
                     // TODO use JWI to interface in WorNet for majority sense / hyponym identification
-
-                    count++;
                     // only retrieve one emotion trigger per sentence; if pattern is found, continue
                     boolean patternFound = false;
                     List<AgigaToken> tokens = sent.getTokens();
 
-                    // create a lemma string with pos and indices
-                    String sentence = TreeTokenUtils.createStringFromTokens(tokens, true, true, true);
+                    // create a lemma string with POS and indices
+                    String sentence = Utils.createStringFromTokens(tokens, true, true, true);
 
                     // extract sentence root
                     Tree root = sent.getStanfordContituencyTree();
@@ -144,25 +166,28 @@ public class AgigaReader {
                             if (patternFound) {
                                 break;
                             }
+
                             Matcher m = pattern.matcher(sentence);
                             if (m.find()) {
-
-                                // index the leaves to retrieve indices
-                                root.indexLeaves();
-                                // set the spans to retrieve spans
-                                root.setSpans();
+                                root.indexLeaves(); // index the leaves to retrieve indices
+                                root.setSpans(); // set the spans to retrieve spans
 
                                 // words look like this: ["fear/VBD/15", ...]
                                 String[] patternWords = m.group(0).split(" ");
 
-                                // get leftmost and rightmost indices of pattern
+                                // get leftmost and rightmost indices of pattern; right-most in pattern can be 'that'
+                                // or preposition; will dominate object and allow retrieval via constituents
                                 int leftIdx = Integer.parseInt(patternWords[0].split("/")[2]);
                                 int rightIdx = Integer.parseInt(patternWords[patternWords.length - 1].split("/")[2]);
 
                                 // rightIdx for dependencies if that is present
-                                int rightDepIdx = -2;
-                                if (tokens.get(rightIdx).getWord().equals("that")) {
-                                    rightDepIdx = Integer.parseInt(patternWords[patternWords.length - 2].split("/")[2]);
+
+                                int rightDepIdx = -2; // root has idx -1; no dep has idx -2
+                                if (prepositionsThat.contains(tokens.get(rightIdx).getWord())) {
+                                    rightDepIdx = rightIdx - 1;
+                                }
+                                else {
+                                    rightDepIdx = rightIdx;
                                 }
 
                                 // Penn string shows phrase structure tree
@@ -173,17 +198,18 @@ public class AgigaReader {
                                 Tree leftNode = leaves.get(leftIdx);
                                 Tree rightNode = leaves.get(rightIdx);
 
-                                // pattern can have a passive form; if so, experiencer and cause are reversed
+                                // retrieve information from emotion map if order is reversed, if object is an NP
                                 Boolean orderIsReversed = emotionMap.get(emotion).get(pattern).get(
                                         Enums.Features.orderIsReversed.toString());
                                 // cause of emotion is either an NP or S
                                 Boolean isNP = emotionMap.get(emotion).get(pattern).get(Enums.Features.isNP.toString());
 
-
+                                // get NE tags
                                 StringWriter stringWriter = new StringWriter();
                                 sent.writeNerTags(stringWriter);
                                 String[] NEtokens = stringWriter.toString().split(" ");
 
+                                // get mention, coreferent pairs
                                 int sentIdx = sent.getSentIdx();
                                 List<Map.Entry<AgigaMention, AgigaMention>> mentionPairs = new ArrayList<Map.Entry<AgigaMention, AgigaMention>>();
                                 if (mentionMap.containsKey(sentIdx)) {
@@ -192,127 +218,171 @@ public class AgigaReader {
 
                                 String subject = null;
                                 String object = null;
+                                int subjectIdx = -2;
+                                int objectIdx = -2;
+
                                 // search first in collapsed dependencies
+                                // collapsed dependencies skips relative pronouns, "who", etc.
+                                // basic dependencies have better information about prepositional comps
+                                List<AgigaTypedDependency> basicDeps = sent.getBasicDeps();
                                 List<AgigaTypedDependency> colDeps = sent.getColDeps();
                                 for (AgigaTypedDependency dep : colDeps) {
-
                                     String type = dep.getType();
-                                    if (subject == null && dep.getGovIdx() == leftIdx &&
-                                            (type.equals("nsubj") || type.equals("nsubjpass"))) {
-                                        subject = TreeTokenUtils.depToString(dep.getDepIdx(), colDeps, tokens, sentences,
+                                    if (subject == null && (dep.getGovIdx() == leftIdx || dep.getGovIdx() == rightDepIdx)
+                                            && (type.equals("nsubj") || type.equals("nsubjpass"))) {
+                                        subject = Utils.depToString(dep.getDepIdx(), colDeps, tokens, sentences,
                                                 mentionPairs, NEtokens, true, replaceCoref, asLemma, addNER);
+                                        subjectIdx = dep.getDepIdx();
                                     }
                                     else if (object == null && isNP && dep.getGovIdx() == rightIdx &&
-                                                (type.equals("dobj") || type.equals("pobj"))) {
-                                        object = TreeTokenUtils.depToString(dep.getDepIdx(), colDeps, tokens, sentences,
+                                                (type.equals("dobj"))) {
+                                        object = Utils.depToString(dep.getDepIdx(), colDeps, tokens, sentences,
                                                 mentionPairs, NEtokens, true, replaceCoref, asLemma, addNER);
+                                        objectIdx = dep.getDepIdx();
                                     }
                                     // if dependent is a sentence part, it is either a ccomp, xcomp, or a dep in a VP
-                                    else if (object == null & !isNP &&
+                                    else if (object == null && !isNP &&
                                             (dep.getGovIdx() == rightIdx || dep.getGovIdx() == rightDepIdx) &&
                                             (type.equals("ccomp") || type.equals("xcomp"))) {
-
-                                        object = TreeTokenUtils.compToString(dep.getDepIdx(), colDeps, tokens, sentences,
+                                        object = Utils.compToString(dep.getDepIdx(), colDeps, tokens, sentences,
                                                 mentionPairs, NEtokens, true, replaceCoref, asLemma, addNER);
+                                        objectIdx = dep.getDepIdx();
                                     }
                                 }
 
-                                // if subject hasn't been found, check for conjunction
+                                // if subject hasn't been found, check for conjunction or disjunction
                                 if (subject == null) {
                                     for (AgigaTypedDependency dep : colDeps) {
-                                        if (dep.getType().equals("conj_and") && dep.getDepIdx() == leftIdx) {
+                                        String type = dep.getType();
+                                        // verb can modify subject; note: in newer version is remade as part of vmod
+                                        if (type.equals("partmod") && dep.getDepIdx() == leftIdx) {
+                                            subject = Utils.depToString(dep.getGovIdx(), colDeps, tokens, sentences,
+                                                    mentionPairs, NEtokens, true, replaceCoref, asLemma, addNER);
+                                            subjectIdx = dep.getDepIdx();
+                                        }
+
+                                        if ((type.equals("conj_and") || type.equals("conj_or") || type.equals("conj_but"))
+                                                && dep.getDepIdx() == leftIdx) {
                                             for (AgigaTypedDependency dep2 : colDeps) {
                                                 if (dep2.getType().equals("nsubj") && dep.getGovIdx() == dep2.getGovIdx()) {
-                                                    subject = TreeTokenUtils.depToString(dep.getDepIdx(), colDeps, tokens, sentences,
+                                                    subject = Utils.depToString(dep2.getDepIdx(), colDeps, tokens, sentences,
                                                             mentionPairs, NEtokens, true, replaceCoref, asLemma, addNER);
+                                                    subjectIdx = dep.getDepIdx();
                                                 }
                                             }
                                         }
                                     }
                                 }
 
+                                // if object hasn't been found, object can be in a dep in a VP
                                 if (object == null && !isNP) {
                                     for (AgigaTypedDependency dep : colDeps) {
                                         if (dep.getType().equals("dep") &&
                                                 leaves.get(dep.getDepIdx()).ancestor(2, root).label().toString().equals("VP") &&
                                                 (dep.getGovIdx() == rightIdx || dep.getGovIdx() == rightDepIdx)) {
-                                            object = TreeTokenUtils.compToString(dep.getDepIdx(), colDeps, tokens, sentences,
+                                            object = Utils.compToString(dep.getDepIdx(), colDeps, tokens, sentences,
                                                     mentionPairs, NEtokens, true, replaceCoref, asLemma, addNER);
+                                            objectIdx = dep.getDepIdx();
                                         }
                                     }
                                 }
 
-                                if (subject == null) {
-                                    Tree subjectNode = TreeTokenUtils.findHolderOrCause(root, leftNode, "NP", true);
-                                    if (subjectNode != null) {
-                                        subject = TreeTokenUtils.getStringFromSpan(subjectNode, tokens, sentences, mentionPairs, NEtokens, asLemma, replaceCoref, addNER);
-                                    }
-                                }
-
                                 if (object == null) {
-                                    Tree objectNode = TreeTokenUtils.findHolderOrCause(root, rightNode, isNP ? "NP" : "S", false);
-                                    if (objectNode != null) {
-                                        object = TreeTokenUtils.getStringFromSpan(objectNode, tokens, sentences, mentionPairs, NEtokens, asLemma, replaceCoref, addNER);
+                                    for (AgigaTypedDependency dep : basicDeps) {
+                                        String type = dep.getType();
+                                        // "take pleasure in going home"; has problems with copula constructions, e.g. "take pleasure in being the brute on the floor"
+                                        if (object == null && !isNP && leftIdx != rightIdx && type.equals("pcomp")) {
+                                            object = Utils.compToString(dep.getDepIdx(), colDeps, tokens, sentences,
+                                                    mentionPairs, NEtokens, true, replaceCoref, asLemma, addNER);
+                                            objectIdx = dep.getDepIdx();
+                                        }
+                                        // for prepositional objects, e.g. "proud of", "count on"
+                                        else if (object == null && isNP && leftIdx != rightIdx && type.equals("pobj") &&
+                                                dep.getGovIdx() == rightIdx) {
+                                            object = Utils.depToString(dep.getDepIdx(), colDeps, tokens, sentences,
+                                                    mentionPairs, NEtokens, true, replaceCoref, asLemma, addNER);
+                                            objectIdx = dep.getDepIdx();
+                                        }
                                     }
                                 }
-//
-//                                if (subject == null || object == null) {
-//                                    System.out.println(TreeTokenUtils.createStringFromTokens(tokens, false, false, false));
-//                                    for (AgigaTypedDependency dep : colDeps) {
-//                                        if (!dep.getType().equals("root"))
-//                                        {
-//                                            System.out.printf("type: %s, gov: %s, dep: %s\n", dep.getType(), tokens.get(dep.getGovIdx()).getWord(), tokens.get(dep.getDepIdx()).getWord());
-//                                        }
-//
-//                                    }
-//                                }
 
-                                if (subject != null && object != null) {
-
-                                    String holder, cause;
-                                    if (orderIsReversed) {
-                                        holder = object;
-                                        cause = subject;
-                                    }
-                                    else {
-                                        holder = subject;
-                                        cause = object;
-                                    }
-
-                                    // clean pattern
-                                    String[] cleanPatternTokens = m.group(0).split(" ");
-                                    StringBuilder cleanPatternBuilder = new StringBuilder();
-                                    for (String element : cleanPatternTokens) {
-                                        cleanPatternBuilder.append(element.split("/")[0]);
-                                        cleanPatternBuilder.append(" ");
-                                    }
-
-                                    String cleanPattern = cleanPatternBuilder.toString().trim();
-
-                                    patternFound = true;
-                                    resultMap.get(pattern).put(Enums.Stats.matches.toString(),
-                                            String.valueOf(Integer.parseInt(resultMap.get(pattern).get(Enums.Stats.matches.toString())) + 1));
-                                    matches++;
-
-                                    // write clean sentence to collocations file
-                                    String cleanSent = TreeTokenUtils.createStringFromTokens(tokens, false, false, false);
-                                    String sentInfo = String.format("%s/%d\t%s", doc.getDocId(), sentIdx, cleanSent);
-                                    String patternInfo = String.format("#%d Emotion: '%s', pattern: '%s', emotion holder: '%s', cause: '%s'",
-                                            matches, emotion, cleanPattern, holder, cause);
-
-                                    // write and print collocations
-                                    collWriter.println(sentInfo);
-                                    collWriter.println(patternInfo);
-                                    collWriter.flush();
-
-                                    System.out.println(sentInfo);
-                                    System.out.println(patternInfo);
-
-                                    // write output to file
-                                    resultWriter.printf("%s/%d\t%s\t%s\t%s\t%s\n", doc.getDocId(), sentIdx, emotion,
-                                            cleanPattern, holder, cause);
-                                    resultWriter.flush();
+                                // skip if either subject or object weren't found
+                                if (subject == null || object == null) {
+                                    continue;
                                 }
+
+                                // reverse emotion holder and cause if order is reversed
+                                String holder, cause;
+                                Integer causeIdx;
+                                if (orderIsReversed) {
+                                    holder = object;
+                                    cause = subject;
+                                    causeIdx = subjectIdx;
+                                }
+                                else {
+                                    holder = subject;
+                                    cause = object;
+                                    causeIdx = objectIdx;
+                                }
+
+                                if (cause.matches(pronounRegex)) {
+                                    // exclude matches that still contain pronouns, this, or what
+                                    continue;
+                                }
+
+                                StringBuilder causeBOWBuilder = new StringBuilder();
+                                causeBOWBuilder.append("[");
+                                causeBOWBuilder.append(Extensions.join(Utils.getBagOfWords(root, leaves.get(causeIdx), isNP ? "NP" : "S", tokens).split(" "), ", "));
+                                causeBOWBuilder.append("]");
+                                String causeBOW = causeBOWBuilder.toString();
+
+                                // format cause
+                                // NP-cause \ŧ Subject S-cause \t Predicate \t Object \t Pobjs
+                                // NP-cause is empty if cause is S; Subject, Predicate, Object, Pobjs
+                                // are empty if cause is NP
+                                StringBuilder causeBuilder = new StringBuilder();
+                                if (isNP) {
+                                    causeBuilder.append(cause);
+                                    causeBuilder.append("\t\t\t\t");
+                                }
+                                else {
+                                    causeBuilder.append("\t");
+                                    causeBuilder.append(cause);
+                                }
+
+                                String causeFormat = causeBuilder.toString();
+
+                                // clean up pattern, remove part-of-speech and index
+                                String[] cleanPatternTokens = m.group(0).split(" ");
+                                StringBuilder cleanPatternBuilder = new StringBuilder();
+                                for (String element : cleanPatternTokens) {
+                                    cleanPatternBuilder.append(element.split("/")[0]);
+                                    cleanPatternBuilder.append(" ");
+                                }
+
+                                String cleanPattern = cleanPatternBuilder.toString().trim();
+                                patternFound = true;
+                                resultMap.get(pattern).put(Enums.Stats.matches.toString(),
+                                        String.valueOf(Integer.parseInt(resultMap.get(pattern).get(Enums.Stats.matches.toString())) + 1));
+                                matches++;
+
+                                // write clean sentence to collocations file
+                                String cleanSent = Utils.createStringFromTokens(tokens, false, false, false);
+                                String sentInfo = String.format("%s/%d\t%s", doc.getDocId(), sentIdx, cleanSent);
+                                String patternInfo = String.format("#%d Emotion: '%s', pattern: '%s', emotion holder: '%s', cause: '%s', cause BoW: %s",
+                                        matches, emotion, cleanPattern, holder, cause, causeBOW);
+
+                                // write and print collocations
+                                collWriter.println(sentInfo);
+                                collWriter.println(patternInfo);
+                                collWriter.flush();
+                                System.out.println(sentInfo);
+                                System.out.println(patternInfo);
+
+                                // write output to file
+                                resultWriter.printf("%s/%d\t%s\t%s\t%s\t%s\t%s\n", doc.getDocId(), sentIdx, emotion,
+                                        cleanPattern, holder, causeFormat, causeBOW);
+                                resultWriter.flush();
                             }
                         }
                     }
