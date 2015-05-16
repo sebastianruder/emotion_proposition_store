@@ -13,7 +13,7 @@ import java.util.*;
 public class Utils {
 
     // pronouns
-    public static List<String> pronouns = Arrays.asList("I", "he", "she", "it", "him", "her", "we", "they", "me", "us", "them");
+    public static List<String> pronouns = Arrays.asList("I", "you", "he", "she", "it", "him", "her", "we", "they", "me", "us", "them");
 
     // possessive pronouns
     private static List<String> possessivePronouns = Arrays.asList("my", "your", "his", "her", "its", "our", "their");
@@ -52,61 +52,6 @@ public class Utils {
         }
 
         return mentionMap;
-    }
-
-
-    /**
-     * Retrieves span of first sibling/cousin node having a given label on either side of a leaf node.
-     * @param root: root node of tree
-     * @param leaf: leaf node whose sibling should be retrieved
-     * @param label: label of wanted node
-     * @param left: if node should be looked for on the left side of the sibling node
-     * @return a list containing the start index and the end index of the span of the wanted node
-     */
-    public static Tree findHolderOrCause(Tree root, Tree leaf, String label, boolean left) {
-
-        Tree child;
-
-        // at height 1 from leaf node is preterminal, at height 2 is the first ancestor
-        for (int height = 2; height <= 6; height++)
-            try {
-                Tree ancestor = leaf.ancestor(height, root);
-
-                // node shouldn't be embedded in a PP
-                if (leaf.ancestor(height + 1 , root).label().toString().equals("PP")) {
-                    continue;
-                }
-
-                // iterate over the children of ancestor, start with the second child if looking on the right
-                for (int i = 0; i < ancestor.getChildrenAsList().size(); i++) {
-                    child = ancestor.getChild(i);
-
-                    // if looking on the right, child should not be left of the leaf
-                    if (!left && child.getSpan().getTarget() < leaf.ancestor(2, root).getSpan().getSource()) {
-                    }
-                    // break so as not to look to the right side of the leaf when searching left (i.e. for experiencer)
-                    else if (child.getLeaves().contains(leaf)) {
-                        if (left) {
-                            break;
-                        }
-                    }
-                    else if (child.label().toString().equals(label) || child.label().toString().equals(label + "BAR")) {
-
-                        // , after NP node indicates adjunct (temporal, e.g. "next morning", "this day", etc.)
-                        if (i + 1 < ancestor.getChildrenAsList().size() && ancestor.getChild(i + 1).label().toString().equals(",")) {
-                        }
-                        else
-                        {
-                            return child;
-                        }
-                    }
-                }
-            } catch (ArrayIndexOutOfBoundsException exception) {
-                // is thrown when node doesn't have a child
-            } catch (NullPointerException exception) {
-                // is thrown when ancestor is null as tree ends
-            }
-        return null;
     }
 
     /**
@@ -169,43 +114,6 @@ public class Utils {
         }
 
         return sb.toString().trim();
-    }
-
-    /**
-     * Prunes a tree node and returns its string optionally in lemma form, with coreferents and named entities replaced.
-     * @param node the tree node whose string should be returned
-     * @param tokens the tokens in the sentence of the node
-     * @param sentences a list of sentences of the document
-     * @param mentionPairs a list of pairs of mentions and their representative mention
-     * @param NEtokens the tokens of the sentence tagged with named entities
-     * @param asLemma if the string should be returned in lemma form
-     * @param replaceCoref if coreferents should be replaced
-     * @param replaceNE if named entities should be replaced with their named entity tag
-     * @return the string of the node
-     */
-    public static String getStringFromSpan(Tree node, List<AgigaToken> tokens, List<AgigaSentence> sentences,
-                                           List<Map.Entry<AgigaMention, AgigaMention>> mentionPairs, String[] NEtokens,
-                                           boolean asLemma, boolean replaceCoref, boolean replaceNE) {
-
-        // lists of start indixes and end index of PPs and SBARs which should be excluded
-        List<Integer> startIdxList = new ArrayList<Integer>();
-        List<Integer> endIdxList = new ArrayList<Integer>();
-        preorderTraverse(node, startIdxList, endIdxList);
-
-        List<Integer> indexes = new ArrayList<Integer>();
-        boolean excluded = false;
-        for (int i = node.getSpan().getSource(); i <= node.getSpan().getTarget(); i++) {
-            if (startIdxList.contains(i)) {
-                excluded = true;
-            } else if (endIdxList.contains(i)) {
-                excluded = false;
-            } else if (!excluded) {
-                indexes.add(i);
-            }
-        }
-
-        // build string only from tokens that should not be excluded
-        return buildString(indexes, tokens, sentences, mentionPairs, NEtokens, false, false, false);
     }
 
     /**
