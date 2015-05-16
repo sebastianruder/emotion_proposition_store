@@ -1,0 +1,191 @@
+annoy	anger_III	
+mourn	sadness_I	anger_III
+dread	fear_I	
+confound	surprise_I	
+grate	anger_II	
+regret that	disgust_III	
+be lucky that	joy_II	
+desire	joy_I	anticipation_I
+depress	sadness_I	
+count on	trust_I	
+be optimistic that	trust_II	anticipation_II
+prepare for	anticipation_I	
+startle	surprise_III	fear_III
+trust	trust_I	
+scare	fear_I	
+confuse	surprise_II	
+be happy about	joy_I	
+disdain	anger_I	
+fret about	anger_II	
+be flabbergast that	surprise_I	
+be apprehensive about	anticipation_I	fear_II
+trouble	disgust_II	
+abhor	disgust_I	
+pine for	sadness_II	
+torment	anger_II	
+trust that	trust_I	
+amaze	joy_I	
+exacerbate	anticipation_I	
+hope for	joy_II	anticipation_II
+be angry that	anger_I	
+infuriate	anger_I	
+deplore	disgust_I	
+relish	joy_I	
+be anxious that	anticipation_II	fear_III
+comfort	joy_I	
+be intent on	anticipation_I	
+aggravate	anger_II	
+hope for	anticipation_II	
+provoke	anger_II	
+be curious about	anticipation_III	
+appeal	sadness_II	
+worry	fear_II	
+hunger for	anticipation_II	
+discourage	disgust_III	
+charm	trust_II	
+fascinate	joy_II	
+concern	fear_II	
+shun	disgust_II	
+puzzle	surprise_II	
+surprise	surprise_I	
+regret	surprise_II	sadness_II
+sting	anger_III	
+be sad that	sadness_I	
+horrify	disgust_I	fear_I
+be bewilder that	surprise_I	
+shock	surprise_I	
+be reassure that	trust_I	
+fulfill	trust_III	
+be unhappy about	sadness_I	
+excite	joy_II	anticipation_II
+satisfy	joy_I	
+aspire to	anticipation_II	
+repel	disgust_I	
+humiliate	sadness_II	
+predict	anticipation_I	
+grieve that	sadness_I	
+be scared of	fear_I	
+forecast that	anticipation_II	
+gall	disgust_III	
+be frightened that	fear_II	
+be angry about	anger_II	
+encourage	joy_II	
+crave	anticipation_II	
+long for	anticipation_II	
+embarrass	fear_II	
+worry about	fear_II	anticipation_II
+unnerve	fear_II	
+yearn for	anticipation_II	
+impress	joy_II	
+be ecstatic that	joy_I	
+mourn that	sadness_I	fear_II
+inflame	none	
+spook	fear_II	surprise_II
+delight	joy_I	
+calm	trust_I	
+baffle	surprise_III	
+alarm	fear_I	
+irk	anger_II	
+outrage	anger_I	
+hate	anger_I	
+frustrate	anger_III	
+disgust	disgust_II	
+be stun that	surprise_I	
+intimidate	fear_II	
+dislike	disgust_III	
+be hopeful that	anticipation_II	
+intrigue	anticipation_II	
+terrify	fear_I	
+be elate that	joy_I	
+enjoy	joy_II	
+be angry with	anger_II	
+be afraid that	fear_II	
+overwhelm	anger_III	
+irritate	anger_III	
+rattle	fear_II	
+boggle	surprise_II	
+devastate	surprise_II	
+rankle	anger_II	
+be unhappy about	sadness_III	
+amuse	joy_III	
+foresee	anticipation_II	
+enrage	anger_I	
+upset	sadness_II	
+hate that	sadness_II	
+be incense that	anger_I	
+be alarm that	fear_II	
+rely on	trust_I	
+scorn	disgust_I	
+insult	anger_II	
+be unhappy that	sadness_I	
+be scared that	fear_II	
+entertain	none	
+be ashamed of	disgust_II	
+be proud of	joy_I	
+be irate that	anger_I	
+stagger	surprise_I	
+enjoy that	joy_II	
+be thrill that	joy_I	
+be happy about	joy_II	
+vex	anger_I	
+take comfort in	joy_II	
+fear that	fear_I	
+frighten	fear_I	
+savor	joy_I	
+be enthusiastic about	joy_III	
+await	anticipation_II	
+despise	disgust_I	
+covet	anticipation_II	
+be anxious about	anticipation_II	
+aspire	anticipation_II	
+ache for	anticipation_I	
+count on	trust_I	
+afflict	sadness_II	
+be satisfy that	joy_III	
+forecast	anticipation_III	
+shame	disgust_II	
+displease	sadness_II	
+be scare that	fear_II	
+expect	anticipation_II	
+take pleasure in	joy_II	
+arouse	anticipation_II	
+rejoice	joy_I	
+be sadden that	sadness_II	
+reassure	trust_II	
+be mad about	joy_II	
+fear	fear_I	
+predict that	anticipation_I	
+await	anticipation_II	
+enchant	joy_II	
+be encourage that	joy_III	
+harass	fear_I	
+be afraid of	fear_I	
+be nervous about	fear_II	
+be curious about	anticipation_II	
+envy	anger_III	
+look forward to	anticipation_I	
+anticipate	anticipation_I	
+bother	anger_III	
+loathe	anger_I	
+look forward to	anticipation_I	
+soothe	joy_II	
+agonize over	sadness_I	
+expect that	anticipation_II	
+alienate	disgust_II	
+be eager for	anticipation_II	
+be amaze that	joy_I	
+cheer	joy_III	
+please	none	
+disturb	anger_III	
+be proud of	joy_III	
+be angry at	anger_II	
+offend	anger_I	
+thrill	joy_I	
+prepare for	anticipation_I	
+wow	surprise_I	
+stun	surprise_I	
+be disappoint that	sadness_II	
+be terrify that	fear_I	
+disappoint	sadness_II
+captivate	joy_II	
+
