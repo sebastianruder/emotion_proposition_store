@@ -1,0 +1,182 @@
+# Emotion	emotion word	cause	passiveExists?
+# Words are in lemma form, e.g. no participles
+# Where passiveExists? == true, pattern is converted in passive
+anger	aggravate/Verb	NP	true
+anger	annoy/Verb	NP	true
+sadness	displease/Verb	NP	true
+anger	enrage/Verb	NP	true
+joy	excite/Verb	NP	true
+anger	incense/Verb	NP	true
+anger	inflame/Verb	NP	true
+anger	infuriate/Verb	NP	true
+anger	irritate/Verb	NP	true
+anger	offend/Verb	NP	true
+anger	outrage/Verb	NP	true
+anger	provoke/Verb	NP	true
+anger	rankle/Verb	NP	true
+anger	be/Verb angry/JJ that/IN	S	false
+anger	be/Verb angry/JJ about/IN	S	false
+anger	be/Verb angry/JJ with/IN	S	false
+anger	be/Verb angry/JJ at/IN	S	false
+anger	be/Verb irate/JJ that/IN	S	false
+anticipation	expect/Verb	NP	false
+anticipation	expect/Verb that/IN	S	false
+anticipation	predict/Verb	NP	false
+anticipation	predict/Verb that/IN	S	false
+anticipation	await/Verb	NP	false
+trust	count/Verb on/IN	NP	false
+trust	count/Verb on/IN	S	false
+anticipation	forecast/Verb	NP	false
+anticipation	forecast/Verb that/IN	S	false
+anticipation	foresee/Verb	NP	false
+anticipation	prepare/Verb for/IN	NP	false
+anticipation	prepare/Verb for/IN	S	false
+anticipation	anticipate/Verb	NP	false
+anticipation	hope/Verb for/IN	NP	false
+anticipation	hope/Verb for/IN	S	false
+anticipation	look/Verb forward/RB to/TO	NP	false
+anticipation	look/Verb forward/RB to/TO	S	false
+disgust	disgust/Verb	NP	true
+anger	bother/Verb	NP	true
+disgust	dislike/Verb	NP	false
+anger	disturb/Verb	NP	true
+anger	insult/Verb	NP	true
+anger	irk/Verb	NP	true
+disgust	loathe/Verb	NP	false
+sadness	upset/Verb	NP	true
+disgust	hate/Verb	NP	false
+fear	dread/Verb	NP	false
+disgust	shun/Verb	NP	false
+fear	worry/Verb	NP	true
+fear	worry/Verb about/IN	NP	false
+fear	fear/Verb	NP	false
+fear	fear/Verb that/IN	S	false
+fear	be/Verb RB afraid/JJ of/IN	NP	false
+fear	be/Verb RB afraid/JJ that/IN	S	false
+fear	be/Verb RB apprehensive/JJ about/IN	S	false
+fear	frighten/Verb	NP	true
+fear	be/Verb RB frightened/JJ that/IN	S	false
+fear	scare/Verb	NP	true
+fear	be/Verb RB scared/JJ of/IN	NP	false
+fear	be/Verb RB scared/JJ that/IN	S	false
+fear	spook/Verb	NP	true
+fear	terrify/Verb	NP	true
+fear	intimidate/Verb	NP	true
+joy	delight/Verb	NP	true
+joy	amuse/Verb	NP	true
+joy	cheer/Verb	NP	true
+joy	entertain/Verb	NP	true
+joy	enjoy/Verb	NP	false
+joy	enjoy/Verb that/IN	S	false
+joy	take/Verb pleasure/NPB in/IN	S	false
+joy	please/Verb	NP	true
+joy	satisfy/Verb	NP	true
+joy	thrill/Verb	NP	true
+surprise	wow/Verb	NP	true
+joy	be/Verb RB happy/JJ about/IN	NP	false
+joy	be/Verb RB happy/JJ about/IN	S	false
+sadness	sadden/Verb	NP	true
+sadness	grieve/Verb that/IN	S	false
+sadness	be/Verb sad/JJ that/IN	S	false
+sadness	mourn/Verb	NP	false
+sadness	mourn/Verb that/IN	S	false
+disgust	deplore/Verb	NP	false
+sadness	regret/Verb	NP	false
+sadness	regret/Verb that/IN	S	false
+surprise	amaze/Verb	NP	true
+surprise	bewilder/Verb	NP	true
+surprise	confound/Verb	NP	true
+surprise	confuse/Verb	NP	true
+surprise	flabbergast/Verb	NP	true
+fear	rattle/Verb	NP	true
+surprise	shock/Verb	NP	true
+surprise	surprise/Verb	NP	true
+surprise	startle/Verb	NP	true
+surprise	stun/Verb	NP	true
+trust	trust/Verb	NP	false
+trust	trust/Verb that/IN	S	false
+trust	rely/Verb on/IN	NP	false
+
+# adjectives taken from Tsvetkov et al.
+anger	afflict/Verb	NP	true
+fear	be/Verb RB anxious/JJ about/IN	NP	false
+fear	be/Verb RB anxious/JJ that/IN	S	false
+disgust	be/Verb RB ashamed/JJ of/IN	NP	false
+disgust	be/Verb RB ashamed/JJ of/IN	S	false
+trust	take/Verb comfort/NN in/IN	NP	false
+trust	take/Verb comfort/NN in/IN	S	false
+joy	take/Verb pleasure/NN in/IN	NP	false
+joy	take/Verb pleasure/NN in/IN	S	false
+anticipation	be/Verb RB curious/JJ about/IN	NP	false
+anticipation	be/Verb RB curious/JJ about/IN	S	false
+sadness	depress/Verb	NP	true
+sadness	disappoint/Verb	NP	true
+sadness	be/Verb RB disappoint/VBN that/IN	NP	false
+anticipation	be/Verb RB eager/JJ for/IN	NP	false
+joy	be/Verb RB ecstatic/JJ that/IN	S	false
+joy	be/Verb RB elated/JJ that/IN	S	false
+joy	be/Verb RB enthusiastic/JJ about/IN	NP	false
+anger	frustrate/Verb	NP	true
+anticipation	be/Verb RB hopeful/JJ that/IN	S	false
+disgust	horrify/Verb	NP	true
+anticipation	be/Verb RB intent/JJ on/IN	S	false
+anticipation	intrigue/Verb	NP	true
+anticipation	long/Verb RB for/IN	NP	false
+joy	be/Verb RB lucky/JJ that/IN	S	false
+joy	be/Verb RB mad/JJ about/IN	NP	false
+joy	be/Verb RB mad/JJ about/IN	S	false
+joy	be/Verb RB proud/JJ of/IN	NP	false
+joy	be/Verb RB proud/JJ of/IN	S	false
+sadness	be/Verb RB unhappy/JJ about/IN	NP	false
+sadness	be/Verb RB unhappy/JJ about/IN	S	false
+sadness	be/Verb RB unhappy/JJ that/IN	NP	false
+sadness	be/Verb RB unhappy/JJ that/IN	S	false
+
+# FrameNet
+# desiring.labeled
+anticipation	ache/Verb for/IN	NP	false
+anticipation	aspire/Verb to/TO	NP	false
+anticipation	aspire/Verb	NP	false
+anticipation	covet/Verb	NP	false
+anticipation	crave/Verb	NP	false
+joy	desire/Verb	NP	false
+anticipation	hunger/Verb for/IN	NP	false
+sadness	pine/Verb for/IN	NP	false
+anticipation	yearn/Verb for/IN	NP	false
+# emotion_active.labeled
+sadness	agonize/Verb over/IN	NP	false
+anger	fret/Verb about/IN	NP	false
+anger	fuss/Verb about/IN	NP	false
+# emotions_of_mental_activity.labeled
+joy	relish/Verb	NP	false
+joy	savor/Verb	NP	false
+# experiencer_obj.labeled
+joy	arouse/Verb	NP	true
+surprise	baffle/Verb	NP	true
+surprise	boggle/Verb	NP	true
+joy	captivate/Verb	NP	true
+trust	charm/Verb	NP	true
+joy	comfort/Verb	NP	true
+joy	fulfill/Verb	NP	true
+anger	grate/Verb	NP	true
+anger	harass/Verb	NP	true
+joy	impress/Verb	NP	true
+surprise	puzzle/Verb	NP	true
+trust	reassure/Verb	NP	true
+disgust	repel/Verb	NP	true
+disgust	shame/Verb	NP	true
+joy	soothe/Verb	NP	true
+surprise	stagger/Verb	NP	true
+anger	sting/Verb	NP	true
+anger	torment/Verb	NP	true
+fear	unnerve/Verb	NP	true
+anger	vex/Verb	NP	true
+
+# WordNet-Affect
+disgust	alienate/Verb	NP	true
+fear	be/Verb RB nervous/JJ about/IN	NP	false
+disgust	abhor/Verb	NP	false
+disgust	despise/Verb	NP	false
+anger	scorn/Verb	NP	false
+disgust	disdain/Verb	NP	false
+
