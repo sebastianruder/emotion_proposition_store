@@ -154,7 +154,7 @@ public class AgigaReader {
                     List<AgigaToken> tokens = sent.getTokens();
 
                     // create a lemma string with POS and indices
-                    String sentence = Utils.createStringFromTokens(tokens, true, true, true);
+                    String sentence = Utils.createStringFromTokens(tokens, true, true, true, false);
 
                     // extract sentence root
                     Tree root = sent.getStanfordContituencyTree();
@@ -367,7 +367,7 @@ public class AgigaReader {
                                 matches++;
 
                                 // write clean sentence to collocations file
-                                String cleanSent = Utils.createStringFromTokens(tokens, false, false, false);
+                                String cleanSent = Utils.createStringFromTokens(tokens, false, false, false, false);
                                 String sentInfo = String.format("%s/%d\t%s", doc.getDocId(), sentIdx, cleanSent);
                                 String patternInfo = String.format("#%d Emotion: '%s', pattern: '%s', emotion holder: '%s', cause: '%s', cause BoW: %s",
                                         matches, emotion, cleanPattern, holder, cause, causeBOW);
