@@ -125,33 +125,6 @@ public class Utils {
     }
 
     /**
-     * Performs preorder-traversal, i.e. depth-first search from a node. Extracts PPs and SBARs that are dominated
-     * by the node. Nodes dominated by PPs or SBARs are skipped, so that PPs and SBARs don't overlap.
-     * @param node the start node from which traversal shoud be performed
-     * @param startIdxList list which stores start indexes of PPs and SBARs
-     * @param endIdxList list which stores end indexes of PPs and SBARs
-     */
-    public static void preorderTraverse(Tree node, List<Integer> startIdxList, List<Integer> endIdxList) {
-        if (!node.isPreTerminal()) {
-            for (Tree child : node.getChildrenAsList()) {
-                // extracts PPs and SBARs
-                String label = child.label().value();
-
-                if (label.equals("PP") ||
-                        // label.equals("SBAR") ||
-                        label.equals(":") || label.equals(",") ||
-                        label.equals("''") || label.equals("_") || label.equals("``")) {
-                    startIdxList.add(child.getSpan().getSource());
-                    endIdxList.add(child.getSpan().getTarget());
-                }
-                else {
-                    preorderTraverse(child, startIdxList, endIdxList);
-                }
-            }
-        }
-    }
-
-    /**
      * Transforms a comp to a string made up of its subject, predicate, object, and optionally prepositional objects.
      * The string can optionally be in lemma form and coreferents and named entities can be replaced.
      * @param gov the index of the comp predicate (dependent of the comp, governor of nsubj and dobj relationships in comp)
