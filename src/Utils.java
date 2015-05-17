@@ -55,11 +55,12 @@ public class Utils {
     }
 
     /**
-     * Get the bag-of-words of the cause.
-     * @param root
-     * @param leaf
-     * @param label
-     * @return
+     * Get the bag-of-words of the NP or S(BAR) that encompasses the cause, tagged with parts-of-speech.
+     * @param root the root of the tree
+     * @param leaf the leaf node (cause)
+     * @param label the label of the cause (either NP or S)
+     * @param tokens a list of Agiga tokens of the sentence
+     * @return the bag-of-words of the sentence
      */
     public static String getBagOfWords(Tree root, Tree leaf, String label, List<AgigaToken> tokens) {
 
@@ -76,7 +77,7 @@ public class Utils {
                     int start = ancestor_1.getSpan().getSource();
                     int end = ancestor_1.getSpan().getTarget();
 
-                    return createStringFromTokens(tokens.subList(start, end + 1), true, false, false);
+                    return createStringFromTokens(tokens.subList(start, end + 1), true, true, false, true);
                 }
             } catch (ArrayIndexOutOfBoundsException exception) {
                 // is thrown when node doesn't have a child
@@ -95,13 +96,20 @@ public class Utils {
      * @param lemma a boolean indicating if tokens should be outputted as lemmas
      * @param pos a boolean indicating if part-of-speech should be added
      * @param idx a boolean indicating if indexes should be added
+     * @param excludePunctuation a boolean indicating if punctuation tokens should be excluded
      * @return the concatenated token string
      */
-    public static String createStringFromTokens(List<AgigaToken> tokens, boolean lemma, boolean pos, boolean idx) {
+    public static String createStringFromTokens(List<AgigaToken> tokens, boolean lemma, boolean pos, boolean idx,
+                                                boolean excludePunctuation) {
 
         StringBuilder sb = new StringBuilder();
 
         for (AgigaToken tok : tokens) {
+            if (excludePunctuation && (tok.getWord().equals(":") || tok.getWord().equals(",") ||
+                    tok.getWord().equals("''") || tok.getWord().equals("_") || tok.getWord().equals("``"))) {
+                continue;
+            }
+
             String lemmaString = tok.getLemma();
             String posString = tok.getPosTag();
             int idxInt = tok.getTokIdx();
@@ -144,58 +152,6 @@ public class Utils {
     }
 
     /**
-     * Build a string from token indexes. Optionally in lemma form, replacing coreferents and named entities.
-     * @param idxs the indexes of the tokens that the string should be built from
-     * @param tokens the tokens in the sentence
-     * @param sentences the list of sentences in the document
-     * @param mentionPairs a list of pairs of mentions and their representative mention
-     * @param NEtokens the list of tokens and their named entity tags
-     * @param replaceCoref if coreferents should be replaced
-     * @param asLemma if the string should be returned in lemma form
-     * @param addNER if named entities should be replaced with their named entity tags
-     * @return the string built from the specified tokens
-     */
-    public static String buildString(List<Integer> idxs, List<AgigaToken> tokens, List<AgigaSentence> sentences,
-                                     List<Map.Entry<AgigaMention, AgigaMention>> mentionPairs, String[] NEtokens,
-                                     boolean replaceCoref, boolean asLemma, boolean addNER) {
-
-        StringBuilder sb = new StringBuilder();
-        for (int i : idxs) {
-
-            AgigaToken token = tokens.get(i);
-            String str = token.getWord();
-            String NEtoken = NEtokens[i].split("/")[1];
-
-            // replace numbers
-            if (addNER && NEtoken.equals("NUMBER")) {
-                str = "NUMBER";
-            }
-            // if mention is pronoun, replace with representative mention if exists
-            else if (replaceCoref && pronouns.contains(token.getWord())) {
-                try {
-                    str = replaceCoref(str, i, sentences, mentionPairs, NEtokens, asLemma, addNER);
-                }
-                catch (IOException ex) {
-                    System.out.println("NE tags couldn't be assigned.");
-                }
-            }
-            else if (asLemma && !possessivePronouns.contains(token.getWord())) {
-                str = token.getLemma();
-            }
-
-            sb.append(" ");
-            sb.append(str);
-
-            if (addNER && !NEtoken.equals("NUMBER") && NEtags.contains(NEtoken)) {
-                sb.append("/");
-                sb.append(NEtokens[i].split("/")[1]);
-            }
-        }
-
-        return sb.toString().trim();
-    }
-
-    /**
      * Transforms a comp to a string made up of its subject, predicate, object, and optionally prepositional objects.
      * The string can optionally be in lemma form and coreferents and named entities can be replaced.
      * @param gov the index of the comp predicate (dependent of the comp, governor of nsubj and dobj relationships in comp)
@@ -215,6 +171,7 @@ public class Utils {
                                      AgigaMention>> mentionPairs, String[] NEtokens,
                                      boolean addPObj, boolean replaceCoref, boolean asLemma, boolean addNER) {
 
+        // retrieve subject and direct object
         String nsubj = "";
         String dobj = "";
         for (AgigaTypedDependency dep : colDeps) {
@@ -227,6 +184,7 @@ public class Utils {
             }
         }
 
+        // append subject, predicate, object to string builder
         StringBuilder sb = new StringBuilder();
         sb.append(nsubj);
         sb.append("\t");
@@ -234,6 +192,7 @@ public class Utils {
         sb.append("\t");
         sb.append(dobj);
 
+        // append list of prepositional objects
         if (addPObj) {
             sb.append("\t");
             Map<String, List<Integer>> pObjs = extractPObjs(gov, colDeps);
@@ -246,8 +205,8 @@ public class Utils {
                 }
                 String prep = (String)pObjs.keySet().toArray()[i];
                 sb.append(prep);
-                sb.append("_");
-                sb.append(buildString(pObjs.get(prep), tokens, sentences, mentionPairs, NEtokens, replaceCoref, asLemma, addNER));
+                sb.append(":");
+                sb.append(buildString(pObjs.get(prep), tokens, sentences, mentionPairs, NEtokens, replaceCoref, asLemma, addNER, "_"));
                 if (i + 1 == pObjs.keySet().size()) {
                     sb.append("]");
                 }
@@ -278,19 +237,72 @@ public class Utils {
                                      boolean addPObj, boolean replaceCoref, boolean asLemma, boolean addNER) {
 
         StringBuilder sb = new StringBuilder();
-        sb.append(buildString(addModifiers(gov, colDeps), tokens, sentences, mentionPairs, NEtokens, replaceCoref, asLemma, addNER));
+        sb.append(buildString(addModifiers(gov, colDeps), tokens, sentences, mentionPairs, NEtokens, replaceCoref, asLemma, addNER, " "));
 
         if (addPObj) {
             Map<String, List<Integer>> pObjs = extractPObjs(gov, colDeps);
             for (String prep : pObjs.keySet()) {
                 sb.append(" ");
                 sb.append(prep);
-                sb.append("_");
-                sb.append(buildString(pObjs.get(prep), tokens, sentences, mentionPairs, NEtokens, replaceCoref, asLemma, addNER));
+                sb.append(":");
+                sb.append(buildString(pObjs.get(prep), tokens, sentences, mentionPairs, NEtokens, replaceCoref, asLemma, addNER, "_"));
             }
         }
 
         return sb.toString().trim();
+    }
+
+    /**
+     * Build a string from token indexes. Optionally in lemma form, replacing coreferents and named entities.
+     * @param idxs the indexes of the tokens that the string should be built from
+     * @param tokens the tokens in the sentence
+     * @param sentences the list of sentences in the document
+     * @param mentionPairs a list of pairs of mentions and their representative mention
+     * @param NEtokens the list of tokens and their named entity tags
+     * @param replaceCoref if coreferents should be replaced
+     * @param asLemma if the string should be returned in lemma form
+     * @param addNER if named entities should be replaced with their named entity tags
+     * @param sep separator (whitespace for regular strings, underscore for prepositional objects)
+     * @return the string built from the specified tokens
+     */
+    private static String buildString(List<Integer> idxs, List<AgigaToken> tokens, List<AgigaSentence> sentences,
+                                      List<Map.Entry<AgigaMention, AgigaMention>> mentionPairs, String[] NEtokens,
+                                      boolean replaceCoref, boolean asLemma, boolean addNER, String sep) {
+
+        StringBuilder sb = new StringBuilder();
+        for (int i : idxs) {
+
+            AgigaToken token = tokens.get(i);
+            String str = token.getWord();
+            String NEtoken = NEtokens[i].split("/")[1];
+
+            // replace numbers
+            if (addNER && NEtoken.equals("NUMBER")) {
+                str = "NUMBER";
+            }
+            // if mention is pronoun, replace with representative mention if exists
+            else if (replaceCoref && pronouns.contains(token.getWord())) {
+                try {
+                    str = replaceCoref(str, i, sentences, mentionPairs, asLemma, addNER);
+                }
+                catch (IOException ex) {
+                    System.out.println("NE tags couldn't be assigned.");
+                }
+            }
+            else if (asLemma && !possessivePronouns.contains(token.getWord())) {
+                str = token.getLemma();
+            }
+
+            sb.append(sep);
+            sb.append(str);
+
+            if (addNER && !NEtoken.equals("NUMBER") && NEtags.contains(NEtoken)) {
+                sb.append("/");
+                sb.append(NEtokens[i].split("/")[1]);
+            }
+        }
+
+        return sb.toString().substring(1).trim();
     }
 
     /**
@@ -319,7 +331,7 @@ public class Utils {
      * @param colDeps the list of collapsed AgigaTypedDependencies of the sentence
      * @return a map containing the preposition type and a list of indexes of the prepositional object
      */
-    public static Map<String, List<Integer>> extractPObjs(int gov, List<AgigaTypedDependency> colDeps) {
+    private static Map<String, List<Integer>> extractPObjs(int gov, List<AgigaTypedDependency> colDeps) {
         Map<String, List<Integer>> pObjs = new HashMap<String, List<Integer>>();
         for (AgigaTypedDependency dep : colDeps) {
             if (dep.getType().startsWith("prep_") && dep.getGovIdx() == gov) {
@@ -340,7 +352,7 @@ public class Utils {
      */
     private static String replaceCoref(String input, int idx, List<AgigaSentence> sentences,
                                        List<Map.Entry<AgigaMention, AgigaMention>> mentionPairs,
-                                       String[] NEtokens, boolean asLemma, boolean addNER) throws IOException {
+                                       boolean asLemma, boolean addNER) throws IOException {
 
         for (Map.Entry<AgigaMention, AgigaMention> pair : mentionPairs) {
             AgigaMention mention = pair.getKey();
