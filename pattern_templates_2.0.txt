@@ -158,7 +158,6 @@ joy	captivate/Verb	NP	true
 trust	charm/Verb	NP	true
 joy	comfort/Verb	NP	true
 joy	fulfill/Verb	NP	true
-anger	grate/Verb	NP	true
 anger	harass/Verb	NP	true
 joy	impress/Verb	NP	true
 surprise	puzzle/Verb	NP	true
