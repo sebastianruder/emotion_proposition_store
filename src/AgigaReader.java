@@ -51,11 +51,12 @@ public class AgigaReader {
      * @throws java.io.IOException
      */
     public static void main(String[] args) throws IOException {
-        args = new String[3];
-        args[0] = "/media/sebastian/Data";
-        args[1] = "/home/sebastian/git/sentiment_analysis/pattern_templates.txt";
-        args[2] = "/home/sebastian/git/sentiment_analysis/out";
+        //args = new String[3];
+        //args[0] = "/media/sebastian/Data";
+        //args[1] = "/home/sebastian/git/sentiment_analysis/pattern_templates_2.0.txt";
+        //args[2] = "/home/sebastian/git/sentiment_analysis/out";
         // java -jar sentiment.jar /media/sebastian/Data /home/sebastian/git/sentiment_analysis/pattern_templates.txt /home/sebastian/git/sentiment_analysis/out
+        // nohup java -jar sentiment_java_1.6.jar /home/resources/corpora/monolingual/annotated/anno_eng_gigaword_5/data/xml/ pattern_templates_2.0.txt output/ &
 
         // validation of input parameters
         if (args.length != 3) {
@@ -66,25 +67,21 @@ public class AgigaReader {
 
         File gigaDir = new File(args[0]);
         if (!gigaDir.isDirectory()) {
-            System.out.printf("%s no directory or directory doesn't exist.", args[0]);
-            System.exit(1);
+            throw new IllegalArgumentException(String.format("%s no directory or directory doesn't exist.", args[0]));
         }
 
         File templatesFile = new File(args[1]);
         if (!templatesFile.exists()) {
-            System.out.printf("%s doesn't exist.", args[1]);
-            System.exit(1);
+            throw new FileNotFoundException(String.format("%s doesn't exist.", args[1]));
         }
 
         File outDir = new File(args[2]);
         if (!outDir.isDirectory()) {
-            System.out.printf("%s is no directory or directory doesn't exist.", args[2]);
-            System.exit(1);
+            throw new IllegalArgumentException(String.format("%s is no directory or directory doesn't exist.", args[2]));
         }
 
-        // append / to file names if missing; TODO could probably be solved by Java class; Path?
-        String agigaPath = args[0].endsWith("/") ? args[0] : args[0] + "/";
-        String outPath = args[2].endsWith("/") ? args[2] : args[2] + "/";
+        String agigaPath = gigaDir.toString();
+        String outPath = outDir.toString();
 
         // filters .gz files
         String[] fileNames = gigaDir.list(new FilenameFilter() {
@@ -93,6 +90,10 @@ public class AgigaReader {
                 return name.endsWith(".gz");
             }
         });
+
+        if (fileNames.length == 0) {
+            throw new FileNotFoundException(String.format("%s doesn't contain any Agiga files.", args[0]));
+        }
 
         // Preferences of what should be read
         AgigaPrefs readingPrefs = new AgigaPrefs(); // all extraction is set to true per default
@@ -137,18 +138,13 @@ public class AgigaReader {
                 // Iterate over the sentences
                 for (AgigaSentence sent : sentences) {
 
-                    // cut-off point for testing and investigation
-                    if (count++ >= 2000000) {
+                    // write stats in intervals to file
+                    if (count++ % 5000000 == 0) {
 
                         // write the stats to a file
                         Stats.writeStats(resultMap, outPath);
-
-                        resultWriter.close();
-                        collWriter.close();
-                        System.exit(0);
                     }
 
-                    // TODO use JWI to interface in WorNet for majority sense / hyponym identification
                     // only retrieve one emotion trigger per sentence; if pattern is found, continue
                     boolean patternFound = false;
                     List<AgigaToken> tokens = sent.getTokens();
@@ -279,7 +275,7 @@ public class AgigaReader {
                                     for (AgigaTypedDependency dep : colDeps) {
                                         if (dep.getType().equals("dep") &&
                                                 leaves.get(dep.getDepIdx()).ancestor(2, root).label().toString().equals("VP") &&
-                                                (dep.getGovIdx() == rightIdx || dep.getGovIdx() == rightDepIdx)) {
+                                                dep.getGovIdx() == rightIdx) {
                                             object = Utils.compToString(dep.getDepIdx(), colDeps, tokens, sentences,
                                                     mentionPairs, NEtokens, true, replaceCoref, asLemma, addNER);
                                             objectIdx = dep.getDepIdx();
