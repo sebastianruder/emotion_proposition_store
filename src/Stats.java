@@ -65,7 +65,7 @@ public class Stats {
         }
 
         // sort the pattern, count map and write the patterns to a file
-        statMap = Extensions.sortByValue(statMap);
+        statMap = Extensions.sortByValue(statMap, true);
         for (Pattern pattern : statMap.keySet()) {
             if (pattern != null) {
                 String emotion = resultMap.get(pattern).get(Enums.Stats.emotion.toString());
@@ -82,7 +82,7 @@ public class Stats {
             int totalFreq = 0;
             int totalFreq10 = 0;
             int patterns10 = 0;
-            Map<Pattern, Integer> sortedEmotionMap = Extensions.sortByValue(emotionStatMap.get(emotion));
+            Map<Pattern, Integer> sortedEmotionMap = Extensions.sortByValue(emotionStatMap.get(emotion), true);
             for (Pattern pattern : sortedEmotionMap.keySet()) {
                 if (pattern != null) {
                     int freq = sortedEmotionMap.get(pattern);

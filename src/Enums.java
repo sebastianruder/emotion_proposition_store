@@ -9,14 +9,32 @@ public class Enums {
      * Enumeration pertaining to statistics
      */
     public enum Stats {
-        matches, emotion
+
+        /**
+         * The number of matches
+         */
+        matches,
+
+        /**
+         * The emotion
+         */
+        emotion
     }
 
     /**
      * Enumeration pertaining to features
      */
     public enum Features {
-        isNP, orderIsReversed
+
+        /**
+         * If the object of a pattern is an NP; else it is whole sub-clause, i.e. S.
+         */
+        isNP,
+
+        /**
+         * If the regular order of subject := emotion holder and object := cause is reversed, e.g. for "scare".
+         */
+        orderIsReversed
     }
 
     /**
