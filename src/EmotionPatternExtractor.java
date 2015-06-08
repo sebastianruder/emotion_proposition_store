@@ -11,6 +11,9 @@ import java.util.regex.Pattern;
  */
 public class EmotionPatternExtractor {
 
+    /**
+     * Key: pattern. Value: Map with key: isNP or orderIsReversed; value: true or false.
+     */
     Map<Pattern, Map<String, Boolean>> joyPatterns = new ArrayMap<Pattern, Map<String, Boolean>>();
     Map<Pattern, Map<String, Boolean>> trustPatterns = new ArrayMap<Pattern, Map<String, Boolean>>();
     Map<Pattern, Map<String, Boolean>> fearPatterns = new ArrayMap<Pattern, Map<String, Boolean>>();
@@ -22,8 +25,8 @@ public class EmotionPatternExtractor {
     Map<String, Map<Pattern, Map<String, Boolean>>> emotionMap = new ArrayMap<String, Map<Pattern, Map<String, Boolean>>>();
 
     /**
-     * Initializes an instance of the EmotionPatternExtractor class. Adds the individual emotion maps which will store
-     * regex patterns pertaining to Plutchik's eight basic emotions to the general emotion map.
+     * Initializes an instance of the <code>EmotionPatternExtractor</code> class. Adds the individual emotion maps
+     * which will store regex patterns pertaining to Plutchik's eight basic emotions to the general emotion map.
      */
     public EmotionPatternExtractor() {
         emotionMap.put(Enums.Emotions.joy.toString(), joyPatterns);
