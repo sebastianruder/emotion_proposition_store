@@ -1,4 +1,6 @@
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Class to compare emotion annotations of the three annotators, calculate stats and inter-annotator agreeement.
@@ -7,12 +9,22 @@ import java.io.*;
  */
 public class AnnotationComparer {
 
+    /**
+     * Main method to compare annotations.
+     * @param args
+     * @throws IOException
+     */
     public static void main(String[] args) throws IOException {
         args = new String[] { "/home/sebastian/git/sentiment_analysis/annotation/annotated/" };
 
         compareAnnotations(args[0]);
     }
 
+    /**
+     * Compares annotations, prints out stats, and calculates Fleiss' kappa for inter-annotator agreement.
+     * @param dirPath the directory of the .annotated files
+     * @throws IOException if the directory is not found
+     */
     private static void compareAnnotations(String dirPath) throws IOException {
 
         File dir = new File(dirPath);
@@ -102,32 +114,15 @@ public class AnnotationComparer {
         int degreeUnanimousCount = 0; // count if degree as well as emotion is unanimous
         int degreeMajorityCount = 0; // count if majority agreed on emotion and degree
 
-        PrintWriter majorityWriter = new PrintWriter(dirPath + "majority_expressions"); // writer for majority expressions
         PrintWriter resultWriter = new PrintWriter(dirPath + "annotation_results"); // writer for annotation results
+        Map<String, String> patternEmotionMap = new HashMap<String, String>();
 
         for (int i = 0; i < matrix.length; i++) {
             System.out.printf("%s", expressions[i]);
             resultWriter.printf("%s", expressions[i]);
+            boolean added = false;
 
             for (int j = 0; j < matrix[0].length; j++ ) {
-                if (matrix[i][j] == 3) {
-                    unanimousCount++;
-                }
-
-                if (matrix[i][j] >= 2) {
-                    majorityCount++;
-                    majorityWriter.printf("%s\t%s\n", emotions[j], expressions[i]);
-                }
-
-                if (matrix2ndChoice[i][j] != 0) {
-                    if (matrix2ndChoice[i][j] == 3) {
-                        unanimous2ndChoiceCount++;
-                    }
-
-                    String matrix2ndChoiceString = String.format("; %s: %d (%d)", emotions[j], matrix[i][j], matrix2ndChoice[i][j]);
-                    System.out.print(matrix2ndChoiceString);
-                    resultWriter.print(matrix2ndChoiceString);
-                }
 
                 // increment degree counts
                 for (int k = 0; k < 3; k++) {
@@ -141,16 +136,47 @@ public class AnnotationComparer {
 
                     if (degreeCount == 3) {
                         degreeUnanimousCount++;
-                        degreeMajorityCount++;
                     }
-                    else if (degreeCount == 2) {
+
+                    if (degreeCount >= 2) {
                         degreeMajorityCount++;
+                        patternEmotionMap.put(expressions[i], String.format("%s_%d", emotions[j], k + 1));
+                        added = true;
                     }
                 }
+
+                if (matrix[i][j] == 3) {
+                    unanimousCount++;
+                }
+
+                if (matrix[i][j] >= 2) {
+                    majorityCount++;
+                    if (!added) {
+                        patternEmotionMap.put(expressions[i], String.format("%s", emotions[j]));
+                    }
+                }
+
+                if (matrix2ndChoice[i][j] != 0) {
+                    if (matrix2ndChoice[i][j] == 3) {
+                        unanimous2ndChoiceCount++;
+                    }
+
+                    String matrix2ndChoiceString = String.format("; %s: %d (%d)", emotions[j], matrix[i][j], matrix2ndChoice[i][j]);
+                    System.out.print(matrix2ndChoiceString);
+                    resultWriter.print(matrix2ndChoiceString);
+                }
+
+
             }
 
             System.out.println();
             resultWriter.println();
+        }
+
+        PrintWriter majorityWriter = new PrintWriter(dirPath + "majority_expressions"); // writer for majority expressions
+        patternEmotionMap = Extensions.sortByValue(patternEmotionMap, false);
+        for (Map.Entry<String, String> entry : patternEmotionMap.entrySet()) {
+            majorityWriter.printf("%s\t%s\n", entry.getValue(), entry.getKey());
         }
 
         majorityWriter.close();
@@ -158,11 +184,13 @@ public class AnnotationComparer {
         // create matrix only with expressions where majority agreed
         int[][] majorityMatrix = new int[majorityCount][emotions.length];
         int majorityIndex = 0;
+        int[] majEmoCount = new int[emotions.length];
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < emotions.length; j++) {
                 if (matrix[i][j] >= 2) {
                     majorityMatrix[majorityIndex][j] = matrix[i][j];
                     majorityIndex++;
+                    majEmoCount[j] += 1;
                 }
             }
         }
@@ -181,8 +209,24 @@ public class AnnotationComparer {
                 unanimousCount, unanimous2ndChoiceCount, majorityCount, degreeUnanimousCount, degreeMajorityCount, k, majorityK
                 );
 
+        String emotionString = String.format(
+                "\nMajority emotions:\n" +
+                        "Joy: %d\n" +
+                        "Trust: %d\n" +
+                        "Fear: %d\n" +
+                        "Surprise: %d\n" +
+                        "Sadness: %d\n" +
+                        "Disgust: %d\n" +
+                        "Anger: %d\n" +
+                        "Anticipation: %d\n",
+                majEmoCount[0], majEmoCount[1], majEmoCount[2], majEmoCount[3], majEmoCount[4], majEmoCount[5],
+                majEmoCount[6], majEmoCount[7]
+        );
+
         System.out.print(statsString);
+        System.out.print(emotionString);
         resultWriter.print(statsString);
+        resultWriter.print(emotionString);
         resultWriter.close();
 
         // printMatrix(matrix);
