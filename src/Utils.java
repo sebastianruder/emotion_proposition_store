@@ -1,6 +1,9 @@
+import com.sun.javaws.exceptions.InvalidArgumentException;
 import edu.jhu.agiga.*;
 import edu.stanford.nlp.trees.Tree;
 
+import java.io.File;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.*;
@@ -164,10 +167,10 @@ public class Utils {
         sb.append(tokens.get(gov).getLemma());
         sb.append("\t");
         sb.append(dobj);
+        sb.append("\t");
 
         // append list of prepositional objects
         if (addPObj) {
-            sb.append("\t");
             Map<String, List<Integer>> pObjs = extractPObjs(gov, colDeps);
             for (int i = 0; i < pObjs.keySet().size(); i++) {
                 if (i == 0) {
@@ -186,7 +189,7 @@ public class Utils {
             }
         }
 
-        return sb.toString().trim();
+        return sb.toString();
     }
 
     /**
@@ -347,5 +350,43 @@ public class Utils {
         }
 
         return input;
+    }
+
+    /**
+     * Combines two paths into a single valid path.
+     * @param path1 the first path
+     * @param path2 the second path
+     * @return the combined path
+     */
+    public static String combine(String path1, String path2)
+    {
+        File file1 = new File(path1);
+        File file2 = new File(file1, path2);
+        return file2.getPath();
+    }
+
+    /**
+     * Deletes all files in a directory with a specified extension.
+     * @param dir the directory
+     * @param extension the file extension that should be deleted
+     * @throws IOException if the directory is not found
+     */
+    public static void cleanDirectory(String dir, final String extension) throws IOException {
+        File fileDir = new File(dir);
+        if (!fileDir.isDirectory()) {
+            throw new IOException(String.format("%s is not a valid directory.", dir));
+        }
+
+        String[] fileNames = fileDir.list(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.endsWith(extension);
+            }
+        });
+
+        for (String fileName : fileNames) {
+            File file = new File(dir + fileName);
+            file.delete();
+        }
     }
 }
