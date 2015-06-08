@@ -5,6 +5,9 @@ import java.util.*;
  */
 public class Extensions
 {
+    /**
+     * A list containing punctuation symbols.
+     */
     private static List<String> punctuation = Arrays.asList(new String[] {":", ",", "''", "''", "``"});
 
     /**
@@ -14,12 +17,15 @@ public class Extensions
      * @param <V> the value type
      * @return the map sorted by values
      */
-    public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map) {
+    public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map, final boolean desc) {
         List<Map.Entry<K, V>> list =
                 new LinkedList<Map.Entry<K, V>>( map.entrySet() );
         Collections.sort(list, new Comparator<Map.Entry<K, V>>() {
             public int compare(Map.Entry<K, V> o1, Map.Entry<K, V> o2) {
-                return - (o1.getValue()).compareTo(o2.getValue());
+                if (desc) return -(o1.getValue()).compareTo(o2.getValue());
+                else {
+                    return (o1.getValue()).compareTo(o2.getValue());
+                }
             }
         });
 
@@ -69,5 +75,17 @@ public class Extensions
         }
 
         return sb.toString();
+    }
+
+    /**
+     * Increments the <code>double</code> value of a map if it contains the key, otherwise adds the key to the map with
+     * an initial value of 0 and increments it.
+     * @param map a map of <code>String</code> and <code>Double</code>
+     * @param key the key whose value should be updated
+     */
+    public static void updateMap(Map<String, Double> map, String key) {
+
+        double value = map.containsKey(key) ? map.get(key) : 0;
+        map.put(key, value + 1);
     }
 }
