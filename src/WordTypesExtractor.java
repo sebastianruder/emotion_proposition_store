@@ -12,6 +12,11 @@ import java.util.regex.Pattern;
  */
 public class WordTypesExtractor {
 
+    /**
+     * Extracts words that have been labeled with FEELING.
+     * @param pathName the directory of the word_types.predicted file.
+     * @throws IOException
+     */
     public static void extractWordTypes(String pathName) throws IOException {
 
         InputStream inputStream = new FileInputStream(pathName + "word_types.predicted");
@@ -22,10 +27,10 @@ public class WordTypesExtractor {
 
         String line = reader.readLine();
         while (line != null) {
-            String[] list = line.split("\t"); // format is adjective tab emotion
-            if (list[1].equals("FEELING")) {
-                System.out.println(list[0]);
-                writer.println(list[0]);
+            String[] array = line.split("\t"); // format is adjective tab emotion
+            if (array[1].equals("FEELING")) {
+                System.out.println(array[0]);
+                writer.println(array[0]);
             }
 
             // read next line
@@ -35,6 +40,11 @@ public class WordTypesExtractor {
         writer.close();
     }
 
+    /**
+     * Main method to run the word extraction.
+     * @param args the input arguments
+     * @throws IOException if the file is not found
+     */
     public static void main(String[] args) throws IOException {
         extractWordTypes("/home/sebastian/git/sentiment_analysis/emotion_word_sources/tsvetkov_et_al./");
     }
