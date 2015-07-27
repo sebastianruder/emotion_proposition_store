@@ -1,0 +1,182 @@
+Emotion	Frequency	% of total extractions
+anticipation	966,571	54.47
+fear	249,103	14.04
+joy	231,967	13.07
+trust	89,217	5.03
+anger	64,586	3.64
+surprise	60,221	3.39
+disgust	59,486	3.35
+sadness	53,269	3.00
+Total top 10	1,774,420	100.00
+Total	1,774,420	100.00
+# of patterns with frequency > 10: 8
+
+Emotion	# patterns with	% patterns with
+	NP cause	S cause
+anticipation	407,738	558,833
+joy	190,484	41,483
+fear	82,116	166,987
+trust	72,483	16,734
+surprise	59,657	564
+disgust	58,942	544
+anger	57,379	7,207
+sadness	26,064	27,205
+Total	954,863	819,557
+
+Emotion	Frequency	% of total extractions
+expect	490,640	27.65
+predict	156,681	8.83
+fear	155,968	8.79
+enjoy	131,102	7.39
+await	71,910	4.05
+look forward to	59,884	3.37
+rely	50,480	2.84
+prepare	45,687	2.57
+forecast	45,365	2.56
+be afraid	35,314	1.99
+Total top 10	1,243,031	100.00
+Total	1,774,420	100.00
+# of patterns with frequency > 10: 154
+
+
+disgust
+-----
+Emotion	Frequency	% of total extractions
+hate	22,804	1.29
+shun	9,268	0.52
+deplore	8,751	0.49
+dislike	6,069	0.34
+alienate	2,675	0.15
+repel	2,054	0.12
+despise	1,828	0.10
+loathe	1,328	0.07
+disdain	1,208	0.07
+abhor	1,149	0.06
+Total top 10	57,134	100.00
+Total	59,486	100.00
+# of patterns with frequency > 10: 15
+
+
+sadness
+-----
+Emotion	Frequency	% of total extractions
+regret	24,395	1.37
+mourn	7,948	0.45
+be unhappy	6,120	0.34
+be sad	5,071	0.29
+disappoint	3,320	0.19
+upset	2,439	0.14
+grieve	1,317	0.07
+pine	1,064	0.06
+agonize over	489	0.03
+displease	423	0.02
+Total top 10	52,586	100.00
+Total	53,269	100.00
+# of patterns with frequency > 10: 13
+
+
+trust
+-----
+Emotion	Frequency	% of total extractions
+rely	50,480	2.84
+count	17,562	0.99
+trust	14,749	0.83
+reassure	5,384	0.30
+take comfort in	620	0.03
+charm	412	0.02
+be charm	7	0.00
+be reassure	3	0.00
+Total top 10	89,217	100.00
+Total	89,217	100.00
+# of patterns with frequency > 10: 6
+
+
+joy
+-----
+Emotion	Frequency	% of total extractions
+enjoy	131,102	7.39
+be proud	21,842	1.23
+be lucky	13,857	0.78
+cheer	10,658	0.60
+relish	5,590	0.32
+impress	5,431	0.31
+entertain	4,318	0.24
+arouse	4,247	0.24
+be satisfy	4,016	0.23
+please	3,394	0.19
+Total top 10	204,455	100.00
+Total	231,967	100.00
+# of patterns with frequency > 10: 30
+
+
+anger
+-----
+Emotion	Frequency	% of total extractions
+provoke	16,528	0.93
+be angry	6,808	0.38
+bother	6,612	0.37
+infuriate	5,316	0.30
+harass	4,791	0.27
+insult	3,534	0.20
+frustrate	2,912	0.16
+irritate	2,805	0.16
+offend	2,482	0.14
+fret	2,356	0.13
+Total top 10	54,144	100.00
+Total	64,586	100.00
+# of patterns with frequency > 10: 28
+
+
+surprise
+-----
+Emotion	Frequency	% of total extractions
+surprise	18,358	1.03
+stun	16,211	0.91
+shock	13,269	0.75
+confuse	2,899	0.16
+wow	2,003	0.11
+confound	1,771	0.10
+startle	1,680	0.09
+baffle	1,169	0.07
+puzzle	802	0.05
+stagger	689	0.04
+Total top 10	58,851	100.00
+Total	60,221	100.00
+# of patterns with frequency > 10: 20
+
+
+anticipation
+-----
+Emotion	Frequency	% of total extractions
+expect	490,640	27.65
+predict	156,681	8.83
+await	71,910	4.05
+look forward to	59,884	3.37
+prepare	45,687	2.57
+forecast	45,365	2.56
+hope	28,277	1.59
+anticipate	19,112	1.08
+be hopeful	17,732	1.00
+foresee	9,248	0.52
+Total top 10	944,536	100.00
+Total	966,571	100.00
+# of patterns with frequency > 10: 22
+
+
+fear
+-----
+Emotion	Frequency	% of total extractions
+fear	155,968	8.79
+be afraid	35,314	1.99
+worry	25,361	1.43
+be anxious	10,427	0.59
+scare	6,704	0.38
+be scared	3,340	0.19
+be nervous	2,195	0.12
+frighten	1,992	0.11
+unnerve	1,573	0.09
+dread	1,534	0.09
+Total top 10	244,408	100.00
+Total	249,103	100.00
+# of patterns with frequency > 10: 20
+

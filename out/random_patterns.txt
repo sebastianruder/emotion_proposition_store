@@ -1,0 +1,332 @@
+emotion word	pattern
+	bewitch
+	soothe
+	be proud of
+	be mad about
+	make a fuss of
+	shock
+	petrify
+	concern
+	demoralize
+	spook
+	dismay
+	make a fuss over
+	worry
+	captivate
+	frighten
+	yearn for
+	regret
+	lust after
+	be lucky that
+	disillusion
+	abash
+	solace
+	demoralise
+	agonize over
+	be angry about
+	annoy
+	be overjoyed that
+	lust for
+	faze
+	unsettle
+	sicken
+	impress
+	please
+	be unhappy that
+	be desperate to
+	be angry with
+	agonize
+	intimidate
+	be curious about
+	pine for
+	anticipate
+	aggrieve
+	devastate
+	be joyful about
+	be afraid that
+	incense
+	overwhelm
+	elate
+	agonise over
+	hope for
+	beguile
+	madden
+	appeal
+	embarrass
+	depress
+	make a fuss about
+	fluster
+	forecast that
+	perturb
+	relish
+	be concerned about
+	be curious about
+	stupefy
+	wow
+	be elated that
+	count on
+	be keen on
+	terrify
+	rattle
+	fuss about
+	off
+	repent
+	flabbergast
+	bewilder
+	befuddle
+	be wrathful that
+	rankle
+	stagger
+	scorn
+	grate
+	disgust
+	be fascinate with
+	flummox
+	be appall at
+	mollify
+	exhilarate
+	be disappoint that
+	hate that
+	disdain
+	be astonish at
+	trust in
+	frustrate
+	crave
+	placate
+	feel bitter about
+	gall
+	foresee that
+	perplex
+	be frustrate with
+	torment
+	be ecstatic that
+	execrate
+	aspire
+	be keen on
+	fulfill
+	be happy about
+	grieve that
+	deplore
+	off
+	bore
+	be irate that
+	stun
+	distress
+	mortify
+	envy
+	calm
+	dissatisfy
+	be worry about
+	be gutted about
+	rue
+	be mad about
+	be happy about
+	aspire to
+	enchant
+	take pleasure in
+	expect
+	disenchant
+	be eager for
+	aspire after
+	desire
+	cheer
+	be keen to
+	enjoy that
+	humiliate
+	astonish
+	provoke
+	be hesitant to
+	fear
+	be averse to
+	be loath to
+	be melancholic that
+	antagonize
+	agitate
+	worry about
+	inflame
+	regret that
+	baffle
+	sadden
+	confound
+	infuriate
+	be unhappy about
+	be angry at
+	shun
+	comfort
+	disconcert
+	be ashamed of
+	dazzle
+	dread
+	be confident of
+	awe
+	excite
+	enrage
+	be content that
+	take pleasure in
+	be worry about
+	be anxious that
+	afflict
+	take comfort in
+	shame
+	trouble
+	be happy that
+	covet
+	count on
+	be scared of
+	harass
+	arouse
+	be concerned about
+	charm
+	be glad that
+	take pleasure in
+	rely on
+	gladden
+	annoy
+	satisfy
+	hearten
+	charm
+	boggle
+	loathe
+	contemn
+	be intent on
+	displease
+	encourage
+	offend
+	aggravate
+	prepare for
+	be indignant over
+	trust that
+	deplore that
+	be obsess with
+	predict
+	savor
+	look forward to
+	forecast
+	take comfort in
+	be ashamed of
+	discourage
+	count on
+	be joyful about
+	be unhappy that
+	be envious of
+	hate
+	scare
+	be furious about
+	unnerve
+	chagrin
+	fret about
+	bother
+	be apprehensive about
+	mourn that
+	prepare for
+	be scared that
+	nauseate
+	hanker for
+	fascinate
+	await
+	disgust
+	nonplus
+	embitter
+	dumbfound
+	feel sorrow that
+	be furious about
+	dislike
+	alienate
+	traumatize
+	exasperate
+	appall
+	predict that
+	foresee
+	outrage
+	be enthusiastic about
+	estrange
+	look to
+	astound
+	enrapture
+	discourage
+	dishearten
+	entertain
+	hope for
+	irritate
+	disappoint
+	disappoint
+	expect that
+	abase
+	savour
+	long to
+	startle
+	be proud of
+	have an itch to
+	be angry that
+	unsettle
+	despise
+	be hopeful that
+	abhor
+	sting
+	upset
+	intrigue
+	thrill
+	be frightened that
+	hope for
+	hunger for
+	arouse
+	nettle
+	rile
+	be anxious for
+	amaze
+	mourn
+	insult
+	delight
+	puzzle
+	horrify
+	be sad that
+	revolt
+	ache for
+	in
+	antagonize
+	be afraid of
+	amuse
+	be miserable that
+	gratify
+	fear that
+	discomfit
+	hanker after
+	repulse
+	menace
+	place reliance on
+	enthrall
+	conciliate
+	trust
+	vex
+	surprise
+	await
+	be embarrass about
+	thirst for
+	confuse
+	be anxious about
+	disturb
+	look forward to
+	be embarrass for
+	alarm
+	abominate
+	irk
+	be nervous about
+	be confident of
+	dispirit
+	reassure
+	awe
+	be apprehensive that
+	be eager to
+	shock
+	mystify
+	exacerbate
+	affront
+	floor
+	be unhappy about
+	crave for
+	long for
+	repel
+	be optimistic that
+	enjoy
+	rejoice
+	be excite about
