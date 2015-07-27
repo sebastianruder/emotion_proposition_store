@@ -2,117 +2,123 @@ anger	harass
 anger	offend
 anger	irk
 anger	frustrate
-anger_2	be irate that
-anger_2	outrage
-anger_2	inflame
-anger_2	infuriate
-anger_2	be incense that
-anger_2	enrage
-anger_3	scorn
-anger_3	torment
-anger_3	be angry at
-anger_3	vex
-anger_3	be angry that
-anger_3	be angry with
-anger_3	afflict
-anger_3	insult
-anger_3	aggravate
-anger_3	be angry about
-anger_3	fret about
-anger_3	rankle
-anger_3	provoke
+anger_1	be irate that
+anger_1	outrage
+anger_1	inflame
+anger_1	infuriate
+anger_1	be incense that
+anger_1	enrage
+anger_2	scorn
+anger_2	torment
+anger_2	be angry at
+anger_2	vex
+anger_2	be angry that
+anger_2	be angry with
+anger_2	afflict
+anger_2	insult
+anger_2	aggravate
+anger_2	be angry about
+anger_2	fret about
+anger_2	rankle
+anger_2	provoke
+anger_3	bother
+anger_3	irritate
+anger_3	grate
+anger_3	annoy
+anger_3	sting
+anger_3	disturb
 anticipation	yearn for
 anticipation	predict that
 anticipation	ache for
 anticipation	be intent on
 anticipation	intrigue
-anticipation_1	bother
-anticipation_1	irritate
-anticipation_1	grate
-anticipation_1	annoy
-anticipation_1	sting
-anticipation_1	disturb
-anticipation_3	aspire
-anticipation_3	be hopeful that
-anticipation_3	expect
-anticipation_3	anticipate
-anticipation_3	covet
-anticipation_3	aspire to
-anticipation_3	crave
-anticipation_3	foresee
-anticipation_3	hunger for
-anticipation_3	predict
-anticipation_3	prepare for
-anticipation_3	long for
-anticipation_3	await
-anticipation_3	forecast that
-anticipation_3	hope for
-anticipation_3	expect that
-anticipation_3	be eager for
-anticipation_3	look forward to
-anticipation_3	forecast
+anticipation_2	aspire
+anticipation_2	be hopeful that
+anticipation_2	expect
+anticipation_2	anticipate
+anticipation_2	covet
+anticipation_2	aspire to
+anticipation_2	crave
+anticipation_2	foresee
+anticipation_2	hunger for
+anticipation_2	predict
+anticipation_2	prepare for
+anticipation_2	long for
+anticipation_2	await
+anticipation_2	forecast that
+anticipation_2	hope for
+anticipation_2	expect that
+anticipation_2	be eager for
+anticipation_2	look forward to
+anticipation_2	forecast
+anticipation_3	be curious about
 disgust	horrify
 disgust	shun
-disgust_2	abhor
-disgust_2	loathe
-disgust_2	despise
-disgust_2	hate
-disgust_2	deplore
-disgust_2	disdain
-disgust_3	dislike
-disgust_3	shame
-disgust_3	be ashamed of
-disgust_3	alienate
-disgust_3	repel
-disgust_3	disgust
+disgust_1	abhor
+disgust_1	loathe
+disgust_1	despise
+disgust_1	hate
+disgust_1	deplore
+disgust_1	disdain
+disgust_2	dislike
+disgust_2	shame
+disgust_2	be ashamed of
+disgust_2	alienate
+disgust_2	repel
+disgust_2	disgust
 fear	be afraid of
 fear	unnerve
 fear	rattle
 fear	dread
-fear_2	terrify
-fear_2	be terrify that
-fear_3	be frightened that
-fear_3	be scared that
-fear_3	fear that
-fear_3	frighten
-fear_3	fear
-fear_3	intimidate
-fear_3	spook
-fear_3	be scared of
-fear_3	be scare that
-fear_3	scare
-fear_3	be afraid that
+fear_1	terrify
+fear_1	be terrify that
+fear_2	be frightened that
+fear_2	be scared that
+fear_2	fear that
+fear_2	frighten
+fear_2	fear
+fear_2	intimidate
+fear_2	spook
+fear_2	be scared of
+fear_2	scare
+fear_2	be afraid that
+fear_3	concern
+fear_3	be anxious that
+fear_3	be anxious about
+fear_3	be apprehensive about
+fear_3	worry
+fear_3	be nervous about
 joy	be enthusiastic about
 joy	comfort
 joy	fulfill
 joy	desire
-joy_2	thrill
-joy_2	be elate that
-joy_2	rejoice
-joy_2	be ecstatic that
-joy_2	be thrill that
-joy_2	relish
-joy_3	entertain
-joy_3	excite
-joy_3	enjoy that
-joy_3	impress
-joy_3	satisfy
-joy_3	delight
-joy_3	be mad about
-joy_3	take pleasure in
-joy_3	enjoy
-joy_3	arouse
-joy_3	be happy about
-joy_3	please
-joy_3	be lucky that
-joy_3	cheer
-joy_3	soothe
-joy_3	captivate
-joy_3	be proud of
-joy_3	be satisfy that
-joy_3	amuse
-joy_3	savor
-none_3	be curious about
+joy_1	thrill
+joy_1	be elate that
+joy_1	rejoice
+joy_1	be ecstatic that
+joy_1	be thrill that
+joy_1	relish
+joy_2	entertain
+joy_2	excite
+joy_2	enjoy that
+joy_2	impress
+joy_2	satisfy
+joy_2	delight
+joy_2	be mad about
+joy_2	take pleasure in
+joy_2	enjoy
+joy_2	arouse
+joy_2	be happy about
+joy_2	please
+joy_2	be lucky that
+joy_2	cheer
+joy_2	soothe
+joy_2	captivate
+joy_2	be proud of
+joy_2	be satisfy that
+joy_2	amuse
+joy_2	savor
+joy_3	calm
 sadness	devastate
 sadness	agonize over
 sadness	regret that
@@ -121,44 +127,37 @@ sadness	worry about
 sadness	be sad that
 sadness	depress
 sadness	regret
-sadness_2	mourn that
-sadness_2	grieve that
-sadness_2	mourn
-sadness_3	be unhappy that
-sadness_3	upset
-sadness_3	displease
-sadness_3	be disappoint that
-sadness_3	be unhappy about
-sadness_3	be sadden that
-sadness_3	disappoint
+sadness_1	mourn that
+sadness_1	grieve that
+sadness_1	mourn
+sadness_2	be unhappy that
+sadness_2	upset
+sadness_2	displease
+sadness_2	be disappoint that
+sadness_2	be unhappy about
+sadness_2	be sadden that
+sadness_2	disappoint
 surprise	boggle
 surprise	baffle
 surprise	puzzle
-surprise_1	concern
-surprise_1	be anxious that
-surprise_1	be anxious about
-surprise_1	be apprehensive about
-surprise_1	worry
-surprise_1	be nervous about
-surprise_2	be stun that
-surprise_2	confound
-surprise_2	stagger
-surprise_2	stun
-surprise_2	amaze
-surprise_2	be bewilder that
-surprise_2	be amaze that
-surprise_2	wow
-surprise_2	shock
-surprise_3	surprise
-surprise_3	startle
-surprise_3	be flabbergast that
-surprise_3	confuse
+surprise_1	be stun that
+surprise_1	confound
+surprise_1	stagger
+surprise_1	stun
+surprise_1	amaze
+surprise_1	be bewilder that
+surprise_1	be amaze that
+surprise_1	wow
+surprise_1	shock
+surprise_2	surprise
+surprise_2	startle
+surprise_2	be flabbergast that
+surprise_2	confuse
 trust	charm
 trust	be reassure that
-trust_1	calm
-trust_2	rely on
-trust_3	trust
-trust_3	take comfort in
-trust_3	count on
-trust_3	trust that
-trust_3	reassure
+trust_1	rely on
+trust_2	trust
+trust_2	take comfort in
+trust_2	count on
+trust_2	trust that
+trust_2	reassure

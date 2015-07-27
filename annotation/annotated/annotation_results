@@ -7,14 +7,11 @@ regret that; sadness: 2 (2); disgust: 1 (1)
 be lucky that; joy: 3 (3); anticipation: 0 (1)
 desire; joy: 2 (3); anticipation: 1 (3)
 depress; sadness: 3 (3); disgust: 0 (1)
-count on; trust: 3 (3); anticipation: 0 (1)
 be optimistic that; joy: 1 (2); trust: 1 (1); anticipation: 1 (3)
-prepare for; fear: 0 (1); anticipation: 3 (3)
 startle; fear: 0 (1); surprise: 3 (3); anger: 0 (1)
 trust; trust: 3 (3)
 scare; fear: 3 (3); surprise: 0 (1)
 confuse; fear: 0 (1); surprise: 3 (3)
-be happy about; joy: 3 (3)
 disdain; disgust: 2 (2); anger: 1 (1)
 fret about; fear: 1 (1); anger: 2 (2); anticipation: 0 (1)
 be flabbergast that; surprise: 3 (3)
@@ -26,7 +23,7 @@ torment; fear: 1 (1); anger: 2 (2)
 trust that; trust: 3 (3)
 amaze; joy: 1 (1); surprise: 2 (2)
 exacerbate; surprise: 0 (1); anger: 1 (1); anticipation: 1 (1); none: 1 (1)
-hope for; joy: 1 (1); fear: 0 (1); anticipation: 2 (3)
+hope for; fear: 0 (1); anticipation: 3 (3)
 be angry that; anger: 3 (3)
 infuriate; anger: 3 (3)
 deplore; disgust: 3 (3)
@@ -35,7 +32,6 @@ be anxious that; fear: 2 (3); anger: 0 (1); anticipation: 1 (1)
 comfort; joy: 3 (3)
 be intent on; anticipation: 3 (3)
 aggravate; anger: 3 (3)
-hope for; joy: 0 (1); fear: 0 (1); anticipation: 3 (3)
 provoke; anger: 3 (3)
 be curious about; anticipation: 3 (3)
 appeal; joy: 1 (1); trust: 0 (1); sadness: 1 (1); anticipation: 1 (1)
@@ -106,7 +102,6 @@ rattle; fear: 2 (2); surprise: 0 (1); anger: 1 (1)
 boggle; surprise: 2 (2); sadness: 1 (1)
 devastate; surprise: 1 (1); sadness: 2 (2)
 rankle; anger: 2 (2); none: 1 (1)
-be unhappy about; sadness: 3 (3)
 amuse; joy: 3 (3)
 foresee; fear: 1 (1); anticipation: 2 (2)
 enrage; anger: 3 (3)
@@ -145,7 +140,6 @@ be satisfy that; joy: 3 (3)
 forecast; anticipation: 3 (3)
 shame; fear: 1 (1); sadness: 0 (1); disgust: 2 (2)
 displease; sadness: 2 (2); disgust: 1 (1); anger: 0 (1)
-be scare that; fear: 3 (3)
 expect; anticipation: 3 (3)
 take pleasure in; joy: 3 (3)
 arouse; joy: 2 (2); anticipation: 1 (1)
@@ -155,15 +149,12 @@ reassure; trust: 3 (3)
 be mad about; joy: 2 (2); anger: 1 (1); anticipation: 0 (1)
 fear; fear: 3 (3)
 predict that; fear: 1 (1); anticipation: 2 (2)
-await; fear: 1 (1); anticipation: 2 (2)
 enchant; joy: 1 (2); trust: 1 (1); none: 1 (1)
 be encourage that; joy: 1 (1); trust: 1 (1); anticipation: 1 (1)
 harass; fear: 1 (1); disgust: 0 (1); anger: 2 (2)
 be afraid of; fear: 3 (3)
 be nervous about; fear: 3 (3); anticipation: 0 (2)
-be curious about; joy: 0 (1); anticipation: 3 (3)
 envy; disgust: 1 (1); anger: 1 (2); anticipation: 1 (1)
-look forward to; joy: 1 (1); anticipation: 2 (3)
 anticipate; anticipation: 3 (3)
 bother; anger: 3 (3)
 loathe; disgust: 2 (2); anger: 1 (1)
@@ -177,7 +168,6 @@ be amaze that; joy: 1 (1); surprise: 2 (2)
 cheer; joy: 3 (3); trust: 0 (1)
 please; joy: 2 (2); none: 1 (1)
 disturb; anger: 3 (3)
-be proud of; joy: 3 (3); trust: 0 (1)
 be angry at; anger: 3 (3)
 offend; disgust: 1 (2); anger: 2 (3)
 thrill; joy: 3 (3); surprise: 0 (2)
@@ -189,10 +179,20 @@ be terrify that; fear: 3 (3)
 disappoint; sadness: 3 (3)
 captivate; joy: 2 (3); anticipation: 1 (2)
 
-Expressions with unanimous emotions: 113
-Expressions with unanimous emotions (including 2nd choice): 128
-Expressions with majority emotions: 173
-Expressions with unanimous emotions + degree: 42
-Expressions with majority emotions + degree: 144
-Fleiss' kappa: 0,652877
-Fleiss' kappa for expressions with majority emotions: 0,674769
+Expressions with unanimous emotions: 106
+Expressions with unanimous emotions (including 2nd choice): 119
+Expressions with majority emotions: 163
+Expressions with unanimous emotions + degree: 39
+Expressions with majority emotions + degree: 131
+Fleiss' kappa: 0,646995
+Fleiss' kappa for expressions with majority emotions: 0,672448
+
+Majority emotions:
+Joy:	31
+Trust:	8
+Fear:	22
+Surprise:	16
+Sadness:	18
+Disgust:	14
+Anger:	29
+Anticipation:	25

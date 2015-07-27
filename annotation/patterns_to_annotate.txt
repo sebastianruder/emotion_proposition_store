@@ -10,245 +10,245 @@ Please annotate only the first 30-40 patterns at the beginning. After these, we 
 
 expression	1st emotion	(2nd emotion)
 annoy
-mourn
-dread
-confound
-grate
-regret that
-be lucky that
-desire
-depress
-experienced
-swerve
-count on
-be optimistic that
-prepare for
-startle
-trust
-scare
-confuse
-be happy about
-disdain
-spotless
-fret about
-be flabbergast that
-be apprehensive about
-paralyzed
-trouble
-abhor
-pine for
-torment
-grotesque
-trust that
-irreparable
-amaze
-duplicity
-exacerbate
-hope for
-be angry that
-superstition
-infuriate
-deplore
-relish
-be anxious that
-comfort
-be intent on
-aggravate
-hope for
-provoke
-delivery
-be curious about
-appeal
-worry
-transcendence
-hunger for
-discourage
-charm
-felicity
-fascinate
-concern
-shun
-puzzle
-surprise
-regret
-sting
-be sad that
-horrify
-collapse
-be bewilder that
+nettle
 shock
-be reassure that
-fulfill
-be unhappy about
-quagmire
-bonus
-excite
-satisfy
-abandon
+transcendence
+intimidate
+count on
+deplore
+happily
 aspire to
-repel
+dawn
+be sad that
+be amaze that
+fulfill
+appeal
+be anxious that
+delight
+guerilla
+horrify
+fret about
+cheer
+worry about
+coercion
+concern
+amaze
+fear that
+irreconcilable
+be unhappy about
+renovation
+grate
+unnerve
+confuse
+livid
+be happy about
+be irate that
+incredulous
+trust that
+crave
+enchant
+await
+long for
+harass
+be encourage that
+devastate
+regularity
+expect
+comfort
+be unhappy about
+vex
+be afraid of
+be frightened that
+arouse
+boisterous
+enjoy
+be enthusiastic about
+mourn that
+rattle
+agonize over
+anticipate
+be hopeful that
+surprise
+afflict
+insult
+covet
+impress
+delivery
+disappoint
+enrage
+torment
+offend
+predict that
+scorn
+be elate that
+trash
 humiliate
+futile
+upset
+be angry about
+be incense that
+be ashamed of
+amuse
+repel
+envy
+alarm
+be angry with
+please
+cyst
+pine for
+sour
+despise
+toxin
+conscientious
+bother
+be satisfy that
+aspire
+be apprehensive about
+exacerbate
+be ecstatic that
+be proud of
+satisfy
+excite
+be unhappy that
+slayer
+spotless
+mourn
+shun
+stroke
+prepare for
+loathe
+be angry at
+hunger for
+thrill
+be thrill that
+be alarm that
+hope for
+baffle
+confound
+hope for
+be eager for
 predict
-grieve that
-captivate
-glide
-be scared of
+rejoice
+fear
+regret that
+startle
+be afraid that
+provoke
+count on
+take comfort in
+be anxious about
+ache for
+trouble
+frustrate
+collapse
+creature
+abhor
+expect that
+wow
+outrage
+stun
+be scared that
+hate
+look forward to
+be intent on
+be optimistic that
 forecast that
 gall
-be frightened that
-be angry about
-encourage
-cyst
-crave
 eradication
-long for
-embarrass
-excitement
-diamond
-worry about
-unnerve
-yearn for
-impress
-be ecstatic that
-mourn that
-inflame
-spook
-clean
-delight
-achieve
-calm
-baffle
-alarm
-irk
-outrage
-boisterous
-hate
-futile
-frustrate
-disgust
-be stun that
-intimidate
-dislike
-be hopeful that
-intrigue
-terrify
-be elate that
-enjoy
-be angry with
-coercion
-be afraid that
-overwhelm
-honesty
-irritate
-rattle
-creature
-boggle
-devastate
-rankle
-be unhappy about
-amuse
-foresee
-livid
-enrage
-upset
-hate that
-be incense that
-renovation
-be alarm that
-scum
-rely on
-scorn
-convent
-insult
-be unhappy that
-be scared that
-entertain
-trash
-guerilla
-be ashamed of
-irreconcilable
-be proud of
-be irate that
-conscientious
-stroke
-stagger
-enjoy that
-be thrill that
-happily
-be happy about
-vex
-take comfort in
-fear that
-frighten
-savor
-be enthusiastic about
-await
-despise
-covet
-be anxious about
-aspire
-ache for
-count on
-afflict
-be satisfy that
-forecast
-shame
-displease
-be scare that
-expect
-take pleasure in
-arouse
-serpent
-rejoice
-disappoint
-be sadden that
+aggravate
 reassure
-be mad about
-fear
-toxin
-captivate
-predict that
-await
-incredulous
-enchant
-be encourage that
-harass
-be afraid of
-be nervous about
-heyday
-be curious about
-envy
-look forward to
-anticipate
-slayer
-dawn
-bother
-loathe
-look forward to
+be reassure that
+be scared of
+be sadden that
+convent
+be stun that
 soothe
-breakup
-agonize over
-disappoint
-expect that
-alienate
-be eager for
-be amaze that
-nettle
-sour
-cheer
-please
-disturb
-be proud of
-regularity
-be angry at
-offend
-thrill
-prepare for
-wow
-idiotic
-stun
 be disappoint that
+savor
+be curious about
+depress
+be angry that
+puzzle
+swerve
+fascinate
+take pleasure in
+rely on
+superstition
+be bewilder that
+shame
+glide
+disgust
+be curious about
+excitement
+disdain
+discourage
+sting
+captivate
+experienced
+achieve
+regret
+calm
+dread
+relish
+heyday
+worry
+infuriate
+boggle
+irritate
+foresee
+be nervous about
+be proud of
+disappoint
+enjoy that
+be scare that
+breakup
+overwhelm
+be happy about
+spook
+inflame
+be mad about
+intrigue
+desire
+alienate
+grotesque
+be flabbergast that
+grieve that
+scare
+dislike
+be lucky that
+paralyzed
+disturb
+encourage
+trust
+quagmire
+idiotic
+duplicity
+embarrass
+prepare for
+felicity
+terrify
+yearn for
+frighten
+serpent
+captivate
+irreparable
+clean
+bonus
+honesty
+stagger
+charm
+forecast
+diamond
+look forward to
+rankle
+await
+hate that
 be terrify that
+abandon
+irk
+scum
+displease
+entertain
 
 Final question: Do the following sentences correspond with the sentiments you marked? Indicate yes/no.
 rely on: Most big managed care plans rely on advice from panels of medical experts to recommend acceptance or rejection of new technology .
