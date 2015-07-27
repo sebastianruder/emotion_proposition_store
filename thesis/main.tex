@@ -1,4 +1,3 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Classicthesis Typographic Thesis
 % LaTeX Template
 % Version 1.3 (15/2/14)
@@ -66,12 +65,13 @@
 \cleardoublepage\include{FrontBackMatter/Abstract} % Abstract page
 
 %\cleardoublepage\include{FrontBackMatter/Publication} % Publications from the thesis page
-
-%\cleardoublepage\include{FrontBackMatter/Acknowledgments} % Acknowledgements page
+%\cleardoublepage
+\include{FrontBackMatter/Acknowledgments} % Acknowledgements page
 
 \pagestyle{scrheadings} % Show chapter titles as headings
 
-%\cleardoublepage\include{FrontBackMatter/Contents} % Contents, list of figures/tables/listings and acronyms
+% \cleardoublepage
+\include{FrontBackMatter/Contents} % Contents, list of figures/tables/listings and acronyms
 
 \cleardoublepage
 
@@ -98,9 +98,10 @@
 
 %\part{The Showcase} % Second part of the thesis
 %
-\include{Chapters/Chapter02} % Chapter 2
-%\include{Chapters/Chapter03} % Chapter 3
-%\include{Chapters/Chapter04} % Chapter 4 - empty template
+\include{Chapters/Chapter02}
+\include{Chapters/Chapter03}
+\include{Chapters/Chapter04}
+\include{Chapters/Chapter05}
 
 %----------------------------------------------------------------------------------------
 %	THESIS CONTENT - APPENDICES
@@ -110,7 +111,7 @@
 
 %\part{Appendix} % New part of the thesis for the appendix
 %
-%\include{Chapters/Chapter0A} % Appendix A
+\include{Chapters/Chapter0A} % Appendix A
 %\include{Chapters/Chapter0B} % Appendix B - empty template
 
 %----------------------------------------------------------------------------------------

@@ -13,22 +13,22 @@
 %----------------------------------------------------------------------------------------
 
 % Remove drafting to get rid of the '[ Date - classicthesis version 4.0 ]' text at the bottom of every page
-\PassOptionsToPackage{eulerchapternumbers,listings,drafting, pdfspacing, subfig,beramono,eulermath,parts}{classicthesis}
+\PassOptionsToPackage{eulerchapternumbers,listings,pdfspacing, subfig,beramono}{classicthesis}
 % Available options: drafting parts nochapters linedheaders eulerchapternumbers beramono eulermath pdfspacing minionprospacing tocaligned dottedtoc manychapters listings floatperchapter subfig
 % Adding 'dottedtoc' will make page numbers in the table of contents flushed right with dots leading to them
 
-\newcommand{\myTitle}{Building an Emotion Proposition Store\xspace}
+\newcommand{\myTitle}{Construction and Analysis of an Emotion Proposition Store\xspace}
 \newcommand{\mySubtitle}{Bachelor's thesis\xspace}
 \newcommand{\myDegree}{\xspace}
 \newcommand{\myName}{Sebastian Ruder\xspace}
 \newcommand{\myProf}{Prof. Anette Frank\xspace}
-\newcommand{\myOtherProf}{Put name here\xspace}
-\newcommand{\mySupervisor}{Dr. Carl Vogel\xspace}
+%\newcommand{\myOtherProf}{Put name here\xspace}
+%\newcommand{\mySupervisor}{Dr. Carl Vogel\xspace}
 \newcommand{\myFaculty}{Institute for Computational Linguistics\xspace}
 \newcommand{\myDepartment}{\xspace}
-\newcommand{\myUni}{Ruprecht-Karls-Universit\"ät\xspace}
+\newcommand{\myUni}{University of Heidelberg\xspace}
 \newcommand{\myLocation}{Heidelberg\xspace}
-\newcommand{\myTime}{Oktober 2014\xspace}
+\newcommand{\myTime}{Juli 2015\xspace}
 \newcommand{\myVersion}{version 1.0\xspace}
 
 %----------------------------------------------------------------------------------------
@@ -48,6 +48,43 @@
 %----------------------------------------------------------------------------------------
 
 \usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+
+% Package für Inline-Listen
+\usepackage{paralist}
+
+% for tables spanning multiple pages
+\usepackage{longtable}
+
+% for more compact itemized lists
+\usepackage{enumitem}
+
+% für code
+\usepackage{listings}
+\usepackage{color}
+
+% für multirows
+\usepackage{multirow}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+
+\lstset{frame=tb,
+  language=Java,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
 
 %------------------------------------------------
  

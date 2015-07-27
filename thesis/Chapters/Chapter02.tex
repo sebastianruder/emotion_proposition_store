@@ -1,356 +1,98 @@
 % Chapter 2
 
-\chapter{Corpus and patterns} % Chapter title
+\chapter{Foundations and related work} % Chapter title
 
-\label{ch:patterns} % For referencing the chapter elsewhere, use \autoref{ch:examples} 
-
-
-\section{Sources for emotion-triggering patterns}
-
-Don't use ambiguous ones (e.g. anxious can mean both eager and worried)
-Intuitively, we would want to employ mainly transitive constructions in which the subject denotes the experiencer and the object refers to the cause, also constructions in which subject is experiencer and clause denotes object
-
-
-\subsection{Introspection}
-
-We derive initial patterns from introspection and making use of online dictionaries and thesauri.
-
-\subsection{Emotions in VerbNet, FrameNet}
-VerbNet is not really useful because we don't care about particular verbs, but emotions and propositions. VerbNet doesn't differentiate between different emotions only between different alternations, e.g. "fear" is a member of the "admire" class.
-
---> marvel at?
-
-FrameNet has frames for
-fear
-lexical units that create this frame
-afraid.a, apprehension.n, dread.n, fear.n, freaked.a, frightened.a, $live_in_fear$.v, nervous.a, scared.a, terrified.a, terror.n
-
-trust
-lexical units: believe.v, credence.n, credulous.a, faith.n, gullible.a, reliability.n, reliable.a, trust.n, trust.v, trustworthy.a
-
-$cause_emotion$
-lexical units: affront.n, affront.v, $call_names$.v, concern.v, insult.n, insult.v, offend.v, offense.n, offensive.a
-
-
-
-\subsection{Emotion verb classes from Mathieu and Fellbaum}
-A corpus-based construction of emotion verb classes
-reread 1. Introduction and 2. Emotion verbs
-
-surprise: astonish, surprise, amaze, astound, strike, stun, floor, dumbfounded, flabbergasted, stupefy
-fear: intimidate, scare, frighten, alarm, terrify
-
-
-
-\subsection{Dictionaries and thesauri}
-
-Oxford English Dictionary
-Most of the time, first sense was taken
-\begin{itemize}
-	\item Joy: \textit{A vivid emotion of pleasure arising from a sense of well-being or satisfaction; the feeling or state of being highly pleased or delighted; exultation of spirit; gladness, delight.}
-	\item Trust: \textit{Confidence in or reliance on some quality or attribute of a person or thing, or the truth of a statement. Const. in (of, on, upon, to, unto).}
-	\item Fear: \textit{The emotion of pain or uneasiness caused by the sense of impending danger, or by the prospect of some possible evil.}
-	\item Surprise: \textit{The feeling or mental state, akin to astonishment and wonder, caused by an unexpected occurrence or circumstance.} first sense is act of surprise, military act, etc.
-	\item Sadness: \textit{The condition or quality of being sad (Of a person, or his or her feelings, disposition, etc.: feeling sorrow; sorrowful, mournful, heavy-hearted.).} Obsolete senses precede it.
-	\item Disgust: \textit{Strong repugnance, aversion, or repulsion excited by that which is loathsome or offensive, as a foul smell, disagreeable person or action, disappointed ambition, etc.; profound instinctive dislike or dissatisfaction.}
-	\item Anger: \textit{The active feeling provoked against the agent; passion, rage; wrath, ire, hot displeasure.}
-	\item Anticipation: \textit{The action of looking forward to, expectation.}
-\end{itemize}
-a dozen words
-
-The Free Dictionary
-
-a dozen words
-
-Merriam-Webster
-synonyms for verbs 
-anger: enrage, incense, inflame (also enflame), infuriate, ire, madden, outrage, rankle, rile, roil, steam up, tick off
-fear: bother, fear, fret, fuss, stew, stress, sweat, trouble
-joy (rejoice): crow, delight, exuberate, glory, jubilate, joy, kvell, rejoice, triumph
-sadness (sadden): bum (out), burden, dash, deject, get down, oppress, sadden, weigh down
-anticipation (anticipate): anticipate, await, hope (for), watch (for)
-disgust: gross out, nauseate, put off, repel, repulse, revolt, sicken, turn off
-
-
-
-Roget's Thesaurus (thesaurus.com)
-as used for target terms in Crowdsourcing a Word-Emotion Association Lexicon
-chosen verbs with highest relevance
-anticipate: expect, predict, assume, await, count on, forecast, foresee, prepare for, see
-anger: aggravate, annoy, antagonize, arouse, displease, embitter, enrage, exacerbate, exasperate, excite, incense, inflame, infuriate, irritate, offend, outrage, provoke, rankle, rile
-fear: feel alarmed, be scared off, anticipate, avoid, dread, expect, foresee, shun, suspect, worry
-joy: exult, revel, make happy, delight, amuse, attract, charm, cheer, enchant, enrapture, entertain, fascinate, gratify, please, rejoice, satisfy, thrill, wow
-sadness (sadden): discourage, dishearten, dispirit, grieve
-disgust: bother, disenchant, displease, disturb, insult, irk, nauseate, offend, outrage, revolt, shock, sicken, turn off, upset
-surprise: astonish, amaze, astound, awe, bewilder, confound, confuse, dazzle, disconcert, dismay, dumbfound, flabbergast, overwhelm, perplex, rattle, shock, startle, stun, unsettle
-trust: count on, depend on, look to
-
-
-
-\subsection{Sentiment lexica (highly associated verbs)}
-
-Harvard General Inquirer
-Pstv 1045 positive words, an earlier version of Positiv.
-A subset of 557 words are also tagged Affil for words indicating affiliation or supportiveness.
-Ngtv 1160 negative words, an earlier version of Negativ.
-A subset of 833 words are also tagged Hostile for words indicating an attitude or concern with hostility or aggressiveness.
-Pleasur168 words indicating the enjoyment of a feeling, including words indicating confidence, interest and commitment.
-Pain 254 words indicating suffering, lack of confidence, or commitment.
-Feel 49 words describing particular feelings, including gratitude, apathy, and optimism, not those of pain or pleasure.
--- not really ordered, useful for our purposes
-Arousal 166 words indicating excitation, aside from pleasures or pains, but including arousal of affiliation and hostility.
-EMOT 311 words related to emotion that are used as a disambiguation category, but also available for general use.
---> have notes for some adjective: http://www.wjh.harvard.edu/~inquirer/EMOT.html
-joy; admire; adore; appreciate; be fond of
-trust
-fear
-surprise
-sadness
-disgust
-anger
-anticipation
-
-WordAffectLexicon
-
-
-
-EmoLex (crowd-sourced word-emotion association lexicon)
-
-
-SentiWordNet
-Helpful, doesn't yield any additional insights, though
-
-
-\subsection{FrameNet}
-
-FrameNet has a frame hierarchy and frame-to-frame relations.
-
-In FrameNet emotions are conceptualized in the Emotions frame, which describes an Experiencer in a particular emotional State that was provoked by a Stimulus.
-
-The frame Emotions is used by 10 other frames. Of these, we investigate more closely the Desiring, Emotion\_active, Emotion\_directed, and Experiencer\_obj frames.
-
-In the Desiring frame, the Experiencer desires that an Event occur. We derive 20 verbs from the Desiring frame, all of whom we label with anticipation.
-
-In the Experiencer\_obj frame, some phenomenon (the Stimulus) provokes a particular emotion in the Experiencer. Experiencer and stimulus (cause) are core frame elements, making this frame ideal for our purposes. We derive 132 verbs from this frame.
-
-The Emotion\_active frame is similar to Experiencer\_obj, but in this frame the verbs are more active. We derive 9 verbs from this frame.
-
-Finally, the Emotion\_directed frame focuses on adjectives and nouns describing an Experiencer's emotional response to a Stimulus. We keep a few of these, convert some into verbs, and discard the rest, resulting in 12 verbs and adjectives from this frame.
-
-Furthermore, Emotions is inherited by the Emotions\_by\_stimulus frame that is in turn inherited by the Annoyance, Emotions\_by\_possibility, i.e. Fear, Emotions\_of\_mental\_activity, Emotions\_of\_success\_or\_failure, Just\_found\_out, i.e. surprise, Others\_situation\_as\_stimulus frames.
-
-While these frames all refer to emotions, we have obtained most of their lexical entries already from other sources and thus don't make use of them.
-
-
-\subsection{WordNet}
-
-We make use of WordNet-Affect \cite{wordnet-affect}, an additional hierarchy of "affective" domain labels, which annotates WordNet synsets representing affective concepts in the semi-automatically augmented WordNet Domains further with affective labels. WordNet-Affect-1.1 only contains synsets that were tagged with the label "emo(tion)" in the previous version and thus should serve our purposes. Given the ID listed in the WordNet-Affect-1.1 synsets, we retrieve the respective WordNet-3.0 synset lemmas using the NLTK toolkit\cite{nltk} and the corresponding category.
-
-Adjectives, verbs, and adverbs are related to nouns. For these, the category of the corresponding noun is retrieved. We end up with 279 distinct categories, which we map to Plutchik's 8 emotions.
-
-
-\subsection{Adjectives}
-
-- Adjectives are more indicate of emotion than nouns or verbs (see also what Anette said)
-
-- In WordNet, nouns and verbs are clustered in synsets and supersenses. No taxonomic hierarchy for adjectives. \cite{adjective_supersenses} induce supersenses for adjectives taking GermaNet's guidelines\footnote{http://www.sfs.uni-tuebingen.de/lsd/adjectives.shtml} as inspiration.
-
-- They build a weakly supervised classifier that labels adjective types (irrespective of context), which they train on a small set of seed examples, some of them translations of GermaNet. We take the translations that pertain to FEELING and manually label them with Plutchik's 8 emotion classes. Furthermore, they released 7511 WordNet adjectives tagged by their classifier with a an adjective type vector. From these we derive the 920 adjectives that are labeled with the adjective type FEELING; we take the label as indicative of the emotion, as the classifier has a high accuracy (k-4 accuracy of 91\%).
-
-- The 920 adjectives contain instances like unknown, unreal, etc. and thus prove not useful.
-
-- We instead take the 126 adjectives. 
-
-
-\section{Compilation}
-
-From the previously mentioned sources, we derive now the pattern templates. We list the pattern in lemma form along with its emotion and its Stanford part-of-speech tags. We also list information about the constituent of the cause of emotion, if it is an NP or an S. Finally, we list if a passive form exists that can be used as an additional pattern.
-
-We convert the pattern templates into regular expressions that can be matched against the Gigaword corpus. We allow adjectives to be modified, but exclude negation.
-
-\section{Selection of corpus}
-
-default choice: news corpus of Gigaword
-not too rich in reporting emotions other than anger and expectation
-genre could clearly play a role.
-Both thematically (which is more domain than genre) and stylistically (this is what is really meant by genre)
-e.g. if working on novels, we'd certainly get a wider variety of emotional expressions.
-
-GW contains the NYT corpus that is annotated for domains. 
-Eva Sourjikova analyzed this and extracted specific domain sub-corpora. 
-
-Test whether applying your extractions on categories like: Opinion/Letters; MentalHealthDisorders; NY City; Child abuse and neglect; freedom and human rights, etc. are more prone for more varied emotions.
-
-!!Pre-select domains that are emotion-prone by checking which of them have a high rate of emotion words from those that you pre-selected.
-
-Outlook: turn to other corpora of different genres, e.g. ukWaC is richer in adjective meaning variety, this we know from Matthias Hartungs work). There is also a parsed version (pukWaC).
-
-\section{General guidelines}
-
-Our goal: Harvesting
-it's not possible to take all, particularly complex/complicated constructions, e.g. multiple embeddings, proverbs, idionsyncracies.
-
-take clear cases, easy structures that can be easily disambiguated
-
-define filter for extraction, take only those patterns, whose proposition is a clear-cut form
-
-recognize passive, normalize diathesis --> how?
-
-in case of too few items, corpus can be bigger; 
---> statistics necessary of how big corpus should be
-
-examples indicate that often that often modifiers, pre-modifiers, etc. are highly relevant for the sentiment
---> generally interesting to save all meaningful dependencies
---> only possible if propositions have a reasonable size
---> estimate length of simple embedded sentences, possibly with/without cutting off of adjuncts (not arguments)
-
-lemma for representational level; also index advisable to be able to go back and check if further normalisations or elements have to be taken care of
-
-part-of-speech labeling is important, as e.g. trust or fear can function both as verbs and nouns.
-
-
-\section{Important observations}
-
-- only had used Stanford present verb tag label before, inclusion of other labels increased recall from 1/400 to 1/100
-- many matches involved the same trigger words; not bad by itself. If unambigious and frequent, this is exactly what we want.
-- two interesting aspects related to this:
-1: find frequent and unambiguous trigger contexts so that from these we can find indications on what are secondary emotion words in their scope (complements)
-2: (which we did not choose as primary step to take if I recall correctly) is to acquire a wider variation of emotion indicating words. This we could still do in a second step.
-
-- both corpus as well as indicating expressions matter (see above)
-
-\subsection{Domain}
-
-According to Eva Sourjikova:
-Semantic content of a text / Subject
-Domain is determined by the semantic subject of the text mesage. It can be classified under one
-or more general topic and into a set of specific sub-topics or also a combination of more topics.
-Some words (terms) are more likely to appear for a given domain, so called domain terms. As
-a conceptual ontology, we can imagine a hierarchy of domain specific texts. Some possible tasks:
-text classification, topic detection, controlled vocabulary. terms exhibit a degree of domain independence. Some terms are more likely to appear for a given topics, while other terms are far more
-generic and will appear in almost every topic regardless of how similar the topics are
-
-\section{Remaining questions}
-
-Look at indicating expressions themselves.
-Many of categories more related to adjectival or predicative expressions and less clearly related to verb constructions
---> useful to include constructions that involve adjectives, e.g. be glad that; be afraid that; ..
-
-!!paper \citep{adjective_supersenses} induce supersenses for adjectives. One class is emotion. These should be very useful trigger words. And it would be interesting if one can classify them into these 8 emotion classes. 
-
-
-
-\section{Next steps}
-
-1. apply current method to some varied subgenres/domains (guided by the NTY categories) and plot the effects on the basis of the classified patterns you have at the moment
-
-2. consider including more word categories.
-adjectives: in most cases still able to identify bearer of emotion (ask for advise, if necessary)
-nouns: nominalized verbs from NomBank; possibly more matches in standard text genres, more difficult to identify the bearer of the emotion; often implicit
-adjectives are most promising
-
-Anette:
-When I looked at the sentence examples, and also the cut-down predicates of the embedded sentences, I was wondering whether extracting verb argument structures from the acquired propositions is the right way to go. Maybe it will be possible with a better filtering technique (getting more data - and there should be enough - but cleaning it by better filters). But we could, in a first step, also use the bare embedded material and apply topic modeling to them. This would mean we induce topics for embedded contexts that are pre-labelled with the embedding emotion indicating predicates. This way, we should be able to induce topics that reflect these emotions, and more filtering could be applied then, to sharpen these contexts or topics in better ways. This is related to the work I did with Matthias Hartung \cite{hartung2011exploring}. It's a kind of distant supervision for inducing semantically constrained LDA topics.
-
-But also using some association statistics for detecting collocations could be a first step to see what we can get out of these contexts.
-
-
-- Possibly more interesting to investigate nature/clarity of Plutchik's emotion classes in contrast to a pure pos/neg/neutral classification. 
-
-
+\label{ch:foundations} 
 
 %----------------------------------------------------------------------------------------
 
-%\lipsum[1]
-%
-%%----------------------------------------------------------------------------------------
-%
-%\section{A New Section}
-%
-%\lipsum[2]
-%
-%Examples: \textit{Italics}, \spacedallcaps{All Caps}, \textsc{Small Caps}, \spacedlowsmallcaps{Low Small Caps}\footnote{Footnote example.}.
-%
-%%------------------------------------------------
-%
-%\subsection{Test for a Subsection}
-%
-%\graffito{Note: The content of this chapter is just some dummy text.}
-%\lipsum[3-5]
-%
-%%------------------------------------------------
-%
-%\subsection{Autem Timeam}
-%
-%\lipsum[6]
-%
-%%----------------------------------------------------------------------------------------
-%
-%\section{Another Section in This Chapter}
-%
-%\lipsum[7]
-%
-%Sia ma sine svedese americas. Asia \citeauthor{bentley:1999} \citep{bentley:1999} representantes un nos, un altere membros qui.\footnote{De web nostre historia angloromanic.} Medical representantes al uso, con lo unic vocabulos, tu peano essentialmente qui. Lo malo laborava anteriormente uso.
-%
-%\begin{description}
-%\item[Description-Label Test:] \lipsum[8]
-%\item[Label Test 2:] \lipsum[9]
-%\end{description}
-%
-%\noindent This statement requires citation \citeauthor{cormen:2001} \citep{cormen:2001}.
-%
-%%------------------------------------------------
-%
-%\subsection{Personas Initialmente}
-%
-%\lipsum[10]
-%
-%\subsubsection{A Subsubsection}
-%\lipsum[11]
-%
-%\paragraph{A Paragraph Example} \lipsum[12]
-%
-%\begin{aenumerate}
-%\item Enumeration with small caps
-%\item Second item
-%\end{aenumerate}
-%
-%\noindent Another statement requiring citation \citeauthor{sommerville:1992} \citep{sommerville:1992} but this time with text after the citation.
-%
-%\begin{table}
-%\myfloatalign
-%\begin{tabularx}{\textwidth}{Xll} \toprule
-%\tableheadline{labitur bonorum pri no} & \tableheadline{que vista}
-%& \tableheadline{human} \\ \midrule
-%fastidii ea ius & germano &  demonstratea \\
-%suscipit instructior & titulo & personas \\
-%\midrule
-%quaestio philosophia & facto & demonstrated \citeauthor{knuth:1976} \\
-%\bottomrule
-%\end{tabularx}
-%\caption[Autem timeam deleniti usu id]{Autem timeam deleniti usu id. \citeauthor{knuth:1976}}  
-%\label{tab:example}
-%\end{table}
-%
-%\enlargethispage{2cm}
-%
-%%------------------------------------------------
-%
-%\subsection{Figure Citations}
-%Veni introduction es pro, qui finalmente demonstrate il. E tamben anglese programma uno. Sed le debitas demonstrate. Non russo existe o, facite linguistic registrate se nos. Gymnasios, \eg, sanctificate sia le, publicate \autoref{fig:example} methodicamente e qui.
-%
-%Lo sed apprende instruite. Que altere responder su, pan ma, \ie, signo studio. \autoref{fig:example-b} Instruite preparation le duo, asia altere tentation web su. Via unic facto rapide de, iste questiones methodicamente o uno, nos al.
-%
-%\begin{figure}[bth]
-%\myfloatalign
-%\subfloat[Asia personas duo.]
-%{\includegraphics[width=.45\linewidth]{gfx/example_1}} \quad
-%\subfloat[Pan ma signo.]
-%{\label{fig:example-b}
-%\includegraphics[width=.45\linewidth]{gfx/example_2}} \\
-%\subfloat[Methodicamente o uno.]
-%{\includegraphics[width=.45\linewidth]{gfx/example_3}} \quad
-%\subfloat[Titulo debitas.]
-%{\includegraphics[width=.45\linewidth]{gfx/example_4}}
-%\caption[Tu duo titulo debitas latente]{Tu duo titulo debitas latente.}\label{fig:example}
-%\end{figure}
+Research on sentiment analysis has been vast and there are excellent summaries (cf. \cite{sentiment_analysis_summary_pang}, \cite{sentiment_analysis_summary_liu}, \cite{sentiment_analysis_association_metrics}). In the following, we will focus on work related to emotion detection, emotion verbs, and identifying the holder and the cause of an emotion. To avoid ambiguity, we will henceforth define sentiment as being positive or negative, while an emotion possesses more complex dimensions.
+
+\section{Compositionality}
+
+Sentiment and emotion are clearly compositional phenomenons. Sentiment clearly adheres to Montague's underlying \textit{principle of compositionality} and the notion of sentiment compositionality has been successfully applied in state-of-the-art approaches such as recursive neural tensor networks \cite{deep_sentiment_analysis}, which conceive the overall sentiment as a sum of the constituent polarities. However, compositionality for emotions is less clear: Two unemotive terms can -- combined -- evoke an emotion, e.g. \textit{stock falls}, \textit{the blind sees}. The emotion of this compound expression, though, cannot be calculated merely as the sum of its parts and can only be accurately predicted by making sense of the underlying world knowledge.
+
+\citeauthor{adjective_noun_pairs} for instance construct a visual sentiment ontology containing more than 3,000 adjective-noun pairs (ANP). They obtain tags from Flickr and Youtube videos that are associated with any of Plutchik's emotions, rank them based on frequency, and determine their sentiment. This way, they retrieve 1,187 nouns (576 positive/negative, 611 neutral) and 268 positive and negative adjectives. They pair the adjectives and nouns to obtain ANPs such as \textit{beautiful flower} or \textit{disgusting food}. They are able to calculate the sentiment of the compound expression simply by summing the sentiment values of the adjective and the noun, assigning a higher weight to the adjective in case of opposite sentiment values to account for ANPs like \textit{abused child}. As emotion does not lend itself to easy compositionality, they have to fall back on additional information taken from Flickr meta-data to determine the emotion of the ANP.
+
+\section{Emotive events}
+
+Evidently, predicting emotion for events is harder than for nominal phrases, as modifiers contain a lot of meaningful information. As the above authors realized, adjectives like \textit{abused}, \textit{disgusting}, \textit{happy}, etc. almost always propagate their respective emotion to the whole nominal phrase.
+
+\citeauthor{benefactive_malefactive} try to capture implicit attitudes by annotating benefactive/malefactive events, i.e. events that negatively or positively affect entities. Two annotators annotate a total of 725 sentences. They report 0.69 as overlapping agreement between event spans and good agreement (0.87 and 0.97) for agents and objects. Their annotation scheme, however, raises some doubts, as some neutral events are labeled as benefactive/malefactive, e.g. in \textit{She bakes a cake}, \textit{cake} is the object of the benefactive event.
+
+\citeauthor{mutual_action} leverage world knowledge to detect emotions on an event level. Whereas we use association metrics derived from emotive contexts, their main insight is that the \textit{common mutual actions} between two event participants are a major cue for detecting emotions. For instance, a snake in general performs undesirable actions towards a girl, which would give the event \textit{a girl sees a snake} a negative emotion.
+
+Given an event, they also account for active and passive. However, they don't match the patterns against an existing corpus as we do, but mine data from the web to generate mutual action histograms. They compare these to the histograms of a set of manually emotion-labelled events between reference pairs and return the emotion of the most similar histogram. They evaluate their system on 600 events manually labelled by ten annotators with a positive, negative, or neutral sentiment, omitting finer granularity. Their proposed emotion detection system achieves an accuracy of 81.0\% on events where a majority of 6 annotators agreed.
+
+\section{Pattern-based mining for emotion detection} \label{sec:web-mining}
+
+Similarly, \citeauthor{harvesting_ontologizing} leverage the web to automatically extract instances using patterns. Their method starts off with a set of seed instances, from which they induce and then select new patterns. In contrast to most unsupervised approaches, they not only use \emph{reliable} patterns (high precision, low recall), but also leverage generic patterns. They mitigate their imprecision by measuring pattern reliability based on instantiations of reliable patterns, which enables them to separate correct from incorrect instances. They evaluate their system on seven relations and show that without generic patterns, their system outperforms comparable systems in precision, while generic patterns improve its recall significantly, e.g. from a relative recall of 1.00 to 6.66 for the \textsc{is-a} relation in the CHEM corpus, while precision decreases from 85.0\% to 76.0\%.
+
+While their approach is helpful for gathering knowledge to ontologize \texttt{is-a} and \texttt{part-of} relationships, the use of generic patterns for emotion detecion, which is already highly ambiguous, might introduce more noise and consequently rather hurt than improve performance. Furthermore, the difficulty of finding seed instances that will generate reliable patterns is amplified for emotions: \textit{I :: spiders}, \textit{I :: darkness},  \textit{I :: violence}, and \textit{I :: Bin Laden} might be promising seed instance to induce the pattern \textit{X hate Y}, they could also as easily be associated with \textit{X am scared of Y}, \textit{X object to Y}, etc; that is, while it is relatively straightforward to distil the essence of an \texttt{is-a} relationship via a set of seed instances, doing this for emotions is less easy and will invariably introduce a selection bias. Insofar, starting with a set of seed patterns and expanding them would be the preferred approach for emotion detection. We will leave this for future work.
+
+\citeauthor{emotion_verbs} in turn use search query patterns to rank verb classes. They manually construct classes corresponding to the emotions surprise, fear, and annoyance and rank them by intensity of emotion by mining the lexical-semantic patterns \textit{X (perhaps) even Y}, \textit{X, not to say Y}, and \textit{If not X then Y} from the web. Their results indicate that some verbs such as \textit{intimidate}, \textit{scare}, and \textit{alarm}, while being similar, are not members of the same broader \textit{frighten} class. Example \ref{ex:emotion_verbs} shows their ordering of \textit{surprise} verbs.
+
+\begin{align}
+\begin{split}\label{ex:emotion_verbs}
+&\textnormal{astonish > surprise > amaze > astound > strike > stun > floor}\\
+&\textnormal{> dumbfound > flabbergast > stupefy}
+\end{split}
+\end{align}
+
+While seed instances and patterns can be emotionally ambiguous, the micro-blogging platform Twitter provides a more salient indicator of emotions: hashtags. \citeauthor{twitter_hashtags_nrc} and \citeauthor{twitter_hashtags_bootstrapping} both use hashtags to extract emotion-evoking tweets. The former use emotions as hashtags, e.g. \textit{\#anger}, \textit{\#joy}, etc. to construct a Twitter emotion corpus by extracting 21,000 tweets containing these hashtags at the end of the message from the Twitter Search API\footnote{https://dev.twitter.com/rest/public/search}, with the joy emotion being prevalent in their corpus. They use an ensemble of binary SVM classifiers to predict the emotion hashtag of a tweet, achieving an F-score of 49.9 across all emotions, with disgust achieving the lowest (18.7) and joy the highest (62.4) scores.
+
+The latter use a bootstrapping approach to learn new hashtags and hashtag patterns and harvest emotion phrases from these. They start by collecting 323,000 tweets containing seed hashtags like \textit{\#loveyou}, \textit{\#sweetheart}, and \textit{\#bff} for five emotions. They train a logistic regression classifier for each emotion, using tweets containing the seed hashtags as positive instances, with negative instances consisting of randomly selected tweets from a pool of unlabelled tweets. Applying the classifier to the pool of unlabelled tweets produces new emotion-labelled tweets, from which they retrieve the ten highest scoring emotion-indicating hashtags by computing the average probability assigned by the classifier. They also learn hashtag pattern (e.g. \textit{\#missedyoutoomuch} $\rightarrow$ \textit{\#missedyou*}) and emotion phrases (e.g. \textit{\#lovemylife} $\rightarrow$ \textit{love my life}) by representing hashtags in a trie data structure, applying the classifier to tweets matching the patterns and phrases, and selecting the ten patterns and phrases with the highest average probability respectively. They achieve the best performance (51-66 F-score across emotions) on a manually annotated corpus of 5,500 tweets with a hybrid approach of an SVM with n-gram features enhanced with the phrase-based classifier and the classifiers of their learned hashtags and hashtag patterns.
+
+\section{Semantic roles in the context of emotions}
+
+In the context of emotions, not only the nature of the emotional state, but also the person experiencing the emotion or the cause of the emotion are relevant. Semantic role labeling is the task in NLP that aims to identify these semantic arguments of the predicate and classify them into their specific roles. FrameNet \cite{framenet}, a linguistic resource that stores semantic role information in so-called frames related to certain contexts, lists the roles depicted in \ref{tab:core-roles-framenet} as core roles for its \textsc{emotions} frame.
+
+\begin{table}[]
+\centering
+\begin{tabular}{ll}
+{\bf Role}  & {\bf Description}                                                                                        \\
+Event       & The occasion or happening that Experiencers in a\\
+            & certain emotional state participate in.\\
+Experiencer & The person or sentient entity that experiences or feels\\
+            & the emotions.                                     \\
+Expressor   & The body part, gesture, or other expression of the \\
+            & Experiencer that reflects his or her emotional state. \\
+State       & The abstract noun that describes a more lasting\\
+            & experience by the Experiencer.                           \\
+Stimulus    & The person, event, or state of affairs that evokes the\\
+            & emotional response in the Experiencer.            \\
+Topic       & The general area in which the emotion occurs. It\\
+            & indicates a range of possible Stimulus.                
+\end{tabular}
+\caption{Core semantic roles in FrameNet's \textsc{emotion} frame.}
+\label{tab:core-roles-framenet}
+\end{table}
+
+\citeauthor{emotion_holder} construct two models to identify the experiencer or holder of an emotion. The baseline model leverages the \textit{subject} dependency of emotional sentences, while an unsupervised syntax-based depends on the argument structure of emotional verbs. They acquire the argument structure in two ways: 
+\begin{inparaenum}[(a)] [\itshape a\upshape)] \item from the dependency-parsed and \item from the part-of-speech tagged and chunked sentences. \end{inparaenum} They compare the sentence argument structure against frame syntaxes of 942 emotional verbs extracted from VerbNet, another linguistic resource. They report an F-Score of 64.83\% for the baseline and of 66.98\% and 62.39\% for the syntax-based model with argument structures acquired using dependencies and parts-of-speech respectively.
+
+\citeauthor{semantic_role_labeling_tweets} frame the task of identifying the Experiencer, State, and Stimulus of an emotion as a classification task. They train their classifier on a dataset of 2012 US presidential election tweets with annotations crowd-sourced to Amazon's Mechanical Turk \footnote{https://www.mturk.com/mturk/welcome} and report an accuracy of 56.84 for detecting emotions and an F-score of 58.30 for detecting the stimulus. As their tweets deal with a narrowly defined domain, they are able to select the stimulus from a set of pre-chosen entities, which works for this narrow domain, but fails given an open set of potential stimuli.
+
+\citeauthor{implicit_emotions} in contrast don't use IE techniques but base their approach on their knowledge base EmotiNet. As their knowledge base is focused on the family domain, they only consider that domain, where their approach outperforms an SVM algorithm trained on more data. They also remark that world knowledge is particularly valuable in cases where no emotion-bearing word, e.g. \textit{happy} is present.
+
+\section{Typologies of emotion classification}
+
+Psychologists have proposed a number of different theories for classifying emotions, e.g. distinguishing between instinctual and cognitive emotions. As emotions are inherently subjective, none has been universally accepted. Two classification theories have been frequently used by the research community: Ekman's and Plutchik's. \citeauthor{ekman_basic_emotions} proposes a theory with six basic emotions: anger, disgust, fear, joy, sadness, and surprise. According to \citeauthor{plutchik}, there are two additional ones: anticipation and trust. He depicts them in a wheel, shown in figure \ref{fig:plutchik}, where the intensity of the emotion increases with the proximity to the center, and organizes them in four opposing pairs: joy--sadness, trust--disgust, fear--anger, surprise--anticipation.
+
+\begin{figure}[bth]
+\includegraphics[width=.80\linewidth]{gfx/plutchik_wheel_emotion.png}
+\caption{Plutchik's emotion wheel}\label{fig:plutchik}
+\end{figure}
+
+We adopted Plutchik's emotion classification for the following reasons: \begin{inparaenum}[(a)] [\itshape a\upshape)] \item it is clearly founded in psychological research; \item it is a superset of Ekman's six basic emotions; and \item its use by other researchers (cf. \cite{nrc}, \cite{adjective_noun_pairs}, \cite{emotions_novels_fairy_tales}) increases the comparability and transferability of our work.
+\end{inparaenum}
+
+\section{Sentiment and emotion lexica}
+
+Sentiment lexica have been pervasive in sentiment analysis. Their use has a long history. The General Inquirer \cite{general_inquirer}, the first sentiment lexicon to our knowledge, was created in 1961. It contains 11,788 words labeled with 182 categories of word tags, some of which are relevant to emotions: It contains 1045 positive words, with a subset tagged for indicating affiliation or supportiveness. It contains 1160 negative words, a subset of which is tagged for indicating an attitude or concern with hostility or aggressiveness. 168 words are tagged with \textsc{pleasure} indicating the enjoyment of a feeling; 254 \textsc{pain} words indicate suffering, lack of confidence, or commitment; 49 \textsc{feel} words describe particular feelings, including gratitude, apathy, and optimism; 166 \textsc{arousal} words indicate excitation (aside from pleasures or pains); finally 311 \textsc{emot} words relate to different emotions such as \textit{admiration}, \textit{annoyance}, etc. It was key in early experiments such as differentiating fake suicide notes from real ones, among others. Since then, it has been used for a plethora of other applications, particularly sentiment analysis, e.g. for contextualizing polarity \cite{general_inquirer_usage}. 
+
+WordNet-Affect \cite{wordnet-affect} and SentiWordNet \cite{sentiwordnet} are two more recent sentiment lexica built on top of the popular natural language processing resource WordNet \cite{wordnet}. WordNet is a lexical database that organizes nouns, verbs, and adjectives into \textit{synsets} that pertain to underlying lexical concepts. WordNet-Affect annotates WordNet synsets representing affective concepts, whereas SentiWordNet assigns objectivity, positivity, and negativity scores to WordNet synsets.
+
+The manual compilation of a sentiment lexicon can be a long and tedious process. Recently, researchers have looked for other methods: \citeauthor{nrc} use crowd-sourcing to build a sentiment lexicon containing about 10,000 entries. They take their terms primarily from the \textit{Macquarie Thesaurus}, as well as the General Inquirer and WordNet-Affect and crowd-source the annotations using Amazon Mechanical Turk. They use Plutchik's 8 emotion classes as well as positive and negative sentiment as binary labels. \citeauthor{nrc_emolex} follow the same approach to build the NRC Emotion Lexicon, containing about 14,000 word types, using \textit{Roget's Thesaurus} instead of the \textit{Macquarie Thesaurus}. They use it to quantitatively compare the emotion words in love and hate mail, as well as between genders and use it for other applications, e.g. as features for training the SVM classifier on election tweets mentioned above \citeauthor{semantic_role_labeling_tweets}.
+
+\citeauthor{depechemood} use a different form of crowd-sourced information to create a sentiment lexicon: \texttt{rappler.com} lets users  vote on the mood of a news story. The authors initially build a document-by-emotion matrix, listing each story with the voting percentages for all eight moods, and a term-by-document matrix using different frequency measures. Matrix-multiplication and normalization produces a final word-by-emotion matrix containing 37,000 entries.

@@ -1,6 +1,243 @@
 % Appendix A
 
-\chapter{Appendix Test}
+\chapter{Appendix A} \label{ch:appendix}
+
+%\section{Terms retrieved from emotion sources}
+%
+%\subsection{Oxford English Dictionary emotion definitions}
+%
+%\begin{itemize}
+%	\item Joy: \textit{A vivid emotion of pleasure arising from a sense of well-being or satisfaction; the feeling or state of being highly pleased or delighted; exultation of spirit; gladness, delight.}
+%	\item Trust: \textit{Confidence in or reliance on some quality or attribute of a person or thing, or the truth of a statement. Const. in (of, on, upon, to, unto).}
+%	\item Fear: \textit{The emotion of pain or uneasiness caused by the sense of impending danger, or by the prospect of some possible evil.}
+%	\item Surprise: \textit{The feeling or mental state, akin to astonishment and wonder, caused by an unexpected occurrence or circumstance.} first sense is act of surprise, military act, etc.
+%	\item Sadness: \textit{The condition or quality of being sad (Of a person, or his or her feelings, disposition, etc.: feeling sorrow; sorrowful, mournful, heavy-hearted.).} Obsolete senses precede it.
+%	\item Disgust: \textit{Strong repugnance, aversion, or repulsion excited by that which is loathsome or offensive, as a foul smell, disagreeable person or action, disappointed ambition, etc.; profound instinctive dislike or dissatisfaction.}
+%	\item Anger: \textit{The active feeling provoked against the agent; passion, rage; wrath, ire, hot displeasure.}
+%	\item Anticipation: \textit{The action of looking forward to, expectation.}
+%\end{itemize}
+%
+%\subsection{Merriam-Webster's}
+%
+%anger: enrage, incense, inflame (also enflame), infuriate, ire, madden, outrage, rankle, rile, roil, steam up, tick off
+%fear: bother, fear, fret, fuss, stew, stress, sweat, trouble
+%joy (rejoice): crow, delight, exuberate, glory, jubilate, joy, kvell, rejoice, triumph
+%sadness (sadden): bum (out), burden, dash, deject, get down, oppress, sadden, weigh down
+%anticipation (anticipate): anticipate, await, hope (for), watch (for)
+%disgust: gross out, nauseate, put off, repel, repulse, revolt, sicken, turn off
+%
+%\subsection{Roget's Thesaurus}
+%
+%anticipate: expect, predict, assume, await, count on, forecast, foresee, prepare for, see
+%anger: aggravate, annoy, antagonize, arouse, displease, embitter, enrage, exacerbate, exasperate, excite, incense, inflame, infuriate, irritate, offend, outrage, provoke, rankle, rile
+%fear: feel alarmed, be scared off, anticipate, avoid, dread, expect, foresee, shun, suspect, worry
+%joy: exult, revel, make happy, delight, amuse, attract, charm, cheer, enchant, enrapture, entertain, fascinate, gratify, please, rejoice, satisfy, thrill, wow
+%sadness (sadden): discourage, dishearten, dispirit, grieve
+%disgust: bother, disenchant, displease, disturb, insult, irk, nauseate, offend, outrage, revolt, shock, sicken, turn off, upset
+%surprise: astonish, amaze, astound, awe, bewilder, confound, confuse, dazzle, disconcert, dismay, dumbfound, flabbergast, overwhelm, perplex, rattle, shock, startle, stun, unsettle
+%trust: count on, depend on, look to
+%
+%\subsection{FrameNet}
+%
+%fear
+%lexical units that create this frame
+%afraid.a, apprehension.n, dread.n, fear.n, freaked.a, frightened.a, $live_in_fear$.v, nervous.a, scared.a, terrified.a, terror.n
+%
+%trust
+%lexical units: believe.v, credence.n, credulous.a, faith.n, gullible.a, reliability.n, reliable.a, trust.n, trust.v, trustworthy.a
+%
+%$cause_emotion$
+%lexical units: affront.n, affront.v, $call_names$.v, concern.v, insult.n, insult.v, offend.v, offense.n, offensive.a
+
+\section{Majority patterns}
+
+\begin{longtable}{l|l}
+{\bf Emotion}   & {\bf Pattern}         \\\hline\hline
+anger           & harass                \\
+anger           & offend                \\
+anger           & irk                   \\
+anger           & frustrate             \\
+anger\_1        & be irate that         \\
+anger\_1        & outrage               \\
+anger\_1        & inflame               \\
+anger\_1        & infuriate             \\
+anger\_1        & be incense that       \\
+anger\_1        & enrage                \\
+anger\_2        & scorn                 \\
+anger\_2        & torment               \\
+anger\_2        & be angry at           \\
+anger\_2        & vex                   \\
+anger\_2        & be angry that         \\
+anger\_2        & be angry with         \\
+anger\_2        & afflict               \\
+anger\_2        & insult                \\
+anger\_2        & aggravate             \\
+anger\_2        & be angry about        \\
+anger\_2        & fret about            \\
+anger\_2        & rankle                \\
+anger\_2        & provoke               \\
+anger\_3        & bother                \\
+anger\_3        & irritate              \\
+anger\_3        & grate                 \\
+anger\_3        & annoy                 \\
+anger\_3        & sting                 \\
+anger\_3        & disturb               \\
+anticipation    & yearn for             \\
+anticipation    & predict that          \\
+anticipation    & ache for              \\
+anticipation    & be intent on          \\
+anticipation    & intrigue              \\
+anticipation\_2 & aspire                \\
+anticipation\_2 & be hopeful that       \\
+anticipation\_2 & expect                \\
+anticipation\_2 & anticipate            \\
+anticipation\_2 & covet                 \\
+anticipation\_2 & aspire to             \\
+anticipation\_2 & crave                 \\
+anticipation\_2 & foresee               \\
+anticipation\_2 & hunger for            \\
+anticipation\_2 & predict               \\
+anticipation\_2 & prepare for           \\
+anticipation\_2 & long for              \\
+anticipation\_2 & await                 \\
+anticipation\_2 & forecast that         \\
+anticipation\_2 & hope for              \\
+anticipation\_2 & expect that           \\
+anticipation\_2 & be eager for          \\
+anticipation\_2 & look forward to       \\
+anticipation\_2 & forecast              \\
+anticipation\_3 & be curious about      \\
+disgust         & horrify               \\
+disgust         & shun                  \\
+disgust\_1      & abhor                 \\
+disgust\_1      & loathe                \\
+disgust\_1      & despise               \\
+disgust\_1      & hate                  \\
+disgust\_1      & deplore               \\
+disgust\_1      & disdain               \\
+disgust\_2      & dislike               \\
+disgust\_2      & shame                 \\
+disgust\_2      & be ashamed of         \\
+disgust\_2      & alienate              \\
+disgust\_2      & repel                 \\
+disgust\_2      & disgust               \\
+fear            & be afraid of          \\
+fear            & unnerve               \\
+fear            & rattle                \\
+fear            & dread                 \\
+fear\_1         & terrify               \\
+fear\_1         & be terrify that       \\
+fear\_2         & be frightened that    \\
+fear\_2         & be scared that        \\
+fear\_2         & fear that             \\
+fear\_2         & frighten              \\
+fear\_2         & fear                  \\
+fear\_2         & intimidate            \\
+fear\_2         & spook                 \\
+fear\_2         & be scared of          \\
+fear\_2         & scare                 \\
+fear\_2         & be afraid that        \\
+fear\_3         & concern               \\
+fear\_3         & be anxious that       \\
+fear\_3         & be anxious about      \\
+fear\_3         & be apprehensive about \\
+fear\_3         & worry                 \\
+fear\_3         & be nervous about      \\
+joy             & be enthusiastic about \\
+joy             & comfort               \\
+joy             & fulfill               \\
+joy             & desire                \\
+joy\_1          & thrill                \\
+joy\_1          & be elate that         \\
+joy\_1          & rejoice               \\
+joy\_1          & be ecstatic that      \\
+joy\_1          & be thrill that        \\
+joy\_1          & relish                \\
+joy\_2          & entertain             \\
+joy\_2          & excite                \\
+joy\_2          & enjoy that            \\
+joy\_2          & impress               \\
+joy\_2          & satisfy               \\
+joy\_2          & delight               \\
+joy\_2          & be mad about          \\
+joy\_2          & take pleasure in      \\
+joy\_2          & enjoy                 \\
+joy\_2          & arouse                \\
+joy\_2          & be happy about        \\
+joy\_2          & please                \\
+joy\_2          & be lucky that         \\
+joy\_2          & cheer                 \\
+joy\_2          & soothe                \\
+joy\_2          & captivate             \\
+joy\_2          & be proud of           \\
+joy\_2          & be satisfy that       \\
+joy\_2          & amuse                 \\
+joy\_2          & savor                 \\
+joy\_3          & calm                  \\
+sadness         & devastate             \\
+sadness         & agonize over          \\
+sadness         & regret that           \\
+sadness         & pine for              \\
+sadness         & worry about           \\
+sadness         & be sad that           \\
+sadness         & depress               \\
+sadness         & regret                \\
+sadness\_1      & mourn that            \\
+sadness\_1      & grieve that           \\
+sadness\_1      & mourn                 \\
+sadness\_2      & be unhappy that       \\
+sadness\_2      & upset                 \\
+sadness\_2      & displease             \\
+sadness\_2      & be disappoint that    \\
+sadness\_2      & be unhappy about      \\
+sadness\_2      & be sadden that        \\
+sadness\_2      & disappoint            \\
+surprise        & boggle                \\
+surprise        & baffle                \\
+surprise        & puzzle                \\
+surprise\_1     & be stun that          \\
+surprise\_1     & confound              \\
+surprise\_1     & stagger               \\
+surprise\_1     & stun                  \\
+surprise\_1     & amaze                 \\
+surprise\_1     & be bewilder that      \\
+surprise\_1     & be amaze that         \\
+surprise\_1     & wow                   \\
+surprise\_1     & shock                 \\
+surprise\_2     & surprise              \\
+surprise\_2     & startle               \\
+surprise\_2     & be flabbergast that   \\
+surprise\_2     & confuse               \\
+trust           & charm                 \\
+trust           & be reassure that      \\
+trust\_1        & rely on               \\
+trust\_2        & trust                 \\
+trust\_2        & take comfort in       \\
+trust\_2        & count on              \\
+trust\_2        & trust that            \\
+trust\_2        & reassure             \\
+\caption{Patterns and their emotion/degree assigned by the majority}
+\label{tab:majority_emotion_list}
+\end{longtable}
+
+\begin{table}[]
+\centering
+\begin{tabular}{l|r}
+{\bf Bigram}               & {\bf PMI score} \\\hline
+government reprisal        & 1.91            \\
+attack by:ethnic\_albanian & 1.90            \\
+possible reprisal          & 1.88            \\
+political backlash         & 1.87            \\
+long-term effect           & 1.87            \\
+reprisal attack            & 1.87            \\
+reprisal for:genocide      & 1.85            \\
+unintended consequence     & 1.85            \\
+new crackdown              & 1.84            \\
+government retribution     & 1.83           
+\end{tabular}
+\caption{Top 10 NP cause bigrams with highest fear PMI score}
+\label{tab:pmi-fear-np-cause-10}
+\end{table}
 
 %----------------------------------------------------------------------------------------
 

@@ -1,0 +1,12 @@
+\beamer@slide {fig:plutchik}{5}
+\beamer@slide {tab:gigaword}{7}
+\beamer@slide {ex:pattern_templates}{8}
+\beamer@slide {tab:patterns-from-sources}{9}
+\beamer@slide {tab:annotation}{10}
+\beamer@slide {tab:pattern_emotion_distribution}{11}
+\beamer@slide {tab:extraction-emotion-freq}{14}
+\beamer@slide {tab:patterns-np-vs-s}{15}
+\beamer@slide {tab:chi-pmi sadness}{16}
+\beamer@slide {fig:pmi-bigram-np-cause-emotion-overlap-50}{17}
+\beamer@slide {fig:pmi-np-cause-nrc-overlap}{18}
+\beamer@slide {tab:bigrams-precision-against-annotation}{19}

@@ -6,22 +6,42 @@
 
 %----------------------------------------------------------------------------------------
 
-BA thesis - outline
+Categorizing sentences according to their sentiment (or opinion) is an important first step for many downstream applications for natural language processing (NLP) such as dialogue systems \cite{dialogue_systems}, text-to-speech systems \cite{text-to-speech}, media response analyses \cite{media_response_analysis}, and a host of others. Sentiment analysis is usually restricted to a polar classification: positive -- negative with a non-sentiment-bearing neutral class. This binary classification falls short in light of the variety and multifacetedness of human emotions. Emotions are innate to humans, so much so that the inability to show emotions is considered a clear indicator of a societal outlier. They transcend cultures and facial expressions for basic emotions are identical even between cultures with no previous contact \cite{facial_expressions}.
+Recent work in sentiment analysis also includes the subtask of emotion analysis or emotion detection, which focuses on identifying emotions in text typically using a set of emotion categories suggested by psycholinguistic research (e.g. the 8 classes -- joy, trust, fear, surprise, sadness, disgust, anger, anticipation -- of Plutchik's wheel of emotions \cite{plutchik}) (cf. \cite{nrc}). Identifying emotions in text can be beneficial in e.g., facilitating interaction with AI agents, helping companies understand people's feelings towards their products, assisting governments in recognizing growing anger or fear towards an event, pre-empting mass hysterias, or helping media companies understand people's emotional reaction towards controversial issues.
 
-Inspiration from Emotion holder paper
-In psychology and common use, emotion is an aspect of a person's mental state of
-being, normally based in or tied to the person's internal (physical) and external (so-
-cial) sensory feeling. The determination of emotion expressed in the text with
-respect to reader or writer is itself a challenging issue. Emotion holder extraction
-research is important for discriminating between emotions that are viewed from dif-
-ferent perspectives. A wide range of Natural Language Processing (NLP) tasks
-such as tracking users' emotion about products or events or about politics as ex-
-pressed in online forums or news, to customer relationship management are using
-emotional information. So, the determination of emotion holder from the text invokes
-a challenge and helps us track and distinguish user's emotion separately.
-In linguistics, a grammatical agent or holder is the participant of a situation that carries out the action and also, agent or holder is the name of the thematic role.
+The main contributions of this thesis to the branch of emotion detection are to:
+\begin{enumerate}[noitemsep]
+	\item Design and evaluate patterns that are frequent and clearly associated with an emotion. These patterns can be used as-is to extract tuples of emotion holders and causes from the web as well as from special domain corpora.
+	\item Acquire more than 1,700,000 propositions from the Annotated Gigaword news corpus \cite{annotated_gigaword} using these patterns, filter, and generalize them by employing co-reference resolution and named-entity recognition (NER). These propositions contain information about the emotion, the emotion holder, and the cause of said emotion.
+	\item Store these propositions in an emotion proposition store, which we make available to the research community. Two sample entries are depicted in \ref{fig:propositions}.
+	\item Analyse and evaluate them to gain further understanding about emotions in news text as well as the capabilities of the resource. Distributional analysis allows us to determine ambiguous concepts as well as single-word and compound expressions that are highly associated with an emotion.
+\end{enumerate}
 
+\begin{figure}
+\begin{lstlisting}
+NYT_ENG_19960601.0010/1	trust	rely on	Japan/LOCATION	economic clout					[its/PRP$, economic/JJ, clout/NN]
+NYT_ENG_19960601.0010/9	anticipation	expect	Japanese				win	right		[to/TO, win/VB, the/DT, right/NN, to/TO, host/VB, the/DT, tournament/NN]
+\end{lstlisting}
+\caption{Proposition examples}\label{fig:propositions}
+\end{figure}
 
+Past research has shown that both the automatic categorization of emotion (cf. \cite{emotion_verbs}) as well as the identification of the holder and the cause of an emotion is difficult (cf. \cite{emotion_holder}). Additionally, linguistic triggers of emotions are diverse and can belong to different word classes: nouns like \textit{disaster}, \textit{prize}, or \textit{crash}; adjectives like \textit{mind-numbing}, \textit{yucky}, or \textit{moist}; and verbs like \textit{cheat}, \textit{praise}, or \textit{betray} are all equally able to evoke certain emotions. These issues render a pattern-based approach attractive that uses clearly categorized linguistic cues that also clearly indicate the emotion holder and cause to automatically label emotion-triggering concepts and events. We select frequent and clearly emotion-indicating predicators as patterns such as \textit{X be angry about NP / that S}, \textit{X fears that S}, \textit{X was surprised that S}, \textit{X (absolutely) hates NP / S}, etc.
+
+The pattern-based approach we have taken can also be applied to automatically extract a general-domain compositional emotion lexicon from the web (using a web mining approach as in \cite{mutual_action}) as well as be extended to other special domain corpora, to learn about what the concepts and entities people love, hate, fear, or wish for, and where their emotions differ. In comparisons to other approaches like manual curation or crowd-funding \cite{nrc}, it requires only a minimum amount of up-front time investment and no money, as our compiled patterns can be used as-is.
+
+We focused on news for this thesis, as many sentiment applications concentrate on this domain, with real-world use cases such as alerting traders and predicting the stock market \cite{predict_stock_market} and as researchers have shown that domain-specific knowledge generally outperforms general-domain knowledge \cite{implicit_emotions}. In consequence, we use the Annotated Gigaword \cite{annotated_gigaword} corpus, which adds off-the-shelf annotations to the biggest static English news corpus in existence.
+
+Using this pattern-based approach, we are able to derive from a sentence such as \textit{He was angry because prices had gone up} that \textit{prices had gone up} is an event that triggers an emotion of anger in the subject of \textit{be angry}. However, given the cause of an emotion, it is not evident which part of it is most relevant part for its association with the emotion. Emotion (just as sentiment) is a compositional phenomenon: Neither \textit{prize} nor \textit{go up} are by themselves emotion-triggering words, but compositional expressions such as \textit{the prize went up} or \textit{rising prizes} are prone to trigger emotions. We derive this from the distributional properties of the harvested propositions in case the individual parts often appear jointly with the emotion, i.e. yield a high association score.
+
+While emotion lexica, i.e. lexical resources containing sentiment-labeled expressions, have been of frequent use in sentiment analysis, resources for emotion detection are still rare. Our emotion proposition store will help to alleviate this deficit: while the lists of high-ranking emotion-associated words obtained through distributional analysis can be used in the same vein as sentiment lexica, the store's tuples of contextualized emotion holders and causes can be used in other tasks, e.g. for inference. For instance, to make sense of a sentence like \textit{(I think) people are happy because Chavez has fallen.} \cite{benfactive_malefactive} requires knowledge that \texttt{$E:$ \texttt{fall}$(X)$} is an event that is bad for $X$, while \texttt{happy\_about(Y, E)} states that $Y$ is happy about event $E$. Through inference, we are able to derive that $Y$ has a negative attitude toward $X$. Drawing such inferences thus presupposes knowledge contained in our emotion proposition store about positive/negative emotion expressions ranging over propositions and positively/negatively perceived events.
+
+The structure of this thesis is as follows: In chapter \ref{ch:foundations} we will examine past research relevant for our approach, including methods of emotion detection, psychologically-grounded typologies of emotion classification, and sentiment lexica. This serves the dual purpose of introducing key concepts of emotion detection and sentiment analysis as well as touching on some of the tools and resources to be applied in our research.
+
+In chapter \ref{ch:patterns}, we will introduce premises that have shaped the compilation of the emotion-bearing patterns. We will give an overview of their sources and present the chosen corpus in more detail. We will detail the extraction steps as well as the chosen representation format, discuss the evaluation of the patterns, and the final list of patterns that we used for extraction.
+
+Subsequently, in chapter \ref{ch:analysis}, we will analyse and evaluate the results of the extractions. We will compare two association metrics, the salience of single and compound emotion-associated expressions, ambiguous concepts, as well as nominal and causal causes. We evaluate the highest-ranking emotive expressions against an emotion lexicon as well as against human-annotated data.
+
+Finally, we will summarize our findings and offer a conclusion.
 
 %This template for \LaTeX\ has two goals:
 %\begin{enumerate}
