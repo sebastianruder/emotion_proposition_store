@@ -1,0 +1,470 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="de">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>/* ===========================================================<a name="line.1"></a>
+<span class="sourceLineNo">002</span> * JFreeChart : a free chart library for the Java(tm) platform<a name="line.2"></a>
+<span class="sourceLineNo">003</span> * ===========================================================<a name="line.3"></a>
+<span class="sourceLineNo">004</span> *<a name="line.4"></a>
+<span class="sourceLineNo">005</span> * (C) Copyright 2000-2014, by Object Refinery Limited and Contributors.<a name="line.5"></a>
+<span class="sourceLineNo">006</span> *<a name="line.6"></a>
+<span class="sourceLineNo">007</span> * Project Info:  http://www.jfree.org/jfreechart/index.html<a name="line.7"></a>
+<span class="sourceLineNo">008</span> *<a name="line.8"></a>
+<span class="sourceLineNo">009</span> * This library is free software; you can redistribute it and/or modify it<a name="line.9"></a>
+<span class="sourceLineNo">010</span> * under the terms of the GNU Lesser General Public License as published by<a name="line.10"></a>
+<span class="sourceLineNo">011</span> * the Free Software Foundation; either version 2.1 of the License, or<a name="line.11"></a>
+<span class="sourceLineNo">012</span> * (at your option) any later version.<a name="line.12"></a>
+<span class="sourceLineNo">013</span> *<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * This library is distributed in the hope that it will be useful, but<a name="line.14"></a>
+<span class="sourceLineNo">015</span> * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY<a name="line.15"></a>
+<span class="sourceLineNo">016</span> * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public<a name="line.16"></a>
+<span class="sourceLineNo">017</span> * License for more details.<a name="line.17"></a>
+<span class="sourceLineNo">018</span> *<a name="line.18"></a>
+<span class="sourceLineNo">019</span> * You should have received a copy of the GNU Lesser General Public<a name="line.19"></a>
+<span class="sourceLineNo">020</span> * License along with this library; if not, write to the Free Software<a name="line.20"></a>
+<span class="sourceLineNo">021</span> * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,<a name="line.21"></a>
+<span class="sourceLineNo">022</span> * USA.<a name="line.22"></a>
+<span class="sourceLineNo">023</span> *<a name="line.23"></a>
+<span class="sourceLineNo">024</span> * [Oracle and Java are registered trademarks of Oracle and/or its affiliates. <a name="line.24"></a>
+<span class="sourceLineNo">025</span> * Other names may be trademarks of their respective owners.]<a name="line.25"></a>
+<span class="sourceLineNo">026</span> *<a name="line.26"></a>
+<span class="sourceLineNo">027</span> * ------------------<a name="line.27"></a>
+<span class="sourceLineNo">028</span> * XYDotRenderer.java<a name="line.28"></a>
+<span class="sourceLineNo">029</span> * ------------------<a name="line.29"></a>
+<span class="sourceLineNo">030</span> * (C) Copyright 2002-2014, by Object Refinery Limited.<a name="line.30"></a>
+<span class="sourceLineNo">031</span> *<a name="line.31"></a>
+<span class="sourceLineNo">032</span> * Original Author:  David Gilbert (for Object Refinery Limited);<a name="line.32"></a>
+<span class="sourceLineNo">033</span> * Contributor(s):   Christian W. Zuckschwerdt;<a name="line.33"></a>
+<span class="sourceLineNo">034</span> *<a name="line.34"></a>
+<span class="sourceLineNo">035</span> * Changes (from 29-Oct-2002)<a name="line.35"></a>
+<span class="sourceLineNo">036</span> * --------------------------<a name="line.36"></a>
+<span class="sourceLineNo">037</span> * 29-Oct-2002 : Added standard header (DG);<a name="line.37"></a>
+<span class="sourceLineNo">038</span> * 25-Mar-2003 : Implemented Serializable (DG);<a name="line.38"></a>
+<span class="sourceLineNo">039</span> * 01-May-2003 : Modified drawItem() method signature (DG);<a name="line.39"></a>
+<span class="sourceLineNo">040</span> * 30-Jul-2003 : Modified entity constructor (CZ);<a name="line.40"></a>
+<span class="sourceLineNo">041</span> * 20-Aug-2003 : Implemented Cloneable and PublicCloneable (DG);<a name="line.41"></a>
+<span class="sourceLineNo">042</span> * 16-Sep-2003 : Changed ChartRenderingInfo --&gt; PlotRenderingInfo (DG);<a name="line.42"></a>
+<span class="sourceLineNo">043</span> * 25-Feb-2004 : Replaced CrosshairInfo with CrosshairState (DG);<a name="line.43"></a>
+<span class="sourceLineNo">044</span> * 19-Jan-2005 : Now uses only primitives from dataset (DG);<a name="line.44"></a>
+<span class="sourceLineNo">045</span> * ------------- JFREECHART 1.0.x ---------------------------------------------<a name="line.45"></a>
+<span class="sourceLineNo">046</span> * 10-Jul-2006 : Added dotWidth and dotHeight attributes (DG);<a name="line.46"></a>
+<span class="sourceLineNo">047</span> * 06-Feb-2007 : Fixed bug 1086307, crosshairs with multiple axes (DG);<a name="line.47"></a>
+<span class="sourceLineNo">048</span> * 09-Nov-2007 : Added legend shape attribute, plus override for<a name="line.48"></a>
+<span class="sourceLineNo">049</span> *               getLegendItem() (DG);<a name="line.49"></a>
+<span class="sourceLineNo">050</span> * 17-Jun-2008 : Apply legend shape, font and paint attributes (DG);<a name="line.50"></a>
+<span class="sourceLineNo">051</span> * 03-Jul-2013 : Use ParamChecks (DG);<a name="line.51"></a>
+<span class="sourceLineNo">052</span> *<a name="line.52"></a>
+<span class="sourceLineNo">053</span> */<a name="line.53"></a>
+<span class="sourceLineNo">054</span><a name="line.54"></a>
+<span class="sourceLineNo">055</span>package org.jfree.chart.renderer.xy;<a name="line.55"></a>
+<span class="sourceLineNo">056</span><a name="line.56"></a>
+<span class="sourceLineNo">057</span>import java.awt.Graphics2D;<a name="line.57"></a>
+<span class="sourceLineNo">058</span>import java.awt.Paint;<a name="line.58"></a>
+<span class="sourceLineNo">059</span>import java.awt.Shape;<a name="line.59"></a>
+<span class="sourceLineNo">060</span>import java.awt.geom.Rectangle2D;<a name="line.60"></a>
+<span class="sourceLineNo">061</span>import java.io.IOException;<a name="line.61"></a>
+<span class="sourceLineNo">062</span>import java.io.ObjectInputStream;<a name="line.62"></a>
+<span class="sourceLineNo">063</span>import java.io.ObjectOutputStream;<a name="line.63"></a>
+<span class="sourceLineNo">064</span><a name="line.64"></a>
+<span class="sourceLineNo">065</span>import org.jfree.chart.LegendItem;<a name="line.65"></a>
+<span class="sourceLineNo">066</span>import org.jfree.chart.axis.ValueAxis;<a name="line.66"></a>
+<span class="sourceLineNo">067</span>import org.jfree.chart.event.RendererChangeEvent;<a name="line.67"></a>
+<span class="sourceLineNo">068</span>import org.jfree.chart.plot.CrosshairState;<a name="line.68"></a>
+<span class="sourceLineNo">069</span>import org.jfree.chart.plot.PlotOrientation;<a name="line.69"></a>
+<span class="sourceLineNo">070</span>import org.jfree.chart.plot.PlotRenderingInfo;<a name="line.70"></a>
+<span class="sourceLineNo">071</span>import org.jfree.chart.plot.XYPlot;<a name="line.71"></a>
+<span class="sourceLineNo">072</span>import org.jfree.chart.util.ParamChecks;<a name="line.72"></a>
+<span class="sourceLineNo">073</span>import org.jfree.data.xy.XYDataset;<a name="line.73"></a>
+<span class="sourceLineNo">074</span>import org.jfree.io.SerialUtilities;<a name="line.74"></a>
+<span class="sourceLineNo">075</span>import org.jfree.ui.RectangleEdge;<a name="line.75"></a>
+<span class="sourceLineNo">076</span>import org.jfree.util.PublicCloneable;<a name="line.76"></a>
+<span class="sourceLineNo">077</span>import org.jfree.util.ShapeUtilities;<a name="line.77"></a>
+<span class="sourceLineNo">078</span><a name="line.78"></a>
+<span class="sourceLineNo">079</span>/**<a name="line.79"></a>
+<span class="sourceLineNo">080</span> * A renderer that draws a small dot at each data point for an {@link XYPlot}.<a name="line.80"></a>
+<span class="sourceLineNo">081</span> * The example shown here is generated by the<a name="line.81"></a>
+<span class="sourceLineNo">082</span> * &lt;code&gt;ScatterPlotDemo4.java&lt;/code&gt; program included in the JFreeChart<a name="line.82"></a>
+<span class="sourceLineNo">083</span> * demo collection:<a name="line.83"></a>
+<span class="sourceLineNo">084</span> * &lt;br&gt;&lt;br&gt;<a name="line.84"></a>
+<span class="sourceLineNo">085</span> * &lt;img src="../../../../../images/XYDotRendererSample.png"<a name="line.85"></a>
+<span class="sourceLineNo">086</span> * alt="XYDotRendererSample.png"&gt;<a name="line.86"></a>
+<span class="sourceLineNo">087</span> */<a name="line.87"></a>
+<span class="sourceLineNo">088</span>public class XYDotRenderer extends AbstractXYItemRenderer<a name="line.88"></a>
+<span class="sourceLineNo">089</span>        implements XYItemRenderer, PublicCloneable {<a name="line.89"></a>
+<span class="sourceLineNo">090</span><a name="line.90"></a>
+<span class="sourceLineNo">091</span>    /** For serialization. */<a name="line.91"></a>
+<span class="sourceLineNo">092</span>    private static final long serialVersionUID = -2764344339073566425L;<a name="line.92"></a>
+<span class="sourceLineNo">093</span><a name="line.93"></a>
+<span class="sourceLineNo">094</span>    /** The dot width. */<a name="line.94"></a>
+<span class="sourceLineNo">095</span>    private int dotWidth;<a name="line.95"></a>
+<span class="sourceLineNo">096</span><a name="line.96"></a>
+<span class="sourceLineNo">097</span>    /** The dot height. */<a name="line.97"></a>
+<span class="sourceLineNo">098</span>    private int dotHeight;<a name="line.98"></a>
+<span class="sourceLineNo">099</span><a name="line.99"></a>
+<span class="sourceLineNo">100</span>    /**<a name="line.100"></a>
+<span class="sourceLineNo">101</span>     * The shape that is used to represent an item in the legend.<a name="line.101"></a>
+<span class="sourceLineNo">102</span>     *<a name="line.102"></a>
+<span class="sourceLineNo">103</span>     * @since 1.0.7<a name="line.103"></a>
+<span class="sourceLineNo">104</span>     */<a name="line.104"></a>
+<span class="sourceLineNo">105</span>    private transient Shape legendShape;<a name="line.105"></a>
+<span class="sourceLineNo">106</span><a name="line.106"></a>
+<span class="sourceLineNo">107</span>    /**<a name="line.107"></a>
+<span class="sourceLineNo">108</span>     * Constructs a new renderer.<a name="line.108"></a>
+<span class="sourceLineNo">109</span>     */<a name="line.109"></a>
+<span class="sourceLineNo">110</span>    public XYDotRenderer() {<a name="line.110"></a>
+<span class="sourceLineNo">111</span>        super();<a name="line.111"></a>
+<span class="sourceLineNo">112</span>        this.dotWidth = 1;<a name="line.112"></a>
+<span class="sourceLineNo">113</span>        this.dotHeight = 1;<a name="line.113"></a>
+<span class="sourceLineNo">114</span>        this.legendShape = new Rectangle2D.Double(-3.0, -3.0, 6.0, 6.0);<a name="line.114"></a>
+<span class="sourceLineNo">115</span>    }<a name="line.115"></a>
+<span class="sourceLineNo">116</span><a name="line.116"></a>
+<span class="sourceLineNo">117</span>    /**<a name="line.117"></a>
+<span class="sourceLineNo">118</span>     * Returns the dot width (the default value is 1).<a name="line.118"></a>
+<span class="sourceLineNo">119</span>     *<a name="line.119"></a>
+<span class="sourceLineNo">120</span>     * @return The dot width.<a name="line.120"></a>
+<span class="sourceLineNo">121</span>     *<a name="line.121"></a>
+<span class="sourceLineNo">122</span>     * @since 1.0.2<a name="line.122"></a>
+<span class="sourceLineNo">123</span>     * @see #setDotWidth(int)<a name="line.123"></a>
+<span class="sourceLineNo">124</span>     */<a name="line.124"></a>
+<span class="sourceLineNo">125</span>    public int getDotWidth() {<a name="line.125"></a>
+<span class="sourceLineNo">126</span>        return this.dotWidth;<a name="line.126"></a>
+<span class="sourceLineNo">127</span>    }<a name="line.127"></a>
+<span class="sourceLineNo">128</span><a name="line.128"></a>
+<span class="sourceLineNo">129</span>    /**<a name="line.129"></a>
+<span class="sourceLineNo">130</span>     * Sets the dot width and sends a {@link RendererChangeEvent} to all<a name="line.130"></a>
+<span class="sourceLineNo">131</span>     * registered listeners.<a name="line.131"></a>
+<span class="sourceLineNo">132</span>     *<a name="line.132"></a>
+<span class="sourceLineNo">133</span>     * @param w  the new width (must be greater than zero).<a name="line.133"></a>
+<span class="sourceLineNo">134</span>     *<a name="line.134"></a>
+<span class="sourceLineNo">135</span>     * @throws IllegalArgumentException if &lt;code&gt;w&lt;/code&gt; is less than one.<a name="line.135"></a>
+<span class="sourceLineNo">136</span>     *<a name="line.136"></a>
+<span class="sourceLineNo">137</span>     * @since 1.0.2<a name="line.137"></a>
+<span class="sourceLineNo">138</span>     * @see #getDotWidth()<a name="line.138"></a>
+<span class="sourceLineNo">139</span>     */<a name="line.139"></a>
+<span class="sourceLineNo">140</span>    public void setDotWidth(int w) {<a name="line.140"></a>
+<span class="sourceLineNo">141</span>        if (w &lt; 1) {<a name="line.141"></a>
+<span class="sourceLineNo">142</span>            throw new IllegalArgumentException("Requires w &gt; 0.");<a name="line.142"></a>
+<span class="sourceLineNo">143</span>        }<a name="line.143"></a>
+<span class="sourceLineNo">144</span>        this.dotWidth = w;<a name="line.144"></a>
+<span class="sourceLineNo">145</span>        fireChangeEvent();<a name="line.145"></a>
+<span class="sourceLineNo">146</span>    }<a name="line.146"></a>
+<span class="sourceLineNo">147</span><a name="line.147"></a>
+<span class="sourceLineNo">148</span>    /**<a name="line.148"></a>
+<span class="sourceLineNo">149</span>     * Returns the dot height (the default value is 1).<a name="line.149"></a>
+<span class="sourceLineNo">150</span>     *<a name="line.150"></a>
+<span class="sourceLineNo">151</span>     * @return The dot height.<a name="line.151"></a>
+<span class="sourceLineNo">152</span>     *<a name="line.152"></a>
+<span class="sourceLineNo">153</span>     * @since 1.0.2<a name="line.153"></a>
+<span class="sourceLineNo">154</span>     * @see #setDotHeight(int)<a name="line.154"></a>
+<span class="sourceLineNo">155</span>     */<a name="line.155"></a>
+<span class="sourceLineNo">156</span>    public int getDotHeight() {<a name="line.156"></a>
+<span class="sourceLineNo">157</span>        return this.dotHeight;<a name="line.157"></a>
+<span class="sourceLineNo">158</span>    }<a name="line.158"></a>
+<span class="sourceLineNo">159</span><a name="line.159"></a>
+<span class="sourceLineNo">160</span>    /**<a name="line.160"></a>
+<span class="sourceLineNo">161</span>     * Sets the dot height and sends a {@link RendererChangeEvent} to all<a name="line.161"></a>
+<span class="sourceLineNo">162</span>     * registered listeners.<a name="line.162"></a>
+<span class="sourceLineNo">163</span>     *<a name="line.163"></a>
+<span class="sourceLineNo">164</span>     * @param h  the new height (must be greater than zero).<a name="line.164"></a>
+<span class="sourceLineNo">165</span>     *<a name="line.165"></a>
+<span class="sourceLineNo">166</span>     * @throws IllegalArgumentException if &lt;code&gt;h&lt;/code&gt; is less than one.<a name="line.166"></a>
+<span class="sourceLineNo">167</span>     *<a name="line.167"></a>
+<span class="sourceLineNo">168</span>     * @since 1.0.2<a name="line.168"></a>
+<span class="sourceLineNo">169</span>     * @see #getDotHeight()<a name="line.169"></a>
+<span class="sourceLineNo">170</span>     */<a name="line.170"></a>
+<span class="sourceLineNo">171</span>    public void setDotHeight(int h) {<a name="line.171"></a>
+<span class="sourceLineNo">172</span>        if (h &lt; 1) {<a name="line.172"></a>
+<span class="sourceLineNo">173</span>            throw new IllegalArgumentException("Requires h &gt; 0.");<a name="line.173"></a>
+<span class="sourceLineNo">174</span>        }<a name="line.174"></a>
+<span class="sourceLineNo">175</span>        this.dotHeight = h;<a name="line.175"></a>
+<span class="sourceLineNo">176</span>        fireChangeEvent();<a name="line.176"></a>
+<span class="sourceLineNo">177</span>    }<a name="line.177"></a>
+<span class="sourceLineNo">178</span><a name="line.178"></a>
+<span class="sourceLineNo">179</span>    /**<a name="line.179"></a>
+<span class="sourceLineNo">180</span>     * Returns the shape used to represent an item in the legend.<a name="line.180"></a>
+<span class="sourceLineNo">181</span>     *<a name="line.181"></a>
+<span class="sourceLineNo">182</span>     * @return The legend shape (never &lt;code&gt;null&lt;/code&gt;).<a name="line.182"></a>
+<span class="sourceLineNo">183</span>     *<a name="line.183"></a>
+<span class="sourceLineNo">184</span>     * @see #setLegendShape(Shape)<a name="line.184"></a>
+<span class="sourceLineNo">185</span>     *<a name="line.185"></a>
+<span class="sourceLineNo">186</span>     * @since 1.0.7<a name="line.186"></a>
+<span class="sourceLineNo">187</span>     */<a name="line.187"></a>
+<span class="sourceLineNo">188</span>    public Shape getLegendShape() {<a name="line.188"></a>
+<span class="sourceLineNo">189</span>        return this.legendShape;<a name="line.189"></a>
+<span class="sourceLineNo">190</span>    }<a name="line.190"></a>
+<span class="sourceLineNo">191</span><a name="line.191"></a>
+<span class="sourceLineNo">192</span>    /**<a name="line.192"></a>
+<span class="sourceLineNo">193</span>     * Sets the shape used as a line in each legend item and sends a<a name="line.193"></a>
+<span class="sourceLineNo">194</span>     * {@link RendererChangeEvent} to all registered listeners.<a name="line.194"></a>
+<span class="sourceLineNo">195</span>     *<a name="line.195"></a>
+<span class="sourceLineNo">196</span>     * @param shape  the shape (&lt;code&gt;null&lt;/code&gt; not permitted).<a name="line.196"></a>
+<span class="sourceLineNo">197</span>     *<a name="line.197"></a>
+<span class="sourceLineNo">198</span>     * @see #getLegendShape()<a name="line.198"></a>
+<span class="sourceLineNo">199</span>     *<a name="line.199"></a>
+<span class="sourceLineNo">200</span>     * @since 1.0.7<a name="line.200"></a>
+<span class="sourceLineNo">201</span>     */<a name="line.201"></a>
+<span class="sourceLineNo">202</span>    public void setLegendShape(Shape shape) {<a name="line.202"></a>
+<span class="sourceLineNo">203</span>        ParamChecks.nullNotPermitted(shape, "shape");<a name="line.203"></a>
+<span class="sourceLineNo">204</span>        this.legendShape = shape;<a name="line.204"></a>
+<span class="sourceLineNo">205</span>        fireChangeEvent();<a name="line.205"></a>
+<span class="sourceLineNo">206</span>    }<a name="line.206"></a>
+<span class="sourceLineNo">207</span><a name="line.207"></a>
+<span class="sourceLineNo">208</span>    /**<a name="line.208"></a>
+<span class="sourceLineNo">209</span>     * Draws the visual representation of a single data item.<a name="line.209"></a>
+<span class="sourceLineNo">210</span>     *<a name="line.210"></a>
+<span class="sourceLineNo">211</span>     * @param g2  the graphics device.<a name="line.211"></a>
+<span class="sourceLineNo">212</span>     * @param state  the renderer state.<a name="line.212"></a>
+<span class="sourceLineNo">213</span>     * @param dataArea  the area within which the data is being drawn.<a name="line.213"></a>
+<span class="sourceLineNo">214</span>     * @param info  collects information about the drawing.<a name="line.214"></a>
+<span class="sourceLineNo">215</span>     * @param plot  the plot (can be used to obtain standard color<a name="line.215"></a>
+<span class="sourceLineNo">216</span>     *              information etc).<a name="line.216"></a>
+<span class="sourceLineNo">217</span>     * @param domainAxis  the domain (horizontal) axis.<a name="line.217"></a>
+<span class="sourceLineNo">218</span>     * @param rangeAxis  the range (vertical) axis.<a name="line.218"></a>
+<span class="sourceLineNo">219</span>     * @param dataset  the dataset.<a name="line.219"></a>
+<span class="sourceLineNo">220</span>     * @param series  the series index (zero-based).<a name="line.220"></a>
+<span class="sourceLineNo">221</span>     * @param item  the item index (zero-based).<a name="line.221"></a>
+<span class="sourceLineNo">222</span>     * @param crosshairState  crosshair information for the plot<a name="line.222"></a>
+<span class="sourceLineNo">223</span>     *                        (&lt;code&gt;null&lt;/code&gt; permitted).<a name="line.223"></a>
+<span class="sourceLineNo">224</span>     * @param pass  the pass index.<a name="line.224"></a>
+<span class="sourceLineNo">225</span>     */<a name="line.225"></a>
+<span class="sourceLineNo">226</span>    @Override<a name="line.226"></a>
+<span class="sourceLineNo">227</span>    public void drawItem(Graphics2D g2, XYItemRendererState state,<a name="line.227"></a>
+<span class="sourceLineNo">228</span>            Rectangle2D dataArea, PlotRenderingInfo info, XYPlot plot,<a name="line.228"></a>
+<span class="sourceLineNo">229</span>            ValueAxis domainAxis, ValueAxis rangeAxis, XYDataset dataset,<a name="line.229"></a>
+<span class="sourceLineNo">230</span>            int series, int item, CrosshairState crosshairState, int pass) {<a name="line.230"></a>
+<span class="sourceLineNo">231</span><a name="line.231"></a>
+<span class="sourceLineNo">232</span>        // do nothing if item is not visible<a name="line.232"></a>
+<span class="sourceLineNo">233</span>        if (!getItemVisible(series, item)) {<a name="line.233"></a>
+<span class="sourceLineNo">234</span>            return;<a name="line.234"></a>
+<span class="sourceLineNo">235</span>        }<a name="line.235"></a>
+<span class="sourceLineNo">236</span><a name="line.236"></a>
+<span class="sourceLineNo">237</span>        // get the data point...<a name="line.237"></a>
+<span class="sourceLineNo">238</span>        double x = dataset.getXValue(series, item);<a name="line.238"></a>
+<span class="sourceLineNo">239</span>        double y = dataset.getYValue(series, item);<a name="line.239"></a>
+<span class="sourceLineNo">240</span>        double adjx = (this.dotWidth - 1) / 2.0;<a name="line.240"></a>
+<span class="sourceLineNo">241</span>        double adjy = (this.dotHeight - 1) / 2.0;<a name="line.241"></a>
+<span class="sourceLineNo">242</span>        if (!Double.isNaN(y)) {<a name="line.242"></a>
+<span class="sourceLineNo">243</span>            RectangleEdge xAxisLocation = plot.getDomainAxisEdge();<a name="line.243"></a>
+<span class="sourceLineNo">244</span>            RectangleEdge yAxisLocation = plot.getRangeAxisEdge();<a name="line.244"></a>
+<span class="sourceLineNo">245</span>            double transX = domainAxis.valueToJava2D(x, dataArea,<a name="line.245"></a>
+<span class="sourceLineNo">246</span>                    xAxisLocation) - adjx;<a name="line.246"></a>
+<span class="sourceLineNo">247</span>            double transY = rangeAxis.valueToJava2D(y, dataArea, yAxisLocation)<a name="line.247"></a>
+<span class="sourceLineNo">248</span>                    - adjy;<a name="line.248"></a>
+<span class="sourceLineNo">249</span><a name="line.249"></a>
+<span class="sourceLineNo">250</span>            g2.setPaint(getItemPaint(series, item));<a name="line.250"></a>
+<span class="sourceLineNo">251</span>            PlotOrientation orientation = plot.getOrientation();<a name="line.251"></a>
+<span class="sourceLineNo">252</span>            if (orientation == PlotOrientation.HORIZONTAL) {<a name="line.252"></a>
+<span class="sourceLineNo">253</span>                g2.fillRect((int) transY, (int) transX, this.dotHeight,<a name="line.253"></a>
+<span class="sourceLineNo">254</span>                        this.dotWidth);<a name="line.254"></a>
+<span class="sourceLineNo">255</span>            }<a name="line.255"></a>
+<span class="sourceLineNo">256</span>            else if (orientation == PlotOrientation.VERTICAL) {<a name="line.256"></a>
+<span class="sourceLineNo">257</span>                g2.fillRect((int) transX, (int) transY, this.dotWidth,<a name="line.257"></a>
+<span class="sourceLineNo">258</span>                        this.dotHeight);<a name="line.258"></a>
+<span class="sourceLineNo">259</span>            }<a name="line.259"></a>
+<span class="sourceLineNo">260</span><a name="line.260"></a>
+<span class="sourceLineNo">261</span>            int domainAxisIndex = plot.getDomainAxisIndex(domainAxis);<a name="line.261"></a>
+<span class="sourceLineNo">262</span>            int rangeAxisIndex = plot.getRangeAxisIndex(rangeAxis);<a name="line.262"></a>
+<span class="sourceLineNo">263</span>            updateCrosshairValues(crosshairState, x, y, domainAxisIndex,<a name="line.263"></a>
+<span class="sourceLineNo">264</span>                    rangeAxisIndex, transX, transY, orientation);<a name="line.264"></a>
+<span class="sourceLineNo">265</span>        }<a name="line.265"></a>
+<span class="sourceLineNo">266</span><a name="line.266"></a>
+<span class="sourceLineNo">267</span>    }<a name="line.267"></a>
+<span class="sourceLineNo">268</span><a name="line.268"></a>
+<span class="sourceLineNo">269</span>    /**<a name="line.269"></a>
+<span class="sourceLineNo">270</span>     * Returns a legend item for the specified series.<a name="line.270"></a>
+<span class="sourceLineNo">271</span>     *<a name="line.271"></a>
+<span class="sourceLineNo">272</span>     * @param datasetIndex  the dataset index (zero-based).<a name="line.272"></a>
+<span class="sourceLineNo">273</span>     * @param series  the series index (zero-based).<a name="line.273"></a>
+<span class="sourceLineNo">274</span>     *<a name="line.274"></a>
+<span class="sourceLineNo">275</span>     * @return A legend item for the series (possibly &lt;code&gt;null&lt;/code&gt;).<a name="line.275"></a>
+<span class="sourceLineNo">276</span>     */<a name="line.276"></a>
+<span class="sourceLineNo">277</span>    @Override<a name="line.277"></a>
+<span class="sourceLineNo">278</span>    public LegendItem getLegendItem(int datasetIndex, int series) {<a name="line.278"></a>
+<span class="sourceLineNo">279</span><a name="line.279"></a>
+<span class="sourceLineNo">280</span>        // if the renderer isn't assigned to a plot, then we don't have a<a name="line.280"></a>
+<span class="sourceLineNo">281</span>        // dataset...<a name="line.281"></a>
+<span class="sourceLineNo">282</span>        XYPlot plot = getPlot();<a name="line.282"></a>
+<span class="sourceLineNo">283</span>        if (plot == null) {<a name="line.283"></a>
+<span class="sourceLineNo">284</span>            return null;<a name="line.284"></a>
+<span class="sourceLineNo">285</span>        }<a name="line.285"></a>
+<span class="sourceLineNo">286</span><a name="line.286"></a>
+<span class="sourceLineNo">287</span>        XYDataset dataset = plot.getDataset(datasetIndex);<a name="line.287"></a>
+<span class="sourceLineNo">288</span>        if (dataset == null) {<a name="line.288"></a>
+<span class="sourceLineNo">289</span>            return null;<a name="line.289"></a>
+<span class="sourceLineNo">290</span>        }<a name="line.290"></a>
+<span class="sourceLineNo">291</span><a name="line.291"></a>
+<span class="sourceLineNo">292</span>        LegendItem result = null;<a name="line.292"></a>
+<span class="sourceLineNo">293</span>        if (getItemVisible(series, 0)) {<a name="line.293"></a>
+<span class="sourceLineNo">294</span>            String label = getLegendItemLabelGenerator().generateLabel(dataset,<a name="line.294"></a>
+<span class="sourceLineNo">295</span>                    series);<a name="line.295"></a>
+<span class="sourceLineNo">296</span>            String description = label;<a name="line.296"></a>
+<span class="sourceLineNo">297</span>            String toolTipText = null;<a name="line.297"></a>
+<span class="sourceLineNo">298</span>            if (getLegendItemToolTipGenerator() != null) {<a name="line.298"></a>
+<span class="sourceLineNo">299</span>                toolTipText = getLegendItemToolTipGenerator().generateLabel(<a name="line.299"></a>
+<span class="sourceLineNo">300</span>                        dataset, series);<a name="line.300"></a>
+<span class="sourceLineNo">301</span>            }<a name="line.301"></a>
+<span class="sourceLineNo">302</span>            String urlText = null;<a name="line.302"></a>
+<span class="sourceLineNo">303</span>            if (getLegendItemURLGenerator() != null) {<a name="line.303"></a>
+<span class="sourceLineNo">304</span>                urlText = getLegendItemURLGenerator().generateLabel(<a name="line.304"></a>
+<span class="sourceLineNo">305</span>                        dataset, series);<a name="line.305"></a>
+<span class="sourceLineNo">306</span>            }<a name="line.306"></a>
+<span class="sourceLineNo">307</span>            Paint fillPaint = lookupSeriesPaint(series);<a name="line.307"></a>
+<span class="sourceLineNo">308</span>            result = new LegendItem(label, description, toolTipText, urlText,<a name="line.308"></a>
+<span class="sourceLineNo">309</span>                    getLegendShape(), fillPaint);<a name="line.309"></a>
+<span class="sourceLineNo">310</span>            result.setLabelFont(lookupLegendTextFont(series));<a name="line.310"></a>
+<span class="sourceLineNo">311</span>            Paint labelPaint = lookupLegendTextPaint(series);<a name="line.311"></a>
+<span class="sourceLineNo">312</span>            if (labelPaint != null) {<a name="line.312"></a>
+<span class="sourceLineNo">313</span>                result.setLabelPaint(labelPaint);<a name="line.313"></a>
+<span class="sourceLineNo">314</span>            }<a name="line.314"></a>
+<span class="sourceLineNo">315</span>            result.setSeriesKey(dataset.getSeriesKey(series));<a name="line.315"></a>
+<span class="sourceLineNo">316</span>            result.setSeriesIndex(series);<a name="line.316"></a>
+<span class="sourceLineNo">317</span>            result.setDataset(dataset);<a name="line.317"></a>
+<span class="sourceLineNo">318</span>            result.setDatasetIndex(datasetIndex);<a name="line.318"></a>
+<span class="sourceLineNo">319</span>        }<a name="line.319"></a>
+<span class="sourceLineNo">320</span><a name="line.320"></a>
+<span class="sourceLineNo">321</span>        return result;<a name="line.321"></a>
+<span class="sourceLineNo">322</span><a name="line.322"></a>
+<span class="sourceLineNo">323</span>    }<a name="line.323"></a>
+<span class="sourceLineNo">324</span><a name="line.324"></a>
+<span class="sourceLineNo">325</span>    /**<a name="line.325"></a>
+<span class="sourceLineNo">326</span>     * Tests this renderer for equality with an arbitrary object.  This method<a name="line.326"></a>
+<span class="sourceLineNo">327</span>     * returns &lt;code&gt;true&lt;/code&gt; if and only if:<a name="line.327"></a>
+<span class="sourceLineNo">328</span>     *<a name="line.328"></a>
+<span class="sourceLineNo">329</span>     * &lt;ul&gt;<a name="line.329"></a>
+<span class="sourceLineNo">330</span>     * &lt;li&gt;&lt;code&gt;obj&lt;/code&gt; is not &lt;code&gt;null&lt;/code&gt;;&lt;/li&gt;<a name="line.330"></a>
+<span class="sourceLineNo">331</span>     * &lt;li&gt;&lt;code&gt;obj&lt;/code&gt; is an instance of &lt;code&gt;XYDotRenderer&lt;/code&gt;;&lt;/li&gt;<a name="line.331"></a>
+<span class="sourceLineNo">332</span>     * &lt;li&gt;both renderers have the same attribute values.<a name="line.332"></a>
+<span class="sourceLineNo">333</span>     * &lt;/ul&gt;<a name="line.333"></a>
+<span class="sourceLineNo">334</span>     *<a name="line.334"></a>
+<span class="sourceLineNo">335</span>     * @param obj  the object (&lt;code&gt;null&lt;/code&gt; permitted).<a name="line.335"></a>
+<span class="sourceLineNo">336</span>     *<a name="line.336"></a>
+<span class="sourceLineNo">337</span>     * @return A boolean.<a name="line.337"></a>
+<span class="sourceLineNo">338</span>     */<a name="line.338"></a>
+<span class="sourceLineNo">339</span>    @Override<a name="line.339"></a>
+<span class="sourceLineNo">340</span>    public boolean equals(Object obj) {<a name="line.340"></a>
+<span class="sourceLineNo">341</span>        if (obj == this) {<a name="line.341"></a>
+<span class="sourceLineNo">342</span>            return true;<a name="line.342"></a>
+<span class="sourceLineNo">343</span>        }<a name="line.343"></a>
+<span class="sourceLineNo">344</span>        if (!(obj instanceof XYDotRenderer)) {<a name="line.344"></a>
+<span class="sourceLineNo">345</span>            return false;<a name="line.345"></a>
+<span class="sourceLineNo">346</span>        }<a name="line.346"></a>
+<span class="sourceLineNo">347</span>        XYDotRenderer that = (XYDotRenderer) obj;<a name="line.347"></a>
+<span class="sourceLineNo">348</span>        if (this.dotWidth != that.dotWidth) {<a name="line.348"></a>
+<span class="sourceLineNo">349</span>            return false;<a name="line.349"></a>
+<span class="sourceLineNo">350</span>        }<a name="line.350"></a>
+<span class="sourceLineNo">351</span>        if (this.dotHeight != that.dotHeight) {<a name="line.351"></a>
+<span class="sourceLineNo">352</span>            return false;<a name="line.352"></a>
+<span class="sourceLineNo">353</span>        }<a name="line.353"></a>
+<span class="sourceLineNo">354</span>        if (!ShapeUtilities.equal(this.legendShape, that.legendShape)) {<a name="line.354"></a>
+<span class="sourceLineNo">355</span>            return false;<a name="line.355"></a>
+<span class="sourceLineNo">356</span>        }<a name="line.356"></a>
+<span class="sourceLineNo">357</span>        return super.equals(obj);<a name="line.357"></a>
+<span class="sourceLineNo">358</span>    }<a name="line.358"></a>
+<span class="sourceLineNo">359</span><a name="line.359"></a>
+<span class="sourceLineNo">360</span>    /**<a name="line.360"></a>
+<span class="sourceLineNo">361</span>     * Returns a clone of the renderer.<a name="line.361"></a>
+<span class="sourceLineNo">362</span>     *<a name="line.362"></a>
+<span class="sourceLineNo">363</span>     * @return A clone.<a name="line.363"></a>
+<span class="sourceLineNo">364</span>     *<a name="line.364"></a>
+<span class="sourceLineNo">365</span>     * @throws CloneNotSupportedException  if the renderer cannot be cloned.<a name="line.365"></a>
+<span class="sourceLineNo">366</span>     */<a name="line.366"></a>
+<span class="sourceLineNo">367</span>    @Override<a name="line.367"></a>
+<span class="sourceLineNo">368</span>    public Object clone() throws CloneNotSupportedException {<a name="line.368"></a>
+<span class="sourceLineNo">369</span>        return super.clone();<a name="line.369"></a>
+<span class="sourceLineNo">370</span>    }<a name="line.370"></a>
+<span class="sourceLineNo">371</span><a name="line.371"></a>
+<span class="sourceLineNo">372</span>    /**<a name="line.372"></a>
+<span class="sourceLineNo">373</span>     * Provides serialization support.<a name="line.373"></a>
+<span class="sourceLineNo">374</span>     *<a name="line.374"></a>
+<span class="sourceLineNo">375</span>     * @param stream  the input stream.<a name="line.375"></a>
+<span class="sourceLineNo">376</span>     *<a name="line.376"></a>
+<span class="sourceLineNo">377</span>     * @throws IOException  if there is an I/O error.<a name="line.377"></a>
+<span class="sourceLineNo">378</span>     * @throws ClassNotFoundException  if there is a classpath problem.<a name="line.378"></a>
+<span class="sourceLineNo">379</span>     */<a name="line.379"></a>
+<span class="sourceLineNo">380</span>    private void readObject(ObjectInputStream stream)<a name="line.380"></a>
+<span class="sourceLineNo">381</span>            throws IOException, ClassNotFoundException {<a name="line.381"></a>
+<span class="sourceLineNo">382</span>        stream.defaultReadObject();<a name="line.382"></a>
+<span class="sourceLineNo">383</span>        this.legendShape = SerialUtilities.readShape(stream);<a name="line.383"></a>
+<span class="sourceLineNo">384</span>    }<a name="line.384"></a>
+<span class="sourceLineNo">385</span><a name="line.385"></a>
+<span class="sourceLineNo">386</span>    /**<a name="line.386"></a>
+<span class="sourceLineNo">387</span>     * Provides serialization support.<a name="line.387"></a>
+<span class="sourceLineNo">388</span>     *<a name="line.388"></a>
+<span class="sourceLineNo">389</span>     * @param stream  the output stream.<a name="line.389"></a>
+<span class="sourceLineNo">390</span>     *<a name="line.390"></a>
+<span class="sourceLineNo">391</span>     * @throws IOException  if there is an I/O error.<a name="line.391"></a>
+<span class="sourceLineNo">392</span>     */<a name="line.392"></a>
+<span class="sourceLineNo">393</span>    private void writeObject(ObjectOutputStream stream) throws IOException {<a name="line.393"></a>
+<span class="sourceLineNo">394</span>        stream.defaultWriteObject();<a name="line.394"></a>
+<span class="sourceLineNo">395</span>        SerialUtilities.writeShape(this.legendShape, stream);<a name="line.395"></a>
+<span class="sourceLineNo">396</span>    }<a name="line.396"></a>
+<span class="sourceLineNo">397</span><a name="line.397"></a>
+<span class="sourceLineNo">398</span>}<a name="line.398"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

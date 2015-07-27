@@ -1,0 +1,211 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="de">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>/* ========================================================================<a name="line.1"></a>
+<span class="sourceLineNo">002</span> * JCommon : a free general purpose class library for the Java(tm) platform<a name="line.2"></a>
+<span class="sourceLineNo">003</span> * ========================================================================<a name="line.3"></a>
+<span class="sourceLineNo">004</span> *<a name="line.4"></a>
+<span class="sourceLineNo">005</span> * (C) Copyright 2000-2013, by Object Refinery Limited and Contributors.<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * <a name="line.6"></a>
+<span class="sourceLineNo">007</span> * Project Info:  http://www.jfree.org/jcommon/index.html<a name="line.7"></a>
+<span class="sourceLineNo">008</span> *<a name="line.8"></a>
+<span class="sourceLineNo">009</span> * This library is free software; you can redistribute it and/or modify it <a name="line.9"></a>
+<span class="sourceLineNo">010</span> * under the terms of the GNU Lesser General Public License as published by <a name="line.10"></a>
+<span class="sourceLineNo">011</span> * the Free Software Foundation; either version 2.1 of the License, or <a name="line.11"></a>
+<span class="sourceLineNo">012</span> * (at your option) any later version.<a name="line.12"></a>
+<span class="sourceLineNo">013</span> *<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * This library is distributed in the hope that it will be useful, but <a name="line.14"></a>
+<span class="sourceLineNo">015</span> * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY <a name="line.15"></a>
+<span class="sourceLineNo">016</span> * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public <a name="line.16"></a>
+<span class="sourceLineNo">017</span> * License for more details.<a name="line.17"></a>
+<span class="sourceLineNo">018</span> *<a name="line.18"></a>
+<span class="sourceLineNo">019</span> * You should have received a copy of the GNU Lesser General Public<a name="line.19"></a>
+<span class="sourceLineNo">020</span> * License along with this library; if not, write to the Free Software<a name="line.20"></a>
+<span class="sourceLineNo">021</span> * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, <a name="line.21"></a>
+<span class="sourceLineNo">022</span> * USA.  <a name="line.22"></a>
+<span class="sourceLineNo">023</span> *<a name="line.23"></a>
+<span class="sourceLineNo">024</span> * [Java is a trademark or registered trademark of Sun Microsystems, Inc. <a name="line.24"></a>
+<span class="sourceLineNo">025</span> * in the United States and other countries.]<a name="line.25"></a>
+<span class="sourceLineNo">026</span> * <a name="line.26"></a>
+<span class="sourceLineNo">027</span> * -------------<a name="line.27"></a>
+<span class="sourceLineNo">028</span> * Licences.java<a name="line.28"></a>
+<span class="sourceLineNo">029</span> * -------------<a name="line.29"></a>
+<span class="sourceLineNo">030</span> * (C) Copyright 2001-2013, by Object Refinery Limited.<a name="line.30"></a>
+<span class="sourceLineNo">031</span> *<a name="line.31"></a>
+<span class="sourceLineNo">032</span> * Original Author:  David Gilbert (for Object Refinery Limited);<a name="line.32"></a>
+<span class="sourceLineNo">033</span> * Contributor(s):   -;<a name="line.33"></a>
+<span class="sourceLineNo">034</span> *<a name="line.34"></a>
+<span class="sourceLineNo">035</span> * $Id: Licences.java,v 1.4 2005/11/16 15:58:41 taqua Exp $<a name="line.35"></a>
+<span class="sourceLineNo">036</span> *<a name="line.36"></a>
+<span class="sourceLineNo">037</span> * Changes<a name="line.37"></a>
+<span class="sourceLineNo">038</span> * -------<a name="line.38"></a>
+<span class="sourceLineNo">039</span> * 26-Nov-2001 : Version 1 (DG);<a name="line.39"></a>
+<span class="sourceLineNo">040</span> * 29-Jan-2002 : Appended the instructions to the end of the GNU LGPL and GPL <a name="line.40"></a>
+<span class="sourceLineNo">041</span> *               to comply with GNU requirements (DG);<a name="line.41"></a>
+<span class="sourceLineNo">042</span> * 28-Feb-2002 : Moved to package com.jrefinery.ui.about (DG);<a name="line.42"></a>
+<span class="sourceLineNo">043</span> * 08-Oct-2002 : Fixed errors reported by Checkstyle (DG);<a name="line.43"></a>
+<span class="sourceLineNo">044</span> * 17-Aug-2013 : Removed the text from GPL and LGPL static strings, which just<a name="line.44"></a>
+<span class="sourceLineNo">045</span> *               waste memory, and deprecated to point people to getGPL() and<a name="line.45"></a>
+<span class="sourceLineNo">046</span> *               getLGPL() (DG);<a name="line.46"></a>
+<span class="sourceLineNo">047</span> *<a name="line.47"></a>
+<span class="sourceLineNo">048</span> */<a name="line.48"></a>
+<span class="sourceLineNo">049</span><a name="line.49"></a>
+<span class="sourceLineNo">050</span>package org.jfree.ui.about;<a name="line.50"></a>
+<span class="sourceLineNo">051</span><a name="line.51"></a>
+<span class="sourceLineNo">052</span>import java.io.BufferedReader;<a name="line.52"></a>
+<span class="sourceLineNo">053</span>import java.io.IOException;<a name="line.53"></a>
+<span class="sourceLineNo">054</span>import java.io.InputStream;<a name="line.54"></a>
+<span class="sourceLineNo">055</span>import java.io.InputStreamReader;<a name="line.55"></a>
+<span class="sourceLineNo">056</span>import java.io.UnsupportedEncodingException;<a name="line.56"></a>
+<span class="sourceLineNo">057</span><a name="line.57"></a>
+<span class="sourceLineNo">058</span>/**<a name="line.58"></a>
+<span class="sourceLineNo">059</span> * Contains the full texts of the GNU General Public Licence and the GNU Lesser<a name="line.59"></a>
+<span class="sourceLineNo">060</span> * General Public Licence.  These are used in the presentation of a standard <a name="line.60"></a>
+<span class="sourceLineNo">061</span> * 'About' frame.<a name="line.61"></a>
+<span class="sourceLineNo">062</span> */<a name="line.62"></a>
+<span class="sourceLineNo">063</span>public class Licences {<a name="line.63"></a>
+<span class="sourceLineNo">064</span><a name="line.64"></a>
+<span class="sourceLineNo">065</span>    /** <a name="line.65"></a>
+<span class="sourceLineNo">066</span>     * The GNU General Public Licence.<a name="line.66"></a>
+<span class="sourceLineNo">067</span>     * <a name="line.67"></a>
+<span class="sourceLineNo">068</span>     * @deprecated Use {@link #getGPL()}. <a name="line.68"></a>
+<span class="sourceLineNo">069</span>     */<a name="line.69"></a>
+<span class="sourceLineNo">070</span>    public static final String GPL = "GNU GENERAL PUBLIC LICENSE\n";<a name="line.70"></a>
+<span class="sourceLineNo">071</span><a name="line.71"></a>
+<span class="sourceLineNo">072</span>    /** <a name="line.72"></a>
+<span class="sourceLineNo">073</span>     * The GNU Lesser General Public Licence. <a name="line.73"></a>
+<span class="sourceLineNo">074</span>     * <a name="line.74"></a>
+<span class="sourceLineNo">075</span>     * @deprecated Use {@link #getLGPL()}. <a name="line.75"></a>
+<span class="sourceLineNo">076</span>     */<a name="line.76"></a>
+<span class="sourceLineNo">077</span>    public static final String LGPL = "GNU LESSER GENERAL PUBLIC LICENSE\n";<a name="line.77"></a>
+<span class="sourceLineNo">078</span><a name="line.78"></a>
+<span class="sourceLineNo">079</span>    /** The singleton instance of this class. */<a name="line.79"></a>
+<span class="sourceLineNo">080</span>    private static Licences singleton;<a name="line.80"></a>
+<span class="sourceLineNo">081</span><a name="line.81"></a>
+<span class="sourceLineNo">082</span>    /**<a name="line.82"></a>
+<span class="sourceLineNo">083</span>     * Returns a reference to the single instance of this class.  In fact,<a name="line.83"></a>
+<span class="sourceLineNo">084</span>     * there is little point to having an instance of this class, but we're<a name="line.84"></a>
+<span class="sourceLineNo">085</span>     * leaving it that way for backwards compatibility until the JCommon <a name="line.85"></a>
+<span class="sourceLineNo">086</span>     * retirement.<a name="line.86"></a>
+<span class="sourceLineNo">087</span>     *<a name="line.87"></a>
+<span class="sourceLineNo">088</span>     * @return the instance reference.<a name="line.88"></a>
+<span class="sourceLineNo">089</span>     */<a name="line.89"></a>
+<span class="sourceLineNo">090</span>    public static Licences getInstance() {<a name="line.90"></a>
+<span class="sourceLineNo">091</span>        if (singleton == null) {<a name="line.91"></a>
+<span class="sourceLineNo">092</span>            singleton = new Licences();<a name="line.92"></a>
+<span class="sourceLineNo">093</span>        }<a name="line.93"></a>
+<span class="sourceLineNo">094</span>        return singleton;<a name="line.94"></a>
+<span class="sourceLineNo">095</span>    }<a name="line.95"></a>
+<span class="sourceLineNo">096</span><a name="line.96"></a>
+<span class="sourceLineNo">097</span>    /**<a name="line.97"></a>
+<span class="sourceLineNo">098</span>     * Returns the GPL (v2.1) text.<a name="line.98"></a>
+<span class="sourceLineNo">099</span>     *<a name="line.99"></a>
+<span class="sourceLineNo">100</span>     * @return the GPL licence text.<a name="line.100"></a>
+<span class="sourceLineNo">101</span>     */<a name="line.101"></a>
+<span class="sourceLineNo">102</span>    public String getGPL() {<a name="line.102"></a>
+<span class="sourceLineNo">103</span>        return readStringResource("gpl-2.0.txt");<a name="line.103"></a>
+<span class="sourceLineNo">104</span>    }<a name="line.104"></a>
+<span class="sourceLineNo">105</span><a name="line.105"></a>
+<span class="sourceLineNo">106</span>    /**<a name="line.106"></a>
+<span class="sourceLineNo">107</span>     * Returns the LGPL (v2.1) text.<a name="line.107"></a>
+<span class="sourceLineNo">108</span>     *<a name="line.108"></a>
+<span class="sourceLineNo">109</span>     * @return the LGPL licence text.<a name="line.109"></a>
+<span class="sourceLineNo">110</span>     */<a name="line.110"></a>
+<span class="sourceLineNo">111</span>    public String getLGPL() {<a name="line.111"></a>
+<span class="sourceLineNo">112</span>        return readStringResource("lgpl-2.1.txt");<a name="line.112"></a>
+<span class="sourceLineNo">113</span>    }<a name="line.113"></a>
+<span class="sourceLineNo">114</span>    <a name="line.114"></a>
+<span class="sourceLineNo">115</span>    private String readStringResource(String name) {<a name="line.115"></a>
+<span class="sourceLineNo">116</span>        StringBuilder sb = new StringBuilder();<a name="line.116"></a>
+<span class="sourceLineNo">117</span>        InputStreamReader streamReader = null;<a name="line.117"></a>
+<span class="sourceLineNo">118</span>        try {<a name="line.118"></a>
+<span class="sourceLineNo">119</span>            InputStream inputStream = getClass().getResourceAsStream(name);<a name="line.119"></a>
+<span class="sourceLineNo">120</span>            streamReader = new InputStreamReader(inputStream, "UTF-8");<a name="line.120"></a>
+<span class="sourceLineNo">121</span>            BufferedReader in = new BufferedReader(streamReader);<a name="line.121"></a>
+<span class="sourceLineNo">122</span>            for (String line; (line = in.readLine()) != null;) {<a name="line.122"></a>
+<span class="sourceLineNo">123</span>              sb.append(line).append("\n");<a name="line.123"></a>
+<span class="sourceLineNo">124</span>            }<a name="line.124"></a>
+<span class="sourceLineNo">125</span>        } catch (UnsupportedEncodingException ex) {<a name="line.125"></a>
+<span class="sourceLineNo">126</span>            throw new RuntimeException(ex);<a name="line.126"></a>
+<span class="sourceLineNo">127</span>        } catch (IOException e) {<a name="line.127"></a>
+<span class="sourceLineNo">128</span>            throw new RuntimeException(e);<a name="line.128"></a>
+<span class="sourceLineNo">129</span>        } finally {<a name="line.129"></a>
+<span class="sourceLineNo">130</span>            try {<a name="line.130"></a>
+<span class="sourceLineNo">131</span>                streamReader.close();<a name="line.131"></a>
+<span class="sourceLineNo">132</span>            } catch (IOException ex) {<a name="line.132"></a>
+<span class="sourceLineNo">133</span>                throw new RuntimeException(ex);<a name="line.133"></a>
+<span class="sourceLineNo">134</span>            }<a name="line.134"></a>
+<span class="sourceLineNo">135</span>        }<a name="line.135"></a>
+<span class="sourceLineNo">136</span>        return sb.toString();        <a name="line.136"></a>
+<span class="sourceLineNo">137</span>    }<a name="line.137"></a>
+<span class="sourceLineNo">138</span> <a name="line.138"></a>
+<span class="sourceLineNo">139</span>}<a name="line.139"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

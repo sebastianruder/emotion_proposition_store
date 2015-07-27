@@ -1,0 +1,1825 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="de">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>/* ===========================================================<a name="line.1"></a>
+<span class="sourceLineNo">002</span> * JFreeChart : a free chart library for the Java(tm) platform<a name="line.2"></a>
+<span class="sourceLineNo">003</span> * ===========================================================<a name="line.3"></a>
+<span class="sourceLineNo">004</span> *<a name="line.4"></a>
+<span class="sourceLineNo">005</span> * (C) Copyright 2000-2014, by Object Refinery Limited and Contributors.<a name="line.5"></a>
+<span class="sourceLineNo">006</span> *<a name="line.6"></a>
+<span class="sourceLineNo">007</span> * Project Info:  http://www.jfree.org/jfreechart/index.html<a name="line.7"></a>
+<span class="sourceLineNo">008</span> *<a name="line.8"></a>
+<span class="sourceLineNo">009</span> * This library is free software; you can redistribute it and/or modify it<a name="line.9"></a>
+<span class="sourceLineNo">010</span> * under the terms of the GNU Lesser General Public License as published by<a name="line.10"></a>
+<span class="sourceLineNo">011</span> * the Free Software Foundation; either version 2.1 of the License, or<a name="line.11"></a>
+<span class="sourceLineNo">012</span> * (at your option) any later version.<a name="line.12"></a>
+<span class="sourceLineNo">013</span> *<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * This library is distributed in the hope that it will be useful, but<a name="line.14"></a>
+<span class="sourceLineNo">015</span> * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY<a name="line.15"></a>
+<span class="sourceLineNo">016</span> * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public<a name="line.16"></a>
+<span class="sourceLineNo">017</span> * License for more details.<a name="line.17"></a>
+<span class="sourceLineNo">018</span> *<a name="line.18"></a>
+<span class="sourceLineNo">019</span> * You should have received a copy of the GNU Lesser General Public<a name="line.19"></a>
+<span class="sourceLineNo">020</span> * License along with this library; if not, write to the Free Software<a name="line.20"></a>
+<span class="sourceLineNo">021</span> * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,<a name="line.21"></a>
+<span class="sourceLineNo">022</span> * USA.<a name="line.22"></a>
+<span class="sourceLineNo">023</span> *<a name="line.23"></a>
+<span class="sourceLineNo">024</span> * [Oracle and Java are registered trademarks of Oracle and/or its affiliates. <a name="line.24"></a>
+<span class="sourceLineNo">025</span> * Other names may be trademarks of their respective owners.]<a name="line.25"></a>
+<span class="sourceLineNo">026</span> *<a name="line.26"></a>
+<span class="sourceLineNo">027</span> * -----------------------<a name="line.27"></a>
+<span class="sourceLineNo">028</span> * SegmentedTimeline.java<a name="line.28"></a>
+<span class="sourceLineNo">029</span> * -----------------------<a name="line.29"></a>
+<span class="sourceLineNo">030</span> * (C) Copyright 2003-2014, by Bill Kelemen and Contributors.<a name="line.30"></a>
+<span class="sourceLineNo">031</span> *<a name="line.31"></a>
+<span class="sourceLineNo">032</span> * Original Author:  Bill Kelemen;<a name="line.32"></a>
+<span class="sourceLineNo">033</span> * Contributor(s):   David Gilbert (for Object Refinery Limited);<a name="line.33"></a>
+<span class="sourceLineNo">034</span> *<a name="line.34"></a>
+<span class="sourceLineNo">035</span> * Changes<a name="line.35"></a>
+<span class="sourceLineNo">036</span> * -------<a name="line.36"></a>
+<span class="sourceLineNo">037</span> * 23-May-2003 : Version 1 (BK);<a name="line.37"></a>
+<span class="sourceLineNo">038</span> * 15-Aug-2003 : Implemented Cloneable (DG);<a name="line.38"></a>
+<span class="sourceLineNo">039</span> * 01-Jun-2004 : Modified to compile with JDK 1.2.2 (DG);<a name="line.39"></a>
+<span class="sourceLineNo">040</span> * 30-Sep-2004 : Replaced getTime().getTime() with getTimeInMillis() (DG);<a name="line.40"></a>
+<span class="sourceLineNo">041</span> * 04-Nov-2004 : Reverted change of 30-Sep-2004, won't work with JDK 1.3 (DG);<a name="line.41"></a>
+<span class="sourceLineNo">042</span> * 11-Jan-2005 : Removed deprecated code in preparation for 1.0.0 release (DG);<a name="line.42"></a>
+<span class="sourceLineNo">043</span> * ------------- JFREECHART 1.0.x ---------------------------------------------<a name="line.43"></a>
+<span class="sourceLineNo">044</span> * 14-Nov-2006 : Fix in toTimelineValue(long) to avoid stack overflow (DG);<a name="line.44"></a>
+<span class="sourceLineNo">045</span> * 02-Feb-2007 : Removed author tags all over JFreeChart sources (DG);<a name="line.45"></a>
+<span class="sourceLineNo">046</span> * 11-Jul-2007 : Fixed time zone bugs (DG);<a name="line.46"></a>
+<span class="sourceLineNo">047</span> * 06-Jun-2008 : Performance enhancement posted in forum (DG);<a name="line.47"></a>
+<span class="sourceLineNo">048</span> *<a name="line.48"></a>
+<span class="sourceLineNo">049</span> */<a name="line.49"></a>
+<span class="sourceLineNo">050</span><a name="line.50"></a>
+<span class="sourceLineNo">051</span>package org.jfree.chart.axis;<a name="line.51"></a>
+<span class="sourceLineNo">052</span><a name="line.52"></a>
+<span class="sourceLineNo">053</span>import java.io.Serializable;<a name="line.53"></a>
+<span class="sourceLineNo">054</span>import java.util.ArrayList;<a name="line.54"></a>
+<span class="sourceLineNo">055</span>import java.util.Calendar;<a name="line.55"></a>
+<span class="sourceLineNo">056</span>import java.util.Collections;<a name="line.56"></a>
+<span class="sourceLineNo">057</span>import java.util.Date;<a name="line.57"></a>
+<span class="sourceLineNo">058</span>import java.util.GregorianCalendar;<a name="line.58"></a>
+<span class="sourceLineNo">059</span>import java.util.Iterator;<a name="line.59"></a>
+<span class="sourceLineNo">060</span>import java.util.List;<a name="line.60"></a>
+<span class="sourceLineNo">061</span>import java.util.Locale;<a name="line.61"></a>
+<span class="sourceLineNo">062</span>import java.util.SimpleTimeZone;<a name="line.62"></a>
+<span class="sourceLineNo">063</span>import java.util.TimeZone;<a name="line.63"></a>
+<span class="sourceLineNo">064</span><a name="line.64"></a>
+<span class="sourceLineNo">065</span>/**<a name="line.65"></a>
+<span class="sourceLineNo">066</span> * A {@link Timeline} that implements a "segmented" timeline with included,<a name="line.66"></a>
+<span class="sourceLineNo">067</span> * excluded and exception segments.<a name="line.67"></a>
+<span class="sourceLineNo">068</span> * &lt;p&gt;A Timeline will present a series of values to be used for an axis. Each<a name="line.68"></a>
+<span class="sourceLineNo">069</span> * Timeline must provide transformation methods between domain values and<a name="line.69"></a>
+<span class="sourceLineNo">070</span> * timeline values.&lt;/p&gt;<a name="line.70"></a>
+<span class="sourceLineNo">071</span> * &lt;p&gt;A timeline can be used as parameter to a<a name="line.71"></a>
+<span class="sourceLineNo">072</span> * {@link org.jfree.chart.axis.DateAxis} to define the values that this axis<a name="line.72"></a>
+<span class="sourceLineNo">073</span> * supports. This class implements a timeline formed by segments of equal<a name="line.73"></a>
+<span class="sourceLineNo">074</span> * length (ex. days, hours, minutes) where some segments can be included in the<a name="line.74"></a>
+<span class="sourceLineNo">075</span> * timeline and others excluded. Therefore timelines like "working days" or<a name="line.75"></a>
+<span class="sourceLineNo">076</span> * "working hours" can be created where non-working days or non-working hours<a name="line.76"></a>
+<span class="sourceLineNo">077</span> * respectively can be removed from the timeline, and therefore from the axis.<a name="line.77"></a>
+<span class="sourceLineNo">078</span> * This creates a smooth plot with equal separation between all included<a name="line.78"></a>
+<span class="sourceLineNo">079</span> * segments.&lt;/p&gt;<a name="line.79"></a>
+<span class="sourceLineNo">080</span> * &lt;p&gt;Because Timelines were created mainly for Date related axis, values are<a name="line.80"></a>
+<span class="sourceLineNo">081</span> * represented as longs instead of doubles. In this case, the domain value is<a name="line.81"></a>
+<span class="sourceLineNo">082</span> * just the number of milliseconds since January 1, 1970, 00:00:00 GMT as<a name="line.82"></a>
+<span class="sourceLineNo">083</span> * defined by the getTime() method of {@link java.util.Date}.&lt;/p&gt;<a name="line.83"></a>
+<span class="sourceLineNo">084</span> * &lt;p&gt;In this class, a segment is defined as a unit of time of fixed length.<a name="line.84"></a>
+<span class="sourceLineNo">085</span> * Examples of segments are: days, hours, minutes, etc. The size of a segment<a name="line.85"></a>
+<span class="sourceLineNo">086</span> * is defined as the number of milliseconds in the segment. Some useful segment<a name="line.86"></a>
+<span class="sourceLineNo">087</span> * sizes are defined as constants in this class: DAY_SEGMENT_SIZE,<a name="line.87"></a>
+<span class="sourceLineNo">088</span> * HOUR_SEGMENT_SIZE, FIFTEEN_MINUTE_SEGMENT_SIZE and MINUTE_SEGMENT_SIZE.&lt;/p&gt;<a name="line.88"></a>
+<span class="sourceLineNo">089</span> * &lt;p&gt;Segments are group together to form a Segment Group. Each Segment Group will<a name="line.89"></a>
+<span class="sourceLineNo">090</span> * contain a number of Segments included and a number of Segments excluded. This<a name="line.90"></a>
+<span class="sourceLineNo">091</span> * Segment Group structure will repeat for the whole timeline.&lt;/p&gt;<a name="line.91"></a>
+<span class="sourceLineNo">092</span> * &lt;p&gt;For example, a working days SegmentedTimeline would be formed by a group of<a name="line.92"></a>
+<span class="sourceLineNo">093</span> * 7 daily segments, where there are 5 included (Monday through Friday) and 2<a name="line.93"></a>
+<span class="sourceLineNo">094</span> * excluded (Saturday and Sunday) segments.&lt;/p&gt;<a name="line.94"></a>
+<span class="sourceLineNo">095</span> * &lt;p&gt;Following is a diagram that explains the major attributes that define a<a name="line.95"></a>
+<span class="sourceLineNo">096</span> * segment.  Each box is one segment and must be of fixed length (ms, second,<a name="line.96"></a>
+<span class="sourceLineNo">097</span> * hour, day, etc).&lt;/p&gt;<a name="line.97"></a>
+<span class="sourceLineNo">098</span> * &lt;pre&gt;<a name="line.98"></a>
+<span class="sourceLineNo">099</span> * start time<a name="line.99"></a>
+<span class="sourceLineNo">100</span> *   |<a name="line.100"></a>
+<span class="sourceLineNo">101</span> *   v<a name="line.101"></a>
+<span class="sourceLineNo">102</span> *   0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 ...<a name="line.102"></a>
+<span class="sourceLineNo">103</span> * +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+...<a name="line.103"></a>
+<span class="sourceLineNo">104</span> * |  |  |  |  |  |EE|EE|  |  |  |  |  |EE|EE|  |  |  |  |  |EE|EE|<a name="line.104"></a>
+<span class="sourceLineNo">105</span> * +--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+--+...<a name="line.105"></a>
+<span class="sourceLineNo">106</span> *  \____________/ \___/            \_/<a name="line.106"></a>
+<span class="sourceLineNo">107</span> *        \/         |               |<a name="line.107"></a>
+<span class="sourceLineNo">108</span> *     included   excluded        segment<a name="line.108"></a>
+<span class="sourceLineNo">109</span> *     segments   segments         size<a name="line.109"></a>
+<span class="sourceLineNo">110</span> *  \_________  _______/<a name="line.110"></a>
+<span class="sourceLineNo">111</span> *            \/<a name="line.111"></a>
+<span class="sourceLineNo">112</span> *       segment group<a name="line.112"></a>
+<span class="sourceLineNo">113</span> * &lt;/pre&gt;<a name="line.113"></a>
+<span class="sourceLineNo">114</span> * Legend:&lt;br&gt;<a name="line.114"></a>
+<span class="sourceLineNo">115</span> * &amp;lt;space&amp;gt; = Included segment&lt;br&gt;<a name="line.115"></a>
+<span class="sourceLineNo">116</span> * EE      = Excluded segments in the base timeline&lt;br&gt;<a name="line.116"></a>
+<span class="sourceLineNo">117</span> * &lt;p&gt;In the example, the following segment attributes are presented:&lt;/p&gt;<a name="line.117"></a>
+<span class="sourceLineNo">118</span> * &lt;ul&gt;<a name="line.118"></a>
+<span class="sourceLineNo">119</span> * &lt;li&gt;segment size: the size of each segment in ms.<a name="line.119"></a>
+<span class="sourceLineNo">120</span> * &lt;li&gt;start time: the start of the first segment of the first segment group to<a name="line.120"></a>
+<span class="sourceLineNo">121</span> *     consider.<a name="line.121"></a>
+<span class="sourceLineNo">122</span> * &lt;li&gt;included segments: the number of segments to include in the group.<a name="line.122"></a>
+<span class="sourceLineNo">123</span> * &lt;li&gt;excluded segments: the number of segments to exclude in the group.<a name="line.123"></a>
+<span class="sourceLineNo">124</span> * &lt;/ul&gt;<a name="line.124"></a>
+<span class="sourceLineNo">125</span> * &lt;p&gt;Exception Segments are allowed. These exception segments are defined as<a name="line.125"></a>
+<span class="sourceLineNo">126</span> * segments that would have been in the included segments of the Segment Group,<a name="line.126"></a>
+<span class="sourceLineNo">127</span> * but should be excluded for special reasons. In the previous working days<a name="line.127"></a>
+<span class="sourceLineNo">128</span> * SegmentedTimeline example, holidays would be considered exceptions.&lt;/p&gt;<a name="line.128"></a>
+<span class="sourceLineNo">129</span> * &lt;p&gt;Additionally the {@code startTime}, or start of the first Segment of<a name="line.129"></a>
+<span class="sourceLineNo">130</span> * the smallest segment group needs to be defined. This startTime could be<a name="line.130"></a>
+<span class="sourceLineNo">131</span> * relative to January 1, 1970, 00:00:00 GMT or any other date. This creates a<a name="line.131"></a>
+<span class="sourceLineNo">132</span> * point of reference to start counting Segment Groups. For example, for the<a name="line.132"></a>
+<span class="sourceLineNo">133</span> * working days SegmentedTimeline, the {@code startTime} could be<a name="line.133"></a>
+<span class="sourceLineNo">134</span> * 00:00:00 GMT of the first Monday after January 1, 1970. In this class, the<a name="line.134"></a>
+<span class="sourceLineNo">135</span> * constant FIRST_MONDAY_AFTER_1900 refers to a reference point of the first<a name="line.135"></a>
+<span class="sourceLineNo">136</span> * Monday of the last century.&lt;/p&gt;<a name="line.136"></a>
+<span class="sourceLineNo">137</span> * &lt;p&gt;A SegmentedTimeline can include a baseTimeline. This combination of<a name="line.137"></a>
+<span class="sourceLineNo">138</span> * timelines allows the creation of more complex timelines. For example, in<a name="line.138"></a>
+<span class="sourceLineNo">139</span> * order to implement a SegmentedTimeline for an intraday stock trading<a name="line.139"></a>
+<span class="sourceLineNo">140</span> * application, where the trading period is defined as 9:00 AM through 4:00 PM<a name="line.140"></a>
+<span class="sourceLineNo">141</span> * Monday through Friday, two SegmentedTimelines are used. The first one (the<a name="line.141"></a>
+<span class="sourceLineNo">142</span> * baseTimeline) would be a working day SegmentedTimeline (daily timeline<a name="line.142"></a>
+<span class="sourceLineNo">143</span> * Monday through Friday). On top of this baseTimeline, a second one is defined<a name="line.143"></a>
+<span class="sourceLineNo">144</span> * that maps the 9:00 AM to 4:00 PM period. Because the baseTimeline defines a<a name="line.144"></a>
+<span class="sourceLineNo">145</span> * timeline of Monday through Friday, the resulting (combined) timeline will<a name="line.145"></a>
+<span class="sourceLineNo">146</span> * expose the period 9:00 AM through 4:00 PM only on Monday through Friday,<a name="line.146"></a>
+<span class="sourceLineNo">147</span> * and will remove all other intermediate intervals.&lt;/p&gt;<a name="line.147"></a>
+<span class="sourceLineNo">148</span> * &lt;p&gt;Two factory methods newMondayThroughFridayTimeline() and<a name="line.148"></a>
+<span class="sourceLineNo">149</span> * newFifteenMinuteTimeline() are provided as examples to create special<a name="line.149"></a>
+<span class="sourceLineNo">150</span> * SegmentedTimelines.&lt;/p&gt;<a name="line.150"></a>
+<span class="sourceLineNo">151</span> *<a name="line.151"></a>
+<span class="sourceLineNo">152</span> * @see org.jfree.chart.axis.DateAxis<a name="line.152"></a>
+<span class="sourceLineNo">153</span> */<a name="line.153"></a>
+<span class="sourceLineNo">154</span>public class SegmentedTimeline implements Timeline, Cloneable, Serializable {<a name="line.154"></a>
+<span class="sourceLineNo">155</span><a name="line.155"></a>
+<span class="sourceLineNo">156</span>    /** For serialization. */<a name="line.156"></a>
+<span class="sourceLineNo">157</span>    private static final long serialVersionUID = 1093779862539903110L;<a name="line.157"></a>
+<span class="sourceLineNo">158</span><a name="line.158"></a>
+<span class="sourceLineNo">159</span>    ////////////////////////////////////////////////////////////////////////////<a name="line.159"></a>
+<span class="sourceLineNo">160</span>    // predetermined segments sizes<a name="line.160"></a>
+<span class="sourceLineNo">161</span>    ////////////////////////////////////////////////////////////////////////////<a name="line.161"></a>
+<span class="sourceLineNo">162</span><a name="line.162"></a>
+<span class="sourceLineNo">163</span>    /** Defines a day segment size in ms. */<a name="line.163"></a>
+<span class="sourceLineNo">164</span>    public static final long DAY_SEGMENT_SIZE = 24 * 60 * 60 * 1000;<a name="line.164"></a>
+<span class="sourceLineNo">165</span><a name="line.165"></a>
+<span class="sourceLineNo">166</span>    /** Defines a one hour segment size in ms. */<a name="line.166"></a>
+<span class="sourceLineNo">167</span>    public static final long HOUR_SEGMENT_SIZE = 60 * 60 * 1000;<a name="line.167"></a>
+<span class="sourceLineNo">168</span><a name="line.168"></a>
+<span class="sourceLineNo">169</span>    /** Defines a 15-minute segment size in ms. */<a name="line.169"></a>
+<span class="sourceLineNo">170</span>    public static final long FIFTEEN_MINUTE_SEGMENT_SIZE = 15 * 60 * 1000;<a name="line.170"></a>
+<span class="sourceLineNo">171</span><a name="line.171"></a>
+<span class="sourceLineNo">172</span>    /** Defines a one-minute segment size in ms. */<a name="line.172"></a>
+<span class="sourceLineNo">173</span>    public static final long MINUTE_SEGMENT_SIZE = 60 * 1000;<a name="line.173"></a>
+<span class="sourceLineNo">174</span><a name="line.174"></a>
+<span class="sourceLineNo">175</span>    ////////////////////////////////////////////////////////////////////////////<a name="line.175"></a>
+<span class="sourceLineNo">176</span>    // other constants<a name="line.176"></a>
+<span class="sourceLineNo">177</span>    ////////////////////////////////////////////////////////////////////////////<a name="line.177"></a>
+<span class="sourceLineNo">178</span><a name="line.178"></a>
+<span class="sourceLineNo">179</span>    /**<a name="line.179"></a>
+<span class="sourceLineNo">180</span>     * Utility constant that defines the startTime as the first monday after<a name="line.180"></a>
+<span class="sourceLineNo">181</span>     * 1/1/1970.  This should be used when creating a SegmentedTimeline for<a name="line.181"></a>
+<span class="sourceLineNo">182</span>     * Monday through Friday. See static block below for calculation of this<a name="line.182"></a>
+<span class="sourceLineNo">183</span>     * constant.<a name="line.183"></a>
+<span class="sourceLineNo">184</span>     *<a name="line.184"></a>
+<span class="sourceLineNo">185</span>     * @deprecated As of 1.0.7.  This field doesn't take into account changes<a name="line.185"></a>
+<span class="sourceLineNo">186</span>     *         to the default time zone.<a name="line.186"></a>
+<span class="sourceLineNo">187</span>     */<a name="line.187"></a>
+<span class="sourceLineNo">188</span>    public static long FIRST_MONDAY_AFTER_1900;<a name="line.188"></a>
+<span class="sourceLineNo">189</span><a name="line.189"></a>
+<span class="sourceLineNo">190</span>    /**<a name="line.190"></a>
+<span class="sourceLineNo">191</span>     * Utility TimeZone object that has no DST and an offset equal to the<a name="line.191"></a>
+<span class="sourceLineNo">192</span>     * default TimeZone. This allows easy arithmetic between days as each one<a name="line.192"></a>
+<span class="sourceLineNo">193</span>     * will have equal size.<a name="line.193"></a>
+<span class="sourceLineNo">194</span>     *<a name="line.194"></a>
+<span class="sourceLineNo">195</span>     * @deprecated As of 1.0.7.  This field is initialised based on the<a name="line.195"></a>
+<span class="sourceLineNo">196</span>     *         default time zone, and doesn't take into account subsequent<a name="line.196"></a>
+<span class="sourceLineNo">197</span>     *         changes to the default.<a name="line.197"></a>
+<span class="sourceLineNo">198</span>     */<a name="line.198"></a>
+<span class="sourceLineNo">199</span>    public static TimeZone NO_DST_TIME_ZONE;<a name="line.199"></a>
+<span class="sourceLineNo">200</span><a name="line.200"></a>
+<span class="sourceLineNo">201</span>    /**<a name="line.201"></a>
+<span class="sourceLineNo">202</span>     * This is the default time zone where the application is running. See<a name="line.202"></a>
+<span class="sourceLineNo">203</span>     * getTime() below where we make use of certain transformations between<a name="line.203"></a>
+<span class="sourceLineNo">204</span>     * times in the default time zone and the no-dst time zone used for our<a name="line.204"></a>
+<span class="sourceLineNo">205</span>     * calculations.<a name="line.205"></a>
+<span class="sourceLineNo">206</span>     *<a name="line.206"></a>
+<span class="sourceLineNo">207</span>     * @deprecated As of 1.0.7.  When the default time zone is required,<a name="line.207"></a>
+<span class="sourceLineNo">208</span>     *         just call {@code TimeZone.getDefault()}.<a name="line.208"></a>
+<span class="sourceLineNo">209</span>     */<a name="line.209"></a>
+<span class="sourceLineNo">210</span>    public static TimeZone DEFAULT_TIME_ZONE = TimeZone.getDefault();<a name="line.210"></a>
+<span class="sourceLineNo">211</span><a name="line.211"></a>
+<span class="sourceLineNo">212</span>    /**<a name="line.212"></a>
+<span class="sourceLineNo">213</span>     * This will be a utility calendar that has no DST but is shifted relative<a name="line.213"></a>
+<span class="sourceLineNo">214</span>     * to the default time zone's offset.<a name="line.214"></a>
+<span class="sourceLineNo">215</span>     */<a name="line.215"></a>
+<span class="sourceLineNo">216</span>    private Calendar workingCalendarNoDST;<a name="line.216"></a>
+<span class="sourceLineNo">217</span><a name="line.217"></a>
+<span class="sourceLineNo">218</span>    /**<a name="line.218"></a>
+<span class="sourceLineNo">219</span>     * This will be a utility calendar that used the default time zone.<a name="line.219"></a>
+<span class="sourceLineNo">220</span>     */<a name="line.220"></a>
+<span class="sourceLineNo">221</span>    private Calendar workingCalendar = Calendar.getInstance();<a name="line.221"></a>
+<span class="sourceLineNo">222</span><a name="line.222"></a>
+<span class="sourceLineNo">223</span>    ////////////////////////////////////////////////////////////////////////////<a name="line.223"></a>
+<span class="sourceLineNo">224</span>    // private attributes<a name="line.224"></a>
+<span class="sourceLineNo">225</span>    ////////////////////////////////////////////////////////////////////////////<a name="line.225"></a>
+<span class="sourceLineNo">226</span><a name="line.226"></a>
+<span class="sourceLineNo">227</span>    /** Segment size in ms. */<a name="line.227"></a>
+<span class="sourceLineNo">228</span>    private long segmentSize;<a name="line.228"></a>
+<span class="sourceLineNo">229</span><a name="line.229"></a>
+<span class="sourceLineNo">230</span>    /** Number of consecutive segments to include in a segment group. */<a name="line.230"></a>
+<span class="sourceLineNo">231</span>    private int segmentsIncluded;<a name="line.231"></a>
+<span class="sourceLineNo">232</span><a name="line.232"></a>
+<span class="sourceLineNo">233</span>    /** Number of consecutive segments to exclude in a segment group. */<a name="line.233"></a>
+<span class="sourceLineNo">234</span>    private int segmentsExcluded;<a name="line.234"></a>
+<span class="sourceLineNo">235</span><a name="line.235"></a>
+<span class="sourceLineNo">236</span>    /** Number of segments in a group (segmentsIncluded + segmentsExcluded). */<a name="line.236"></a>
+<span class="sourceLineNo">237</span>    private int groupSegmentCount;<a name="line.237"></a>
+<span class="sourceLineNo">238</span><a name="line.238"></a>
+<span class="sourceLineNo">239</span>    /**<a name="line.239"></a>
+<span class="sourceLineNo">240</span>     * Start of time reference from time zero (1/1/1970).<a name="line.240"></a>
+<span class="sourceLineNo">241</span>     * This is the start of segment #0.<a name="line.241"></a>
+<span class="sourceLineNo">242</span>     */<a name="line.242"></a>
+<span class="sourceLineNo">243</span>    private long startTime;<a name="line.243"></a>
+<span class="sourceLineNo">244</span><a name="line.244"></a>
+<span class="sourceLineNo">245</span>    /** Consecutive ms in segmentsIncluded (segmentsIncluded * segmentSize). */<a name="line.245"></a>
+<span class="sourceLineNo">246</span>    private long segmentsIncludedSize;<a name="line.246"></a>
+<span class="sourceLineNo">247</span><a name="line.247"></a>
+<span class="sourceLineNo">248</span>    /** Consecutive ms in segmentsExcluded (segmentsExcluded * segmentSize). */<a name="line.248"></a>
+<span class="sourceLineNo">249</span>    private long segmentsExcludedSize;<a name="line.249"></a>
+<span class="sourceLineNo">250</span><a name="line.250"></a>
+<span class="sourceLineNo">251</span>    /** ms in a segment group (segmentsIncludedSize + segmentsExcludedSize). */<a name="line.251"></a>
+<span class="sourceLineNo">252</span>    private long segmentsGroupSize;<a name="line.252"></a>
+<span class="sourceLineNo">253</span><a name="line.253"></a>
+<span class="sourceLineNo">254</span>    /**<a name="line.254"></a>
+<span class="sourceLineNo">255</span>     * List of exception segments (exceptions segments that would otherwise be<a name="line.255"></a>
+<span class="sourceLineNo">256</span>     * included based on the periodic (included, excluded) grouping).<a name="line.256"></a>
+<span class="sourceLineNo">257</span>     */<a name="line.257"></a>
+<span class="sourceLineNo">258</span>    private List exceptionSegments = new ArrayList();<a name="line.258"></a>
+<span class="sourceLineNo">259</span><a name="line.259"></a>
+<span class="sourceLineNo">260</span>    /**<a name="line.260"></a>
+<span class="sourceLineNo">261</span>     * This base timeline is used to specify exceptions at a higher level. For<a name="line.261"></a>
+<span class="sourceLineNo">262</span>     * example, if we are a intraday timeline and want to exclude holidays,<a name="line.262"></a>
+<span class="sourceLineNo">263</span>     * instead of having to exclude all intraday segments for the holiday,<a name="line.263"></a>
+<span class="sourceLineNo">264</span>     * segments from this base timeline can be excluded. This baseTimeline is<a name="line.264"></a>
+<span class="sourceLineNo">265</span>     * always optional and is only a convenience method.<a name="line.265"></a>
+<span class="sourceLineNo">266</span>     * &lt;p&gt;<a name="line.266"></a>
+<span class="sourceLineNo">267</span>     * Additionally, all excluded segments from this baseTimeline will be<a name="line.267"></a>
+<span class="sourceLineNo">268</span>     * considered exceptions at this level.<a name="line.268"></a>
+<span class="sourceLineNo">269</span>     */<a name="line.269"></a>
+<span class="sourceLineNo">270</span>    private SegmentedTimeline baseTimeline;<a name="line.270"></a>
+<span class="sourceLineNo">271</span><a name="line.271"></a>
+<span class="sourceLineNo">272</span>    /** A flag that controls whether or not to adjust for daylight saving. */<a name="line.272"></a>
+<span class="sourceLineNo">273</span>    private boolean adjustForDaylightSaving = false;<a name="line.273"></a>
+<span class="sourceLineNo">274</span><a name="line.274"></a>
+<span class="sourceLineNo">275</span>    ////////////////////////////////////////////////////////////////////////////<a name="line.275"></a>
+<span class="sourceLineNo">276</span>    // static block<a name="line.276"></a>
+<span class="sourceLineNo">277</span>    ////////////////////////////////////////////////////////////////////////////<a name="line.277"></a>
+<span class="sourceLineNo">278</span><a name="line.278"></a>
+<span class="sourceLineNo">279</span>    static {<a name="line.279"></a>
+<span class="sourceLineNo">280</span>        // make a time zone with no DST for our Calendar calculations<a name="line.280"></a>
+<span class="sourceLineNo">281</span>        int offset = TimeZone.getDefault().getRawOffset();<a name="line.281"></a>
+<span class="sourceLineNo">282</span>        NO_DST_TIME_ZONE = new SimpleTimeZone(offset, "UTC-" + offset);<a name="line.282"></a>
+<span class="sourceLineNo">283</span><a name="line.283"></a>
+<span class="sourceLineNo">284</span>        // calculate midnight of first monday after 1/1/1900 relative to<a name="line.284"></a>
+<span class="sourceLineNo">285</span>        // current locale<a name="line.285"></a>
+<span class="sourceLineNo">286</span>        Calendar cal = new GregorianCalendar(NO_DST_TIME_ZONE);<a name="line.286"></a>
+<span class="sourceLineNo">287</span>        cal.set(1900, 0, 1, 0, 0, 0);<a name="line.287"></a>
+<span class="sourceLineNo">288</span>        cal.set(Calendar.MILLISECOND, 0);<a name="line.288"></a>
+<span class="sourceLineNo">289</span>        while (cal.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {<a name="line.289"></a>
+<span class="sourceLineNo">290</span>            cal.add(Calendar.DATE, 1);<a name="line.290"></a>
+<span class="sourceLineNo">291</span>        }<a name="line.291"></a>
+<span class="sourceLineNo">292</span>        // FIRST_MONDAY_AFTER_1900 = cal.getTime().getTime();<a name="line.292"></a>
+<span class="sourceLineNo">293</span>        // preceding code won't work with JDK 1.3<a name="line.293"></a>
+<span class="sourceLineNo">294</span>        FIRST_MONDAY_AFTER_1900 = cal.getTime().getTime();<a name="line.294"></a>
+<span class="sourceLineNo">295</span>    }<a name="line.295"></a>
+<span class="sourceLineNo">296</span><a name="line.296"></a>
+<span class="sourceLineNo">297</span>    ////////////////////////////////////////////////////////////////////////////<a name="line.297"></a>
+<span class="sourceLineNo">298</span>    // constructors and factory methods<a name="line.298"></a>
+<span class="sourceLineNo">299</span>    ////////////////////////////////////////////////////////////////////////////<a name="line.299"></a>
+<span class="sourceLineNo">300</span><a name="line.300"></a>
+<span class="sourceLineNo">301</span>    /**<a name="line.301"></a>
+<span class="sourceLineNo">302</span>     * Constructs a new segmented timeline, optionaly using another segmented<a name="line.302"></a>
+<span class="sourceLineNo">303</span>     * timeline as its base. This chaining of SegmentedTimelines allows further<a name="line.303"></a>
+<span class="sourceLineNo">304</span>     * segmentation into smaller timelines.<a name="line.304"></a>
+<span class="sourceLineNo">305</span>     *<a name="line.305"></a>
+<span class="sourceLineNo">306</span>     * If a base<a name="line.306"></a>
+<span class="sourceLineNo">307</span>     *<a name="line.307"></a>
+<span class="sourceLineNo">308</span>     * @param segmentSize the size of a segment in ms. This time unit will be<a name="line.308"></a>
+<span class="sourceLineNo">309</span>     *        used to compute the included and excluded segments of the<a name="line.309"></a>
+<span class="sourceLineNo">310</span>     *        timeline.<a name="line.310"></a>
+<span class="sourceLineNo">311</span>     * @param segmentsIncluded Number of consecutive segments to include.<a name="line.311"></a>
+<span class="sourceLineNo">312</span>     * @param segmentsExcluded Number of consecutive segments to exclude.<a name="line.312"></a>
+<span class="sourceLineNo">313</span>     */<a name="line.313"></a>
+<span class="sourceLineNo">314</span>    public SegmentedTimeline(long segmentSize,<a name="line.314"></a>
+<span class="sourceLineNo">315</span>                             int segmentsIncluded,<a name="line.315"></a>
+<span class="sourceLineNo">316</span>                             int segmentsExcluded) {<a name="line.316"></a>
+<span class="sourceLineNo">317</span><a name="line.317"></a>
+<span class="sourceLineNo">318</span>        this.segmentSize = segmentSize;<a name="line.318"></a>
+<span class="sourceLineNo">319</span>        this.segmentsIncluded = segmentsIncluded;<a name="line.319"></a>
+<span class="sourceLineNo">320</span>        this.segmentsExcluded = segmentsExcluded;<a name="line.320"></a>
+<span class="sourceLineNo">321</span><a name="line.321"></a>
+<span class="sourceLineNo">322</span>        this.groupSegmentCount = this.segmentsIncluded + this.segmentsExcluded;<a name="line.322"></a>
+<span class="sourceLineNo">323</span>        this.segmentsIncludedSize = this.segmentsIncluded * this.segmentSize;<a name="line.323"></a>
+<span class="sourceLineNo">324</span>        this.segmentsExcludedSize = this.segmentsExcluded * this.segmentSize;<a name="line.324"></a>
+<span class="sourceLineNo">325</span>        this.segmentsGroupSize = this.segmentsIncludedSize<a name="line.325"></a>
+<span class="sourceLineNo">326</span>                                 + this.segmentsExcludedSize;<a name="line.326"></a>
+<span class="sourceLineNo">327</span>        int offset = TimeZone.getDefault().getRawOffset();<a name="line.327"></a>
+<span class="sourceLineNo">328</span>        TimeZone z = new SimpleTimeZone(offset, "UTC-" + offset);<a name="line.328"></a>
+<span class="sourceLineNo">329</span>        this.workingCalendarNoDST = new GregorianCalendar(z,<a name="line.329"></a>
+<span class="sourceLineNo">330</span>                Locale.getDefault());<a name="line.330"></a>
+<span class="sourceLineNo">331</span>    }<a name="line.331"></a>
+<span class="sourceLineNo">332</span><a name="line.332"></a>
+<span class="sourceLineNo">333</span>    /**<a name="line.333"></a>
+<span class="sourceLineNo">334</span>     * Returns the milliseconds for midnight of the first Monday after<a name="line.334"></a>
+<span class="sourceLineNo">335</span>     * 1-Jan-1900, ignoring daylight savings.<a name="line.335"></a>
+<span class="sourceLineNo">336</span>     *<a name="line.336"></a>
+<span class="sourceLineNo">337</span>     * @return The milliseconds.<a name="line.337"></a>
+<span class="sourceLineNo">338</span>     *<a name="line.338"></a>
+<span class="sourceLineNo">339</span>     * @since 1.0.7<a name="line.339"></a>
+<span class="sourceLineNo">340</span>     */<a name="line.340"></a>
+<span class="sourceLineNo">341</span>    public static long firstMondayAfter1900() {<a name="line.341"></a>
+<span class="sourceLineNo">342</span>        int offset = TimeZone.getDefault().getRawOffset();<a name="line.342"></a>
+<span class="sourceLineNo">343</span>        TimeZone z = new SimpleTimeZone(offset, "UTC-" + offset);<a name="line.343"></a>
+<span class="sourceLineNo">344</span><a name="line.344"></a>
+<span class="sourceLineNo">345</span>        // calculate midnight of first monday after 1/1/1900 relative to<a name="line.345"></a>
+<span class="sourceLineNo">346</span>        // current locale<a name="line.346"></a>
+<span class="sourceLineNo">347</span>        Calendar cal = new GregorianCalendar(z);<a name="line.347"></a>
+<span class="sourceLineNo">348</span>        cal.set(1900, 0, 1, 0, 0, 0);<a name="line.348"></a>
+<span class="sourceLineNo">349</span>        cal.set(Calendar.MILLISECOND, 0);<a name="line.349"></a>
+<span class="sourceLineNo">350</span>        while (cal.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {<a name="line.350"></a>
+<span class="sourceLineNo">351</span>            cal.add(Calendar.DATE, 1);<a name="line.351"></a>
+<span class="sourceLineNo">352</span>        }<a name="line.352"></a>
+<span class="sourceLineNo">353</span>        //return cal.getTimeInMillis();<a name="line.353"></a>
+<span class="sourceLineNo">354</span>        // preceding code won't work with JDK 1.3<a name="line.354"></a>
+<span class="sourceLineNo">355</span>        return cal.getTime().getTime();<a name="line.355"></a>
+<span class="sourceLineNo">356</span>    }<a name="line.356"></a>
+<span class="sourceLineNo">357</span><a name="line.357"></a>
+<span class="sourceLineNo">358</span>    /**<a name="line.358"></a>
+<span class="sourceLineNo">359</span>     * Factory method to create a Monday through Friday SegmentedTimeline.<a name="line.359"></a>
+<span class="sourceLineNo">360</span>     * &lt;P&gt;<a name="line.360"></a>
+<span class="sourceLineNo">361</span>     * The {@code startTime} of the resulting timeline will be midnight<a name="line.361"></a>
+<span class="sourceLineNo">362</span>     * of the first Monday after 1/1/1900.<a name="line.362"></a>
+<span class="sourceLineNo">363</span>     *<a name="line.363"></a>
+<span class="sourceLineNo">364</span>     * @return A fully initialized SegmentedTimeline.<a name="line.364"></a>
+<span class="sourceLineNo">365</span>     */<a name="line.365"></a>
+<span class="sourceLineNo">366</span>    public static SegmentedTimeline newMondayThroughFridayTimeline() {<a name="line.366"></a>
+<span class="sourceLineNo">367</span>        SegmentedTimeline timeline<a name="line.367"></a>
+<span class="sourceLineNo">368</span>            = new SegmentedTimeline(DAY_SEGMENT_SIZE, 5, 2);<a name="line.368"></a>
+<span class="sourceLineNo">369</span>        timeline.setStartTime(firstMondayAfter1900());<a name="line.369"></a>
+<span class="sourceLineNo">370</span>        return timeline;<a name="line.370"></a>
+<span class="sourceLineNo">371</span>    }<a name="line.371"></a>
+<span class="sourceLineNo">372</span><a name="line.372"></a>
+<span class="sourceLineNo">373</span>    /**<a name="line.373"></a>
+<span class="sourceLineNo">374</span>     * Factory method to create a 15-min, 9:00 AM thought 4:00 PM, Monday<a name="line.374"></a>
+<span class="sourceLineNo">375</span>     * through Friday SegmentedTimeline.<a name="line.375"></a>
+<span class="sourceLineNo">376</span>     * &lt;P&gt;<a name="line.376"></a>
+<span class="sourceLineNo">377</span>     * This timeline uses a segmentSize of FIFTEEN_MIN_SEGMENT_SIZE. The<a name="line.377"></a>
+<span class="sourceLineNo">378</span>     * segment group is defined as 28 included segments (9:00 AM through<a name="line.378"></a>
+<span class="sourceLineNo">379</span>     * 4:00 PM) and 68 excluded segments (4:00 PM through 9:00 AM the next day).<a name="line.379"></a>
+<span class="sourceLineNo">380</span>     * &lt;P&gt;<a name="line.380"></a>
+<span class="sourceLineNo">381</span>     * In order to exclude Saturdays and Sundays it uses a baseTimeline that<a name="line.381"></a>
+<span class="sourceLineNo">382</span>     * only includes Monday through Friday days.<a name="line.382"></a>
+<span class="sourceLineNo">383</span>     * &lt;P&gt;<a name="line.383"></a>
+<span class="sourceLineNo">384</span>     * The {@code startTime} of the resulting timeline will be 9:00 AM<a name="line.384"></a>
+<span class="sourceLineNo">385</span>     * after the startTime of the baseTimeline. This will correspond to 9:00 AM<a name="line.385"></a>
+<span class="sourceLineNo">386</span>     * of the first Monday after 1/1/1900.<a name="line.386"></a>
+<span class="sourceLineNo">387</span>     *<a name="line.387"></a>
+<span class="sourceLineNo">388</span>     * @return A fully initialized SegmentedTimeline.<a name="line.388"></a>
+<span class="sourceLineNo">389</span>     */<a name="line.389"></a>
+<span class="sourceLineNo">390</span>    public static SegmentedTimeline newFifteenMinuteTimeline() {<a name="line.390"></a>
+<span class="sourceLineNo">391</span>        SegmentedTimeline timeline = new SegmentedTimeline(<a name="line.391"></a>
+<span class="sourceLineNo">392</span>                FIFTEEN_MINUTE_SEGMENT_SIZE, 28, 68);<a name="line.392"></a>
+<span class="sourceLineNo">393</span>        timeline.setStartTime(firstMondayAfter1900() + 36<a name="line.393"></a>
+<span class="sourceLineNo">394</span>                * timeline.getSegmentSize());<a name="line.394"></a>
+<span class="sourceLineNo">395</span>        timeline.setBaseTimeline(newMondayThroughFridayTimeline());<a name="line.395"></a>
+<span class="sourceLineNo">396</span>        return timeline;<a name="line.396"></a>
+<span class="sourceLineNo">397</span>    }<a name="line.397"></a>
+<span class="sourceLineNo">398</span><a name="line.398"></a>
+<span class="sourceLineNo">399</span>    /**<a name="line.399"></a>
+<span class="sourceLineNo">400</span>     * Returns the flag that controls whether or not the daylight saving<a name="line.400"></a>
+<span class="sourceLineNo">401</span>     * adjustment is applied.<a name="line.401"></a>
+<span class="sourceLineNo">402</span>     *<a name="line.402"></a>
+<span class="sourceLineNo">403</span>     * @return A boolean.<a name="line.403"></a>
+<span class="sourceLineNo">404</span>     */<a name="line.404"></a>
+<span class="sourceLineNo">405</span>    public boolean getAdjustForDaylightSaving() {<a name="line.405"></a>
+<span class="sourceLineNo">406</span>        return this.adjustForDaylightSaving;<a name="line.406"></a>
+<span class="sourceLineNo">407</span>    }<a name="line.407"></a>
+<span class="sourceLineNo">408</span><a name="line.408"></a>
+<span class="sourceLineNo">409</span>    /**<a name="line.409"></a>
+<span class="sourceLineNo">410</span>     * Sets the flag that controls whether or not the daylight saving adjustment<a name="line.410"></a>
+<span class="sourceLineNo">411</span>     * is applied.<a name="line.411"></a>
+<span class="sourceLineNo">412</span>     *<a name="line.412"></a>
+<span class="sourceLineNo">413</span>     * @param adjust  the flag.<a name="line.413"></a>
+<span class="sourceLineNo">414</span>     */<a name="line.414"></a>
+<span class="sourceLineNo">415</span>    public void setAdjustForDaylightSaving(boolean adjust) {<a name="line.415"></a>
+<span class="sourceLineNo">416</span>        this.adjustForDaylightSaving = adjust;<a name="line.416"></a>
+<span class="sourceLineNo">417</span>    }<a name="line.417"></a>
+<span class="sourceLineNo">418</span><a name="line.418"></a>
+<span class="sourceLineNo">419</span>    ////////////////////////////////////////////////////////////////////////////<a name="line.419"></a>
+<span class="sourceLineNo">420</span>    // operations<a name="line.420"></a>
+<span class="sourceLineNo">421</span>    ////////////////////////////////////////////////////////////////////////////<a name="line.421"></a>
+<span class="sourceLineNo">422</span><a name="line.422"></a>
+<span class="sourceLineNo">423</span>    /**<a name="line.423"></a>
+<span class="sourceLineNo">424</span>     * Sets the start time for the timeline. This is the beginning of segment<a name="line.424"></a>
+<span class="sourceLineNo">425</span>     * zero.<a name="line.425"></a>
+<span class="sourceLineNo">426</span>     *<a name="line.426"></a>
+<span class="sourceLineNo">427</span>     * @param millisecond  the start time (encoded as in java.util.Date).<a name="line.427"></a>
+<span class="sourceLineNo">428</span>     */<a name="line.428"></a>
+<span class="sourceLineNo">429</span>    public void setStartTime(long millisecond) {<a name="line.429"></a>
+<span class="sourceLineNo">430</span>        this.startTime = millisecond;<a name="line.430"></a>
+<span class="sourceLineNo">431</span>    }<a name="line.431"></a>
+<span class="sourceLineNo">432</span><a name="line.432"></a>
+<span class="sourceLineNo">433</span>    /**<a name="line.433"></a>
+<span class="sourceLineNo">434</span>     * Returns the start time for the timeline. This is the beginning of<a name="line.434"></a>
+<span class="sourceLineNo">435</span>     * segment zero.<a name="line.435"></a>
+<span class="sourceLineNo">436</span>     *<a name="line.436"></a>
+<span class="sourceLineNo">437</span>     * @return The start time.<a name="line.437"></a>
+<span class="sourceLineNo">438</span>     */<a name="line.438"></a>
+<span class="sourceLineNo">439</span>    public long getStartTime() {<a name="line.439"></a>
+<span class="sourceLineNo">440</span>        return this.startTime;<a name="line.440"></a>
+<span class="sourceLineNo">441</span>    }<a name="line.441"></a>
+<span class="sourceLineNo">442</span><a name="line.442"></a>
+<span class="sourceLineNo">443</span>    /**<a name="line.443"></a>
+<span class="sourceLineNo">444</span>     * Returns the number of segments excluded per segment group.<a name="line.444"></a>
+<span class="sourceLineNo">445</span>     *<a name="line.445"></a>
+<span class="sourceLineNo">446</span>     * @return The number of segments excluded.<a name="line.446"></a>
+<span class="sourceLineNo">447</span>     */<a name="line.447"></a>
+<span class="sourceLineNo">448</span>    public int getSegmentsExcluded() {<a name="line.448"></a>
+<span class="sourceLineNo">449</span>        return this.segmentsExcluded;<a name="line.449"></a>
+<span class="sourceLineNo">450</span>    }<a name="line.450"></a>
+<span class="sourceLineNo">451</span><a name="line.451"></a>
+<span class="sourceLineNo">452</span>    /**<a name="line.452"></a>
+<span class="sourceLineNo">453</span>     * Returns the size in milliseconds of the segments excluded per segment<a name="line.453"></a>
+<span class="sourceLineNo">454</span>     * group.<a name="line.454"></a>
+<span class="sourceLineNo">455</span>     *<a name="line.455"></a>
+<span class="sourceLineNo">456</span>     * @return The size in milliseconds.<a name="line.456"></a>
+<span class="sourceLineNo">457</span>     */<a name="line.457"></a>
+<span class="sourceLineNo">458</span>    public long getSegmentsExcludedSize() {<a name="line.458"></a>
+<span class="sourceLineNo">459</span>        return this.segmentsExcludedSize;<a name="line.459"></a>
+<span class="sourceLineNo">460</span>    }<a name="line.460"></a>
+<span class="sourceLineNo">461</span><a name="line.461"></a>
+<span class="sourceLineNo">462</span>    /**<a name="line.462"></a>
+<span class="sourceLineNo">463</span>     * Returns the number of segments in a segment group. This will be equal to<a name="line.463"></a>
+<span class="sourceLineNo">464</span>     * segments included plus segments excluded.<a name="line.464"></a>
+<span class="sourceLineNo">465</span>     *<a name="line.465"></a>
+<span class="sourceLineNo">466</span>     * @return The number of segments.<a name="line.466"></a>
+<span class="sourceLineNo">467</span>     */<a name="line.467"></a>
+<span class="sourceLineNo">468</span>    public int getGroupSegmentCount() {<a name="line.468"></a>
+<span class="sourceLineNo">469</span>        return this.groupSegmentCount;<a name="line.469"></a>
+<span class="sourceLineNo">470</span>    }<a name="line.470"></a>
+<span class="sourceLineNo">471</span><a name="line.471"></a>
+<span class="sourceLineNo">472</span>    /**<a name="line.472"></a>
+<span class="sourceLineNo">473</span>     * Returns the size in milliseconds of a segment group. This will be equal<a name="line.473"></a>
+<span class="sourceLineNo">474</span>     * to size of the segments included plus the size of the segments excluded.<a name="line.474"></a>
+<span class="sourceLineNo">475</span>     *<a name="line.475"></a>
+<span class="sourceLineNo">476</span>     * @return The segment group size in milliseconds.<a name="line.476"></a>
+<span class="sourceLineNo">477</span>     */<a name="line.477"></a>
+<span class="sourceLineNo">478</span>    public long getSegmentsGroupSize() {<a name="line.478"></a>
+<span class="sourceLineNo">479</span>        return this.segmentsGroupSize;<a name="line.479"></a>
+<span class="sourceLineNo">480</span>    }<a name="line.480"></a>
+<span class="sourceLineNo">481</span><a name="line.481"></a>
+<span class="sourceLineNo">482</span>    /**<a name="line.482"></a>
+<span class="sourceLineNo">483</span>     * Returns the number of segments included per segment group.<a name="line.483"></a>
+<span class="sourceLineNo">484</span>     *<a name="line.484"></a>
+<span class="sourceLineNo">485</span>     * @return The number of segments.<a name="line.485"></a>
+<span class="sourceLineNo">486</span>     */<a name="line.486"></a>
+<span class="sourceLineNo">487</span>    public int getSegmentsIncluded() {<a name="line.487"></a>
+<span class="sourceLineNo">488</span>        return this.segmentsIncluded;<a name="line.488"></a>
+<span class="sourceLineNo">489</span>    }<a name="line.489"></a>
+<span class="sourceLineNo">490</span><a name="line.490"></a>
+<span class="sourceLineNo">491</span>    /**<a name="line.491"></a>
+<span class="sourceLineNo">492</span>     * Returns the size in ms of the segments included per segment group.<a name="line.492"></a>
+<span class="sourceLineNo">493</span>     *<a name="line.493"></a>
+<span class="sourceLineNo">494</span>     * @return The segment size in milliseconds.<a name="line.494"></a>
+<span class="sourceLineNo">495</span>     */<a name="line.495"></a>
+<span class="sourceLineNo">496</span>    public long getSegmentsIncludedSize() {<a name="line.496"></a>
+<span class="sourceLineNo">497</span>        return this.segmentsIncludedSize;<a name="line.497"></a>
+<span class="sourceLineNo">498</span>    }<a name="line.498"></a>
+<span class="sourceLineNo">499</span><a name="line.499"></a>
+<span class="sourceLineNo">500</span>    /**<a name="line.500"></a>
+<span class="sourceLineNo">501</span>     * Returns the size of one segment in ms.<a name="line.501"></a>
+<span class="sourceLineNo">502</span>     *<a name="line.502"></a>
+<span class="sourceLineNo">503</span>     * @return The segment size in milliseconds.<a name="line.503"></a>
+<span class="sourceLineNo">504</span>     */<a name="line.504"></a>
+<span class="sourceLineNo">505</span>    public long getSegmentSize() {<a name="line.505"></a>
+<span class="sourceLineNo">506</span>        return this.segmentSize;<a name="line.506"></a>
+<span class="sourceLineNo">507</span>    }<a name="line.507"></a>
+<span class="sourceLineNo">508</span><a name="line.508"></a>
+<span class="sourceLineNo">509</span>    /**<a name="line.509"></a>
+<span class="sourceLineNo">510</span>     * Returns a list of all the exception segments. This list is not<a name="line.510"></a>
+<span class="sourceLineNo">511</span>     * modifiable.<a name="line.511"></a>
+<span class="sourceLineNo">512</span>     *<a name="line.512"></a>
+<span class="sourceLineNo">513</span>     * @return The exception segments.<a name="line.513"></a>
+<span class="sourceLineNo">514</span>     */<a name="line.514"></a>
+<span class="sourceLineNo">515</span>    public List getExceptionSegments() {<a name="line.515"></a>
+<span class="sourceLineNo">516</span>        return Collections.unmodifiableList(this.exceptionSegments);<a name="line.516"></a>
+<span class="sourceLineNo">517</span>    }<a name="line.517"></a>
+<span class="sourceLineNo">518</span><a name="line.518"></a>
+<span class="sourceLineNo">519</span>    /**<a name="line.519"></a>
+<span class="sourceLineNo">520</span>     * Sets the exception segments list.<a name="line.520"></a>
+<span class="sourceLineNo">521</span>     *<a name="line.521"></a>
+<span class="sourceLineNo">522</span>     * @param exceptionSegments  the exception segments.<a name="line.522"></a>
+<span class="sourceLineNo">523</span>     */<a name="line.523"></a>
+<span class="sourceLineNo">524</span>    public void setExceptionSegments(List exceptionSegments) {<a name="line.524"></a>
+<span class="sourceLineNo">525</span>        this.exceptionSegments = exceptionSegments;<a name="line.525"></a>
+<span class="sourceLineNo">526</span>    }<a name="line.526"></a>
+<span class="sourceLineNo">527</span><a name="line.527"></a>
+<span class="sourceLineNo">528</span>    /**<a name="line.528"></a>
+<span class="sourceLineNo">529</span>     * Returns our baseTimeline, or {@code null} if none.<a name="line.529"></a>
+<span class="sourceLineNo">530</span>     *<a name="line.530"></a>
+<span class="sourceLineNo">531</span>     * @return The base timeline.<a name="line.531"></a>
+<span class="sourceLineNo">532</span>     */<a name="line.532"></a>
+<span class="sourceLineNo">533</span>    public SegmentedTimeline getBaseTimeline() {<a name="line.533"></a>
+<span class="sourceLineNo">534</span>        return this.baseTimeline;<a name="line.534"></a>
+<span class="sourceLineNo">535</span>    }<a name="line.535"></a>
+<span class="sourceLineNo">536</span><a name="line.536"></a>
+<span class="sourceLineNo">537</span>    /**<a name="line.537"></a>
+<span class="sourceLineNo">538</span>     * Sets the base timeline.<a name="line.538"></a>
+<span class="sourceLineNo">539</span>     *<a name="line.539"></a>
+<span class="sourceLineNo">540</span>     * @param baseTimeline  the timeline.<a name="line.540"></a>
+<span class="sourceLineNo">541</span>     */<a name="line.541"></a>
+<span class="sourceLineNo">542</span>    public void setBaseTimeline(SegmentedTimeline baseTimeline) {<a name="line.542"></a>
+<span class="sourceLineNo">543</span><a name="line.543"></a>
+<span class="sourceLineNo">544</span>        // verify that baseTimeline is compatible with us<a name="line.544"></a>
+<span class="sourceLineNo">545</span>        if (baseTimeline != null) {<a name="line.545"></a>
+<span class="sourceLineNo">546</span>            if (baseTimeline.getSegmentSize() &lt; this.segmentSize) {<a name="line.546"></a>
+<span class="sourceLineNo">547</span>                throw new IllegalArgumentException(<a name="line.547"></a>
+<span class="sourceLineNo">548</span>                        "baseTimeline.getSegmentSize() "<a name="line.548"></a>
+<span class="sourceLineNo">549</span>                        + "is smaller than segmentSize");<a name="line.549"></a>
+<span class="sourceLineNo">550</span>            }<a name="line.550"></a>
+<span class="sourceLineNo">551</span>            else if (baseTimeline.getStartTime() &gt; this.startTime) {<a name="line.551"></a>
+<span class="sourceLineNo">552</span>                throw new IllegalArgumentException(<a name="line.552"></a>
+<span class="sourceLineNo">553</span>                        "baseTimeline.getStartTime() is after startTime");<a name="line.553"></a>
+<span class="sourceLineNo">554</span>            }<a name="line.554"></a>
+<span class="sourceLineNo">555</span>            else if ((baseTimeline.getSegmentSize() % this.segmentSize) != 0) {<a name="line.555"></a>
+<span class="sourceLineNo">556</span>                throw new IllegalArgumentException(<a name="line.556"></a>
+<span class="sourceLineNo">557</span>                        "baseTimeline.getSegmentSize() is not multiple of "<a name="line.557"></a>
+<span class="sourceLineNo">558</span>                        + "segmentSize");<a name="line.558"></a>
+<span class="sourceLineNo">559</span>            }<a name="line.559"></a>
+<span class="sourceLineNo">560</span>            else if (((this.startTime<a name="line.560"></a>
+<span class="sourceLineNo">561</span>                    - baseTimeline.getStartTime()) % this.segmentSize) != 0) {<a name="line.561"></a>
+<span class="sourceLineNo">562</span>                throw new IllegalArgumentException(<a name="line.562"></a>
+<span class="sourceLineNo">563</span>                        "baseTimeline is not aligned");<a name="line.563"></a>
+<span class="sourceLineNo">564</span>            }<a name="line.564"></a>
+<span class="sourceLineNo">565</span>        }<a name="line.565"></a>
+<span class="sourceLineNo">566</span><a name="line.566"></a>
+<span class="sourceLineNo">567</span>        this.baseTimeline = baseTimeline;<a name="line.567"></a>
+<span class="sourceLineNo">568</span>    }<a name="line.568"></a>
+<span class="sourceLineNo">569</span><a name="line.569"></a>
+<span class="sourceLineNo">570</span>    /**<a name="line.570"></a>
+<span class="sourceLineNo">571</span>     * Translates a value relative to the domain value (all Dates) into a value<a name="line.571"></a>
+<span class="sourceLineNo">572</span>     * relative to the segmented timeline. The values relative to the segmented<a name="line.572"></a>
+<span class="sourceLineNo">573</span>     * timeline are all consecutives starting at zero at the startTime.<a name="line.573"></a>
+<span class="sourceLineNo">574</span>     *<a name="line.574"></a>
+<span class="sourceLineNo">575</span>     * @param millisecond  the millisecond (as encoded by java.util.Date).<a name="line.575"></a>
+<span class="sourceLineNo">576</span>     *<a name="line.576"></a>
+<span class="sourceLineNo">577</span>     * @return The timeline value.<a name="line.577"></a>
+<span class="sourceLineNo">578</span>     */<a name="line.578"></a>
+<span class="sourceLineNo">579</span>    @Override<a name="line.579"></a>
+<span class="sourceLineNo">580</span>    public long toTimelineValue(long millisecond) {<a name="line.580"></a>
+<span class="sourceLineNo">581</span><a name="line.581"></a>
+<span class="sourceLineNo">582</span>        long result;<a name="line.582"></a>
+<span class="sourceLineNo">583</span>        long rawMilliseconds = millisecond - this.startTime;<a name="line.583"></a>
+<span class="sourceLineNo">584</span>        long groupMilliseconds = rawMilliseconds % this.segmentsGroupSize;<a name="line.584"></a>
+<span class="sourceLineNo">585</span>        long groupIndex = rawMilliseconds / this.segmentsGroupSize;<a name="line.585"></a>
+<span class="sourceLineNo">586</span><a name="line.586"></a>
+<span class="sourceLineNo">587</span>        if (groupMilliseconds &gt;= this.segmentsIncludedSize) {<a name="line.587"></a>
+<span class="sourceLineNo">588</span>            result = toTimelineValue(this.startTime + this.segmentsGroupSize<a name="line.588"></a>
+<span class="sourceLineNo">589</span>                    * (groupIndex + 1));<a name="line.589"></a>
+<span class="sourceLineNo">590</span>        }<a name="line.590"></a>
+<span class="sourceLineNo">591</span>        else {<a name="line.591"></a>
+<span class="sourceLineNo">592</span>            Segment segment = getSegment(millisecond);<a name="line.592"></a>
+<span class="sourceLineNo">593</span>            if (segment.inExceptionSegments()) {<a name="line.593"></a>
+<span class="sourceLineNo">594</span>                int p;<a name="line.594"></a>
+<span class="sourceLineNo">595</span>                while ((p = binarySearchExceptionSegments(segment)) &gt;= 0) {<a name="line.595"></a>
+<span class="sourceLineNo">596</span>                    segment = getSegment(millisecond = ((Segment)<a name="line.596"></a>
+<span class="sourceLineNo">597</span>                            this.exceptionSegments.get(p)).getSegmentEnd() + 1);<a name="line.597"></a>
+<span class="sourceLineNo">598</span>                }<a name="line.598"></a>
+<span class="sourceLineNo">599</span>                result = toTimelineValue(millisecond);<a name="line.599"></a>
+<span class="sourceLineNo">600</span>            }<a name="line.600"></a>
+<span class="sourceLineNo">601</span>            else {<a name="line.601"></a>
+<span class="sourceLineNo">602</span>                long shiftedSegmentedValue = millisecond - this.startTime;<a name="line.602"></a>
+<span class="sourceLineNo">603</span>                long x = shiftedSegmentedValue % this.segmentsGroupSize;<a name="line.603"></a>
+<span class="sourceLineNo">604</span>                long y = shiftedSegmentedValue / this.segmentsGroupSize;<a name="line.604"></a>
+<span class="sourceLineNo">605</span><a name="line.605"></a>
+<span class="sourceLineNo">606</span>                long wholeExceptionsBeforeDomainValue =<a name="line.606"></a>
+<span class="sourceLineNo">607</span>                    getExceptionSegmentCount(this.startTime, millisecond - 1);<a name="line.607"></a>
+<span class="sourceLineNo">608</span><a name="line.608"></a>
+<span class="sourceLineNo">609</span>//                long partialTimeInException = 0;<a name="line.609"></a>
+<span class="sourceLineNo">610</span>//                Segment ss = getSegment(millisecond);<a name="line.610"></a>
+<span class="sourceLineNo">611</span>//                if (ss.inExceptionSegments()) {<a name="line.611"></a>
+<span class="sourceLineNo">612</span>//                    partialTimeInException = millisecond<a name="line.612"></a>
+<span class="sourceLineNo">613</span>                //     - ss.getSegmentStart();<a name="line.613"></a>
+<span class="sourceLineNo">614</span>//                }<a name="line.614"></a>
+<span class="sourceLineNo">615</span><a name="line.615"></a>
+<span class="sourceLineNo">616</span>                if (x &lt; this.segmentsIncludedSize) {<a name="line.616"></a>
+<span class="sourceLineNo">617</span>                    result = this.segmentsIncludedSize * y<a name="line.617"></a>
+<span class="sourceLineNo">618</span>                             + x - wholeExceptionsBeforeDomainValue<a name="line.618"></a>
+<span class="sourceLineNo">619</span>                             * this.segmentSize;<a name="line.619"></a>
+<span class="sourceLineNo">620</span>                             // - partialTimeInException;<a name="line.620"></a>
+<span class="sourceLineNo">621</span>                }<a name="line.621"></a>
+<span class="sourceLineNo">622</span>                else {<a name="line.622"></a>
+<span class="sourceLineNo">623</span>                    result = this.segmentsIncludedSize * (y + 1)<a name="line.623"></a>
+<span class="sourceLineNo">624</span>                             - wholeExceptionsBeforeDomainValue<a name="line.624"></a>
+<span class="sourceLineNo">625</span>                             * this.segmentSize;<a name="line.625"></a>
+<span class="sourceLineNo">626</span>                             // - partialTimeInException;<a name="line.626"></a>
+<span class="sourceLineNo">627</span>                }<a name="line.627"></a>
+<span class="sourceLineNo">628</span>            }<a name="line.628"></a>
+<span class="sourceLineNo">629</span>        }<a name="line.629"></a>
+<span class="sourceLineNo">630</span><a name="line.630"></a>
+<span class="sourceLineNo">631</span>        return result;<a name="line.631"></a>
+<span class="sourceLineNo">632</span>    }<a name="line.632"></a>
+<span class="sourceLineNo">633</span><a name="line.633"></a>
+<span class="sourceLineNo">634</span>    /**<a name="line.634"></a>
+<span class="sourceLineNo">635</span>     * Translates a date into a value relative to the segmented timeline. The<a name="line.635"></a>
+<span class="sourceLineNo">636</span>     * values relative to the segmented timeline are all consecutives starting<a name="line.636"></a>
+<span class="sourceLineNo">637</span>     * at zero at the startTime.<a name="line.637"></a>
+<span class="sourceLineNo">638</span>     *<a name="line.638"></a>
+<span class="sourceLineNo">639</span>     * @param date  date relative to the domain.<a name="line.639"></a>
+<span class="sourceLineNo">640</span>     *<a name="line.640"></a>
+<span class="sourceLineNo">641</span>     * @return The timeline value (in milliseconds).<a name="line.641"></a>
+<span class="sourceLineNo">642</span>     */<a name="line.642"></a>
+<span class="sourceLineNo">643</span>    @Override<a name="line.643"></a>
+<span class="sourceLineNo">644</span>    public long toTimelineValue(Date date) {<a name="line.644"></a>
+<span class="sourceLineNo">645</span>        return toTimelineValue(getTime(date));<a name="line.645"></a>
+<span class="sourceLineNo">646</span>        //return toTimelineValue(dateDomainValue.getTime());<a name="line.646"></a>
+<span class="sourceLineNo">647</span>    }<a name="line.647"></a>
+<span class="sourceLineNo">648</span><a name="line.648"></a>
+<span class="sourceLineNo">649</span>    /**<a name="line.649"></a>
+<span class="sourceLineNo">650</span>     * Translates a value relative to the timeline into a millisecond.<a name="line.650"></a>
+<span class="sourceLineNo">651</span>     *<a name="line.651"></a>
+<span class="sourceLineNo">652</span>     * @param timelineValue  the timeline value (in milliseconds).<a name="line.652"></a>
+<span class="sourceLineNo">653</span>     *<a name="line.653"></a>
+<span class="sourceLineNo">654</span>     * @return The domain value (in milliseconds).<a name="line.654"></a>
+<span class="sourceLineNo">655</span>     */<a name="line.655"></a>
+<span class="sourceLineNo">656</span>    @Override<a name="line.656"></a>
+<span class="sourceLineNo">657</span>    public long toMillisecond(long timelineValue) {<a name="line.657"></a>
+<span class="sourceLineNo">658</span><a name="line.658"></a>
+<span class="sourceLineNo">659</span>        // calculate the result as if no exceptions<a name="line.659"></a>
+<span class="sourceLineNo">660</span>        Segment result = new Segment(this.startTime + timelineValue<a name="line.660"></a>
+<span class="sourceLineNo">661</span>                + (timelineValue / this.segmentsIncludedSize)<a name="line.661"></a>
+<span class="sourceLineNo">662</span>                * this.segmentsExcludedSize);<a name="line.662"></a>
+<span class="sourceLineNo">663</span><a name="line.663"></a>
+<span class="sourceLineNo">664</span>        long lastIndex = this.startTime;<a name="line.664"></a>
+<span class="sourceLineNo">665</span><a name="line.665"></a>
+<span class="sourceLineNo">666</span>        // adjust result for any exceptions in the result calculated<a name="line.666"></a>
+<span class="sourceLineNo">667</span>        while (lastIndex &lt;= result.segmentStart) {<a name="line.667"></a>
+<span class="sourceLineNo">668</span><a name="line.668"></a>
+<span class="sourceLineNo">669</span>            // skip all whole exception segments in the range<a name="line.669"></a>
+<span class="sourceLineNo">670</span>            long exceptionSegmentCount;<a name="line.670"></a>
+<span class="sourceLineNo">671</span>            while ((exceptionSegmentCount = getExceptionSegmentCount(<a name="line.671"></a>
+<span class="sourceLineNo">672</span>                 lastIndex, (result.millisecond / this.segmentSize)<a name="line.672"></a>
+<span class="sourceLineNo">673</span>                 * this.segmentSize - 1)) &gt; 0<a name="line.673"></a>
+<span class="sourceLineNo">674</span>            ) {<a name="line.674"></a>
+<span class="sourceLineNo">675</span>                lastIndex = result.segmentStart;<a name="line.675"></a>
+<span class="sourceLineNo">676</span>                // move forward exceptionSegmentCount segments skipping<a name="line.676"></a>
+<span class="sourceLineNo">677</span>                // excluded segments<a name="line.677"></a>
+<span class="sourceLineNo">678</span>                for (int i = 0; i &lt; exceptionSegmentCount; i++) {<a name="line.678"></a>
+<span class="sourceLineNo">679</span>                    do {<a name="line.679"></a>
+<span class="sourceLineNo">680</span>                        result.inc();<a name="line.680"></a>
+<span class="sourceLineNo">681</span>                    }<a name="line.681"></a>
+<span class="sourceLineNo">682</span>                    while (result.inExcludeSegments());<a name="line.682"></a>
+<span class="sourceLineNo">683</span>                }<a name="line.683"></a>
+<span class="sourceLineNo">684</span>            }<a name="line.684"></a>
+<span class="sourceLineNo">685</span>            lastIndex = result.segmentStart;<a name="line.685"></a>
+<span class="sourceLineNo">686</span><a name="line.686"></a>
+<span class="sourceLineNo">687</span>            // skip exception or excluded segments we may fall on<a name="line.687"></a>
+<span class="sourceLineNo">688</span>            while (result.inExceptionSegments() || result.inExcludeSegments()) {<a name="line.688"></a>
+<span class="sourceLineNo">689</span>                result.inc();<a name="line.689"></a>
+<span class="sourceLineNo">690</span>                lastIndex += this.segmentSize;<a name="line.690"></a>
+<span class="sourceLineNo">691</span>            }<a name="line.691"></a>
+<span class="sourceLineNo">692</span><a name="line.692"></a>
+<span class="sourceLineNo">693</span>            lastIndex++;<a name="line.693"></a>
+<span class="sourceLineNo">694</span>        }<a name="line.694"></a>
+<span class="sourceLineNo">695</span><a name="line.695"></a>
+<span class="sourceLineNo">696</span>        return getTimeFromLong(result.millisecond);<a name="line.696"></a>
+<span class="sourceLineNo">697</span>    }<a name="line.697"></a>
+<span class="sourceLineNo">698</span><a name="line.698"></a>
+<span class="sourceLineNo">699</span>    /**<a name="line.699"></a>
+<span class="sourceLineNo">700</span>     * Converts a date/time value to take account of daylight savings time.<a name="line.700"></a>
+<span class="sourceLineNo">701</span>     *<a name="line.701"></a>
+<span class="sourceLineNo">702</span>     * @param date  the milliseconds.<a name="line.702"></a>
+<span class="sourceLineNo">703</span>     *<a name="line.703"></a>
+<span class="sourceLineNo">704</span>     * @return The milliseconds.<a name="line.704"></a>
+<span class="sourceLineNo">705</span>     */<a name="line.705"></a>
+<span class="sourceLineNo">706</span>    public long getTimeFromLong(long date) {<a name="line.706"></a>
+<span class="sourceLineNo">707</span>        long result = date;<a name="line.707"></a>
+<span class="sourceLineNo">708</span>        if (this.adjustForDaylightSaving) {<a name="line.708"></a>
+<span class="sourceLineNo">709</span>            this.workingCalendarNoDST.setTime(new Date(date));<a name="line.709"></a>
+<span class="sourceLineNo">710</span>            this.workingCalendar.set(<a name="line.710"></a>
+<span class="sourceLineNo">711</span>                this.workingCalendarNoDST.get(Calendar.YEAR),<a name="line.711"></a>
+<span class="sourceLineNo">712</span>                this.workingCalendarNoDST.get(Calendar.MONTH),<a name="line.712"></a>
+<span class="sourceLineNo">713</span>                this.workingCalendarNoDST.get(Calendar.DATE),<a name="line.713"></a>
+<span class="sourceLineNo">714</span>                this.workingCalendarNoDST.get(Calendar.HOUR_OF_DAY),<a name="line.714"></a>
+<span class="sourceLineNo">715</span>                this.workingCalendarNoDST.get(Calendar.MINUTE),<a name="line.715"></a>
+<span class="sourceLineNo">716</span>                this.workingCalendarNoDST.get(Calendar.SECOND)<a name="line.716"></a>
+<span class="sourceLineNo">717</span>            );<a name="line.717"></a>
+<span class="sourceLineNo">718</span>            this.workingCalendar.set(Calendar.MILLISECOND,<a name="line.718"></a>
+<span class="sourceLineNo">719</span>                    this.workingCalendarNoDST.get(Calendar.MILLISECOND));<a name="line.719"></a>
+<span class="sourceLineNo">720</span>            // result = this.workingCalendar.getTimeInMillis();<a name="line.720"></a>
+<span class="sourceLineNo">721</span>            // preceding code won't work with JDK 1.3<a name="line.721"></a>
+<span class="sourceLineNo">722</span>            result = this.workingCalendar.getTime().getTime();<a name="line.722"></a>
+<span class="sourceLineNo">723</span>        }<a name="line.723"></a>
+<span class="sourceLineNo">724</span>        return result;<a name="line.724"></a>
+<span class="sourceLineNo">725</span>    }<a name="line.725"></a>
+<span class="sourceLineNo">726</span><a name="line.726"></a>
+<span class="sourceLineNo">727</span>    /**<a name="line.727"></a>
+<span class="sourceLineNo">728</span>     * Returns {@code true} if a value is contained in the timeline.<a name="line.728"></a>
+<span class="sourceLineNo">729</span>     *<a name="line.729"></a>
+<span class="sourceLineNo">730</span>     * @param millisecond  the value to verify.<a name="line.730"></a>
+<span class="sourceLineNo">731</span>     *<a name="line.731"></a>
+<span class="sourceLineNo">732</span>     * @return {@code true} if value is contained in the timeline.<a name="line.732"></a>
+<span class="sourceLineNo">733</span>     */<a name="line.733"></a>
+<span class="sourceLineNo">734</span>    @Override<a name="line.734"></a>
+<span class="sourceLineNo">735</span>    public boolean containsDomainValue(long millisecond) {<a name="line.735"></a>
+<span class="sourceLineNo">736</span>        Segment segment = getSegment(millisecond);<a name="line.736"></a>
+<span class="sourceLineNo">737</span>        return segment.inIncludeSegments();<a name="line.737"></a>
+<span class="sourceLineNo">738</span>    }<a name="line.738"></a>
+<span class="sourceLineNo">739</span><a name="line.739"></a>
+<span class="sourceLineNo">740</span>    /**<a name="line.740"></a>
+<span class="sourceLineNo">741</span>     * Returns {@code true} if a value is contained in the timeline.<a name="line.741"></a>
+<span class="sourceLineNo">742</span>     *<a name="line.742"></a>
+<span class="sourceLineNo">743</span>     * @param date  date to verify<a name="line.743"></a>
+<span class="sourceLineNo">744</span>     *<a name="line.744"></a>
+<span class="sourceLineNo">745</span>     * @return {@code true} if value is contained in the timeline<a name="line.745"></a>
+<span class="sourceLineNo">746</span>     */<a name="line.746"></a>
+<span class="sourceLineNo">747</span>    @Override<a name="line.747"></a>
+<span class="sourceLineNo">748</span>    public boolean containsDomainValue(Date date) {<a name="line.748"></a>
+<span class="sourceLineNo">749</span>        return containsDomainValue(getTime(date));<a name="line.749"></a>
+<span class="sourceLineNo">750</span>    }<a name="line.750"></a>
+<span class="sourceLineNo">751</span><a name="line.751"></a>
+<span class="sourceLineNo">752</span>    /**<a name="line.752"></a>
+<span class="sourceLineNo">753</span>     * Returns {@code true} if a range of values are contained in the<a name="line.753"></a>
+<span class="sourceLineNo">754</span>     * timeline. This is implemented verifying that all segments are in the<a name="line.754"></a>
+<span class="sourceLineNo">755</span>     * range.<a name="line.755"></a>
+<span class="sourceLineNo">756</span>     *<a name="line.756"></a>
+<span class="sourceLineNo">757</span>     * @param domainValueStart start of the range to verify<a name="line.757"></a>
+<span class="sourceLineNo">758</span>     * @param domainValueEnd end of the range to verify<a name="line.758"></a>
+<span class="sourceLineNo">759</span>     *<a name="line.759"></a>
+<span class="sourceLineNo">760</span>     * @return {@code true} if the range is contained in the timeline<a name="line.760"></a>
+<span class="sourceLineNo">761</span>     */<a name="line.761"></a>
+<span class="sourceLineNo">762</span>    @Override<a name="line.762"></a>
+<span class="sourceLineNo">763</span>    public boolean containsDomainRange(long domainValueStart,<a name="line.763"></a>
+<span class="sourceLineNo">764</span>            long domainValueEnd) {<a name="line.764"></a>
+<span class="sourceLineNo">765</span>        if (domainValueEnd &lt; domainValueStart) {<a name="line.765"></a>
+<span class="sourceLineNo">766</span>            throw new IllegalArgumentException(<a name="line.766"></a>
+<span class="sourceLineNo">767</span>                    "domainValueEnd (" + domainValueEnd<a name="line.767"></a>
+<span class="sourceLineNo">768</span>                    + ") &lt; domainValueStart (" + domainValueStart + ")");<a name="line.768"></a>
+<span class="sourceLineNo">769</span>        }<a name="line.769"></a>
+<span class="sourceLineNo">770</span>        Segment segment = getSegment(domainValueStart);<a name="line.770"></a>
+<span class="sourceLineNo">771</span>        boolean contains = true;<a name="line.771"></a>
+<span class="sourceLineNo">772</span>        do {<a name="line.772"></a>
+<span class="sourceLineNo">773</span>            contains = (segment.inIncludeSegments());<a name="line.773"></a>
+<span class="sourceLineNo">774</span>            if (segment.contains(domainValueEnd)) {<a name="line.774"></a>
+<span class="sourceLineNo">775</span>                break;<a name="line.775"></a>
+<span class="sourceLineNo">776</span>            }<a name="line.776"></a>
+<span class="sourceLineNo">777</span>            else {<a name="line.777"></a>
+<span class="sourceLineNo">778</span>                segment.inc();<a name="line.778"></a>
+<span class="sourceLineNo">779</span>            }<a name="line.779"></a>
+<span class="sourceLineNo">780</span>        }<a name="line.780"></a>
+<span class="sourceLineNo">781</span>        while (contains);<a name="line.781"></a>
+<span class="sourceLineNo">782</span>        return (contains);<a name="line.782"></a>
+<span class="sourceLineNo">783</span>    }<a name="line.783"></a>
+<span class="sourceLineNo">784</span><a name="line.784"></a>
+<span class="sourceLineNo">785</span>    /**<a name="line.785"></a>
+<span class="sourceLineNo">786</span>     * Returns {@code true} if a range of values are contained in the<a name="line.786"></a>
+<span class="sourceLineNo">787</span>     * timeline. This is implemented verifying that all segments are in the<a name="line.787"></a>
+<span class="sourceLineNo">788</span>     * range.<a name="line.788"></a>
+<span class="sourceLineNo">789</span>     *<a name="line.789"></a>
+<span class="sourceLineNo">790</span>     * @param dateDomainValueStart start of the range to verify<a name="line.790"></a>
+<span class="sourceLineNo">791</span>     * @param dateDomainValueEnd end of the range to verify<a name="line.791"></a>
+<span class="sourceLineNo">792</span>     *<a name="line.792"></a>
+<span class="sourceLineNo">793</span>     * @return {@code true} if the range is contained in the timeline<a name="line.793"></a>
+<span class="sourceLineNo">794</span>     */<a name="line.794"></a>
+<span class="sourceLineNo">795</span>    @Override<a name="line.795"></a>
+<span class="sourceLineNo">796</span>    public boolean containsDomainRange(Date dateDomainValueStart,<a name="line.796"></a>
+<span class="sourceLineNo">797</span>            Date dateDomainValueEnd) {<a name="line.797"></a>
+<span class="sourceLineNo">798</span>        return containsDomainRange(getTime(dateDomainValueStart),<a name="line.798"></a>
+<span class="sourceLineNo">799</span>                getTime(dateDomainValueEnd));<a name="line.799"></a>
+<span class="sourceLineNo">800</span>    }<a name="line.800"></a>
+<span class="sourceLineNo">801</span><a name="line.801"></a>
+<span class="sourceLineNo">802</span>    /**<a name="line.802"></a>
+<span class="sourceLineNo">803</span>     * Adds a segment as an exception. An exception segment is defined as a<a name="line.803"></a>
+<span class="sourceLineNo">804</span>     * segment to exclude from what would otherwise be considered a valid<a name="line.804"></a>
+<span class="sourceLineNo">805</span>     * segment of the timeline.  An exception segment can not be contained<a name="line.805"></a>
+<span class="sourceLineNo">806</span>     * inside an already excluded segment.  If so, no action will occur (the<a name="line.806"></a>
+<span class="sourceLineNo">807</span>     * proposed exception segment will be discarded).<a name="line.807"></a>
+<span class="sourceLineNo">808</span>     * &lt;p&gt;<a name="line.808"></a>
+<span class="sourceLineNo">809</span>     * The segment is identified by a domainValue into any part of the segment.<a name="line.809"></a>
+<span class="sourceLineNo">810</span>     * Therefore the segmentStart &amp;lt;= domainValue &amp;lt;= segmentEnd.<a name="line.810"></a>
+<span class="sourceLineNo">811</span>     *<a name="line.811"></a>
+<span class="sourceLineNo">812</span>     * @param millisecond  domain value to treat as an exception<a name="line.812"></a>
+<span class="sourceLineNo">813</span>     */<a name="line.813"></a>
+<span class="sourceLineNo">814</span>    public void addException(long millisecond) {<a name="line.814"></a>
+<span class="sourceLineNo">815</span>        addException(new Segment(millisecond));<a name="line.815"></a>
+<span class="sourceLineNo">816</span>    }<a name="line.816"></a>
+<span class="sourceLineNo">817</span><a name="line.817"></a>
+<span class="sourceLineNo">818</span>    /**<a name="line.818"></a>
+<span class="sourceLineNo">819</span>     * Adds a segment range as an exception. An exception segment is defined as<a name="line.819"></a>
+<span class="sourceLineNo">820</span>     * a segment to exclude from what would otherwise be considered a valid<a name="line.820"></a>
+<span class="sourceLineNo">821</span>     * segment of the timeline.  An exception segment can not be contained<a name="line.821"></a>
+<span class="sourceLineNo">822</span>     * inside an already excluded segment.  If so, no action will occur (the<a name="line.822"></a>
+<span class="sourceLineNo">823</span>     * proposed exception segment will be discarded).<a name="line.823"></a>
+<span class="sourceLineNo">824</span>     * &lt;p&gt;<a name="line.824"></a>
+<span class="sourceLineNo">825</span>     * The segment range is identified by a domainValue that begins a valid<a name="line.825"></a>
+<span class="sourceLineNo">826</span>     * segment and ends with a domainValue that ends a valid segment.<a name="line.826"></a>
+<span class="sourceLineNo">827</span>     * Therefore the range will contain all segments whose segmentStart<a name="line.827"></a>
+<span class="sourceLineNo">828</span>     * &amp;lt;= domainValue and segmentEnd &amp;lt;= toDomainValue.<a name="line.828"></a>
+<span class="sourceLineNo">829</span>     *<a name="line.829"></a>
+<span class="sourceLineNo">830</span>     * @param fromDomainValue  start of domain range to treat as an exception<a name="line.830"></a>
+<span class="sourceLineNo">831</span>     * @param toDomainValue  end of domain range to treat as an exception<a name="line.831"></a>
+<span class="sourceLineNo">832</span>     */<a name="line.832"></a>
+<span class="sourceLineNo">833</span>    public void addException(long fromDomainValue, long toDomainValue) {<a name="line.833"></a>
+<span class="sourceLineNo">834</span>        addException(new SegmentRange(fromDomainValue, toDomainValue));<a name="line.834"></a>
+<span class="sourceLineNo">835</span>    }<a name="line.835"></a>
+<span class="sourceLineNo">836</span><a name="line.836"></a>
+<span class="sourceLineNo">837</span>    /**<a name="line.837"></a>
+<span class="sourceLineNo">838</span>     * Adds a segment as an exception. An exception segment is defined as a<a name="line.838"></a>
+<span class="sourceLineNo">839</span>     * segment to exclude from what would otherwise be considered a valid<a name="line.839"></a>
+<span class="sourceLineNo">840</span>     * segment of the timeline.  An exception segment can not be contained<a name="line.840"></a>
+<span class="sourceLineNo">841</span>     * inside an already excluded segment.  If so, no action will occur (the<a name="line.841"></a>
+<span class="sourceLineNo">842</span>     * proposed exception segment will be discarded).<a name="line.842"></a>
+<span class="sourceLineNo">843</span>     * &lt;p&gt;<a name="line.843"></a>
+<span class="sourceLineNo">844</span>     * The segment is identified by a Date into any part of the segment.<a name="line.844"></a>
+<span class="sourceLineNo">845</span>     *<a name="line.845"></a>
+<span class="sourceLineNo">846</span>     * @param exceptionDate  Date into the segment to exclude.<a name="line.846"></a>
+<span class="sourceLineNo">847</span>     */<a name="line.847"></a>
+<span class="sourceLineNo">848</span>    public void addException(Date exceptionDate) {<a name="line.848"></a>
+<span class="sourceLineNo">849</span>        addException(getTime(exceptionDate));<a name="line.849"></a>
+<span class="sourceLineNo">850</span>        //addException(exceptionDate.getTime());<a name="line.850"></a>
+<span class="sourceLineNo">851</span>    }<a name="line.851"></a>
+<span class="sourceLineNo">852</span><a name="line.852"></a>
+<span class="sourceLineNo">853</span>    /**<a name="line.853"></a>
+<span class="sourceLineNo">854</span>     * Adds a list of dates as segment exceptions. Each exception segment is<a name="line.854"></a>
+<span class="sourceLineNo">855</span>     * defined as a segment to exclude from what would otherwise be considered<a name="line.855"></a>
+<span class="sourceLineNo">856</span>     * a valid segment of the timeline.  An exception segment can not be<a name="line.856"></a>
+<span class="sourceLineNo">857</span>     * contained inside an already excluded segment.  If so, no action will<a name="line.857"></a>
+<span class="sourceLineNo">858</span>     * occur (the proposed exception segment will be discarded).<a name="line.858"></a>
+<span class="sourceLineNo">859</span>     * &lt;p&gt;<a name="line.859"></a>
+<span class="sourceLineNo">860</span>     * The segment is identified by a Date into any part of the segment.<a name="line.860"></a>
+<span class="sourceLineNo">861</span>     *<a name="line.861"></a>
+<span class="sourceLineNo">862</span>     * @param exceptionList  List of Date objects that identify the segments to<a name="line.862"></a>
+<span class="sourceLineNo">863</span>     *                       exclude.<a name="line.863"></a>
+<span class="sourceLineNo">864</span>     */<a name="line.864"></a>
+<span class="sourceLineNo">865</span>    public void addExceptions(List exceptionList) {<a name="line.865"></a>
+<span class="sourceLineNo">866</span>        for (Iterator iter = exceptionList.iterator(); iter.hasNext();) {<a name="line.866"></a>
+<span class="sourceLineNo">867</span>            addException((Date) iter.next());<a name="line.867"></a>
+<span class="sourceLineNo">868</span>        }<a name="line.868"></a>
+<span class="sourceLineNo">869</span>    }<a name="line.869"></a>
+<span class="sourceLineNo">870</span><a name="line.870"></a>
+<span class="sourceLineNo">871</span>    /**<a name="line.871"></a>
+<span class="sourceLineNo">872</span>     * Adds a segment as an exception. An exception segment is defined as a<a name="line.872"></a>
+<span class="sourceLineNo">873</span>     * segment to exclude from what would otherwise be considered a valid<a name="line.873"></a>
+<span class="sourceLineNo">874</span>     * segment of the timeline.  An exception segment can not be contained<a name="line.874"></a>
+<span class="sourceLineNo">875</span>     * inside an already excluded segment.  This is verified inside this<a name="line.875"></a>
+<span class="sourceLineNo">876</span>     * method, and if so, no action will occur (the proposed exception segment<a name="line.876"></a>
+<span class="sourceLineNo">877</span>     * will be discarded).<a name="line.877"></a>
+<span class="sourceLineNo">878</span>     *<a name="line.878"></a>
+<span class="sourceLineNo">879</span>     * @param segment  the segment to exclude.<a name="line.879"></a>
+<span class="sourceLineNo">880</span>     */<a name="line.880"></a>
+<span class="sourceLineNo">881</span>    private void addException(Segment segment) {<a name="line.881"></a>
+<span class="sourceLineNo">882</span>         if (segment.inIncludeSegments()) {<a name="line.882"></a>
+<span class="sourceLineNo">883</span>             int p = binarySearchExceptionSegments(segment);<a name="line.883"></a>
+<span class="sourceLineNo">884</span>             this.exceptionSegments.add(-(p + 1), segment);<a name="line.884"></a>
+<span class="sourceLineNo">885</span>         }<a name="line.885"></a>
+<span class="sourceLineNo">886</span>    }<a name="line.886"></a>
+<span class="sourceLineNo">887</span><a name="line.887"></a>
+<span class="sourceLineNo">888</span>    /**<a name="line.888"></a>
+<span class="sourceLineNo">889</span>     * Adds a segment relative to the baseTimeline as an exception. Because a<a name="line.889"></a>
+<span class="sourceLineNo">890</span>     * base segment is normally larger than our segments, this may add one or<a name="line.890"></a>
+<span class="sourceLineNo">891</span>     * more segment ranges to the exception list.<a name="line.891"></a>
+<span class="sourceLineNo">892</span>     * &lt;p&gt;<a name="line.892"></a>
+<span class="sourceLineNo">893</span>     * An exception segment is defined as a segment<a name="line.893"></a>
+<span class="sourceLineNo">894</span>     * to exclude from what would otherwise be considered a valid segment of<a name="line.894"></a>
+<span class="sourceLineNo">895</span>     * the timeline.  An exception segment can not be contained inside an<a name="line.895"></a>
+<span class="sourceLineNo">896</span>     * already excluded segment.  If so, no action will occur (the proposed<a name="line.896"></a>
+<span class="sourceLineNo">897</span>     * exception segment will be discarded).<a name="line.897"></a>
+<span class="sourceLineNo">898</span>     * &lt;p&gt;<a name="line.898"></a>
+<span class="sourceLineNo">899</span>     * The segment is identified by a domainValue into any part of the<a name="line.899"></a>
+<span class="sourceLineNo">900</span>     * baseTimeline segment.<a name="line.900"></a>
+<span class="sourceLineNo">901</span>     *<a name="line.901"></a>
+<span class="sourceLineNo">902</span>     * @param domainValue  domain value to teat as a baseTimeline exception.<a name="line.902"></a>
+<span class="sourceLineNo">903</span>     */<a name="line.903"></a>
+<span class="sourceLineNo">904</span>    public void addBaseTimelineException(long domainValue) {<a name="line.904"></a>
+<span class="sourceLineNo">905</span><a name="line.905"></a>
+<span class="sourceLineNo">906</span>        Segment baseSegment = this.baseTimeline.getSegment(domainValue);<a name="line.906"></a>
+<span class="sourceLineNo">907</span>        if (baseSegment.inIncludeSegments()) {<a name="line.907"></a>
+<span class="sourceLineNo">908</span><a name="line.908"></a>
+<span class="sourceLineNo">909</span>            // cycle through all the segments contained in the BaseTimeline<a name="line.909"></a>
+<span class="sourceLineNo">910</span>            // exception segment<a name="line.910"></a>
+<span class="sourceLineNo">911</span>            Segment segment = getSegment(baseSegment.getSegmentStart());<a name="line.911"></a>
+<span class="sourceLineNo">912</span>            while (segment.getSegmentStart() &lt;= baseSegment.getSegmentEnd()) {<a name="line.912"></a>
+<span class="sourceLineNo">913</span>                if (segment.inIncludeSegments()) {<a name="line.913"></a>
+<span class="sourceLineNo">914</span><a name="line.914"></a>
+<span class="sourceLineNo">915</span>                    // find all consecutive included segments<a name="line.915"></a>
+<span class="sourceLineNo">916</span>                    long fromDomainValue = segment.getSegmentStart();<a name="line.916"></a>
+<span class="sourceLineNo">917</span>                    long toDomainValue;<a name="line.917"></a>
+<span class="sourceLineNo">918</span>                    do {<a name="line.918"></a>
+<span class="sourceLineNo">919</span>                        toDomainValue = segment.getSegmentEnd();<a name="line.919"></a>
+<span class="sourceLineNo">920</span>                        segment.inc();<a name="line.920"></a>
+<span class="sourceLineNo">921</span>                    }<a name="line.921"></a>
+<span class="sourceLineNo">922</span>                    while (segment.inIncludeSegments());<a name="line.922"></a>
+<span class="sourceLineNo">923</span><a name="line.923"></a>
+<span class="sourceLineNo">924</span>                    // add the interval as an exception<a name="line.924"></a>
+<span class="sourceLineNo">925</span>                    addException(fromDomainValue, toDomainValue);<a name="line.925"></a>
+<span class="sourceLineNo">926</span><a name="line.926"></a>
+<span class="sourceLineNo">927</span>                }<a name="line.927"></a>
+<span class="sourceLineNo">928</span>                else {<a name="line.928"></a>
+<span class="sourceLineNo">929</span>                    // this is not one of our included segment, skip it<a name="line.929"></a>
+<span class="sourceLineNo">930</span>                    segment.inc();<a name="line.930"></a>
+<span class="sourceLineNo">931</span>                }<a name="line.931"></a>
+<span class="sourceLineNo">932</span>            }<a name="line.932"></a>
+<span class="sourceLineNo">933</span>        }<a name="line.933"></a>
+<span class="sourceLineNo">934</span>    }<a name="line.934"></a>
+<span class="sourceLineNo">935</span><a name="line.935"></a>
+<span class="sourceLineNo">936</span>    /**<a name="line.936"></a>
+<span class="sourceLineNo">937</span>     * Adds a segment relative to the baseTimeline as an exception. An<a name="line.937"></a>
+<span class="sourceLineNo">938</span>     * exception segment is defined as a segment to exclude from what would<a name="line.938"></a>
+<span class="sourceLineNo">939</span>     * otherwise be considered a valid segment of the timeline.  An exception<a name="line.939"></a>
+<span class="sourceLineNo">940</span>     * segment can not be contained inside an already excluded segment. If so,<a name="line.940"></a>
+<span class="sourceLineNo">941</span>     * no action will occure (the proposed exception segment will be discarded).<a name="line.941"></a>
+<span class="sourceLineNo">942</span>     * &lt;p&gt;<a name="line.942"></a>
+<span class="sourceLineNo">943</span>     * The segment is identified by a domainValue into any part of the segment.<a name="line.943"></a>
+<span class="sourceLineNo">944</span>     * Therefore the segmentStart &amp;lt;= domainValue &amp;lt;= segmentEnd.<a name="line.944"></a>
+<span class="sourceLineNo">945</span>     *<a name="line.945"></a>
+<span class="sourceLineNo">946</span>     * @param date  date domain value to treat as a baseTimeline exception<a name="line.946"></a>
+<span class="sourceLineNo">947</span>     */<a name="line.947"></a>
+<span class="sourceLineNo">948</span>    public void addBaseTimelineException(Date date) {<a name="line.948"></a>
+<span class="sourceLineNo">949</span>        addBaseTimelineException(getTime(date));<a name="line.949"></a>
+<span class="sourceLineNo">950</span>    }<a name="line.950"></a>
+<span class="sourceLineNo">951</span><a name="line.951"></a>
+<span class="sourceLineNo">952</span>    /**<a name="line.952"></a>
+<span class="sourceLineNo">953</span>     * Adds all excluded segments from the BaseTimeline as exceptions to our<a name="line.953"></a>
+<span class="sourceLineNo">954</span>     * timeline. This allows us to combine two timelines for more complex<a name="line.954"></a>
+<span class="sourceLineNo">955</span>     * calculations.<a name="line.955"></a>
+<span class="sourceLineNo">956</span>     *<a name="line.956"></a>
+<span class="sourceLineNo">957</span>     * @param fromBaseDomainValue Start of the range where exclusions will be<a name="line.957"></a>
+<span class="sourceLineNo">958</span>     *                            extracted.<a name="line.958"></a>
+<span class="sourceLineNo">959</span>     * @param toBaseDomainValue End of the range to process.<a name="line.959"></a>
+<span class="sourceLineNo">960</span>     */<a name="line.960"></a>
+<span class="sourceLineNo">961</span>    public void addBaseTimelineExclusions(long fromBaseDomainValue,<a name="line.961"></a>
+<span class="sourceLineNo">962</span>                                          long toBaseDomainValue) {<a name="line.962"></a>
+<span class="sourceLineNo">963</span><a name="line.963"></a>
+<span class="sourceLineNo">964</span>        // find first excluded base segment starting fromDomainValue<a name="line.964"></a>
+<span class="sourceLineNo">965</span>        Segment baseSegment = this.baseTimeline.getSegment(fromBaseDomainValue);<a name="line.965"></a>
+<span class="sourceLineNo">966</span>        while (baseSegment.getSegmentStart() &lt;= toBaseDomainValue<a name="line.966"></a>
+<span class="sourceLineNo">967</span>               &amp;&amp; !baseSegment.inExcludeSegments()) {<a name="line.967"></a>
+<span class="sourceLineNo">968</span><a name="line.968"></a>
+<span class="sourceLineNo">969</span>            baseSegment.inc();<a name="line.969"></a>
+<span class="sourceLineNo">970</span><a name="line.970"></a>
+<span class="sourceLineNo">971</span>        }<a name="line.971"></a>
+<span class="sourceLineNo">972</span><a name="line.972"></a>
+<span class="sourceLineNo">973</span>        // cycle over all the base segments groups in the range<a name="line.973"></a>
+<span class="sourceLineNo">974</span>        while (baseSegment.getSegmentStart() &lt;= toBaseDomainValue) {<a name="line.974"></a>
+<span class="sourceLineNo">975</span><a name="line.975"></a>
+<span class="sourceLineNo">976</span>            long baseExclusionRangeEnd = baseSegment.getSegmentStart()<a name="line.976"></a>
+<span class="sourceLineNo">977</span>                 + this.baseTimeline.getSegmentsExcluded()<a name="line.977"></a>
+<span class="sourceLineNo">978</span>                 * this.baseTimeline.getSegmentSize() - 1;<a name="line.978"></a>
+<span class="sourceLineNo">979</span><a name="line.979"></a>
+<span class="sourceLineNo">980</span>            // cycle through all the segments contained in the base exclusion<a name="line.980"></a>
+<span class="sourceLineNo">981</span>            // area<a name="line.981"></a>
+<span class="sourceLineNo">982</span>            Segment segment = getSegment(baseSegment.getSegmentStart());<a name="line.982"></a>
+<span class="sourceLineNo">983</span>            while (segment.getSegmentStart() &lt;= baseExclusionRangeEnd) {<a name="line.983"></a>
+<span class="sourceLineNo">984</span>                if (segment.inIncludeSegments()) {<a name="line.984"></a>
+<span class="sourceLineNo">985</span><a name="line.985"></a>
+<span class="sourceLineNo">986</span>                    // find all consecutive included segments<a name="line.986"></a>
+<span class="sourceLineNo">987</span>                    long fromDomainValue = segment.getSegmentStart();<a name="line.987"></a>
+<span class="sourceLineNo">988</span>                    long toDomainValue;<a name="line.988"></a>
+<span class="sourceLineNo">989</span>                    do {<a name="line.989"></a>
+<span class="sourceLineNo">990</span>                        toDomainValue = segment.getSegmentEnd();<a name="line.990"></a>
+<span class="sourceLineNo">991</span>                        segment.inc();<a name="line.991"></a>
+<span class="sourceLineNo">992</span>                    }<a name="line.992"></a>
+<span class="sourceLineNo">993</span>                    while (segment.inIncludeSegments());<a name="line.993"></a>
+<span class="sourceLineNo">994</span><a name="line.994"></a>
+<span class="sourceLineNo">995</span>                    // add the interval as an exception<a name="line.995"></a>
+<span class="sourceLineNo">996</span>                    addException(new BaseTimelineSegmentRange(<a name="line.996"></a>
+<span class="sourceLineNo">997</span>                            fromDomainValue, toDomainValue));<a name="line.997"></a>
+<span class="sourceLineNo">998</span>                }<a name="line.998"></a>
+<span class="sourceLineNo">999</span>                else {<a name="line.999"></a>
+<span class="sourceLineNo">1000</span>                    // this is not one of our included segment, skip it<a name="line.1000"></a>
+<span class="sourceLineNo">1001</span>                    segment.inc();<a name="line.1001"></a>
+<span class="sourceLineNo">1002</span>                }<a name="line.1002"></a>
+<span class="sourceLineNo">1003</span>            }<a name="line.1003"></a>
+<span class="sourceLineNo">1004</span><a name="line.1004"></a>
+<span class="sourceLineNo">1005</span>            // go to next base segment group<a name="line.1005"></a>
+<span class="sourceLineNo">1006</span>            baseSegment.inc(this.baseTimeline.getGroupSegmentCount());<a name="line.1006"></a>
+<span class="sourceLineNo">1007</span>        }<a name="line.1007"></a>
+<span class="sourceLineNo">1008</span>    }<a name="line.1008"></a>
+<span class="sourceLineNo">1009</span><a name="line.1009"></a>
+<span class="sourceLineNo">1010</span>    /**<a name="line.1010"></a>
+<span class="sourceLineNo">1011</span>     * Returns the number of exception segments wholly contained in the<a name="line.1011"></a>
+<span class="sourceLineNo">1012</span>     * (fromDomainValue, toDomainValue) interval.<a name="line.1012"></a>
+<span class="sourceLineNo">1013</span>     *<a name="line.1013"></a>
+<span class="sourceLineNo">1014</span>     * @param fromMillisecond  the beginning of the interval.<a name="line.1014"></a>
+<span class="sourceLineNo">1015</span>     * @param toMillisecond  the end of the interval.<a name="line.1015"></a>
+<span class="sourceLineNo">1016</span>     *<a name="line.1016"></a>
+<span class="sourceLineNo">1017</span>     * @return Number of exception segments contained in the interval.<a name="line.1017"></a>
+<span class="sourceLineNo">1018</span>     */<a name="line.1018"></a>
+<span class="sourceLineNo">1019</span>    public long getExceptionSegmentCount(long fromMillisecond,<a name="line.1019"></a>
+<span class="sourceLineNo">1020</span>                                         long toMillisecond) {<a name="line.1020"></a>
+<span class="sourceLineNo">1021</span>        if (toMillisecond &lt; fromMillisecond) {<a name="line.1021"></a>
+<span class="sourceLineNo">1022</span>            return (0);<a name="line.1022"></a>
+<span class="sourceLineNo">1023</span>        }<a name="line.1023"></a>
+<span class="sourceLineNo">1024</span><a name="line.1024"></a>
+<span class="sourceLineNo">1025</span>        int n = 0;<a name="line.1025"></a>
+<span class="sourceLineNo">1026</span>        for (Iterator iter = this.exceptionSegments.iterator();<a name="line.1026"></a>
+<span class="sourceLineNo">1027</span>             iter.hasNext();) {<a name="line.1027"></a>
+<span class="sourceLineNo">1028</span>            Segment segment = (Segment) iter.next();<a name="line.1028"></a>
+<span class="sourceLineNo">1029</span>            Segment intersection = segment.intersect(fromMillisecond,<a name="line.1029"></a>
+<span class="sourceLineNo">1030</span>                    toMillisecond);<a name="line.1030"></a>
+<span class="sourceLineNo">1031</span>            if (intersection != null) {<a name="line.1031"></a>
+<span class="sourceLineNo">1032</span>                n += intersection.getSegmentCount();<a name="line.1032"></a>
+<span class="sourceLineNo">1033</span>            }<a name="line.1033"></a>
+<span class="sourceLineNo">1034</span>        }<a name="line.1034"></a>
+<span class="sourceLineNo">1035</span><a name="line.1035"></a>
+<span class="sourceLineNo">1036</span>        return (n);<a name="line.1036"></a>
+<span class="sourceLineNo">1037</span>    }<a name="line.1037"></a>
+<span class="sourceLineNo">1038</span><a name="line.1038"></a>
+<span class="sourceLineNo">1039</span>    /**<a name="line.1039"></a>
+<span class="sourceLineNo">1040</span>     * Returns a segment that contains a domainValue. If the domainValue is<a name="line.1040"></a>
+<span class="sourceLineNo">1041</span>     * not contained in the timeline (because it is not contained in the<a name="line.1041"></a>
+<span class="sourceLineNo">1042</span>     * baseTimeline), a Segment that contains<a name="line.1042"></a>
+<span class="sourceLineNo">1043</span>     * {@code index + segmentSize*m} will be returned for the smallest<a name="line.1043"></a>
+<span class="sourceLineNo">1044</span>     * {@code m} possible.<a name="line.1044"></a>
+<span class="sourceLineNo">1045</span>     *<a name="line.1045"></a>
+<span class="sourceLineNo">1046</span>     * @param millisecond  index into the segment<a name="line.1046"></a>
+<span class="sourceLineNo">1047</span>     *<a name="line.1047"></a>
+<span class="sourceLineNo">1048</span>     * @return A Segment that contains index, or the next possible Segment.<a name="line.1048"></a>
+<span class="sourceLineNo">1049</span>     */<a name="line.1049"></a>
+<span class="sourceLineNo">1050</span>    public Segment getSegment(long millisecond) {<a name="line.1050"></a>
+<span class="sourceLineNo">1051</span>        return new Segment(millisecond);<a name="line.1051"></a>
+<span class="sourceLineNo">1052</span>    }<a name="line.1052"></a>
+<span class="sourceLineNo">1053</span><a name="line.1053"></a>
+<span class="sourceLineNo">1054</span>    /**<a name="line.1054"></a>
+<span class="sourceLineNo">1055</span>     * Returns a segment that contains a date. For accurate calculations,<a name="line.1055"></a>
+<span class="sourceLineNo">1056</span>     * the calendar should use TIME_ZONE for its calculation (or any other<a name="line.1056"></a>
+<span class="sourceLineNo">1057</span>     * similar time zone).<a name="line.1057"></a>
+<span class="sourceLineNo">1058</span>     *<a name="line.1058"></a>
+<span class="sourceLineNo">1059</span>     * If the date is not contained in the timeline (because it is not<a name="line.1059"></a>
+<span class="sourceLineNo">1060</span>     * contained in the baseTimeline), a Segment that contains<a name="line.1060"></a>
+<span class="sourceLineNo">1061</span>     * {@code date + segmentSize*m} will be returned for the smallest<a name="line.1061"></a>
+<span class="sourceLineNo">1062</span>     * {@code m} possible.<a name="line.1062"></a>
+<span class="sourceLineNo">1063</span>     *<a name="line.1063"></a>
+<span class="sourceLineNo">1064</span>     * @param date date into the segment<a name="line.1064"></a>
+<span class="sourceLineNo">1065</span>     *<a name="line.1065"></a>
+<span class="sourceLineNo">1066</span>     * @return A Segment that contains date, or the next possible Segment.<a name="line.1066"></a>
+<span class="sourceLineNo">1067</span>     */<a name="line.1067"></a>
+<span class="sourceLineNo">1068</span>    public Segment getSegment(Date date) {<a name="line.1068"></a>
+<span class="sourceLineNo">1069</span>        return (getSegment(getTime(date)));<a name="line.1069"></a>
+<span class="sourceLineNo">1070</span>    }<a name="line.1070"></a>
+<span class="sourceLineNo">1071</span><a name="line.1071"></a>
+<span class="sourceLineNo">1072</span>    /**<a name="line.1072"></a>
+<span class="sourceLineNo">1073</span>     * Convenient method to test equality in two objects, taking into account<a name="line.1073"></a>
+<span class="sourceLineNo">1074</span>     * nulls.<a name="line.1074"></a>
+<span class="sourceLineNo">1075</span>     *<a name="line.1075"></a>
+<span class="sourceLineNo">1076</span>     * @param o first object to compare<a name="line.1076"></a>
+<span class="sourceLineNo">1077</span>     * @param p second object to compare<a name="line.1077"></a>
+<span class="sourceLineNo">1078</span>     *<a name="line.1078"></a>
+<span class="sourceLineNo">1079</span>     * @return {@code true} if both objects are equal or both<a name="line.1079"></a>
+<span class="sourceLineNo">1080</span>     *         {@code null}, {@code false} otherwise.<a name="line.1080"></a>
+<span class="sourceLineNo">1081</span>     */<a name="line.1081"></a>
+<span class="sourceLineNo">1082</span>    private boolean equals(Object o, Object p) {<a name="line.1082"></a>
+<span class="sourceLineNo">1083</span>        return (o == p || ((o != null) &amp;&amp; o.equals(p)));<a name="line.1083"></a>
+<span class="sourceLineNo">1084</span>    }<a name="line.1084"></a>
+<span class="sourceLineNo">1085</span><a name="line.1085"></a>
+<span class="sourceLineNo">1086</span>    /**<a name="line.1086"></a>
+<span class="sourceLineNo">1087</span>     * Returns true if we are equal to the parameter<a name="line.1087"></a>
+<span class="sourceLineNo">1088</span>     *<a name="line.1088"></a>
+<span class="sourceLineNo">1089</span>     * @param o Object to verify with us<a name="line.1089"></a>
+<span class="sourceLineNo">1090</span>     *<a name="line.1090"></a>
+<span class="sourceLineNo">1091</span>     * @return {@code true} or {@code false}<a name="line.1091"></a>
+<span class="sourceLineNo">1092</span>     */<a name="line.1092"></a>
+<span class="sourceLineNo">1093</span>    @Override<a name="line.1093"></a>
+<span class="sourceLineNo">1094</span>    public boolean equals(Object o) {<a name="line.1094"></a>
+<span class="sourceLineNo">1095</span>        if (o instanceof SegmentedTimeline) {<a name="line.1095"></a>
+<span class="sourceLineNo">1096</span>            SegmentedTimeline other = (SegmentedTimeline) o;<a name="line.1096"></a>
+<span class="sourceLineNo">1097</span><a name="line.1097"></a>
+<span class="sourceLineNo">1098</span>            boolean b0 = (this.segmentSize == other.getSegmentSize());<a name="line.1098"></a>
+<span class="sourceLineNo">1099</span>            boolean b1 = (this.segmentsIncluded == other.getSegmentsIncluded());<a name="line.1099"></a>
+<span class="sourceLineNo">1100</span>            boolean b2 = (this.segmentsExcluded == other.getSegmentsExcluded());<a name="line.1100"></a>
+<span class="sourceLineNo">1101</span>            boolean b3 = (this.startTime == other.getStartTime());<a name="line.1101"></a>
+<span class="sourceLineNo">1102</span>            boolean b4 = equals(this.exceptionSegments,<a name="line.1102"></a>
+<span class="sourceLineNo">1103</span>                    other.getExceptionSegments());<a name="line.1103"></a>
+<span class="sourceLineNo">1104</span>            return b0 &amp;&amp; b1 &amp;&amp; b2 &amp;&amp; b3 &amp;&amp; b4;<a name="line.1104"></a>
+<span class="sourceLineNo">1105</span>        }<a name="line.1105"></a>
+<span class="sourceLineNo">1106</span>        else {<a name="line.1106"></a>
+<span class="sourceLineNo">1107</span>            return (false);<a name="line.1107"></a>
+<span class="sourceLineNo">1108</span>        }<a name="line.1108"></a>
+<span class="sourceLineNo">1109</span>    }<a name="line.1109"></a>
+<span class="sourceLineNo">1110</span><a name="line.1110"></a>
+<span class="sourceLineNo">1111</span>    /**<a name="line.1111"></a>
+<span class="sourceLineNo">1112</span>     * Returns a hash code for this object.<a name="line.1112"></a>
+<span class="sourceLineNo">1113</span>     *<a name="line.1113"></a>
+<span class="sourceLineNo">1114</span>     * @return A hash code.<a name="line.1114"></a>
+<span class="sourceLineNo">1115</span>     */<a name="line.1115"></a>
+<span class="sourceLineNo">1116</span>    @Override<a name="line.1116"></a>
+<span class="sourceLineNo">1117</span>    public int hashCode() {<a name="line.1117"></a>
+<span class="sourceLineNo">1118</span>        int result = 19;<a name="line.1118"></a>
+<span class="sourceLineNo">1119</span>        result = 37 * result<a name="line.1119"></a>
+<span class="sourceLineNo">1120</span>                 + (int) (this.segmentSize ^ (this.segmentSize &gt;&gt;&gt; 32));<a name="line.1120"></a>
+<span class="sourceLineNo">1121</span>        result = 37 * result + (int) (this.startTime ^ (this.startTime &gt;&gt;&gt; 32));<a name="line.1121"></a>
+<span class="sourceLineNo">1122</span>        return result;<a name="line.1122"></a>
+<span class="sourceLineNo">1123</span>    }<a name="line.1123"></a>
+<span class="sourceLineNo">1124</span><a name="line.1124"></a>
+<span class="sourceLineNo">1125</span>    /**<a name="line.1125"></a>
+<span class="sourceLineNo">1126</span>     * Preforms a binary serach in the exceptionSegments sorted array. This<a name="line.1126"></a>
+<span class="sourceLineNo">1127</span>     * array can contain Segments or SegmentRange objects.<a name="line.1127"></a>
+<span class="sourceLineNo">1128</span>     *<a name="line.1128"></a>
+<span class="sourceLineNo">1129</span>     * @param  segment the key to be searched for.<a name="line.1129"></a>
+<span class="sourceLineNo">1130</span>     *<a name="line.1130"></a>
+<span class="sourceLineNo">1131</span>     * @return index of the search segment, if it is contained in the list;<a name="line.1131"></a>
+<span class="sourceLineNo">1132</span>     *         otherwise, &lt;tt&gt;(-(&lt;i&gt;insertion point&lt;/i&gt;) - 1)&lt;/tt&gt;.  The<a name="line.1132"></a>
+<span class="sourceLineNo">1133</span>     *         &lt;i&gt;insertion point&lt;/i&gt; is defined as the point at which the<a name="line.1133"></a>
+<span class="sourceLineNo">1134</span>     *         segment would be inserted into the list: the index of the first<a name="line.1134"></a>
+<span class="sourceLineNo">1135</span>     *         element greater than the key, or &lt;tt&gt;list.size()&lt;/tt&gt;, if all<a name="line.1135"></a>
+<span class="sourceLineNo">1136</span>     *         elements in the list are less than the specified segment.  Note<a name="line.1136"></a>
+<span class="sourceLineNo">1137</span>     *         that this guarantees that the return value will be &amp;gt;= 0 if<a name="line.1137"></a>
+<span class="sourceLineNo">1138</span>     *         and only if the key is found.<a name="line.1138"></a>
+<span class="sourceLineNo">1139</span>     */<a name="line.1139"></a>
+<span class="sourceLineNo">1140</span>    private int binarySearchExceptionSegments(Segment segment) {<a name="line.1140"></a>
+<span class="sourceLineNo">1141</span>        int low = 0;<a name="line.1141"></a>
+<span class="sourceLineNo">1142</span>        int high = this.exceptionSegments.size() - 1;<a name="line.1142"></a>
+<span class="sourceLineNo">1143</span><a name="line.1143"></a>
+<span class="sourceLineNo">1144</span>        while (low &lt;= high) {<a name="line.1144"></a>
+<span class="sourceLineNo">1145</span>            int mid = (low + high) / 2;<a name="line.1145"></a>
+<span class="sourceLineNo">1146</span>            Segment midSegment = (Segment) this.exceptionSegments.get(mid);<a name="line.1146"></a>
+<span class="sourceLineNo">1147</span><a name="line.1147"></a>
+<span class="sourceLineNo">1148</span>            // first test for equality (contains or contained)<a name="line.1148"></a>
+<span class="sourceLineNo">1149</span>            if (segment.contains(midSegment) || midSegment.contains(segment)) {<a name="line.1149"></a>
+<span class="sourceLineNo">1150</span>                return mid;<a name="line.1150"></a>
+<span class="sourceLineNo">1151</span>            }<a name="line.1151"></a>
+<span class="sourceLineNo">1152</span><a name="line.1152"></a>
+<span class="sourceLineNo">1153</span>            if (midSegment.before(segment)) {<a name="line.1153"></a>
+<span class="sourceLineNo">1154</span>                low = mid + 1;<a name="line.1154"></a>
+<span class="sourceLineNo">1155</span>            }<a name="line.1155"></a>
+<span class="sourceLineNo">1156</span>            else if (midSegment.after(segment)) {<a name="line.1156"></a>
+<span class="sourceLineNo">1157</span>                high = mid - 1;<a name="line.1157"></a>
+<span class="sourceLineNo">1158</span>            }<a name="line.1158"></a>
+<span class="sourceLineNo">1159</span>            else {<a name="line.1159"></a>
+<span class="sourceLineNo">1160</span>                throw new IllegalStateException("Invalid condition.");<a name="line.1160"></a>
+<span class="sourceLineNo">1161</span>            }<a name="line.1161"></a>
+<span class="sourceLineNo">1162</span>        }<a name="line.1162"></a>
+<span class="sourceLineNo">1163</span>        return -(low + 1);  // key not found<a name="line.1163"></a>
+<span class="sourceLineNo">1164</span>    }<a name="line.1164"></a>
+<span class="sourceLineNo">1165</span><a name="line.1165"></a>
+<span class="sourceLineNo">1166</span>    /**<a name="line.1166"></a>
+<span class="sourceLineNo">1167</span>     * Special method that handles conversion between the Default Time Zone and<a name="line.1167"></a>
+<span class="sourceLineNo">1168</span>     * a UTC time zone with no DST. This is needed so all days have the same<a name="line.1168"></a>
+<span class="sourceLineNo">1169</span>     * size. This method is the prefered way of converting a Data into<a name="line.1169"></a>
+<span class="sourceLineNo">1170</span>     * milliseconds for usage in this class.<a name="line.1170"></a>
+<span class="sourceLineNo">1171</span>     *<a name="line.1171"></a>
+<span class="sourceLineNo">1172</span>     * @param date Date to convert to long.<a name="line.1172"></a>
+<span class="sourceLineNo">1173</span>     *<a name="line.1173"></a>
+<span class="sourceLineNo">1174</span>     * @return The milliseconds.<a name="line.1174"></a>
+<span class="sourceLineNo">1175</span>     */<a name="line.1175"></a>
+<span class="sourceLineNo">1176</span>    public long getTime(Date date) {<a name="line.1176"></a>
+<span class="sourceLineNo">1177</span>        long result = date.getTime();<a name="line.1177"></a>
+<span class="sourceLineNo">1178</span>        if (this.adjustForDaylightSaving) {<a name="line.1178"></a>
+<span class="sourceLineNo">1179</span>            this.workingCalendar.setTime(date);<a name="line.1179"></a>
+<span class="sourceLineNo">1180</span>            this.workingCalendarNoDST.set(<a name="line.1180"></a>
+<span class="sourceLineNo">1181</span>                    this.workingCalendar.get(Calendar.YEAR),<a name="line.1181"></a>
+<span class="sourceLineNo">1182</span>                    this.workingCalendar.get(Calendar.MONTH),<a name="line.1182"></a>
+<span class="sourceLineNo">1183</span>                    this.workingCalendar.get(Calendar.DATE),<a name="line.1183"></a>
+<span class="sourceLineNo">1184</span>                    this.workingCalendar.get(Calendar.HOUR_OF_DAY),<a name="line.1184"></a>
+<span class="sourceLineNo">1185</span>                    this.workingCalendar.get(Calendar.MINUTE),<a name="line.1185"></a>
+<span class="sourceLineNo">1186</span>                    this.workingCalendar.get(Calendar.SECOND));<a name="line.1186"></a>
+<span class="sourceLineNo">1187</span>            this.workingCalendarNoDST.set(Calendar.MILLISECOND,<a name="line.1187"></a>
+<span class="sourceLineNo">1188</span>                    this.workingCalendar.get(Calendar.MILLISECOND));<a name="line.1188"></a>
+<span class="sourceLineNo">1189</span>            Date revisedDate = this.workingCalendarNoDST.getTime();<a name="line.1189"></a>
+<span class="sourceLineNo">1190</span>            result = revisedDate.getTime();<a name="line.1190"></a>
+<span class="sourceLineNo">1191</span>        }<a name="line.1191"></a>
+<span class="sourceLineNo">1192</span><a name="line.1192"></a>
+<span class="sourceLineNo">1193</span>        return result;<a name="line.1193"></a>
+<span class="sourceLineNo">1194</span>    }<a name="line.1194"></a>
+<span class="sourceLineNo">1195</span><a name="line.1195"></a>
+<span class="sourceLineNo">1196</span>    /**<a name="line.1196"></a>
+<span class="sourceLineNo">1197</span>     * Converts a millisecond value into a {@link Date} object.<a name="line.1197"></a>
+<span class="sourceLineNo">1198</span>     *<a name="line.1198"></a>
+<span class="sourceLineNo">1199</span>     * @param value  the millisecond value.<a name="line.1199"></a>
+<span class="sourceLineNo">1200</span>     *<a name="line.1200"></a>
+<span class="sourceLineNo">1201</span>     * @return The date.<a name="line.1201"></a>
+<span class="sourceLineNo">1202</span>     */<a name="line.1202"></a>
+<span class="sourceLineNo">1203</span>    public Date getDate(long value) {<a name="line.1203"></a>
+<span class="sourceLineNo">1204</span>        this.workingCalendarNoDST.setTime(new Date(value));<a name="line.1204"></a>
+<span class="sourceLineNo">1205</span>        return (this.workingCalendarNoDST.getTime());<a name="line.1205"></a>
+<span class="sourceLineNo">1206</span>    }<a name="line.1206"></a>
+<span class="sourceLineNo">1207</span><a name="line.1207"></a>
+<span class="sourceLineNo">1208</span>    /**<a name="line.1208"></a>
+<span class="sourceLineNo">1209</span>     * Returns a clone of the timeline.<a name="line.1209"></a>
+<span class="sourceLineNo">1210</span>     *<a name="line.1210"></a>
+<span class="sourceLineNo">1211</span>     * @return A clone.<a name="line.1211"></a>
+<span class="sourceLineNo">1212</span>     *<a name="line.1212"></a>
+<span class="sourceLineNo">1213</span>     * @throws CloneNotSupportedException ??.<a name="line.1213"></a>
+<span class="sourceLineNo">1214</span>     */<a name="line.1214"></a>
+<span class="sourceLineNo">1215</span>    @Override<a name="line.1215"></a>
+<span class="sourceLineNo">1216</span>    public Object clone() throws CloneNotSupportedException {<a name="line.1216"></a>
+<span class="sourceLineNo">1217</span>        SegmentedTimeline clone = (SegmentedTimeline) super.clone();<a name="line.1217"></a>
+<span class="sourceLineNo">1218</span>        return clone;<a name="line.1218"></a>
+<span class="sourceLineNo">1219</span>    }<a name="line.1219"></a>
+<span class="sourceLineNo">1220</span><a name="line.1220"></a>
+<span class="sourceLineNo">1221</span>    /**<a name="line.1221"></a>
+<span class="sourceLineNo">1222</span>     * Internal class to represent a valid segment for this timeline. A segment<a name="line.1222"></a>
+<span class="sourceLineNo">1223</span>     * is valid on a timeline if it is part of its included, excluded or<a name="line.1223"></a>
+<span class="sourceLineNo">1224</span>     * exception segments.<a name="line.1224"></a>
+<span class="sourceLineNo">1225</span>     * &lt;p&gt;<a name="line.1225"></a>
+<span class="sourceLineNo">1226</span>     * Each segment will know its segment number, segmentStart, segmentEnd and<a name="line.1226"></a>
+<span class="sourceLineNo">1227</span>     * index inside the segment.<a name="line.1227"></a>
+<span class="sourceLineNo">1228</span>     */<a name="line.1228"></a>
+<span class="sourceLineNo">1229</span>    public class Segment implements Comparable, Cloneable, Serializable {<a name="line.1229"></a>
+<span class="sourceLineNo">1230</span><a name="line.1230"></a>
+<span class="sourceLineNo">1231</span>        /** The segment number. */<a name="line.1231"></a>
+<span class="sourceLineNo">1232</span>        protected long segmentNumber;<a name="line.1232"></a>
+<span class="sourceLineNo">1233</span><a name="line.1233"></a>
+<span class="sourceLineNo">1234</span>        /** The segment start. */<a name="line.1234"></a>
+<span class="sourceLineNo">1235</span>        protected long segmentStart;<a name="line.1235"></a>
+<span class="sourceLineNo">1236</span><a name="line.1236"></a>
+<span class="sourceLineNo">1237</span>        /** The segment end. */<a name="line.1237"></a>
+<span class="sourceLineNo">1238</span>        protected long segmentEnd;<a name="line.1238"></a>
+<span class="sourceLineNo">1239</span><a name="line.1239"></a>
+<span class="sourceLineNo">1240</span>        /** A reference point within the segment. */<a name="line.1240"></a>
+<span class="sourceLineNo">1241</span>        protected long millisecond;<a name="line.1241"></a>
+<span class="sourceLineNo">1242</span><a name="line.1242"></a>
+<span class="sourceLineNo">1243</span>        /**<a name="line.1243"></a>
+<span class="sourceLineNo">1244</span>         * Protected constructor only used by sub-classes.<a name="line.1244"></a>
+<span class="sourceLineNo">1245</span>         */<a name="line.1245"></a>
+<span class="sourceLineNo">1246</span>        protected Segment() {<a name="line.1246"></a>
+<span class="sourceLineNo">1247</span>            // empty<a name="line.1247"></a>
+<span class="sourceLineNo">1248</span>        }<a name="line.1248"></a>
+<span class="sourceLineNo">1249</span><a name="line.1249"></a>
+<span class="sourceLineNo">1250</span>        /**<a name="line.1250"></a>
+<span class="sourceLineNo">1251</span>         * Creates a segment for a given point in time.<a name="line.1251"></a>
+<span class="sourceLineNo">1252</span>         *<a name="line.1252"></a>
+<span class="sourceLineNo">1253</span>         * @param millisecond  the millisecond (as encoded by java.util.Date).<a name="line.1253"></a>
+<span class="sourceLineNo">1254</span>         */<a name="line.1254"></a>
+<span class="sourceLineNo">1255</span>        protected Segment(long millisecond) {<a name="line.1255"></a>
+<span class="sourceLineNo">1256</span>            this.segmentNumber = calculateSegmentNumber(millisecond);<a name="line.1256"></a>
+<span class="sourceLineNo">1257</span>            this.segmentStart = SegmentedTimeline.this.startTime<a name="line.1257"></a>
+<span class="sourceLineNo">1258</span>                + this.segmentNumber * SegmentedTimeline.this.segmentSize;<a name="line.1258"></a>
+<span class="sourceLineNo">1259</span>            this.segmentEnd<a name="line.1259"></a>
+<span class="sourceLineNo">1260</span>                = this.segmentStart + SegmentedTimeline.this.segmentSize - 1;<a name="line.1260"></a>
+<span class="sourceLineNo">1261</span>            this.millisecond = millisecond;<a name="line.1261"></a>
+<span class="sourceLineNo">1262</span>        }<a name="line.1262"></a>
+<span class="sourceLineNo">1263</span><a name="line.1263"></a>
+<span class="sourceLineNo">1264</span>        /**<a name="line.1264"></a>
+<span class="sourceLineNo">1265</span>         * Calculates the segment number for a given millisecond.<a name="line.1265"></a>
+<span class="sourceLineNo">1266</span>         *<a name="line.1266"></a>
+<span class="sourceLineNo">1267</span>         * @param millis  the millisecond (as encoded by java.util.Date).<a name="line.1267"></a>
+<span class="sourceLineNo">1268</span>         *<a name="line.1268"></a>
+<span class="sourceLineNo">1269</span>         * @return The segment number.<a name="line.1269"></a>
+<span class="sourceLineNo">1270</span>         */<a name="line.1270"></a>
+<span class="sourceLineNo">1271</span>        public long calculateSegmentNumber(long millis) {<a name="line.1271"></a>
+<span class="sourceLineNo">1272</span>            if (millis &gt;= SegmentedTimeline.this.startTime) {<a name="line.1272"></a>
+<span class="sourceLineNo">1273</span>                return (millis - SegmentedTimeline.this.startTime)<a name="line.1273"></a>
+<span class="sourceLineNo">1274</span>                    / SegmentedTimeline.this.segmentSize;<a name="line.1274"></a>
+<span class="sourceLineNo">1275</span>            }<a name="line.1275"></a>
+<span class="sourceLineNo">1276</span>            else {<a name="line.1276"></a>
+<span class="sourceLineNo">1277</span>                return ((millis - SegmentedTimeline.this.startTime)<a name="line.1277"></a>
+<span class="sourceLineNo">1278</span>                    / SegmentedTimeline.this.segmentSize) - 1;<a name="line.1278"></a>
+<span class="sourceLineNo">1279</span>            }<a name="line.1279"></a>
+<span class="sourceLineNo">1280</span>        }<a name="line.1280"></a>
+<span class="sourceLineNo">1281</span><a name="line.1281"></a>
+<span class="sourceLineNo">1282</span>        /**<a name="line.1282"></a>
+<span class="sourceLineNo">1283</span>         * Returns the segment number of this segment. Segments start at 0.<a name="line.1283"></a>
+<span class="sourceLineNo">1284</span>         *<a name="line.1284"></a>
+<span class="sourceLineNo">1285</span>         * @return The segment number.<a name="line.1285"></a>
+<span class="sourceLineNo">1286</span>         */<a name="line.1286"></a>
+<span class="sourceLineNo">1287</span>        public long getSegmentNumber() {<a name="line.1287"></a>
+<span class="sourceLineNo">1288</span>            return this.segmentNumber;<a name="line.1288"></a>
+<span class="sourceLineNo">1289</span>        }<a name="line.1289"></a>
+<span class="sourceLineNo">1290</span><a name="line.1290"></a>
+<span class="sourceLineNo">1291</span>        /**<a name="line.1291"></a>
+<span class="sourceLineNo">1292</span>         * Returns always one (the number of segments contained in this<a name="line.1292"></a>
+<span class="sourceLineNo">1293</span>         * segment).<a name="line.1293"></a>
+<span class="sourceLineNo">1294</span>         *<a name="line.1294"></a>
+<span class="sourceLineNo">1295</span>         * @return The segment count (always 1 for this class).<a name="line.1295"></a>
+<span class="sourceLineNo">1296</span>         */<a name="line.1296"></a>
+<span class="sourceLineNo">1297</span>        public long getSegmentCount() {<a name="line.1297"></a>
+<span class="sourceLineNo">1298</span>            return 1;<a name="line.1298"></a>
+<span class="sourceLineNo">1299</span>        }<a name="line.1299"></a>
+<span class="sourceLineNo">1300</span><a name="line.1300"></a>
+<span class="sourceLineNo">1301</span>        /**<a name="line.1301"></a>
+<span class="sourceLineNo">1302</span>         * Gets the start of this segment in ms.<a name="line.1302"></a>
+<span class="sourceLineNo">1303</span>         *<a name="line.1303"></a>
+<span class="sourceLineNo">1304</span>         * @return The segment start.<a name="line.1304"></a>
+<span class="sourceLineNo">1305</span>         */<a name="line.1305"></a>
+<span class="sourceLineNo">1306</span>        public long getSegmentStart() {<a name="line.1306"></a>
+<span class="sourceLineNo">1307</span>            return this.segmentStart;<a name="line.1307"></a>
+<span class="sourceLineNo">1308</span>        }<a name="line.1308"></a>
+<span class="sourceLineNo">1309</span><a name="line.1309"></a>
+<span class="sourceLineNo">1310</span>        /**<a name="line.1310"></a>
+<span class="sourceLineNo">1311</span>         * Gets the end of this segment in ms.<a name="line.1311"></a>
+<span class="sourceLineNo">1312</span>         *<a name="line.1312"></a>
+<span class="sourceLineNo">1313</span>         * @return The segment end.<a name="line.1313"></a>
+<span class="sourceLineNo">1314</span>         */<a name="line.1314"></a>
+<span class="sourceLineNo">1315</span>        public long getSegmentEnd() {<a name="line.1315"></a>
+<span class="sourceLineNo">1316</span>            return this.segmentEnd;<a name="line.1316"></a>
+<span class="sourceLineNo">1317</span>        }<a name="line.1317"></a>
+<span class="sourceLineNo">1318</span><a name="line.1318"></a>
+<span class="sourceLineNo">1319</span>        /**<a name="line.1319"></a>
+<span class="sourceLineNo">1320</span>         * Returns the millisecond used to reference this segment (always<a name="line.1320"></a>
+<span class="sourceLineNo">1321</span>         * between the segmentStart and segmentEnd).<a name="line.1321"></a>
+<span class="sourceLineNo">1322</span>         *<a name="line.1322"></a>
+<span class="sourceLineNo">1323</span>         * @return The millisecond.<a name="line.1323"></a>
+<span class="sourceLineNo">1324</span>         */<a name="line.1324"></a>
+<span class="sourceLineNo">1325</span>        public long getMillisecond() {<a name="line.1325"></a>
+<span class="sourceLineNo">1326</span>            return this.millisecond;<a name="line.1326"></a>
+<span class="sourceLineNo">1327</span>        }<a name="line.1327"></a>
+<span class="sourceLineNo">1328</span><a name="line.1328"></a>
+<span class="sourceLineNo">1329</span>        /**<a name="line.1329"></a>
+<span class="sourceLineNo">1330</span>         * Returns a {@link java.util.Date} that represents the reference point<a name="line.1330"></a>
+<span class="sourceLineNo">1331</span>         * for this segment.<a name="line.1331"></a>
+<span class="sourceLineNo">1332</span>         *<a name="line.1332"></a>
+<span class="sourceLineNo">1333</span>         * @return The date.<a name="line.1333"></a>
+<span class="sourceLineNo">1334</span>         */<a name="line.1334"></a>
+<span class="sourceLineNo">1335</span>        public Date getDate() {<a name="line.1335"></a>
+<span class="sourceLineNo">1336</span>            return SegmentedTimeline.this.getDate(this.millisecond);<a name="line.1336"></a>
+<span class="sourceLineNo">1337</span>        }<a name="line.1337"></a>
+<span class="sourceLineNo">1338</span><a name="line.1338"></a>
+<span class="sourceLineNo">1339</span>        /**<a name="line.1339"></a>
+<span class="sourceLineNo">1340</span>         * Returns true if a particular millisecond is contained in this<a name="line.1340"></a>
+<span class="sourceLineNo">1341</span>         * segment.<a name="line.1341"></a>
+<span class="sourceLineNo">1342</span>         *<a name="line.1342"></a>
+<span class="sourceLineNo">1343</span>         * @param millis  the millisecond to verify.<a name="line.1343"></a>
+<span class="sourceLineNo">1344</span>         *<a name="line.1344"></a>
+<span class="sourceLineNo">1345</span>         * @return {@code true} if the millisecond is contained in the<a name="line.1345"></a>
+<span class="sourceLineNo">1346</span>         *         segment.<a name="line.1346"></a>
+<span class="sourceLineNo">1347</span>         */<a name="line.1347"></a>
+<span class="sourceLineNo">1348</span>        public boolean contains(long millis) {<a name="line.1348"></a>
+<span class="sourceLineNo">1349</span>            return (this.segmentStart &lt;= millis &amp;&amp; millis &lt;= this.segmentEnd);<a name="line.1349"></a>
+<span class="sourceLineNo">1350</span>        }<a name="line.1350"></a>
+<span class="sourceLineNo">1351</span><a name="line.1351"></a>
+<span class="sourceLineNo">1352</span>        /**<a name="line.1352"></a>
+<span class="sourceLineNo">1353</span>         * Returns {@code true} if an interval is contained in this<a name="line.1353"></a>
+<span class="sourceLineNo">1354</span>         * segment.<a name="line.1354"></a>
+<span class="sourceLineNo">1355</span>         *<a name="line.1355"></a>
+<span class="sourceLineNo">1356</span>         * @param from  the start of the interval.<a name="line.1356"></a>
+<span class="sourceLineNo">1357</span>         * @param to  the end of the interval.<a name="line.1357"></a>
+<span class="sourceLineNo">1358</span>         *<a name="line.1358"></a>
+<span class="sourceLineNo">1359</span>         * @return {@code true} if the interval is contained in the<a name="line.1359"></a>
+<span class="sourceLineNo">1360</span>         *         segment.<a name="line.1360"></a>
+<span class="sourceLineNo">1361</span>         */<a name="line.1361"></a>
+<span class="sourceLineNo">1362</span>        public boolean contains(long from, long to) {<a name="line.1362"></a>
+<span class="sourceLineNo">1363</span>            return (this.segmentStart &lt;= from &amp;&amp; to &lt;= this.segmentEnd);<a name="line.1363"></a>
+<span class="sourceLineNo">1364</span>        }<a name="line.1364"></a>
+<span class="sourceLineNo">1365</span><a name="line.1365"></a>
+<span class="sourceLineNo">1366</span>        /**<a name="line.1366"></a>
+<span class="sourceLineNo">1367</span>         * Returns {@code true} if a segment is contained in this segment.<a name="line.1367"></a>
+<span class="sourceLineNo">1368</span>         *<a name="line.1368"></a>
+<span class="sourceLineNo">1369</span>         * @param segment  the segment to test for inclusion<a name="line.1369"></a>
+<span class="sourceLineNo">1370</span>         *<a name="line.1370"></a>
+<span class="sourceLineNo">1371</span>         * @return {@code true} if the segment is contained in this<a name="line.1371"></a>
+<span class="sourceLineNo">1372</span>         *         segment.<a name="line.1372"></a>
+<span class="sourceLineNo">1373</span>         */<a name="line.1373"></a>
+<span class="sourceLineNo">1374</span>        public boolean contains(Segment segment) {<a name="line.1374"></a>
+<span class="sourceLineNo">1375</span>            return contains(segment.getSegmentStart(), segment.getSegmentEnd());<a name="line.1375"></a>
+<span class="sourceLineNo">1376</span>        }<a name="line.1376"></a>
+<span class="sourceLineNo">1377</span><a name="line.1377"></a>
+<span class="sourceLineNo">1378</span>        /**<a name="line.1378"></a>
+<span class="sourceLineNo">1379</span>         * Returns {@code true} if this segment is contained in an interval.<a name="line.1379"></a>
+<span class="sourceLineNo">1380</span>         *<a name="line.1380"></a>
+<span class="sourceLineNo">1381</span>         * @param from  the start of the interval.<a name="line.1381"></a>
+<span class="sourceLineNo">1382</span>         * @param to  the end of the interval.<a name="line.1382"></a>
+<span class="sourceLineNo">1383</span>         *<a name="line.1383"></a>
+<span class="sourceLineNo">1384</span>         * @return {@code true} if this segment is contained in the interval.<a name="line.1384"></a>
+<span class="sourceLineNo">1385</span>         */<a name="line.1385"></a>
+<span class="sourceLineNo">1386</span>        public boolean contained(long from, long to) {<a name="line.1386"></a>
+<span class="sourceLineNo">1387</span>            return (from &lt;= this.segmentStart &amp;&amp; this.segmentEnd &lt;= to);<a name="line.1387"></a>
+<span class="sourceLineNo">1388</span>        }<a name="line.1388"></a>
+<span class="sourceLineNo">1389</span><a name="line.1389"></a>
+<span class="sourceLineNo">1390</span>        /**<a name="line.1390"></a>
+<span class="sourceLineNo">1391</span>         * Returns a segment that is the intersection of this segment and the<a name="line.1391"></a>
+<span class="sourceLineNo">1392</span>         * interval.<a name="line.1392"></a>
+<span class="sourceLineNo">1393</span>         *<a name="line.1393"></a>
+<span class="sourceLineNo">1394</span>         * @param from  the start of the interval.<a name="line.1394"></a>
+<span class="sourceLineNo">1395</span>         * @param to  the end of the interval.<a name="line.1395"></a>
+<span class="sourceLineNo">1396</span>         *<a name="line.1396"></a>
+<span class="sourceLineNo">1397</span>         * @return A segment.<a name="line.1397"></a>
+<span class="sourceLineNo">1398</span>         */<a name="line.1398"></a>
+<span class="sourceLineNo">1399</span>        public Segment intersect(long from, long to) {<a name="line.1399"></a>
+<span class="sourceLineNo">1400</span>            if (from &lt;= this.segmentStart &amp;&amp; this.segmentEnd &lt;= to) {<a name="line.1400"></a>
+<span class="sourceLineNo">1401</span>                return this;<a name="line.1401"></a>
+<span class="sourceLineNo">1402</span>            }<a name="line.1402"></a>
+<span class="sourceLineNo">1403</span>            else {<a name="line.1403"></a>
+<span class="sourceLineNo">1404</span>                return null;<a name="line.1404"></a>
+<span class="sourceLineNo">1405</span>            }<a name="line.1405"></a>
+<span class="sourceLineNo">1406</span>        }<a name="line.1406"></a>
+<span class="sourceLineNo">1407</span><a name="line.1407"></a>
+<span class="sourceLineNo">1408</span>        /**<a name="line.1408"></a>
+<span class="sourceLineNo">1409</span>         * Returns {@code true} if this segment is wholly before another<a name="line.1409"></a>
+<span class="sourceLineNo">1410</span>         * segment.<a name="line.1410"></a>
+<span class="sourceLineNo">1411</span>         *<a name="line.1411"></a>
+<span class="sourceLineNo">1412</span>         * @param other  the other segment.<a name="line.1412"></a>
+<span class="sourceLineNo">1413</span>         *<a name="line.1413"></a>
+<span class="sourceLineNo">1414</span>         * @return A boolean.<a name="line.1414"></a>
+<span class="sourceLineNo">1415</span>         */<a name="line.1415"></a>
+<span class="sourceLineNo">1416</span>        public boolean before(Segment other) {<a name="line.1416"></a>
+<span class="sourceLineNo">1417</span>            return (this.segmentEnd &lt; other.getSegmentStart());<a name="line.1417"></a>
+<span class="sourceLineNo">1418</span>        }<a name="line.1418"></a>
+<span class="sourceLineNo">1419</span><a name="line.1419"></a>
+<span class="sourceLineNo">1420</span>        /**<a name="line.1420"></a>
+<span class="sourceLineNo">1421</span>         * Returns {@code true} if this segment is wholly after another<a name="line.1421"></a>
+<span class="sourceLineNo">1422</span>         * segment.<a name="line.1422"></a>
+<span class="sourceLineNo">1423</span>         *<a name="line.1423"></a>
+<span class="sourceLineNo">1424</span>         * @param other  the other segment.<a name="line.1424"></a>
+<span class="sourceLineNo">1425</span>         *<a name="line.1425"></a>
+<span class="sourceLineNo">1426</span>         * @return A boolean.<a name="line.1426"></a>
+<span class="sourceLineNo">1427</span>         */<a name="line.1427"></a>
+<span class="sourceLineNo">1428</span>        public boolean after(Segment other) {<a name="line.1428"></a>
+<span class="sourceLineNo">1429</span>            return (this.segmentStart &gt; other.getSegmentEnd());<a name="line.1429"></a>
+<span class="sourceLineNo">1430</span>        }<a name="line.1430"></a>
+<span class="sourceLineNo">1431</span><a name="line.1431"></a>
+<span class="sourceLineNo">1432</span>        /**<a name="line.1432"></a>
+<span class="sourceLineNo">1433</span>         * Tests an object (usually another {@code Segment}) for equality<a name="line.1433"></a>
+<span class="sourceLineNo">1434</span>         * with this segment.<a name="line.1434"></a>
+<span class="sourceLineNo">1435</span>         *<a name="line.1435"></a>
+<span class="sourceLineNo">1436</span>         * @param object The other segment to compare with us<a name="line.1436"></a>
+<span class="sourceLineNo">1437</span>         *<a name="line.1437"></a>
+<span class="sourceLineNo">1438</span>         * @return {@code true} if we are the same segment<a name="line.1438"></a>
+<span class="sourceLineNo">1439</span>         */<a name="line.1439"></a>
+<span class="sourceLineNo">1440</span>        @Override<a name="line.1440"></a>
+<span class="sourceLineNo">1441</span>        public boolean equals(Object object) {<a name="line.1441"></a>
+<span class="sourceLineNo">1442</span>            if (object instanceof Segment) {<a name="line.1442"></a>
+<span class="sourceLineNo">1443</span>                Segment other = (Segment) object;<a name="line.1443"></a>
+<span class="sourceLineNo">1444</span>                return (this.segmentNumber == other.getSegmentNumber()<a name="line.1444"></a>
+<span class="sourceLineNo">1445</span>                        &amp;&amp; this.segmentStart == other.getSegmentStart()<a name="line.1445"></a>
+<span class="sourceLineNo">1446</span>                        &amp;&amp; this.segmentEnd == other.getSegmentEnd()<a name="line.1446"></a>
+<span class="sourceLineNo">1447</span>                        &amp;&amp; this.millisecond == other.getMillisecond());<a name="line.1447"></a>
+<span class="sourceLineNo">1448</span>            }<a name="line.1448"></a>
+<span class="sourceLineNo">1449</span>            else {<a name="line.1449"></a>
+<span class="sourceLineNo">1450</span>                return false;<a name="line.1450"></a>
+<span class="sourceLineNo">1451</span>            }<a name="line.1451"></a>
+<span class="sourceLineNo">1452</span>        }<a name="line.1452"></a>
+<span class="sourceLineNo">1453</span><a name="line.1453"></a>
+<span class="sourceLineNo">1454</span>        /**<a name="line.1454"></a>
+<span class="sourceLineNo">1455</span>         * Returns a copy of ourselves or {@code null} if there was an<a name="line.1455"></a>
+<span class="sourceLineNo">1456</span>         * exception during cloning.<a name="line.1456"></a>
+<span class="sourceLineNo">1457</span>         *<a name="line.1457"></a>
+<span class="sourceLineNo">1458</span>         * @return A copy of this segment.<a name="line.1458"></a>
+<span class="sourceLineNo">1459</span>         */<a name="line.1459"></a>
+<span class="sourceLineNo">1460</span>        public Segment copy() {<a name="line.1460"></a>
+<span class="sourceLineNo">1461</span>            try {<a name="line.1461"></a>
+<span class="sourceLineNo">1462</span>                return (Segment) this.clone();<a name="line.1462"></a>
+<span class="sourceLineNo">1463</span>            }<a name="line.1463"></a>
+<span class="sourceLineNo">1464</span>            catch (CloneNotSupportedException e) {<a name="line.1464"></a>
+<span class="sourceLineNo">1465</span>                return null;<a name="line.1465"></a>
+<span class="sourceLineNo">1466</span>            }<a name="line.1466"></a>
+<span class="sourceLineNo">1467</span>        }<a name="line.1467"></a>
+<span class="sourceLineNo">1468</span><a name="line.1468"></a>
+<span class="sourceLineNo">1469</span>        /**<a name="line.1469"></a>
+<span class="sourceLineNo">1470</span>         * Will compare this Segment with another Segment (from Comparable<a name="line.1470"></a>
+<span class="sourceLineNo">1471</span>         * interface).<a name="line.1471"></a>
+<span class="sourceLineNo">1472</span>         *<a name="line.1472"></a>
+<span class="sourceLineNo">1473</span>         * @param object The other Segment to compare with<a name="line.1473"></a>
+<span class="sourceLineNo">1474</span>         *<a name="line.1474"></a>
+<span class="sourceLineNo">1475</span>         * @return -1: this &amp;lt; object, 0: this.equal(object) and<a name="line.1475"></a>
+<span class="sourceLineNo">1476</span>         *         +1: this &amp;gt; object<a name="line.1476"></a>
+<span class="sourceLineNo">1477</span>         */<a name="line.1477"></a>
+<span class="sourceLineNo">1478</span>        @Override<a name="line.1478"></a>
+<span class="sourceLineNo">1479</span>        public int compareTo(Object object) {<a name="line.1479"></a>
+<span class="sourceLineNo">1480</span>            Segment other = (Segment) object;<a name="line.1480"></a>
+<span class="sourceLineNo">1481</span>            if (this.before(other)) {<a name="line.1481"></a>
+<span class="sourceLineNo">1482</span>                return -1;<a name="line.1482"></a>
+<span class="sourceLineNo">1483</span>            }<a name="line.1483"></a>
+<span class="sourceLineNo">1484</span>            else if (this.after(other)) {<a name="line.1484"></a>
+<span class="sourceLineNo">1485</span>                return +1;<a name="line.1485"></a>
+<span class="sourceLineNo">1486</span>            }<a name="line.1486"></a>
+<span class="sourceLineNo">1487</span>            else {<a name="line.1487"></a>
+<span class="sourceLineNo">1488</span>                return 0;<a name="line.1488"></a>
+<span class="sourceLineNo">1489</span>            }<a name="line.1489"></a>
+<span class="sourceLineNo">1490</span>        }<a name="line.1490"></a>
+<span class="sourceLineNo">1491</span><a name="line.1491"></a>
+<span class="sourceLineNo">1492</span>        /**<a name="line.1492"></a>
+<span class="sourceLineNo">1493</span>         * Returns true if we are an included segment and we are not an<a name="line.1493"></a>
+<span class="sourceLineNo">1494</span>         * exception.<a name="line.1494"></a>
+<span class="sourceLineNo">1495</span>         *<a name="line.1495"></a>
+<span class="sourceLineNo">1496</span>         * @return {@code true} or {@code false}.<a name="line.1496"></a>
+<span class="sourceLineNo">1497</span>         */<a name="line.1497"></a>
+<span class="sourceLineNo">1498</span>        public boolean inIncludeSegments() {<a name="line.1498"></a>
+<span class="sourceLineNo">1499</span>            if (getSegmentNumberRelativeToGroup()<a name="line.1499"></a>
+<span class="sourceLineNo">1500</span>                    &lt; SegmentedTimeline.this.segmentsIncluded) {<a name="line.1500"></a>
+<span class="sourceLineNo">1501</span>                return !inExceptionSegments();<a name="line.1501"></a>
+<span class="sourceLineNo">1502</span>            }<a name="line.1502"></a>
+<span class="sourceLineNo">1503</span>            else {<a name="line.1503"></a>
+<span class="sourceLineNo">1504</span>                return false;<a name="line.1504"></a>
+<span class="sourceLineNo">1505</span>            }<a name="line.1505"></a>
+<span class="sourceLineNo">1506</span>        }<a name="line.1506"></a>
+<span class="sourceLineNo">1507</span><a name="line.1507"></a>
+<span class="sourceLineNo">1508</span>        /**<a name="line.1508"></a>
+<span class="sourceLineNo">1509</span>         * Returns true if we are an excluded segment.<a name="line.1509"></a>
+<span class="sourceLineNo">1510</span>         *<a name="line.1510"></a>
+<span class="sourceLineNo">1511</span>         * @return {@code true} or {@code false}.<a name="line.1511"></a>
+<span class="sourceLineNo">1512</span>         */<a name="line.1512"></a>
+<span class="sourceLineNo">1513</span>        public boolean inExcludeSegments() {<a name="line.1513"></a>
+<span class="sourceLineNo">1514</span>            return getSegmentNumberRelativeToGroup()<a name="line.1514"></a>
+<span class="sourceLineNo">1515</span>                    &gt;= SegmentedTimeline.this.segmentsIncluded;<a name="line.1515"></a>
+<span class="sourceLineNo">1516</span>        }<a name="line.1516"></a>
+<span class="sourceLineNo">1517</span><a name="line.1517"></a>
+<span class="sourceLineNo">1518</span>        /**<a name="line.1518"></a>
+<span class="sourceLineNo">1519</span>         * Calculate the segment number relative to the segment group. This<a name="line.1519"></a>
+<span class="sourceLineNo">1520</span>         * will be a number between 0 and segmentsGroup-1. This value is<a name="line.1520"></a>
+<span class="sourceLineNo">1521</span>         * calculated from the segmentNumber. Special care is taken for<a name="line.1521"></a>
+<span class="sourceLineNo">1522</span>         * negative segmentNumbers.<a name="line.1522"></a>
+<span class="sourceLineNo">1523</span>         *<a name="line.1523"></a>
+<span class="sourceLineNo">1524</span>         * @return The segment number.<a name="line.1524"></a>
+<span class="sourceLineNo">1525</span>         */<a name="line.1525"></a>
+<span class="sourceLineNo">1526</span>        private long getSegmentNumberRelativeToGroup() {<a name="line.1526"></a>
+<span class="sourceLineNo">1527</span>            long p = (this.segmentNumber<a name="line.1527"></a>
+<span class="sourceLineNo">1528</span>                    % SegmentedTimeline.this.groupSegmentCount);<a name="line.1528"></a>
+<span class="sourceLineNo">1529</span>            if (p &lt; 0) {<a name="line.1529"></a>
+<span class="sourceLineNo">1530</span>                p += SegmentedTimeline.this.groupSegmentCount;<a name="line.1530"></a>
+<span class="sourceLineNo">1531</span>            }<a name="line.1531"></a>
+<span class="sourceLineNo">1532</span>            return p;<a name="line.1532"></a>
+<span class="sourceLineNo">1533</span>        }<a name="line.1533"></a>
+<span class="sourceLineNo">1534</span><a name="line.1534"></a>
+<span class="sourceLineNo">1535</span>        /**<a name="line.1535"></a>
+<span class="sourceLineNo">1536</span>         * Returns true if we are an exception segment. This is implemented via<a name="line.1536"></a>
+<span class="sourceLineNo">1537</span>         * a binary search on the exceptionSegments sorted list.<a name="line.1537"></a>
+<span class="sourceLineNo">1538</span>         *<a name="line.1538"></a>
+<span class="sourceLineNo">1539</span>         * If the segment is not listed as an exception in our list and we have<a name="line.1539"></a>
+<span class="sourceLineNo">1540</span>         * a baseTimeline, a check is performed to see if the segment is inside<a name="line.1540"></a>
+<span class="sourceLineNo">1541</span>         * an excluded segment from our base. If so, it is also considered an<a name="line.1541"></a>
+<span class="sourceLineNo">1542</span>         * exception.<a name="line.1542"></a>
+<span class="sourceLineNo">1543</span>         *<a name="line.1543"></a>
+<span class="sourceLineNo">1544</span>         * @return {@code true} if we are an exception segment.<a name="line.1544"></a>
+<span class="sourceLineNo">1545</span>         */<a name="line.1545"></a>
+<span class="sourceLineNo">1546</span>        public boolean inExceptionSegments() {<a name="line.1546"></a>
+<span class="sourceLineNo">1547</span>            return binarySearchExceptionSegments(this) &gt;= 0;<a name="line.1547"></a>
+<span class="sourceLineNo">1548</span>        }<a name="line.1548"></a>
+<span class="sourceLineNo">1549</span><a name="line.1549"></a>
+<span class="sourceLineNo">1550</span>        /**<a name="line.1550"></a>
+<span class="sourceLineNo">1551</span>         * Increments the internal attributes of this segment by a number of<a name="line.1551"></a>
+<span class="sourceLineNo">1552</span>         * segments.<a name="line.1552"></a>
+<span class="sourceLineNo">1553</span>         *<a name="line.1553"></a>
+<span class="sourceLineNo">1554</span>         * @param n Number of segments to increment.<a name="line.1554"></a>
+<span class="sourceLineNo">1555</span>         */<a name="line.1555"></a>
+<span class="sourceLineNo">1556</span>        public void inc(long n) {<a name="line.1556"></a>
+<span class="sourceLineNo">1557</span>            this.segmentNumber += n;<a name="line.1557"></a>
+<span class="sourceLineNo">1558</span>            long m = n * SegmentedTimeline.this.segmentSize;<a name="line.1558"></a>
+<span class="sourceLineNo">1559</span>            this.segmentStart += m;<a name="line.1559"></a>
+<span class="sourceLineNo">1560</span>            this.segmentEnd += m;<a name="line.1560"></a>
+<span class="sourceLineNo">1561</span>            this.millisecond += m;<a name="line.1561"></a>
+<span class="sourceLineNo">1562</span>        }<a name="line.1562"></a>
+<span class="sourceLineNo">1563</span><a name="line.1563"></a>
+<span class="sourceLineNo">1564</span>        /**<a name="line.1564"></a>
+<span class="sourceLineNo">1565</span>         * Increments the internal attributes of this segment by one segment.<a name="line.1565"></a>
+<span class="sourceLineNo">1566</span>         * The exact time incremented is segmentSize.<a name="line.1566"></a>
+<span class="sourceLineNo">1567</span>         */<a name="line.1567"></a>
+<span class="sourceLineNo">1568</span>        public void inc() {<a name="line.1568"></a>
+<span class="sourceLineNo">1569</span>            inc(1);<a name="line.1569"></a>
+<span class="sourceLineNo">1570</span>        }<a name="line.1570"></a>
+<span class="sourceLineNo">1571</span><a name="line.1571"></a>
+<span class="sourceLineNo">1572</span>        /**<a name="line.1572"></a>
+<span class="sourceLineNo">1573</span>         * Decrements the internal attributes of this segment by a number of<a name="line.1573"></a>
+<span class="sourceLineNo">1574</span>         * segments.<a name="line.1574"></a>
+<span class="sourceLineNo">1575</span>         *<a name="line.1575"></a>
+<span class="sourceLineNo">1576</span>         * @param n Number of segments to decrement.<a name="line.1576"></a>
+<span class="sourceLineNo">1577</span>         */<a name="line.1577"></a>
+<span class="sourceLineNo">1578</span>        public void dec(long n) {<a name="line.1578"></a>
+<span class="sourceLineNo">1579</span>            this.segmentNumber -= n;<a name="line.1579"></a>
+<span class="sourceLineNo">1580</span>            long m = n * SegmentedTimeline.this.segmentSize;<a name="line.1580"></a>
+<span class="sourceLineNo">1581</span>            this.segmentStart -= m;<a name="line.1581"></a>
+<span class="sourceLineNo">1582</span>            this.segmentEnd -= m;<a name="line.1582"></a>
+<span class="sourceLineNo">1583</span>            this.millisecond -= m;<a name="line.1583"></a>
+<span class="sourceLineNo">1584</span>        }<a name="line.1584"></a>
+<span class="sourceLineNo">1585</span><a name="line.1585"></a>
+<span class="sourceLineNo">1586</span>        /**<a name="line.1586"></a>
+<span class="sourceLineNo">1587</span>         * Decrements the internal attributes of this segment by one segment.<a name="line.1587"></a>
+<span class="sourceLineNo">1588</span>         * The exact time decremented is segmentSize.<a name="line.1588"></a>
+<span class="sourceLineNo">1589</span>         */<a name="line.1589"></a>
+<span class="sourceLineNo">1590</span>        public void dec() {<a name="line.1590"></a>
+<span class="sourceLineNo">1591</span>            dec(1);<a name="line.1591"></a>
+<span class="sourceLineNo">1592</span>        }<a name="line.1592"></a>
+<span class="sourceLineNo">1593</span><a name="line.1593"></a>
+<span class="sourceLineNo">1594</span>        /**<a name="line.1594"></a>
+<span class="sourceLineNo">1595</span>         * Moves the index of this segment to the beginning if the segment.<a name="line.1595"></a>
+<span class="sourceLineNo">1596</span>         */<a name="line.1596"></a>
+<span class="sourceLineNo">1597</span>        public void moveIndexToStart() {<a name="line.1597"></a>
+<span class="sourceLineNo">1598</span>            this.millisecond = this.segmentStart;<a name="line.1598"></a>
+<span class="sourceLineNo">1599</span>        }<a name="line.1599"></a>
+<span class="sourceLineNo">1600</span><a name="line.1600"></a>
+<span class="sourceLineNo">1601</span>        /**<a name="line.1601"></a>
+<span class="sourceLineNo">1602</span>         * Moves the index of this segment to the end of the segment.<a name="line.1602"></a>
+<span class="sourceLineNo">1603</span>         */<a name="line.1603"></a>
+<span class="sourceLineNo">1604</span>        public void moveIndexToEnd() {<a name="line.1604"></a>
+<span class="sourceLineNo">1605</span>            this.millisecond = this.segmentEnd;<a name="line.1605"></a>
+<span class="sourceLineNo">1606</span>        }<a name="line.1606"></a>
+<span class="sourceLineNo">1607</span><a name="line.1607"></a>
+<span class="sourceLineNo">1608</span>    }<a name="line.1608"></a>
+<span class="sourceLineNo">1609</span><a name="line.1609"></a>
+<span class="sourceLineNo">1610</span>    /**<a name="line.1610"></a>
+<span class="sourceLineNo">1611</span>     * Private internal class to represent a range of segments. This class is<a name="line.1611"></a>
+<span class="sourceLineNo">1612</span>     * mainly used to store in one object a range of exception segments. This<a name="line.1612"></a>
+<span class="sourceLineNo">1613</span>     * optimizes certain timelines that use a small segment size (like an<a name="line.1613"></a>
+<span class="sourceLineNo">1614</span>     * intraday timeline) allowing them to express a day exception as one<a name="line.1614"></a>
+<span class="sourceLineNo">1615</span>     * SegmentRange instead of multi Segments.<a name="line.1615"></a>
+<span class="sourceLineNo">1616</span>     */<a name="line.1616"></a>
+<span class="sourceLineNo">1617</span>    protected class SegmentRange extends Segment {<a name="line.1617"></a>
+<span class="sourceLineNo">1618</span><a name="line.1618"></a>
+<span class="sourceLineNo">1619</span>        /** The number of segments in the range. */<a name="line.1619"></a>
+<span class="sourceLineNo">1620</span>        private long segmentCount;<a name="line.1620"></a>
+<span class="sourceLineNo">1621</span><a name="line.1621"></a>
+<span class="sourceLineNo">1622</span>        /**<a name="line.1622"></a>
+<span class="sourceLineNo">1623</span>         * Creates a SegmentRange between a start and end domain values.<a name="line.1623"></a>
+<span class="sourceLineNo">1624</span>         *<a name="line.1624"></a>
+<span class="sourceLineNo">1625</span>         * @param fromMillisecond  start of the range<a name="line.1625"></a>
+<span class="sourceLineNo">1626</span>         * @param toMillisecond  end of the range<a name="line.1626"></a>
+<span class="sourceLineNo">1627</span>         */<a name="line.1627"></a>
+<span class="sourceLineNo">1628</span>        public SegmentRange(long fromMillisecond, long toMillisecond) {<a name="line.1628"></a>
+<span class="sourceLineNo">1629</span><a name="line.1629"></a>
+<span class="sourceLineNo">1630</span>            Segment start = getSegment(fromMillisecond);<a name="line.1630"></a>
+<span class="sourceLineNo">1631</span>            Segment end = getSegment(toMillisecond);<a name="line.1631"></a>
+<span class="sourceLineNo">1632</span>//            if (start.getSegmentStart() != fromMillisecond<a name="line.1632"></a>
+<span class="sourceLineNo">1633</span>//                || end.getSegmentEnd() != toMillisecond) {<a name="line.1633"></a>
+<span class="sourceLineNo">1634</span>//                throw new IllegalArgumentException("Invalid Segment Range ["<a name="line.1634"></a>
+<span class="sourceLineNo">1635</span>//                    + fromMillisecond + "," + toMillisecond + "]");<a name="line.1635"></a>
+<span class="sourceLineNo">1636</span>//            }<a name="line.1636"></a>
+<span class="sourceLineNo">1637</span><a name="line.1637"></a>
+<span class="sourceLineNo">1638</span>            this.millisecond = fromMillisecond;<a name="line.1638"></a>
+<span class="sourceLineNo">1639</span>            this.segmentNumber = calculateSegmentNumber(fromMillisecond);<a name="line.1639"></a>
+<span class="sourceLineNo">1640</span>            this.segmentStart = start.segmentStart;<a name="line.1640"></a>
+<span class="sourceLineNo">1641</span>            this.segmentEnd = end.segmentEnd;<a name="line.1641"></a>
+<span class="sourceLineNo">1642</span>            this.segmentCount<a name="line.1642"></a>
+<span class="sourceLineNo">1643</span>                = (end.getSegmentNumber() - start.getSegmentNumber() + 1);<a name="line.1643"></a>
+<span class="sourceLineNo">1644</span>        }<a name="line.1644"></a>
+<span class="sourceLineNo">1645</span><a name="line.1645"></a>
+<span class="sourceLineNo">1646</span>        /**<a name="line.1646"></a>
+<span class="sourceLineNo">1647</span>         * Returns the number of segments contained in this range.<a name="line.1647"></a>
+<span class="sourceLineNo">1648</span>         *<a name="line.1648"></a>
+<span class="sourceLineNo">1649</span>         * @return The segment count.<a name="line.1649"></a>
+<span class="sourceLineNo">1650</span>         */<a name="line.1650"></a>
+<span class="sourceLineNo">1651</span>        @Override<a name="line.1651"></a>
+<span class="sourceLineNo">1652</span>        public long getSegmentCount() {<a name="line.1652"></a>
+<span class="sourceLineNo">1653</span>            return this.segmentCount;<a name="line.1653"></a>
+<span class="sourceLineNo">1654</span>        }<a name="line.1654"></a>
+<span class="sourceLineNo">1655</span><a name="line.1655"></a>
+<span class="sourceLineNo">1656</span>        /**<a name="line.1656"></a>
+<span class="sourceLineNo">1657</span>         * Returns a segment that is the intersection of this segment and the<a name="line.1657"></a>
+<span class="sourceLineNo">1658</span>         * interval.<a name="line.1658"></a>
+<span class="sourceLineNo">1659</span>         *<a name="line.1659"></a>
+<span class="sourceLineNo">1660</span>         * @param from  the start of the interval.<a name="line.1660"></a>
+<span class="sourceLineNo">1661</span>         * @param to  the end of the interval.<a name="line.1661"></a>
+<span class="sourceLineNo">1662</span>         *<a name="line.1662"></a>
+<span class="sourceLineNo">1663</span>         * @return The intersection.<a name="line.1663"></a>
+<span class="sourceLineNo">1664</span>         */<a name="line.1664"></a>
+<span class="sourceLineNo">1665</span>        @Override<a name="line.1665"></a>
+<span class="sourceLineNo">1666</span>        public Segment intersect(long from, long to) {<a name="line.1666"></a>
+<span class="sourceLineNo">1667</span><a name="line.1667"></a>
+<span class="sourceLineNo">1668</span>            // Segment fromSegment = getSegment(from);<a name="line.1668"></a>
+<span class="sourceLineNo">1669</span>            // fromSegment.inc();<a name="line.1669"></a>
+<span class="sourceLineNo">1670</span>            // Segment toSegment = getSegment(to);<a name="line.1670"></a>
+<span class="sourceLineNo">1671</span>            // toSegment.dec();<a name="line.1671"></a>
+<span class="sourceLineNo">1672</span>            long start = Math.max(from, this.segmentStart);<a name="line.1672"></a>
+<span class="sourceLineNo">1673</span>            long end = Math.min(to, this.segmentEnd);<a name="line.1673"></a>
+<span class="sourceLineNo">1674</span>            // long start = Math.max(<a name="line.1674"></a>
+<span class="sourceLineNo">1675</span>            //     fromSegment.getSegmentStart(), this.segmentStart<a name="line.1675"></a>
+<span class="sourceLineNo">1676</span>            // );<a name="line.1676"></a>
+<span class="sourceLineNo">1677</span>            // long end = Math.min(toSegment.getSegmentEnd(), this.segmentEnd);<a name="line.1677"></a>
+<span class="sourceLineNo">1678</span>            if (start &lt;= end) {<a name="line.1678"></a>
+<span class="sourceLineNo">1679</span>                return new SegmentRange(start, end);<a name="line.1679"></a>
+<span class="sourceLineNo">1680</span>            }<a name="line.1680"></a>
+<span class="sourceLineNo">1681</span>            else {<a name="line.1681"></a>
+<span class="sourceLineNo">1682</span>                return null;<a name="line.1682"></a>
+<span class="sourceLineNo">1683</span>            }<a name="line.1683"></a>
+<span class="sourceLineNo">1684</span>        }<a name="line.1684"></a>
+<span class="sourceLineNo">1685</span><a name="line.1685"></a>
+<span class="sourceLineNo">1686</span>        /**<a name="line.1686"></a>
+<span class="sourceLineNo">1687</span>         * Returns true if all Segments of this SegmentRenge are an included<a name="line.1687"></a>
+<span class="sourceLineNo">1688</span>         * segment and are not an exception.<a name="line.1688"></a>
+<span class="sourceLineNo">1689</span>         *<a name="line.1689"></a>
+<span class="sourceLineNo">1690</span>         * @return {@code true} or {@code false}.<a name="line.1690"></a>
+<span class="sourceLineNo">1691</span>         */<a name="line.1691"></a>
+<span class="sourceLineNo">1692</span>        @Override<a name="line.1692"></a>
+<span class="sourceLineNo">1693</span>        public boolean inIncludeSegments() {<a name="line.1693"></a>
+<span class="sourceLineNo">1694</span>            for (Segment segment = getSegment(this.segmentStart);<a name="line.1694"></a>
+<span class="sourceLineNo">1695</span>                segment.getSegmentStart() &lt; this.segmentEnd;<a name="line.1695"></a>
+<span class="sourceLineNo">1696</span>                segment.inc()) {<a name="line.1696"></a>
+<span class="sourceLineNo">1697</span>                if (!segment.inIncludeSegments()) {<a name="line.1697"></a>
+<span class="sourceLineNo">1698</span>                    return (false);<a name="line.1698"></a>
+<span class="sourceLineNo">1699</span>                }<a name="line.1699"></a>
+<span class="sourceLineNo">1700</span>            }<a name="line.1700"></a>
+<span class="sourceLineNo">1701</span>            return true;<a name="line.1701"></a>
+<span class="sourceLineNo">1702</span>        }<a name="line.1702"></a>
+<span class="sourceLineNo">1703</span><a name="line.1703"></a>
+<span class="sourceLineNo">1704</span>        /**<a name="line.1704"></a>
+<span class="sourceLineNo">1705</span>         * Returns true if we are an excluded segment.<a name="line.1705"></a>
+<span class="sourceLineNo">1706</span>         *<a name="line.1706"></a>
+<span class="sourceLineNo">1707</span>         * @return {@code true} or {@code false}.<a name="line.1707"></a>
+<span class="sourceLineNo">1708</span>         */<a name="line.1708"></a>
+<span class="sourceLineNo">1709</span>        @Override<a name="line.1709"></a>
+<span class="sourceLineNo">1710</span>        public boolean inExcludeSegments() {<a name="line.1710"></a>
+<span class="sourceLineNo">1711</span>            for (Segment segment = getSegment(this.segmentStart);<a name="line.1711"></a>
+<span class="sourceLineNo">1712</span>                segment.getSegmentStart() &lt; this.segmentEnd;<a name="line.1712"></a>
+<span class="sourceLineNo">1713</span>                segment.inc()) {<a name="line.1713"></a>
+<span class="sourceLineNo">1714</span>                if (!segment.inExceptionSegments()) {<a name="line.1714"></a>
+<span class="sourceLineNo">1715</span>                    return (false);<a name="line.1715"></a>
+<span class="sourceLineNo">1716</span>                }<a name="line.1716"></a>
+<span class="sourceLineNo">1717</span>            }<a name="line.1717"></a>
+<span class="sourceLineNo">1718</span>            return true;<a name="line.1718"></a>
+<span class="sourceLineNo">1719</span>        }<a name="line.1719"></a>
+<span class="sourceLineNo">1720</span><a name="line.1720"></a>
+<span class="sourceLineNo">1721</span>        /**<a name="line.1721"></a>
+<span class="sourceLineNo">1722</span>         * Not implemented for SegmentRange. Always throws<a name="line.1722"></a>
+<span class="sourceLineNo">1723</span>         * IllegalArgumentException.<a name="line.1723"></a>
+<span class="sourceLineNo">1724</span>         *<a name="line.1724"></a>
+<span class="sourceLineNo">1725</span>         * @param n Number of segments to increment.<a name="line.1725"></a>
+<span class="sourceLineNo">1726</span>         */<a name="line.1726"></a>
+<span class="sourceLineNo">1727</span>        @Override<a name="line.1727"></a>
+<span class="sourceLineNo">1728</span>        public void inc(long n) {<a name="line.1728"></a>
+<span class="sourceLineNo">1729</span>            throw new IllegalArgumentException(<a name="line.1729"></a>
+<span class="sourceLineNo">1730</span>                    "Not implemented in SegmentRange");<a name="line.1730"></a>
+<span class="sourceLineNo">1731</span>        }<a name="line.1731"></a>
+<span class="sourceLineNo">1732</span><a name="line.1732"></a>
+<span class="sourceLineNo">1733</span>    }<a name="line.1733"></a>
+<span class="sourceLineNo">1734</span><a name="line.1734"></a>
+<span class="sourceLineNo">1735</span>    /**<a name="line.1735"></a>
+<span class="sourceLineNo">1736</span>     * Special {@code SegmentRange} that came from the BaseTimeline.<a name="line.1736"></a>
+<span class="sourceLineNo">1737</span>     */<a name="line.1737"></a>
+<span class="sourceLineNo">1738</span>    protected class BaseTimelineSegmentRange extends SegmentRange {<a name="line.1738"></a>
+<span class="sourceLineNo">1739</span><a name="line.1739"></a>
+<span class="sourceLineNo">1740</span>        /**<a name="line.1740"></a>
+<span class="sourceLineNo">1741</span>         * Constructor.<a name="line.1741"></a>
+<span class="sourceLineNo">1742</span>         *<a name="line.1742"></a>
+<span class="sourceLineNo">1743</span>         * @param fromDomainValue  the start value.<a name="line.1743"></a>
+<span class="sourceLineNo">1744</span>         * @param toDomainValue  the end value.<a name="line.1744"></a>
+<span class="sourceLineNo">1745</span>         */<a name="line.1745"></a>
+<span class="sourceLineNo">1746</span>        public BaseTimelineSegmentRange(long fromDomainValue,<a name="line.1746"></a>
+<span class="sourceLineNo">1747</span>                                        long toDomainValue) {<a name="line.1747"></a>
+<span class="sourceLineNo">1748</span>            super(fromDomainValue, toDomainValue);<a name="line.1748"></a>
+<span class="sourceLineNo">1749</span>        }<a name="line.1749"></a>
+<span class="sourceLineNo">1750</span><a name="line.1750"></a>
+<span class="sourceLineNo">1751</span>    }<a name="line.1751"></a>
+<span class="sourceLineNo">1752</span><a name="line.1752"></a>
+<span class="sourceLineNo">1753</span>}<a name="line.1753"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

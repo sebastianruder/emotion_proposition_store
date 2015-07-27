@@ -1,0 +1,259 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="de">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>/* ========================================================================<a name="line.1"></a>
+<span class="sourceLineNo">002</span> * JCommon : a free general purpose class library for the Java(tm) platform<a name="line.2"></a>
+<span class="sourceLineNo">003</span> * ========================================================================<a name="line.3"></a>
+<span class="sourceLineNo">004</span> *<a name="line.4"></a>
+<span class="sourceLineNo">005</span> * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * <a name="line.6"></a>
+<span class="sourceLineNo">007</span> * Project Info:  http://www.jfree.org/jcommon/index.html<a name="line.7"></a>
+<span class="sourceLineNo">008</span> *<a name="line.8"></a>
+<span class="sourceLineNo">009</span> * This library is free software; you can redistribute it and/or modify it <a name="line.9"></a>
+<span class="sourceLineNo">010</span> * under the terms of the GNU Lesser General Public License as published by <a name="line.10"></a>
+<span class="sourceLineNo">011</span> * the Free Software Foundation; either version 2.1 of the License, or <a name="line.11"></a>
+<span class="sourceLineNo">012</span> * (at your option) any later version.<a name="line.12"></a>
+<span class="sourceLineNo">013</span> *<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * This library is distributed in the hope that it will be useful, but <a name="line.14"></a>
+<span class="sourceLineNo">015</span> * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY <a name="line.15"></a>
+<span class="sourceLineNo">016</span> * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public <a name="line.16"></a>
+<span class="sourceLineNo">017</span> * License for more details.<a name="line.17"></a>
+<span class="sourceLineNo">018</span> *<a name="line.18"></a>
+<span class="sourceLineNo">019</span> * You should have received a copy of the GNU Lesser General Public<a name="line.19"></a>
+<span class="sourceLineNo">020</span> * License along with this library; if not, write to the Free Software<a name="line.20"></a>
+<span class="sourceLineNo">021</span> * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, <a name="line.21"></a>
+<span class="sourceLineNo">022</span> * USA.  <a name="line.22"></a>
+<span class="sourceLineNo">023</span> *<a name="line.23"></a>
+<span class="sourceLineNo">024</span> * [Java is a trademark or registered trademark of Sun Microsystems, Inc. <a name="line.24"></a>
+<span class="sourceLineNo">025</span> * in the United States and other countries.]<a name="line.25"></a>
+<span class="sourceLineNo">026</span> * <a name="line.26"></a>
+<span class="sourceLineNo">027</span> * --------------<a name="line.27"></a>
+<span class="sourceLineNo">028</span> * XMLWriter.java<a name="line.28"></a>
+<span class="sourceLineNo">029</span> * --------------<a name="line.29"></a>
+<span class="sourceLineNo">030</span> * (C) Copyright 2003-2005, by Thomas Morgner and Contributors.<a name="line.30"></a>
+<span class="sourceLineNo">031</span> *<a name="line.31"></a>
+<span class="sourceLineNo">032</span> * Original Author:  Thomas Morgner;<a name="line.32"></a>
+<span class="sourceLineNo">033</span> * Contributor(s):   David Gilbert (for Object Refinery Limited);<a name="line.33"></a>
+<span class="sourceLineNo">034</span> *<a name="line.34"></a>
+<span class="sourceLineNo">035</span> * $Id: XMLWriter.java,v 1.5 2005/11/08 14:42:42 mungady Exp $<a name="line.35"></a>
+<span class="sourceLineNo">036</span> *<a name="line.36"></a>
+<span class="sourceLineNo">037</span> * Changes (from 26-Nov-2003)<a name="line.37"></a>
+<span class="sourceLineNo">038</span> * --------------------------<a name="line.38"></a>
+<span class="sourceLineNo">039</span> * 26-Nov-2003 : Added standard header and Javadocs (DG);<a name="line.39"></a>
+<span class="sourceLineNo">040</span> *<a name="line.40"></a>
+<span class="sourceLineNo">041</span> */<a name="line.41"></a>
+<span class="sourceLineNo">042</span><a name="line.42"></a>
+<span class="sourceLineNo">043</span>package org.jfree.xml.writer;<a name="line.43"></a>
+<span class="sourceLineNo">044</span><a name="line.44"></a>
+<span class="sourceLineNo">045</span>import java.io.IOException;<a name="line.45"></a>
+<span class="sourceLineNo">046</span>import java.io.Writer;<a name="line.46"></a>
+<span class="sourceLineNo">047</span>import java.util.Properties;<a name="line.47"></a>
+<span class="sourceLineNo">048</span><a name="line.48"></a>
+<span class="sourceLineNo">049</span>/**<a name="line.49"></a>
+<span class="sourceLineNo">050</span> * A class for writing XML to a character stream.<a name="line.50"></a>
+<span class="sourceLineNo">051</span> */<a name="line.51"></a>
+<span class="sourceLineNo">052</span>public class XMLWriter extends XMLWriterSupport {<a name="line.52"></a>
+<span class="sourceLineNo">053</span><a name="line.53"></a>
+<span class="sourceLineNo">054</span>    /**<a name="line.54"></a>
+<span class="sourceLineNo">055</span>     * The character stream.<a name="line.55"></a>
+<span class="sourceLineNo">056</span>     */<a name="line.56"></a>
+<span class="sourceLineNo">057</span>    private Writer writer;<a name="line.57"></a>
+<span class="sourceLineNo">058</span><a name="line.58"></a>
+<span class="sourceLineNo">059</span>    /**<a name="line.59"></a>
+<span class="sourceLineNo">060</span>     * Creates a new XML writer for the specified character stream.  By <a name="line.60"></a>
+<span class="sourceLineNo">061</span>     * default, four spaces are used for indentation.<a name="line.61"></a>
+<span class="sourceLineNo">062</span>     *<a name="line.62"></a>
+<span class="sourceLineNo">063</span>     * @param writer the character stream.<a name="line.63"></a>
+<span class="sourceLineNo">064</span>     */<a name="line.64"></a>
+<span class="sourceLineNo">065</span>    public XMLWriter(final Writer writer) {<a name="line.65"></a>
+<span class="sourceLineNo">066</span>        this(writer, "    ");<a name="line.66"></a>
+<span class="sourceLineNo">067</span>    }<a name="line.67"></a>
+<span class="sourceLineNo">068</span><a name="line.68"></a>
+<span class="sourceLineNo">069</span>    /**<a name="line.69"></a>
+<span class="sourceLineNo">070</span>     * Creates a new XML writer for the specified character stream.<a name="line.70"></a>
+<span class="sourceLineNo">071</span>     *<a name="line.71"></a>
+<span class="sourceLineNo">072</span>     * @param writer       the character stream.<a name="line.72"></a>
+<span class="sourceLineNo">073</span>     * @param indentString the string used for indentation (should contain <a name="line.73"></a>
+<span class="sourceLineNo">074</span>     *                     white space, for example four spaces).<a name="line.74"></a>
+<span class="sourceLineNo">075</span>     */<a name="line.75"></a>
+<span class="sourceLineNo">076</span>    public XMLWriter(final Writer writer, final String indentString) {<a name="line.76"></a>
+<span class="sourceLineNo">077</span>        super(new SafeTagList(), 0, indentString);<a name="line.77"></a>
+<span class="sourceLineNo">078</span>        if (writer == null) {<a name="line.78"></a>
+<span class="sourceLineNo">079</span>            throw new NullPointerException("Writer must not be null.");<a name="line.79"></a>
+<span class="sourceLineNo">080</span>        }<a name="line.80"></a>
+<span class="sourceLineNo">081</span><a name="line.81"></a>
+<span class="sourceLineNo">082</span>        this.writer = writer;<a name="line.82"></a>
+<span class="sourceLineNo">083</span>    }<a name="line.83"></a>
+<span class="sourceLineNo">084</span><a name="line.84"></a>
+<span class="sourceLineNo">085</span>    /**<a name="line.85"></a>
+<span class="sourceLineNo">086</span>     * Writes the XML declaration that usually appears at the top of every XML <a name="line.86"></a>
+<span class="sourceLineNo">087</span>     * file.<a name="line.87"></a>
+<span class="sourceLineNo">088</span>     * <a name="line.88"></a>
+<span class="sourceLineNo">089</span>     * @throws IOException if there is a problem writing to the character <a name="line.89"></a>
+<span class="sourceLineNo">090</span>     *                     stream.               <a name="line.90"></a>
+<span class="sourceLineNo">091</span>     */<a name="line.91"></a>
+<span class="sourceLineNo">092</span>    public void writeXmlDeclaration() throws IOException {<a name="line.92"></a>
+<span class="sourceLineNo">093</span>        this.writer.write("&lt;?xml version=\"1.0\" encoding=\"UTF-8\"?&gt;");<a name="line.93"></a>
+<span class="sourceLineNo">094</span>        this.writer.write(getLineSeparator());<a name="line.94"></a>
+<span class="sourceLineNo">095</span>    }<a name="line.95"></a>
+<span class="sourceLineNo">096</span><a name="line.96"></a>
+<span class="sourceLineNo">097</span>    /**<a name="line.97"></a>
+<span class="sourceLineNo">098</span>     * Writes an opening XML tag that has no attributes.<a name="line.98"></a>
+<span class="sourceLineNo">099</span>     *<a name="line.99"></a>
+<span class="sourceLineNo">100</span>     * @param name  the tag name.<a name="line.100"></a>
+<span class="sourceLineNo">101</span>     * @param close a flag that controls whether or not the tag is closed <a name="line.101"></a>
+<span class="sourceLineNo">102</span>     *              immediately.<a name="line.102"></a>
+<span class="sourceLineNo">103</span>     * @throws java.io.IOException if there is an I/O problem.<a name="line.103"></a>
+<span class="sourceLineNo">104</span>     */<a name="line.104"></a>
+<span class="sourceLineNo">105</span>    public void writeTag(final String name, final boolean close) <a name="line.105"></a>
+<span class="sourceLineNo">106</span>            throws IOException {<a name="line.106"></a>
+<span class="sourceLineNo">107</span>        if (close) {<a name="line.107"></a>
+<span class="sourceLineNo">108</span>            writeTag(this.writer, name, new AttributeList(), close);<a name="line.108"></a>
+<span class="sourceLineNo">109</span>        }<a name="line.109"></a>
+<span class="sourceLineNo">110</span>        else {<a name="line.110"></a>
+<span class="sourceLineNo">111</span>            writeTag(this.writer, name);<a name="line.111"></a>
+<span class="sourceLineNo">112</span>        }<a name="line.112"></a>
+<span class="sourceLineNo">113</span>    }<a name="line.113"></a>
+<span class="sourceLineNo">114</span><a name="line.114"></a>
+<span class="sourceLineNo">115</span>    /**<a name="line.115"></a>
+<span class="sourceLineNo">116</span>     * Writes a closing XML tag.<a name="line.116"></a>
+<span class="sourceLineNo">117</span>     *<a name="line.117"></a>
+<span class="sourceLineNo">118</span>     * @param tag the tag name.<a name="line.118"></a>
+<span class="sourceLineNo">119</span>     * @throws java.io.IOException if there is an I/O problem.<a name="line.119"></a>
+<span class="sourceLineNo">120</span>     */<a name="line.120"></a>
+<span class="sourceLineNo">121</span>    public void writeCloseTag(final String tag) throws IOException {<a name="line.121"></a>
+<span class="sourceLineNo">122</span>        writeCloseTag(this.writer, tag);<a name="line.122"></a>
+<span class="sourceLineNo">123</span>    }<a name="line.123"></a>
+<span class="sourceLineNo">124</span><a name="line.124"></a>
+<span class="sourceLineNo">125</span>    /**<a name="line.125"></a>
+<span class="sourceLineNo">126</span>     * Writes an opening XML tag with an attribute/value pair.<a name="line.126"></a>
+<span class="sourceLineNo">127</span>     *<a name="line.127"></a>
+<span class="sourceLineNo">128</span>     * @param name           the tag name.<a name="line.128"></a>
+<span class="sourceLineNo">129</span>     * @param attributeName  the attribute name.<a name="line.129"></a>
+<span class="sourceLineNo">130</span>     * @param attributeValue the attribute value.<a name="line.130"></a>
+<span class="sourceLineNo">131</span>     * @param close          controls whether the tag is closed.<a name="line.131"></a>
+<span class="sourceLineNo">132</span>     * @throws java.io.IOException if there is an I/O problem.<a name="line.132"></a>
+<span class="sourceLineNo">133</span>     */<a name="line.133"></a>
+<span class="sourceLineNo">134</span>    public void writeTag(final String name, final String attributeName, <a name="line.134"></a>
+<span class="sourceLineNo">135</span>                         final String attributeValue, final boolean close) <a name="line.135"></a>
+<span class="sourceLineNo">136</span>            throws IOException {<a name="line.136"></a>
+<span class="sourceLineNo">137</span>        writeTag(this.writer, name, attributeName, attributeValue, close);<a name="line.137"></a>
+<span class="sourceLineNo">138</span>    }<a name="line.138"></a>
+<span class="sourceLineNo">139</span><a name="line.139"></a>
+<span class="sourceLineNo">140</span>    /**<a name="line.140"></a>
+<span class="sourceLineNo">141</span>     * Writes an opening XML tag along with a list of attribute/value pairs.<a name="line.141"></a>
+<span class="sourceLineNo">142</span>     *<a name="line.142"></a>
+<span class="sourceLineNo">143</span>     * @param name       the tag name.<a name="line.143"></a>
+<span class="sourceLineNo">144</span>     * @param attributes the attributes.<a name="line.144"></a>
+<span class="sourceLineNo">145</span>     * @param close      controls whether the tag is closed.<a name="line.145"></a>
+<span class="sourceLineNo">146</span>     * @throws java.io.IOException if there is an I/O problem.<a name="line.146"></a>
+<span class="sourceLineNo">147</span>     */<a name="line.147"></a>
+<span class="sourceLineNo">148</span>    public void writeTag(final String name, final AttributeList attributes, <a name="line.148"></a>
+<span class="sourceLineNo">149</span>            final boolean close) throws IOException {<a name="line.149"></a>
+<span class="sourceLineNo">150</span>        writeTag(this.writer, name, attributes, close);<a name="line.150"></a>
+<span class="sourceLineNo">151</span>    }<a name="line.151"></a>
+<span class="sourceLineNo">152</span><a name="line.152"></a>
+<span class="sourceLineNo">153</span>    /**<a name="line.153"></a>
+<span class="sourceLineNo">154</span>     * Writes an opening XML tag along with a list of attribute/value pairs.<a name="line.154"></a>
+<span class="sourceLineNo">155</span>     *<a name="line.155"></a>
+<span class="sourceLineNo">156</span>     * @param name       the tag name.<a name="line.156"></a>
+<span class="sourceLineNo">157</span>     * @param attributes the attributes.<a name="line.157"></a>
+<span class="sourceLineNo">158</span>     * @param close      controls whether the tag is closed.<a name="line.158"></a>
+<span class="sourceLineNo">159</span>     * @throws java.io.IOException if there is an I/O problem.<a name="line.159"></a>
+<span class="sourceLineNo">160</span>     * @deprecated use the attribute list instead ...<a name="line.160"></a>
+<span class="sourceLineNo">161</span>     */<a name="line.161"></a>
+<span class="sourceLineNo">162</span>    public void writeTag(final String name, final Properties attributes, <a name="line.162"></a>
+<span class="sourceLineNo">163</span>            final boolean close) throws IOException {<a name="line.163"></a>
+<span class="sourceLineNo">164</span>        writeTag(this.writer, name, attributes, close);<a name="line.164"></a>
+<span class="sourceLineNo">165</span>    }<a name="line.165"></a>
+<span class="sourceLineNo">166</span><a name="line.166"></a>
+<span class="sourceLineNo">167</span>    /**<a name="line.167"></a>
+<span class="sourceLineNo">168</span>     * Writes some text to the character stream.<a name="line.168"></a>
+<span class="sourceLineNo">169</span>     *<a name="line.169"></a>
+<span class="sourceLineNo">170</span>     * @param text the text.<a name="line.170"></a>
+<span class="sourceLineNo">171</span>     * @throws IOException if there is a problem writing to the character <a name="line.171"></a>
+<span class="sourceLineNo">172</span>     *                     stream.<a name="line.172"></a>
+<span class="sourceLineNo">173</span>     */<a name="line.173"></a>
+<span class="sourceLineNo">174</span>    public void writeText(final String text) throws IOException {<a name="line.174"></a>
+<span class="sourceLineNo">175</span>        this.writer.write(text);<a name="line.175"></a>
+<span class="sourceLineNo">176</span>    }<a name="line.176"></a>
+<span class="sourceLineNo">177</span><a name="line.177"></a>
+<span class="sourceLineNo">178</span>    /**<a name="line.178"></a>
+<span class="sourceLineNo">179</span>     * Closes the underlying character stream.<a name="line.179"></a>
+<span class="sourceLineNo">180</span>     * <a name="line.180"></a>
+<span class="sourceLineNo">181</span>     * @throws IOException if there is a problem closing the character stream.<a name="line.181"></a>
+<span class="sourceLineNo">182</span>     */<a name="line.182"></a>
+<span class="sourceLineNo">183</span>    public void close() throws IOException {<a name="line.183"></a>
+<span class="sourceLineNo">184</span>        this.writer.close();<a name="line.184"></a>
+<span class="sourceLineNo">185</span>    }<a name="line.185"></a>
+<span class="sourceLineNo">186</span><a name="line.186"></a>
+<span class="sourceLineNo">187</span>}<a name="line.187"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

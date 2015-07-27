@@ -1,0 +1,719 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="de">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>/* ========================================================================<a name="line.1"></a>
+<span class="sourceLineNo">002</span> * JCommon : a free general purpose class library for the Java(tm) platform<a name="line.2"></a>
+<span class="sourceLineNo">003</span> * ========================================================================<a name="line.3"></a>
+<span class="sourceLineNo">004</span> *<a name="line.4"></a>
+<span class="sourceLineNo">005</span> * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * <a name="line.6"></a>
+<span class="sourceLineNo">007</span> * Project Info:  http://www.jfree.org/jcommon/index.html<a name="line.7"></a>
+<span class="sourceLineNo">008</span> *<a name="line.8"></a>
+<span class="sourceLineNo">009</span> * This library is free software; you can redistribute it and/or modify it <a name="line.9"></a>
+<span class="sourceLineNo">010</span> * under the terms of the GNU Lesser General Public License as published by <a name="line.10"></a>
+<span class="sourceLineNo">011</span> * the Free Software Foundation; either version 2.1 of the License, or <a name="line.11"></a>
+<span class="sourceLineNo">012</span> * (at your option) any later version.<a name="line.12"></a>
+<span class="sourceLineNo">013</span> *<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * This library is distributed in the hope that it will be useful, but <a name="line.14"></a>
+<span class="sourceLineNo">015</span> * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY <a name="line.15"></a>
+<span class="sourceLineNo">016</span> * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public <a name="line.16"></a>
+<span class="sourceLineNo">017</span> * License for more details.<a name="line.17"></a>
+<span class="sourceLineNo">018</span> *<a name="line.18"></a>
+<span class="sourceLineNo">019</span> * You should have received a copy of the GNU Lesser General Public<a name="line.19"></a>
+<span class="sourceLineNo">020</span> * License along with this library; if not, write to the Free Software<a name="line.20"></a>
+<span class="sourceLineNo">021</span> * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, <a name="line.21"></a>
+<span class="sourceLineNo">022</span> * USA.  <a name="line.22"></a>
+<span class="sourceLineNo">023</span> *<a name="line.23"></a>
+<span class="sourceLineNo">024</span> * [Java is a trademark or registered trademark of Sun Microsystems, Inc. <a name="line.24"></a>
+<span class="sourceLineNo">025</span> * in the United States and other countries.]<a name="line.25"></a>
+<span class="sourceLineNo">026</span> * <a name="line.26"></a>
+<span class="sourceLineNo">027</span> * ------------------------<a name="line.27"></a>
+<span class="sourceLineNo">028</span> * AbstractModelReader.java<a name="line.28"></a>
+<span class="sourceLineNo">029</span> * ------------------------<a name="line.29"></a>
+<span class="sourceLineNo">030</span> * (C)opyright 2003-2005, by Thomas Morgner and Contributors.<a name="line.30"></a>
+<span class="sourceLineNo">031</span> *<a name="line.31"></a>
+<span class="sourceLineNo">032</span> * Original Author:  Thomas Morgner;<a name="line.32"></a>
+<span class="sourceLineNo">033</span> * Contributor(s):   David Gilbert (for Object Refinery Limited);<a name="line.33"></a>
+<span class="sourceLineNo">034</span> *<a name="line.34"></a>
+<span class="sourceLineNo">035</span> * $Id: AbstractModelReader.java,v 1.8 2005/10/18 13:33:53 mungady Exp $<a name="line.35"></a>
+<span class="sourceLineNo">036</span> *<a name="line.36"></a>
+<span class="sourceLineNo">037</span> * Changes<a name="line.37"></a>
+<span class="sourceLineNo">038</span> * -------<a name="line.38"></a>
+<span class="sourceLineNo">039</span> * 12-Nov-2003 : Initial version<a name="line.39"></a>
+<span class="sourceLineNo">040</span> * 25-Nov-2003 : Updated header (DG);<a name="line.40"></a>
+<span class="sourceLineNo">041</span> *<a name="line.41"></a>
+<span class="sourceLineNo">042</span> */<a name="line.42"></a>
+<span class="sourceLineNo">043</span><a name="line.43"></a>
+<span class="sourceLineNo">044</span>package org.jfree.xml.util;<a name="line.44"></a>
+<span class="sourceLineNo">045</span><a name="line.45"></a>
+<span class="sourceLineNo">046</span>import java.io.BufferedInputStream;<a name="line.46"></a>
+<span class="sourceLineNo">047</span>import java.io.InputStream;<a name="line.47"></a>
+<span class="sourceLineNo">048</span>import java.net.URL;<a name="line.48"></a>
+<span class="sourceLineNo">049</span>import java.util.Stack;<a name="line.49"></a>
+<span class="sourceLineNo">050</span><a name="line.50"></a>
+<span class="sourceLineNo">051</span>import javax.xml.parsers.SAXParser;<a name="line.51"></a>
+<span class="sourceLineNo">052</span>import javax.xml.parsers.SAXParserFactory;<a name="line.52"></a>
+<span class="sourceLineNo">053</span><a name="line.53"></a>
+<span class="sourceLineNo">054</span>import org.jfree.util.Log;<a name="line.54"></a>
+<span class="sourceLineNo">055</span>import org.jfree.util.ObjectUtilities;<a name="line.55"></a>
+<span class="sourceLineNo">056</span>import org.jfree.xml.CommentHandler;<a name="line.56"></a>
+<span class="sourceLineNo">057</span>import org.jfree.xml.ElementDefinitionException;<a name="line.57"></a>
+<span class="sourceLineNo">058</span>import org.xml.sax.Attributes;<a name="line.58"></a>
+<span class="sourceLineNo">059</span>import org.xml.sax.InputSource;<a name="line.59"></a>
+<span class="sourceLineNo">060</span>import org.xml.sax.SAXException;<a name="line.60"></a>
+<span class="sourceLineNo">061</span>import org.xml.sax.XMLReader;<a name="line.61"></a>
+<span class="sourceLineNo">062</span>import org.xml.sax.helpers.DefaultHandler;<a name="line.62"></a>
+<span class="sourceLineNo">063</span><a name="line.63"></a>
+<span class="sourceLineNo">064</span>/**<a name="line.64"></a>
+<span class="sourceLineNo">065</span> * Loads the class model from an previously written xml file set.<a name="line.65"></a>
+<span class="sourceLineNo">066</span> * This class provides abstract methods which get called during the parsing<a name="line.66"></a>
+<span class="sourceLineNo">067</span> * (similiar to the SAX parsing, but slightly easier to code).<a name="line.67"></a>
+<span class="sourceLineNo">068</span> *<a name="line.68"></a>
+<span class="sourceLineNo">069</span> * This will need a rewrite in the future, when the structure is finished.<a name="line.69"></a>
+<span class="sourceLineNo">070</span> */<a name="line.70"></a>
+<span class="sourceLineNo">071</span>public abstract class AbstractModelReader {<a name="line.71"></a>
+<span class="sourceLineNo">072</span><a name="line.72"></a>
+<span class="sourceLineNo">073</span>    /** The 'START' state. */<a name="line.73"></a>
+<span class="sourceLineNo">074</span>    private static final int STATE_START = 0;<a name="line.74"></a>
+<span class="sourceLineNo">075</span>    <a name="line.75"></a>
+<span class="sourceLineNo">076</span>    /** The 'IN_OBJECT' state. */<a name="line.76"></a>
+<span class="sourceLineNo">077</span>    private static final int IN_OBJECT = 1;<a name="line.77"></a>
+<span class="sourceLineNo">078</span><a name="line.78"></a>
+<span class="sourceLineNo">079</span>    /** The 'IGNORE_OBJECT' state. */<a name="line.79"></a>
+<span class="sourceLineNo">080</span>    private static final int IGNORE_OBJECT = 2;<a name="line.80"></a>
+<span class="sourceLineNo">081</span>    <a name="line.81"></a>
+<span class="sourceLineNo">082</span>    /** The 'MAPPING' state. */<a name="line.82"></a>
+<span class="sourceLineNo">083</span>    private static final int MAPPING_STATE = 3;<a name="line.83"></a>
+<span class="sourceLineNo">084</span>    <a name="line.84"></a>
+<span class="sourceLineNo">085</span>    /** The 'CONSTRUCTOR' state. */<a name="line.85"></a>
+<span class="sourceLineNo">086</span>    private static final int CONSTRUCTOR_STATE = 4;<a name="line.86"></a>
+<span class="sourceLineNo">087</span><a name="line.87"></a>
+<span class="sourceLineNo">088</span>    /**<a name="line.88"></a>
+<span class="sourceLineNo">089</span>     * The SAX2 callback implementation used for parsing the model xml files.<a name="line.89"></a>
+<span class="sourceLineNo">090</span>     */<a name="line.90"></a>
+<span class="sourceLineNo">091</span>    private class SAXModelHandler extends DefaultHandler {<a name="line.91"></a>
+<span class="sourceLineNo">092</span><a name="line.92"></a>
+<span class="sourceLineNo">093</span>        /** The resource URL. */<a name="line.93"></a>
+<span class="sourceLineNo">094</span>        private URL resource;<a name="line.94"></a>
+<span class="sourceLineNo">095</span><a name="line.95"></a>
+<span class="sourceLineNo">096</span>        /** The current state. */<a name="line.96"></a>
+<span class="sourceLineNo">097</span>        private int state;<a name="line.97"></a>
+<span class="sourceLineNo">098</span>        <a name="line.98"></a>
+<span class="sourceLineNo">099</span>        /** Open comments. */<a name="line.99"></a>
+<span class="sourceLineNo">100</span>        private Stack openComments;<a name="line.100"></a>
+<span class="sourceLineNo">101</span>        <a name="line.101"></a>
+<span class="sourceLineNo">102</span>        /** Flag to track includes. */<a name="line.102"></a>
+<span class="sourceLineNo">103</span>        private boolean isInclude;<a name="line.103"></a>
+<span class="sourceLineNo">104</span><a name="line.104"></a>
+<span class="sourceLineNo">105</span>        /**<a name="line.105"></a>
+<span class="sourceLineNo">106</span>         * Creates a new SAX handler for parsing the model.<a name="line.106"></a>
+<span class="sourceLineNo">107</span>         *<a name="line.107"></a>
+<span class="sourceLineNo">108</span>         * @param resource  the resource URL.<a name="line.108"></a>
+<span class="sourceLineNo">109</span>         * @param isInclude  an include?<a name="line.109"></a>
+<span class="sourceLineNo">110</span>         */<a name="line.110"></a>
+<span class="sourceLineNo">111</span>        public SAXModelHandler(final URL resource, final boolean isInclude) {<a name="line.111"></a>
+<span class="sourceLineNo">112</span>            if (resource == null) {<a name="line.112"></a>
+<span class="sourceLineNo">113</span>                throw new NullPointerException();<a name="line.113"></a>
+<span class="sourceLineNo">114</span>            }<a name="line.114"></a>
+<span class="sourceLineNo">115</span>            this.resource = resource;<a name="line.115"></a>
+<span class="sourceLineNo">116</span>            this.openComments = new Stack();<a name="line.116"></a>
+<span class="sourceLineNo">117</span>            this.isInclude = isInclude;<a name="line.117"></a>
+<span class="sourceLineNo">118</span>        }<a name="line.118"></a>
+<span class="sourceLineNo">119</span><a name="line.119"></a>
+<span class="sourceLineNo">120</span>        /**<a name="line.120"></a>
+<span class="sourceLineNo">121</span>         * Receive notification of the start of an element.<a name="line.121"></a>
+<span class="sourceLineNo">122</span>         *<a name="line.122"></a>
+<span class="sourceLineNo">123</span>         * @param uri The Namespace URI, or the empty string if the<a name="line.123"></a>
+<span class="sourceLineNo">124</span>         *        element has no Namespace URI or if Namespace<a name="line.124"></a>
+<span class="sourceLineNo">125</span>         *        processing is not being performed.<a name="line.125"></a>
+<span class="sourceLineNo">126</span>         * @param localName The local name (without prefix), or the<a name="line.126"></a>
+<span class="sourceLineNo">127</span>         *        empty string if Namespace processing is not being<a name="line.127"></a>
+<span class="sourceLineNo">128</span>         *        performed.<a name="line.128"></a>
+<span class="sourceLineNo">129</span>         * @param qName The qualified name (with prefix), or the<a name="line.129"></a>
+<span class="sourceLineNo">130</span>         *        empty string if qualified names are not available.<a name="line.130"></a>
+<span class="sourceLineNo">131</span>         * @param attributes The attributes attached to the element.  If<a name="line.131"></a>
+<span class="sourceLineNo">132</span>         *        there are no attributes, it shall be an empty<a name="line.132"></a>
+<span class="sourceLineNo">133</span>         *        Attributes object.<a name="line.133"></a>
+<span class="sourceLineNo">134</span>         * @exception SAXException Any SAX exception, possibly<a name="line.134"></a>
+<span class="sourceLineNo">135</span>         *            wrapping another exception.<a name="line.135"></a>
+<span class="sourceLineNo">136</span>         * <a name="line.136"></a>
+<span class="sourceLineNo">137</span>         * @see org.xml.sax.ContentHandler#startElement<a name="line.137"></a>
+<span class="sourceLineNo">138</span>         */<a name="line.138"></a>
+<span class="sourceLineNo">139</span>        public void startElement(final String uri, final String localName,<a name="line.139"></a>
+<span class="sourceLineNo">140</span>                                 final String qName, final Attributes attributes)<a name="line.140"></a>
+<span class="sourceLineNo">141</span>            throws SAXException {<a name="line.141"></a>
+<span class="sourceLineNo">142</span><a name="line.142"></a>
+<span class="sourceLineNo">143</span>            setOpenComment(getCommentHandler().getComments());<a name="line.143"></a>
+<span class="sourceLineNo">144</span>            this.openComments.push(getOpenComment());<a name="line.144"></a>
+<span class="sourceLineNo">145</span>            setCloseComment(null);<a name="line.145"></a>
+<span class="sourceLineNo">146</span><a name="line.146"></a>
+<span class="sourceLineNo">147</span>            try {<a name="line.147"></a>
+<span class="sourceLineNo">148</span><a name="line.148"></a>
+<span class="sourceLineNo">149</span>                if (!this.isInclude &amp;&amp; qName.equals(ClassModelTags.OBJECTS_TAG)) {<a name="line.149"></a>
+<span class="sourceLineNo">150</span>                    //Log.debug ("Open Comments: " + openComment);<a name="line.150"></a>
+<span class="sourceLineNo">151</span>                    startRootDocument();<a name="line.151"></a>
+<span class="sourceLineNo">152</span>                    return;<a name="line.152"></a>
+<span class="sourceLineNo">153</span>                }<a name="line.153"></a>
+<span class="sourceLineNo">154</span><a name="line.154"></a>
+<span class="sourceLineNo">155</span>                if (getState() == STATE_START) {<a name="line.155"></a>
+<span class="sourceLineNo">156</span>                    startRootElement(qName, attributes);<a name="line.156"></a>
+<span class="sourceLineNo">157</span>                }<a name="line.157"></a>
+<span class="sourceLineNo">158</span>                else if (getState() == IGNORE_OBJECT) {<a name="line.158"></a>
+<span class="sourceLineNo">159</span>                    return;<a name="line.159"></a>
+<span class="sourceLineNo">160</span>                }<a name="line.160"></a>
+<span class="sourceLineNo">161</span>                else if (getState() == IN_OBJECT) {<a name="line.161"></a>
+<span class="sourceLineNo">162</span>                    startObjectElement(qName, attributes);<a name="line.162"></a>
+<span class="sourceLineNo">163</span>                }<a name="line.163"></a>
+<span class="sourceLineNo">164</span>                else if (getState() == MAPPING_STATE) {<a name="line.164"></a>
+<span class="sourceLineNo">165</span>                    if (!qName.equals(ClassModelTags.TYPE_TAG)) {<a name="line.165"></a>
+<span class="sourceLineNo">166</span>                        throw new SAXException("Expected 'type' tag");<a name="line.166"></a>
+<span class="sourceLineNo">167</span>                    }<a name="line.167"></a>
+<span class="sourceLineNo">168</span>                    final String name = attributes.getValue(ClassModelTags.NAME_ATTR);<a name="line.168"></a>
+<span class="sourceLineNo">169</span>                    final String target = attributes.getValue(ClassModelTags.CLASS_ATTR);<a name="line.169"></a>
+<span class="sourceLineNo">170</span>                    handleMultiplexMapping(name, target);<a name="line.170"></a>
+<span class="sourceLineNo">171</span>                }<a name="line.171"></a>
+<span class="sourceLineNo">172</span>                else if (getState() == CONSTRUCTOR_STATE) {<a name="line.172"></a>
+<span class="sourceLineNo">173</span>                    if (!qName.equals(ClassModelTags.PARAMETER_TAG)) {<a name="line.173"></a>
+<span class="sourceLineNo">174</span>                        throw new SAXException("Expected 'parameter' tag");<a name="line.174"></a>
+<span class="sourceLineNo">175</span>                    }<a name="line.175"></a>
+<span class="sourceLineNo">176</span>                    final String parameterClass = attributes.getValue(ClassModelTags.CLASS_ATTR);<a name="line.176"></a>
+<span class="sourceLineNo">177</span>                    final String tagName = attributes.getValue(ClassModelTags.PROPERTY_ATTR); // optional<a name="line.177"></a>
+<span class="sourceLineNo">178</span>                    handleConstructorDefinition(tagName, parameterClass);<a name="line.178"></a>
+<span class="sourceLineNo">179</span>                }<a name="line.179"></a>
+<span class="sourceLineNo">180</span>            }<a name="line.180"></a>
+<span class="sourceLineNo">181</span>            catch (ObjectDescriptionException e) {<a name="line.181"></a>
+<span class="sourceLineNo">182</span>                throw new SAXException(e);<a name="line.182"></a>
+<span class="sourceLineNo">183</span>            }<a name="line.183"></a>
+<span class="sourceLineNo">184</span>            finally {<a name="line.184"></a>
+<span class="sourceLineNo">185</span>                getCommentHandler().clearComments();<a name="line.185"></a>
+<span class="sourceLineNo">186</span>            }<a name="line.186"></a>
+<span class="sourceLineNo">187</span>        }<a name="line.187"></a>
+<span class="sourceLineNo">188</span><a name="line.188"></a>
+<span class="sourceLineNo">189</span>        /**<a name="line.189"></a>
+<span class="sourceLineNo">190</span>         * Receive notification of the end of an element.<a name="line.190"></a>
+<span class="sourceLineNo">191</span>         *<a name="line.191"></a>
+<span class="sourceLineNo">192</span>         * @param uri The Namespace URI, or the empty string if the<a name="line.192"></a>
+<span class="sourceLineNo">193</span>         *        element has no Namespace URI or if Namespace<a name="line.193"></a>
+<span class="sourceLineNo">194</span>         *        processing is not being performed.<a name="line.194"></a>
+<span class="sourceLineNo">195</span>         * @param localName The local name (without prefix), or the<a name="line.195"></a>
+<span class="sourceLineNo">196</span>         *        empty string if Namespace processing is not being<a name="line.196"></a>
+<span class="sourceLineNo">197</span>         *        performed.<a name="line.197"></a>
+<span class="sourceLineNo">198</span>         * @param qName The qualified name (with prefix), or the<a name="line.198"></a>
+<span class="sourceLineNo">199</span>         *        empty string if qualified names are not available.<a name="line.199"></a>
+<span class="sourceLineNo">200</span>         * @exception SAXException Any SAX exception, possibly<a name="line.200"></a>
+<span class="sourceLineNo">201</span>         *            wrapping another exception.<a name="line.201"></a>
+<span class="sourceLineNo">202</span>         * @see org.xml.sax.ContentHandler#endElement<a name="line.202"></a>
+<span class="sourceLineNo">203</span>         */<a name="line.203"></a>
+<span class="sourceLineNo">204</span>        public void endElement(final String uri, final String localName, final String qName)<a name="line.204"></a>
+<span class="sourceLineNo">205</span>            throws SAXException {<a name="line.205"></a>
+<span class="sourceLineNo">206</span><a name="line.206"></a>
+<span class="sourceLineNo">207</span>            setOpenComment((String[]) this.openComments.pop());<a name="line.207"></a>
+<span class="sourceLineNo">208</span>            setCloseComment(getCommentHandler().getComments());<a name="line.208"></a>
+<span class="sourceLineNo">209</span><a name="line.209"></a>
+<span class="sourceLineNo">210</span>            try {<a name="line.210"></a>
+<span class="sourceLineNo">211</span>                if (!this.isInclude &amp;&amp; qName.equals(ClassModelTags.OBJECTS_TAG)) {<a name="line.211"></a>
+<span class="sourceLineNo">212</span>                    endRootDocument();<a name="line.212"></a>
+<span class="sourceLineNo">213</span>                    return;<a name="line.213"></a>
+<span class="sourceLineNo">214</span>                }<a name="line.214"></a>
+<span class="sourceLineNo">215</span><a name="line.215"></a>
+<span class="sourceLineNo">216</span>                if (qName.equals(ClassModelTags.OBJECT_TAG)) {<a name="line.216"></a>
+<span class="sourceLineNo">217</span>                    if (getState() != IGNORE_OBJECT) {<a name="line.217"></a>
+<span class="sourceLineNo">218</span>                        endObjectDefinition();<a name="line.218"></a>
+<span class="sourceLineNo">219</span>                    }<a name="line.219"></a>
+<span class="sourceLineNo">220</span>                    setState(STATE_START);<a name="line.220"></a>
+<span class="sourceLineNo">221</span>                }<a name="line.221"></a>
+<span class="sourceLineNo">222</span>                else if (qName.equals(ClassModelTags.MAPPING_TAG)) {<a name="line.222"></a>
+<span class="sourceLineNo">223</span>                    setState(STATE_START);<a name="line.223"></a>
+<span class="sourceLineNo">224</span>                    endMultiplexMapping();<a name="line.224"></a>
+<span class="sourceLineNo">225</span>                }<a name="line.225"></a>
+<span class="sourceLineNo">226</span>                else if (qName.equals(ClassModelTags.CONSTRUCTOR_TAG)) {<a name="line.226"></a>
+<span class="sourceLineNo">227</span>                    if (getState() != IGNORE_OBJECT) {<a name="line.227"></a>
+<span class="sourceLineNo">228</span>                        setState(IN_OBJECT);<a name="line.228"></a>
+<span class="sourceLineNo">229</span>                    }<a name="line.229"></a>
+<span class="sourceLineNo">230</span>                }<a name="line.230"></a>
+<span class="sourceLineNo">231</span>            }<a name="line.231"></a>
+<span class="sourceLineNo">232</span>            catch (ObjectDescriptionException e) {<a name="line.232"></a>
+<span class="sourceLineNo">233</span>                throw new SAXException(e);<a name="line.233"></a>
+<span class="sourceLineNo">234</span>            }<a name="line.234"></a>
+<span class="sourceLineNo">235</span>            finally {<a name="line.235"></a>
+<span class="sourceLineNo">236</span>                getCommentHandler().clearComments();<a name="line.236"></a>
+<span class="sourceLineNo">237</span>            }<a name="line.237"></a>
+<span class="sourceLineNo">238</span>        }<a name="line.238"></a>
+<span class="sourceLineNo">239</span><a name="line.239"></a>
+<span class="sourceLineNo">240</span>        /**<a name="line.240"></a>
+<span class="sourceLineNo">241</span>         * Handles the start of an element within an object definition.<a name="line.241"></a>
+<span class="sourceLineNo">242</span>         *<a name="line.242"></a>
+<span class="sourceLineNo">243</span>         * @param qName The qualified name (with prefix), or the<a name="line.243"></a>
+<span class="sourceLineNo">244</span>         *        empty string if qualified names are not available.<a name="line.244"></a>
+<span class="sourceLineNo">245</span>         * @param attributes The attributes attached to the element.  If<a name="line.245"></a>
+<span class="sourceLineNo">246</span>         *        there are no attributes, it shall be an empty<a name="line.246"></a>
+<span class="sourceLineNo">247</span>         *        Attributes object.<a name="line.247"></a>
+<span class="sourceLineNo">248</span>         * @throws ObjectDescriptionException if an error occured while<a name="line.248"></a>
+<span class="sourceLineNo">249</span>         *        handling this tag<a name="line.249"></a>
+<span class="sourceLineNo">250</span>         */<a name="line.250"></a>
+<span class="sourceLineNo">251</span>        private void startObjectElement(final String qName, final Attributes attributes)<a name="line.251"></a>
+<span class="sourceLineNo">252</span>            throws ObjectDescriptionException {<a name="line.252"></a>
+<span class="sourceLineNo">253</span>            if (qName.equals(ClassModelTags.CONSTRUCTOR_TAG)) {<a name="line.253"></a>
+<span class="sourceLineNo">254</span>                setState(CONSTRUCTOR_STATE);<a name="line.254"></a>
+<span class="sourceLineNo">255</span>            }<a name="line.255"></a>
+<span class="sourceLineNo">256</span>            else if (qName.equals(ClassModelTags.LOOKUP_PROPERTY_TAG)) {<a name="line.256"></a>
+<span class="sourceLineNo">257</span>                final String name = attributes.getValue(ClassModelTags.NAME_ATTR);<a name="line.257"></a>
+<span class="sourceLineNo">258</span>                final String lookupKey = attributes.getValue(ClassModelTags.LOOKUP_ATTR);<a name="line.258"></a>
+<span class="sourceLineNo">259</span>                handleLookupDefinition(name, lookupKey);<a name="line.259"></a>
+<span class="sourceLineNo">260</span>            }<a name="line.260"></a>
+<span class="sourceLineNo">261</span>            else if (qName.equals(ClassModelTags.IGNORED_PROPERTY_TAG)) {<a name="line.261"></a>
+<span class="sourceLineNo">262</span>                final String name = attributes.getValue(ClassModelTags.NAME_ATTR);<a name="line.262"></a>
+<span class="sourceLineNo">263</span>                handleIgnoredProperty(name);<a name="line.263"></a>
+<span class="sourceLineNo">264</span>            }<a name="line.264"></a>
+<span class="sourceLineNo">265</span>            else if (qName.equals(ClassModelTags.ELEMENT_PROPERTY_TAG)) {<a name="line.265"></a>
+<span class="sourceLineNo">266</span>                final String elementAtt = attributes.getValue(ClassModelTags.ELEMENT_ATTR);<a name="line.266"></a>
+<span class="sourceLineNo">267</span>                final String name = attributes.getValue(ClassModelTags.NAME_ATTR);<a name="line.267"></a>
+<span class="sourceLineNo">268</span>                handleElementDefinition(name, elementAtt);<a name="line.268"></a>
+<span class="sourceLineNo">269</span>            }<a name="line.269"></a>
+<span class="sourceLineNo">270</span>            else if (qName.equals(ClassModelTags.ATTRIBUTE_PROPERTY_TAG)) {<a name="line.270"></a>
+<span class="sourceLineNo">271</span>                final String name = attributes.getValue(ClassModelTags.NAME_ATTR);<a name="line.271"></a>
+<span class="sourceLineNo">272</span>                final String attribName = attributes.getValue(ClassModelTags.ATTRIBUTE_ATTR);<a name="line.272"></a>
+<span class="sourceLineNo">273</span>                final String handler = attributes.getValue(ClassModelTags.ATTRIBUTE_HANDLER_ATTR);<a name="line.273"></a>
+<span class="sourceLineNo">274</span>                handleAttributeDefinition(name, attribName, handler);<a name="line.274"></a>
+<span class="sourceLineNo">275</span>            }<a name="line.275"></a>
+<span class="sourceLineNo">276</span>        }<a name="line.276"></a>
+<span class="sourceLineNo">277</span><a name="line.277"></a>
+<span class="sourceLineNo">278</span>        /**<a name="line.278"></a>
+<span class="sourceLineNo">279</span>         * Handles the include or object tag.<a name="line.279"></a>
+<span class="sourceLineNo">280</span>         *<a name="line.280"></a>
+<span class="sourceLineNo">281</span>         * @param qName The qualified name (with prefix), or the<a name="line.281"></a>
+<span class="sourceLineNo">282</span>         *        empty string if qualified names are not available.<a name="line.282"></a>
+<span class="sourceLineNo">283</span>         * @param attributes The attributes attached to the element.  If<a name="line.283"></a>
+<span class="sourceLineNo">284</span>         *        there are no attributes, it shall be an empty<a name="line.284"></a>
+<span class="sourceLineNo">285</span>         *        Attributes object.<a name="line.285"></a>
+<span class="sourceLineNo">286</span>         * @throws SAXException if an parser error occured<a name="line.286"></a>
+<span class="sourceLineNo">287</span>         * @throws ObjectDescriptionException if an object model related<a name="line.287"></a>
+<span class="sourceLineNo">288</span>         *        error occured.<a name="line.288"></a>
+<span class="sourceLineNo">289</span>         */<a name="line.289"></a>
+<span class="sourceLineNo">290</span>        private void startRootElement(final String qName, final Attributes attributes)<a name="line.290"></a>
+<span class="sourceLineNo">291</span>            throws SAXException, ObjectDescriptionException {<a name="line.291"></a>
+<span class="sourceLineNo">292</span><a name="line.292"></a>
+<span class="sourceLineNo">293</span>            if (qName.equals(ClassModelTags.INCLUDE_TAG)) {<a name="line.293"></a>
+<span class="sourceLineNo">294</span>                if (this.isInclude) {<a name="line.294"></a>
+<span class="sourceLineNo">295</span>                    Log.warn("Ignored nested include tag.");<a name="line.295"></a>
+<span class="sourceLineNo">296</span>                    return;<a name="line.296"></a>
+<span class="sourceLineNo">297</span>                }<a name="line.297"></a>
+<span class="sourceLineNo">298</span>                final String src = attributes.getValue(ClassModelTags.SOURCE_ATTR);<a name="line.298"></a>
+<span class="sourceLineNo">299</span>                try {<a name="line.299"></a>
+<span class="sourceLineNo">300</span>                    final URL url = new URL(this.resource, src);<a name="line.300"></a>
+<span class="sourceLineNo">301</span>                    startIncludeHandling(url);<a name="line.301"></a>
+<span class="sourceLineNo">302</span>                    parseXmlDocument(url, true);<a name="line.302"></a>
+<span class="sourceLineNo">303</span>                    endIncludeHandling();<a name="line.303"></a>
+<span class="sourceLineNo">304</span>                }<a name="line.304"></a>
+<span class="sourceLineNo">305</span>                catch (Exception ioe) {<a name="line.305"></a>
+<span class="sourceLineNo">306</span>                    throw new ElementDefinitionException<a name="line.306"></a>
+<span class="sourceLineNo">307</span>                        (ioe, "Unable to include file from " + src);<a name="line.307"></a>
+<span class="sourceLineNo">308</span>                }<a name="line.308"></a>
+<span class="sourceLineNo">309</span>            }<a name="line.309"></a>
+<span class="sourceLineNo">310</span>            else if (qName.equals(ClassModelTags.OBJECT_TAG)) {<a name="line.310"></a>
+<span class="sourceLineNo">311</span>                setState(IN_OBJECT);<a name="line.311"></a>
+<span class="sourceLineNo">312</span>                final String className = attributes.getValue(ClassModelTags.CLASS_ATTR);<a name="line.312"></a>
+<span class="sourceLineNo">313</span>                String register = attributes.getValue(ClassModelTags.REGISTER_NAMES_ATTR);<a name="line.313"></a>
+<span class="sourceLineNo">314</span>                if (register != null &amp;&amp; register.length() == 0) {<a name="line.314"></a>
+<span class="sourceLineNo">315</span>                    register = null;<a name="line.315"></a>
+<span class="sourceLineNo">316</span>                }<a name="line.316"></a>
+<span class="sourceLineNo">317</span>                final boolean ignored = "true".equals(attributes.getValue(ClassModelTags.IGNORE_ATTR));<a name="line.317"></a>
+<span class="sourceLineNo">318</span>                if (!startObjectDefinition(className, register, ignored)) {<a name="line.318"></a>
+<span class="sourceLineNo">319</span>                    setState(IGNORE_OBJECT);<a name="line.319"></a>
+<span class="sourceLineNo">320</span>                }<a name="line.320"></a>
+<span class="sourceLineNo">321</span>            }<a name="line.321"></a>
+<span class="sourceLineNo">322</span>            else if (qName.equals(ClassModelTags.MANUAL_TAG)) {<a name="line.322"></a>
+<span class="sourceLineNo">323</span>                final String className = attributes.getValue(ClassModelTags.CLASS_ATTR);<a name="line.323"></a>
+<span class="sourceLineNo">324</span>                final String readHandler = attributes.getValue(ClassModelTags.READ_HANDLER_ATTR);<a name="line.324"></a>
+<span class="sourceLineNo">325</span>                final String writeHandler = attributes.getValue(ClassModelTags.WRITE_HANDLER_ATTR);<a name="line.325"></a>
+<span class="sourceLineNo">326</span>                handleManualMapping(className, readHandler, writeHandler);<a name="line.326"></a>
+<span class="sourceLineNo">327</span>            }<a name="line.327"></a>
+<span class="sourceLineNo">328</span>            else if (qName.equals(ClassModelTags.MAPPING_TAG)) {<a name="line.328"></a>
+<span class="sourceLineNo">329</span>                setState(MAPPING_STATE);<a name="line.329"></a>
+<span class="sourceLineNo">330</span>                final String typeAttr = attributes.getValue(ClassModelTags.TYPE_ATTR);<a name="line.330"></a>
+<span class="sourceLineNo">331</span>                final String baseClass = attributes.getValue(ClassModelTags.BASE_CLASS_ATTR);<a name="line.331"></a>
+<span class="sourceLineNo">332</span>                startMultiplexMapping(baseClass, typeAttr);<a name="line.332"></a>
+<span class="sourceLineNo">333</span>            }<a name="line.333"></a>
+<span class="sourceLineNo">334</span>        }<a name="line.334"></a>
+<span class="sourceLineNo">335</span><a name="line.335"></a>
+<span class="sourceLineNo">336</span>        /**<a name="line.336"></a>
+<span class="sourceLineNo">337</span>         * Returns the current state.<a name="line.337"></a>
+<span class="sourceLineNo">338</span>         *<a name="line.338"></a>
+<span class="sourceLineNo">339</span>         * @return the state.<a name="line.339"></a>
+<span class="sourceLineNo">340</span>         */<a name="line.340"></a>
+<span class="sourceLineNo">341</span>        private int getState() {<a name="line.341"></a>
+<span class="sourceLineNo">342</span>            return this.state;<a name="line.342"></a>
+<span class="sourceLineNo">343</span>        }<a name="line.343"></a>
+<span class="sourceLineNo">344</span><a name="line.344"></a>
+<span class="sourceLineNo">345</span>        /**<a name="line.345"></a>
+<span class="sourceLineNo">346</span>         * Sets the current state.<a name="line.346"></a>
+<span class="sourceLineNo">347</span>         *<a name="line.347"></a>
+<span class="sourceLineNo">348</span>         * @param state  the state.<a name="line.348"></a>
+<span class="sourceLineNo">349</span>         */<a name="line.349"></a>
+<span class="sourceLineNo">350</span>        private void setState(final int state) {<a name="line.350"></a>
+<span class="sourceLineNo">351</span>            this.state = state;<a name="line.351"></a>
+<span class="sourceLineNo">352</span>        }<a name="line.352"></a>
+<span class="sourceLineNo">353</span>    }<a name="line.353"></a>
+<span class="sourceLineNo">354</span><a name="line.354"></a>
+<span class="sourceLineNo">355</span>    /** The comment handler. */<a name="line.355"></a>
+<span class="sourceLineNo">356</span>    private CommentHandler commentHandler;<a name="line.356"></a>
+<span class="sourceLineNo">357</span>    <a name="line.357"></a>
+<span class="sourceLineNo">358</span>    /** The close comments. */<a name="line.358"></a>
+<span class="sourceLineNo">359</span>    private String[] closeComment;<a name="line.359"></a>
+<span class="sourceLineNo">360</span>    <a name="line.360"></a>
+<span class="sourceLineNo">361</span>    /** The open comments. */<a name="line.361"></a>
+<span class="sourceLineNo">362</span>    private String[] openComment;<a name="line.362"></a>
+<span class="sourceLineNo">363</span><a name="line.363"></a>
+<span class="sourceLineNo">364</span>    /**<a name="line.364"></a>
+<span class="sourceLineNo">365</span>     * Default Constructor.<a name="line.365"></a>
+<span class="sourceLineNo">366</span>     */<a name="line.366"></a>
+<span class="sourceLineNo">367</span>    public AbstractModelReader() {<a name="line.367"></a>
+<span class="sourceLineNo">368</span>        this.commentHandler = new CommentHandler();<a name="line.368"></a>
+<span class="sourceLineNo">369</span>    }<a name="line.369"></a>
+<span class="sourceLineNo">370</span><a name="line.370"></a>
+<span class="sourceLineNo">371</span>    /**<a name="line.371"></a>
+<span class="sourceLineNo">372</span>     * Returns the comment handler.<a name="line.372"></a>
+<span class="sourceLineNo">373</span>     * <a name="line.373"></a>
+<span class="sourceLineNo">374</span>     * @return The comment handler.<a name="line.374"></a>
+<span class="sourceLineNo">375</span>     */<a name="line.375"></a>
+<span class="sourceLineNo">376</span>    protected CommentHandler getCommentHandler() {<a name="line.376"></a>
+<span class="sourceLineNo">377</span>        return this.commentHandler;<a name="line.377"></a>
+<span class="sourceLineNo">378</span>    }<a name="line.378"></a>
+<span class="sourceLineNo">379</span><a name="line.379"></a>
+<span class="sourceLineNo">380</span>    /**<a name="line.380"></a>
+<span class="sourceLineNo">381</span>     * Returns the close comment. <a name="line.381"></a>
+<span class="sourceLineNo">382</span>     * <a name="line.382"></a>
+<span class="sourceLineNo">383</span>     * @return The close comment.<a name="line.383"></a>
+<span class="sourceLineNo">384</span>     */<a name="line.384"></a>
+<span class="sourceLineNo">385</span>    protected String[] getCloseComment() {<a name="line.385"></a>
+<span class="sourceLineNo">386</span>        return this.closeComment;<a name="line.386"></a>
+<span class="sourceLineNo">387</span>    }<a name="line.387"></a>
+<span class="sourceLineNo">388</span><a name="line.388"></a>
+<span class="sourceLineNo">389</span>    /**<a name="line.389"></a>
+<span class="sourceLineNo">390</span>     * Returns the open comment. <a name="line.390"></a>
+<span class="sourceLineNo">391</span>     * <a name="line.391"></a>
+<span class="sourceLineNo">392</span>     * @return The open comment.<a name="line.392"></a>
+<span class="sourceLineNo">393</span>     */<a name="line.393"></a>
+<span class="sourceLineNo">394</span>    protected String[] getOpenComment() {<a name="line.394"></a>
+<span class="sourceLineNo">395</span>        return this.openComment;<a name="line.395"></a>
+<span class="sourceLineNo">396</span>    }<a name="line.396"></a>
+<span class="sourceLineNo">397</span><a name="line.397"></a>
+<span class="sourceLineNo">398</span>    /**<a name="line.398"></a>
+<span class="sourceLineNo">399</span>     * Sets the close comment.<a name="line.399"></a>
+<span class="sourceLineNo">400</span>     * <a name="line.400"></a>
+<span class="sourceLineNo">401</span>     * @param closeComment  the close comment.<a name="line.401"></a>
+<span class="sourceLineNo">402</span>     */<a name="line.402"></a>
+<span class="sourceLineNo">403</span>    protected void setCloseComment(final String[] closeComment) {<a name="line.403"></a>
+<span class="sourceLineNo">404</span>        this.closeComment = closeComment;<a name="line.404"></a>
+<span class="sourceLineNo">405</span>    }<a name="line.405"></a>
+<span class="sourceLineNo">406</span><a name="line.406"></a>
+<span class="sourceLineNo">407</span>    /**<a name="line.407"></a>
+<span class="sourceLineNo">408</span>     * Sets the open comment.<a name="line.408"></a>
+<span class="sourceLineNo">409</span>     * <a name="line.409"></a>
+<span class="sourceLineNo">410</span>     * @param openComment  the open comment.<a name="line.410"></a>
+<span class="sourceLineNo">411</span>     */<a name="line.411"></a>
+<span class="sourceLineNo">412</span>    protected void setOpenComment(final String[] openComment) {<a name="line.412"></a>
+<span class="sourceLineNo">413</span>        this.openComment = openComment;<a name="line.413"></a>
+<span class="sourceLineNo">414</span>    }<a name="line.414"></a>
+<span class="sourceLineNo">415</span><a name="line.415"></a>
+<span class="sourceLineNo">416</span>    /**<a name="line.416"></a>
+<span class="sourceLineNo">417</span>     * Parses an XML document at the given URL.<a name="line.417"></a>
+<span class="sourceLineNo">418</span>     * <a name="line.418"></a>
+<span class="sourceLineNo">419</span>     * @param resource  the document URL.<a name="line.419"></a>
+<span class="sourceLineNo">420</span>     * <a name="line.420"></a>
+<span class="sourceLineNo">421</span>     * @throws ObjectDescriptionException ??<a name="line.421"></a>
+<span class="sourceLineNo">422</span>     */<a name="line.422"></a>
+<span class="sourceLineNo">423</span>    protected void parseXml(final URL resource) throws ObjectDescriptionException {<a name="line.423"></a>
+<span class="sourceLineNo">424</span>        parseXmlDocument(resource, false);<a name="line.424"></a>
+<span class="sourceLineNo">425</span>    }<a name="line.425"></a>
+<span class="sourceLineNo">426</span><a name="line.426"></a>
+<span class="sourceLineNo">427</span>    /**<a name="line.427"></a>
+<span class="sourceLineNo">428</span>     * Parses the given specification and loads all includes specified in the files.<a name="line.428"></a>
+<span class="sourceLineNo">429</span>     * This implementation does not check for loops in the include files.<a name="line.429"></a>
+<span class="sourceLineNo">430</span>     *<a name="line.430"></a>
+<span class="sourceLineNo">431</span>     * @param resource  the url of the xml specification.<a name="line.431"></a>
+<span class="sourceLineNo">432</span>     * @param isInclude  an include?<a name="line.432"></a>
+<span class="sourceLineNo">433</span>     * <a name="line.433"></a>
+<span class="sourceLineNo">434</span>     * @throws org.jfree.xml.util.ObjectDescriptionException if an error occured which prevented the<a name="line.434"></a>
+<span class="sourceLineNo">435</span>     * loading of the specifications.<a name="line.435"></a>
+<span class="sourceLineNo">436</span>     */<a name="line.436"></a>
+<span class="sourceLineNo">437</span>    protected void parseXmlDocument(final URL resource, final boolean isInclude)<a name="line.437"></a>
+<span class="sourceLineNo">438</span>        throws ObjectDescriptionException {<a name="line.438"></a>
+<span class="sourceLineNo">439</span>        <a name="line.439"></a>
+<span class="sourceLineNo">440</span>        try {<a name="line.440"></a>
+<span class="sourceLineNo">441</span>            final InputStream in = new BufferedInputStream(resource.openStream());<a name="line.441"></a>
+<span class="sourceLineNo">442</span>            final SAXParserFactory factory = SAXParserFactory.newInstance();<a name="line.442"></a>
+<span class="sourceLineNo">443</span>            final SAXParser saxParser = factory.newSAXParser();<a name="line.443"></a>
+<span class="sourceLineNo">444</span>            final XMLReader reader = saxParser.getXMLReader();<a name="line.444"></a>
+<span class="sourceLineNo">445</span><a name="line.445"></a>
+<span class="sourceLineNo">446</span>            final SAXModelHandler handler = new SAXModelHandler(resource, isInclude);<a name="line.446"></a>
+<span class="sourceLineNo">447</span>            try {<a name="line.447"></a>
+<span class="sourceLineNo">448</span>                reader.setProperty<a name="line.448"></a>
+<span class="sourceLineNo">449</span>                    ("http://xml.org/sax/properties/lexical-handler",<a name="line.449"></a>
+<span class="sourceLineNo">450</span>                        getCommentHandler());<a name="line.450"></a>
+<span class="sourceLineNo">451</span>            }<a name="line.451"></a>
+<span class="sourceLineNo">452</span>            catch (SAXException se) {<a name="line.452"></a>
+<span class="sourceLineNo">453</span>                Log.debug("Comments are not supported by this SAX implementation.");<a name="line.453"></a>
+<span class="sourceLineNo">454</span>            }<a name="line.454"></a>
+<span class="sourceLineNo">455</span>            reader.setContentHandler(handler);<a name="line.455"></a>
+<span class="sourceLineNo">456</span>            reader.setDTDHandler(handler);<a name="line.456"></a>
+<span class="sourceLineNo">457</span>            reader.setErrorHandler(handler);<a name="line.457"></a>
+<span class="sourceLineNo">458</span>            reader.parse(new InputSource(in));<a name="line.458"></a>
+<span class="sourceLineNo">459</span>            in.close();<a name="line.459"></a>
+<span class="sourceLineNo">460</span>        }<a name="line.460"></a>
+<span class="sourceLineNo">461</span>        catch (Exception e) {<a name="line.461"></a>
+<span class="sourceLineNo">462</span>            // unable to init<a name="line.462"></a>
+<span class="sourceLineNo">463</span>            Log.warn("Unable to load factory specifications", e);<a name="line.463"></a>
+<span class="sourceLineNo">464</span>            throw new ObjectDescriptionException("Unable to load object factory specs.", e);<a name="line.464"></a>
+<span class="sourceLineNo">465</span>        }<a name="line.465"></a>
+<span class="sourceLineNo">466</span>    }<a name="line.466"></a>
+<span class="sourceLineNo">467</span><a name="line.467"></a>
+<span class="sourceLineNo">468</span>    /**<a name="line.468"></a>
+<span class="sourceLineNo">469</span>     * Start the root document.<a name="line.469"></a>
+<span class="sourceLineNo">470</span>     */<a name="line.470"></a>
+<span class="sourceLineNo">471</span>    protected void startRootDocument() {<a name="line.471"></a>
+<span class="sourceLineNo">472</span>        // nothing required<a name="line.472"></a>
+<span class="sourceLineNo">473</span>    }<a name="line.473"></a>
+<span class="sourceLineNo">474</span><a name="line.474"></a>
+<span class="sourceLineNo">475</span>    /**<a name="line.475"></a>
+<span class="sourceLineNo">476</span>     * End the root document.<a name="line.476"></a>
+<span class="sourceLineNo">477</span>     */<a name="line.477"></a>
+<span class="sourceLineNo">478</span>    protected void endRootDocument() {<a name="line.478"></a>
+<span class="sourceLineNo">479</span>        // nothing required<a name="line.479"></a>
+<span class="sourceLineNo">480</span>    }<a name="line.480"></a>
+<span class="sourceLineNo">481</span><a name="line.481"></a>
+<span class="sourceLineNo">482</span>    /**<a name="line.482"></a>
+<span class="sourceLineNo">483</span>     * Start handling an include.<a name="line.483"></a>
+<span class="sourceLineNo">484</span>     * <a name="line.484"></a>
+<span class="sourceLineNo">485</span>     * @param resource  the URL.<a name="line.485"></a>
+<span class="sourceLineNo">486</span>     */<a name="line.486"></a>
+<span class="sourceLineNo">487</span>    protected void startIncludeHandling(final URL resource) {<a name="line.487"></a>
+<span class="sourceLineNo">488</span>        // nothing required<a name="line.488"></a>
+<span class="sourceLineNo">489</span>    }<a name="line.489"></a>
+<span class="sourceLineNo">490</span><a name="line.490"></a>
+<span class="sourceLineNo">491</span>    /**<a name="line.491"></a>
+<span class="sourceLineNo">492</span>     * End handling an include.<a name="line.492"></a>
+<span class="sourceLineNo">493</span>     */<a name="line.493"></a>
+<span class="sourceLineNo">494</span>    protected void endIncludeHandling() {<a name="line.494"></a>
+<span class="sourceLineNo">495</span>        // nothing required<a name="line.495"></a>
+<span class="sourceLineNo">496</span>    }<a name="line.496"></a>
+<span class="sourceLineNo">497</span><a name="line.497"></a>
+<span class="sourceLineNo">498</span>    /**<a name="line.498"></a>
+<span class="sourceLineNo">499</span>     * Callback method for ignored properties. Such properties get marked so that<a name="line.499"></a>
+<span class="sourceLineNo">500</span>     * the information regarding these properties won't get lost.<a name="line.500"></a>
+<span class="sourceLineNo">501</span>     *<a name="line.501"></a>
+<span class="sourceLineNo">502</span>     * @param name the name of the ignored property.<a name="line.502"></a>
+<span class="sourceLineNo">503</span>     */<a name="line.503"></a>
+<span class="sourceLineNo">504</span>    protected void handleIgnoredProperty(final String name) {<a name="line.504"></a>
+<span class="sourceLineNo">505</span>        // nothing required<a name="line.505"></a>
+<span class="sourceLineNo">506</span>    }<a name="line.506"></a>
+<span class="sourceLineNo">507</span><a name="line.507"></a>
+<span class="sourceLineNo">508</span>    /**<a name="line.508"></a>
+<span class="sourceLineNo">509</span>     * Handles a manual mapping definition. The manual mapping maps specific<a name="line.509"></a>
+<span class="sourceLineNo">510</span>     * read and write handlers to a given base class. Manual mappings always<a name="line.510"></a>
+<span class="sourceLineNo">511</span>     * override any other definition.<a name="line.511"></a>
+<span class="sourceLineNo">512</span>     *<a name="line.512"></a>
+<span class="sourceLineNo">513</span>     * @param className the base class name<a name="line.513"></a>
+<span class="sourceLineNo">514</span>     * @param readHandler the class name of the read handler<a name="line.514"></a>
+<span class="sourceLineNo">515</span>     * @param writeHandler the class name of the write handler<a name="line.515"></a>
+<span class="sourceLineNo">516</span>     * @return true, if the mapping was accepted, false otherwise.<a name="line.516"></a>
+<span class="sourceLineNo">517</span>     * @throws ObjectDescriptionException if an unexpected error occured.<a name="line.517"></a>
+<span class="sourceLineNo">518</span>     */<a name="line.518"></a>
+<span class="sourceLineNo">519</span>    protected abstract boolean handleManualMapping(String className, String readHandler, <a name="line.519"></a>
+<span class="sourceLineNo">520</span>        String writeHandler) throws ObjectDescriptionException;<a name="line.520"></a>
+<span class="sourceLineNo">521</span><a name="line.521"></a>
+<span class="sourceLineNo">522</span>    /**<a name="line.522"></a>
+<span class="sourceLineNo">523</span>     * Starts a object definition. The object definition collects all properties of<a name="line.523"></a>
+<span class="sourceLineNo">524</span>     * an bean-class and defines, which constructor should be used when creating the<a name="line.524"></a>
+<span class="sourceLineNo">525</span>     * class.<a name="line.525"></a>
+<span class="sourceLineNo">526</span>     *<a name="line.526"></a>
+<span class="sourceLineNo">527</span>     * @param className the class name of the defined object<a name="line.527"></a>
+<span class="sourceLineNo">528</span>     * @param register the (optional) register name, to lookup and reference the object<a name="line.528"></a>
+<span class="sourceLineNo">529</span>     * later.<a name="line.529"></a>
+<span class="sourceLineNo">530</span>     * @param ignored  ??.<a name="line.530"></a>
+<span class="sourceLineNo">531</span>     * <a name="line.531"></a>
+<span class="sourceLineNo">532</span>     * @return true, if the definition was accepted, false otherwise.<a name="line.532"></a>
+<span class="sourceLineNo">533</span>     * @throws ObjectDescriptionException if an unexpected error occured.<a name="line.533"></a>
+<span class="sourceLineNo">534</span>     */<a name="line.534"></a>
+<span class="sourceLineNo">535</span>    protected abstract boolean startObjectDefinition(String className, String register,<a name="line.535"></a>
+<span class="sourceLineNo">536</span>        boolean ignored) throws ObjectDescriptionException;<a name="line.536"></a>
+<span class="sourceLineNo">537</span><a name="line.537"></a>
+<span class="sourceLineNo">538</span>    /**<a name="line.538"></a>
+<span class="sourceLineNo">539</span>     * Handles an attribute definition. This method gets called after the object definition<a name="line.539"></a>
+<span class="sourceLineNo">540</span>     * was started. The method will be called for every defined attribute property.<a name="line.540"></a>
+<span class="sourceLineNo">541</span>     *<a name="line.541"></a>
+<span class="sourceLineNo">542</span>     * @param name the name of the property<a name="line.542"></a>
+<span class="sourceLineNo">543</span>     * @param attribName the xml-attribute name to use later.<a name="line.543"></a>
+<span class="sourceLineNo">544</span>     * @param handlerClass the attribute handler class.<a name="line.544"></a>
+<span class="sourceLineNo">545</span>     * @throws ObjectDescriptionException if an error occured.<a name="line.545"></a>
+<span class="sourceLineNo">546</span>     */<a name="line.546"></a>
+<span class="sourceLineNo">547</span>    protected abstract void handleAttributeDefinition(String name, String attribName,<a name="line.547"></a>
+<span class="sourceLineNo">548</span>                                                      String handlerClass)<a name="line.548"></a>
+<span class="sourceLineNo">549</span>        throws ObjectDescriptionException;<a name="line.549"></a>
+<span class="sourceLineNo">550</span><a name="line.550"></a>
+<span class="sourceLineNo">551</span>    /**<a name="line.551"></a>
+<span class="sourceLineNo">552</span>     * Handles an element definition. This method gets called after the object definition<a name="line.552"></a>
+<span class="sourceLineNo">553</span>     * was started. The method will be called for every defined element property. Element<a name="line.553"></a>
+<span class="sourceLineNo">554</span>     * properties are used to describe complex objects.<a name="line.554"></a>
+<span class="sourceLineNo">555</span>     *<a name="line.555"></a>
+<span class="sourceLineNo">556</span>     * @param name the name of the property<a name="line.556"></a>
+<span class="sourceLineNo">557</span>     * @param element the xml-tag name for the child element.<a name="line.557"></a>
+<span class="sourceLineNo">558</span>     * @throws ObjectDescriptionException if an error occurs.<a name="line.558"></a>
+<span class="sourceLineNo">559</span>     */<a name="line.559"></a>
+<span class="sourceLineNo">560</span>    protected abstract void handleElementDefinition(String name, String element) <a name="line.560"></a>
+<span class="sourceLineNo">561</span>        throws ObjectDescriptionException;<a name="line.561"></a>
+<span class="sourceLineNo">562</span><a name="line.562"></a>
+<span class="sourceLineNo">563</span>    /**<a name="line.563"></a>
+<span class="sourceLineNo">564</span>     * Handles an lookup definition. This method gets called after the object definition<a name="line.564"></a>
+<span class="sourceLineNo">565</span>     * was started. The method will be called for every defined lookup property. Lookup properties<a name="line.565"></a>
+<span class="sourceLineNo">566</span>     * reference previously created object using the object's registry name.<a name="line.566"></a>
+<span class="sourceLineNo">567</span>     *<a name="line.567"></a>
+<span class="sourceLineNo">568</span>     * @param name the property name of the base object<a name="line.568"></a>
+<span class="sourceLineNo">569</span>     * @param lookupKey the register key of the referenced object<a name="line.569"></a>
+<span class="sourceLineNo">570</span>     * @throws ObjectDescriptionException if an error occured.<a name="line.570"></a>
+<span class="sourceLineNo">571</span>     */<a name="line.571"></a>
+<span class="sourceLineNo">572</span>    protected abstract void handleLookupDefinition(String name, String lookupKey) <a name="line.572"></a>
+<span class="sourceLineNo">573</span>        throws ObjectDescriptionException;<a name="line.573"></a>
+<span class="sourceLineNo">574</span><a name="line.574"></a>
+<span class="sourceLineNo">575</span>    /**<a name="line.575"></a>
+<span class="sourceLineNo">576</span>     * Finializes the object definition.<a name="line.576"></a>
+<span class="sourceLineNo">577</span>     *<a name="line.577"></a>
+<span class="sourceLineNo">578</span>     * @throws ObjectDescriptionException if an error occures.<a name="line.578"></a>
+<span class="sourceLineNo">579</span>     */<a name="line.579"></a>
+<span class="sourceLineNo">580</span>    protected abstract void endObjectDefinition() throws ObjectDescriptionException;<a name="line.580"></a>
+<span class="sourceLineNo">581</span><a name="line.581"></a>
+<span class="sourceLineNo">582</span>    /**<a name="line.582"></a>
+<span class="sourceLineNo">583</span>     * Starts a multiplex mapping. Multiplex mappings are used to define polymorphic<a name="line.583"></a>
+<span class="sourceLineNo">584</span>     * argument handlers. The mapper will collect all derived classes of the given<a name="line.584"></a>
+<span class="sourceLineNo">585</span>     * base class and will select the corresponding mapping based on the given type<a name="line.585"></a>
+<span class="sourceLineNo">586</span>     * attribute.<a name="line.586"></a>
+<span class="sourceLineNo">587</span>     *<a name="line.587"></a>
+<span class="sourceLineNo">588</span>     * @param className the base class name<a name="line.588"></a>
+<span class="sourceLineNo">589</span>     * @param typeAttr the xml-attribute name containing the mapping key<a name="line.589"></a>
+<span class="sourceLineNo">590</span>     */<a name="line.590"></a>
+<span class="sourceLineNo">591</span>    protected abstract void startMultiplexMapping(String className, String typeAttr);<a name="line.591"></a>
+<span class="sourceLineNo">592</span><a name="line.592"></a>
+<span class="sourceLineNo">593</span>    /**<a name="line.593"></a>
+<span class="sourceLineNo">594</span>     * Defines an entry for the multiplex mapping. The new entry will be activated<a name="line.594"></a>
+<span class="sourceLineNo">595</span>     * when the base mappers type attribute contains this &lt;code&gt;typename&lt;/code&gt; and<a name="line.595"></a>
+<span class="sourceLineNo">596</span>     * will resolve to the handler for the given classname.<a name="line.596"></a>
+<span class="sourceLineNo">597</span>     *<a name="line.597"></a>
+<span class="sourceLineNo">598</span>     * @param typeName the type value for this mapping.<a name="line.598"></a>
+<span class="sourceLineNo">599</span>     * @param className the class name to which this mapping resolves.<a name="line.599"></a>
+<span class="sourceLineNo">600</span>     * @throws ObjectDescriptionException if an error occurs.<a name="line.600"></a>
+<span class="sourceLineNo">601</span>     */<a name="line.601"></a>
+<span class="sourceLineNo">602</span>    protected abstract void handleMultiplexMapping(String typeName, String className) <a name="line.602"></a>
+<span class="sourceLineNo">603</span>        throws ObjectDescriptionException;<a name="line.603"></a>
+<span class="sourceLineNo">604</span><a name="line.604"></a>
+<span class="sourceLineNo">605</span>    /**<a name="line.605"></a>
+<span class="sourceLineNo">606</span>     * Finializes the multiplexer mapping.<a name="line.606"></a>
+<span class="sourceLineNo">607</span>     *<a name="line.607"></a>
+<span class="sourceLineNo">608</span>     * @throws ObjectDescriptionException if an error occurs.<a name="line.608"></a>
+<span class="sourceLineNo">609</span>     */<a name="line.609"></a>
+<span class="sourceLineNo">610</span>    protected abstract void endMultiplexMapping() throws ObjectDescriptionException;<a name="line.610"></a>
+<span class="sourceLineNo">611</span><a name="line.611"></a>
+<span class="sourceLineNo">612</span>    /**<a name="line.612"></a>
+<span class="sourceLineNo">613</span>     * Handles a constructor definition. Only one constructor can be defined for<a name="line.613"></a>
+<span class="sourceLineNo">614</span>     * a certain object type. The constructor will be filled using the given properties.<a name="line.614"></a>
+<span class="sourceLineNo">615</span>     *<a name="line.615"></a>
+<span class="sourceLineNo">616</span>     * @param propertyName the property name of the referenced local property<a name="line.616"></a>
+<span class="sourceLineNo">617</span>     * @param parameterClass the parameter class for the parameter.<a name="line.617"></a>
+<span class="sourceLineNo">618</span>     * @throws ObjectDescriptionException if an error occured.<a name="line.618"></a>
+<span class="sourceLineNo">619</span>     */<a name="line.619"></a>
+<span class="sourceLineNo">620</span>    protected abstract void handleConstructorDefinition(String propertyName, String parameterClass)<a name="line.620"></a>
+<span class="sourceLineNo">621</span>        throws ObjectDescriptionException;<a name="line.621"></a>
+<span class="sourceLineNo">622</span><a name="line.622"></a>
+<span class="sourceLineNo">623</span>    /**<a name="line.623"></a>
+<span class="sourceLineNo">624</span>     * Loads the given class, and ignores all exceptions which may occur<a name="line.624"></a>
+<span class="sourceLineNo">625</span>     * during the loading. If the class was invalid, null is returned instead.<a name="line.625"></a>
+<span class="sourceLineNo">626</span>     *<a name="line.626"></a>
+<span class="sourceLineNo">627</span>     * @param className the name of the class to be loaded.<a name="line.627"></a>
+<span class="sourceLineNo">628</span>     * @return the class or null.<a name="line.628"></a>
+<span class="sourceLineNo">629</span>     */<a name="line.629"></a>
+<span class="sourceLineNo">630</span>    protected Class loadClass(final String className) {<a name="line.630"></a>
+<span class="sourceLineNo">631</span>        if (className == null) {<a name="line.631"></a>
+<span class="sourceLineNo">632</span>            return null;<a name="line.632"></a>
+<span class="sourceLineNo">633</span>        }<a name="line.633"></a>
+<span class="sourceLineNo">634</span>        if (className.startsWith("::")) {<a name="line.634"></a>
+<span class="sourceLineNo">635</span>            return BasicTypeSupport.getClassRepresentation(className);<a name="line.635"></a>
+<span class="sourceLineNo">636</span>        }<a name="line.636"></a>
+<span class="sourceLineNo">637</span>        try {<a name="line.637"></a>
+<span class="sourceLineNo">638</span>            return ObjectUtilities.getClassLoader(getClass()).loadClass(className);<a name="line.638"></a>
+<span class="sourceLineNo">639</span>        }<a name="line.639"></a>
+<span class="sourceLineNo">640</span>        catch (Exception e) {<a name="line.640"></a>
+<span class="sourceLineNo">641</span>            // ignore buggy classes for now ..<a name="line.641"></a>
+<span class="sourceLineNo">642</span>            Log.warn("Unable to load class", e);<a name="line.642"></a>
+<span class="sourceLineNo">643</span>            return null;<a name="line.643"></a>
+<span class="sourceLineNo">644</span>        }<a name="line.644"></a>
+<span class="sourceLineNo">645</span>    }<a name="line.645"></a>
+<span class="sourceLineNo">646</span><a name="line.646"></a>
+<span class="sourceLineNo">647</span>}<a name="line.647"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

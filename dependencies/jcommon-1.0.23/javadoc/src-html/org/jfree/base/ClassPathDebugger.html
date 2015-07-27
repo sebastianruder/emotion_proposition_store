@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="de">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>/**<a name="line.1"></a>
+<span class="sourceLineNo">002</span> * ========================================<a name="line.2"></a>
+<span class="sourceLineNo">003</span> * JCommon : a free Java report library<a name="line.3"></a>
+<span class="sourceLineNo">004</span> * ========================================<a name="line.4"></a>
+<span class="sourceLineNo">005</span> *<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * Project Info:  http://www.jfree.org/jcommon/<a name="line.6"></a>
+<span class="sourceLineNo">007</span> *<a name="line.7"></a>
+<span class="sourceLineNo">008</span> * (C) Copyright 2000-2006, by Object Refinery Limited and Contributors.<a name="line.8"></a>
+<span class="sourceLineNo">009</span> *<a name="line.9"></a>
+<span class="sourceLineNo">010</span> * This library is free software; you can redistribute it and/or modify it under the terms<a name="line.10"></a>
+<span class="sourceLineNo">011</span> * of the GNU Lesser General Public License as published by the Free Software Foundation;<a name="line.11"></a>
+<span class="sourceLineNo">012</span> * either version 2.1 of the License, or (at your option) any later version.<a name="line.12"></a>
+<span class="sourceLineNo">013</span> *<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;<a name="line.14"></a>
+<span class="sourceLineNo">015</span> * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.<a name="line.15"></a>
+<span class="sourceLineNo">016</span> * See the GNU Lesser General Public License for more details.<a name="line.16"></a>
+<span class="sourceLineNo">017</span> *<a name="line.17"></a>
+<span class="sourceLineNo">018</span> * You should have received a copy of the GNU Lesser General Public License along with this<a name="line.18"></a>
+<span class="sourceLineNo">019</span> * library; if not, write to the Free Software Foundation, Inc., 59 Temple Place, Suite 330,<a name="line.19"></a>
+<span class="sourceLineNo">020</span> * Boston, MA 02111-1307, USA.<a name="line.20"></a>
+<span class="sourceLineNo">021</span> *<a name="line.21"></a>
+<span class="sourceLineNo">022</span> * [Java is a trademark or registered trademark of Sun Microsystems, Inc.<a name="line.22"></a>
+<span class="sourceLineNo">023</span> * in the United States and other countries.]<a name="line.23"></a>
+<span class="sourceLineNo">024</span> *<a name="line.24"></a>
+<span class="sourceLineNo">025</span> * ------------<a name="line.25"></a>
+<span class="sourceLineNo">026</span> * $Id: ClassPathDebugger.java,v 1.2 2008/09/10 09:23:34 mungady Exp $<a name="line.26"></a>
+<span class="sourceLineNo">027</span> * ------------<a name="line.27"></a>
+<span class="sourceLineNo">028</span> * (C) Copyright 2002-2006, by Object Refinery Limited.<a name="line.28"></a>
+<span class="sourceLineNo">029</span> */<a name="line.29"></a>
+<span class="sourceLineNo">030</span><a name="line.30"></a>
+<span class="sourceLineNo">031</span>package org.jfree.base;<a name="line.31"></a>
+<span class="sourceLineNo">032</span><a name="line.32"></a>
+<span class="sourceLineNo">033</span>import java.util.Enumeration;<a name="line.33"></a>
+<span class="sourceLineNo">034</span><a name="line.34"></a>
+<span class="sourceLineNo">035</span>import org.jfree.util.ObjectUtilities;<a name="line.35"></a>
+<span class="sourceLineNo">036</span><a name="line.36"></a>
+<span class="sourceLineNo">037</span>/**<a name="line.37"></a>
+<span class="sourceLineNo">038</span> * Creation-Date: 02.11.2007, 18:42:27<a name="line.38"></a>
+<span class="sourceLineNo">039</span> *<a name="line.39"></a>
+<span class="sourceLineNo">040</span> * @author Thomas Morgner<a name="line.40"></a>
+<span class="sourceLineNo">041</span> */<a name="line.41"></a>
+<span class="sourceLineNo">042</span>public class ClassPathDebugger<a name="line.42"></a>
+<span class="sourceLineNo">043</span>{<a name="line.43"></a>
+<span class="sourceLineNo">044</span>  /**<a name="line.44"></a>
+<span class="sourceLineNo">045</span>   * Entry point.<a name="line.45"></a>
+<span class="sourceLineNo">046</span>   *<a name="line.46"></a>
+<span class="sourceLineNo">047</span>   * @param args  command line arguments.<a name="line.47"></a>
+<span class="sourceLineNo">048</span>   */<a name="line.48"></a>
+<span class="sourceLineNo">049</span>  public static void main(String[] args)<a name="line.49"></a>
+<span class="sourceLineNo">050</span>  {<a name="line.50"></a>
+<span class="sourceLineNo">051</span>    System.out.println ("Listing the various classloaders:");<a name="line.51"></a>
+<span class="sourceLineNo">052</span>    System.out.println ("Defined classloader source: " + ObjectUtilities.getClassLoaderSource());<a name="line.52"></a>
+<span class="sourceLineNo">053</span>    System.out.println ("User classloader: " + ObjectUtilities.getClassLoader());<a name="line.53"></a>
+<span class="sourceLineNo">054</span>    System.out.println ("Classloader for ObjectUtilities.class: " + ObjectUtilities.getClassLoader(ObjectUtilities.class));<a name="line.54"></a>
+<span class="sourceLineNo">055</span>    System.out.println ("Classloader for String.class: " + ObjectUtilities.getClassLoader(String.class));<a name="line.55"></a>
+<span class="sourceLineNo">056</span>    System.out.println ("Thread-Context Classloader: " + Thread.currentThread().getContextClassLoader());<a name="line.56"></a>
+<span class="sourceLineNo">057</span>    System.out.println ("Defined System classloader: " + ClassLoader.getSystemClassLoader());<a name="line.57"></a>
+<span class="sourceLineNo">058</span>    System.out.println();<a name="line.58"></a>
+<span class="sourceLineNo">059</span>    try<a name="line.59"></a>
+<span class="sourceLineNo">060</span>    {<a name="line.60"></a>
+<span class="sourceLineNo">061</span>      System.out.println ("Listing sources for '/jcommon.properties':");<a name="line.61"></a>
+<span class="sourceLineNo">062</span>      Enumeration resources = ObjectUtilities.getClassLoader<a name="line.62"></a>
+<span class="sourceLineNo">063</span>          (ObjectUtilities.class).getResources("jcommon.properties");<a name="line.63"></a>
+<span class="sourceLineNo">064</span>      while (resources.hasMoreElements())<a name="line.64"></a>
+<span class="sourceLineNo">065</span>      {<a name="line.65"></a>
+<span class="sourceLineNo">066</span>        System.out.println (" " + resources.nextElement());<a name="line.66"></a>
+<span class="sourceLineNo">067</span>      }<a name="line.67"></a>
+<span class="sourceLineNo">068</span>      System.out.println();<a name="line.68"></a>
+<span class="sourceLineNo">069</span>      System.out.println ("Listing sources for 'org/jfree/JCommonInfo.class':");<a name="line.69"></a>
+<span class="sourceLineNo">070</span>      resources = ObjectUtilities.getClassLoader<a name="line.70"></a>
+<span class="sourceLineNo">071</span>          (ObjectUtilities.class).getResources("org/jfree/JCommonInfo.class");<a name="line.71"></a>
+<span class="sourceLineNo">072</span>      while (resources.hasMoreElements())<a name="line.72"></a>
+<span class="sourceLineNo">073</span>      {<a name="line.73"></a>
+<span class="sourceLineNo">074</span>        System.out.println (" " + resources.nextElement());<a name="line.74"></a>
+<span class="sourceLineNo">075</span>      }<a name="line.75"></a>
+<span class="sourceLineNo">076</span>    }<a name="line.76"></a>
+<span class="sourceLineNo">077</span>    catch (Exception e)<a name="line.77"></a>
+<span class="sourceLineNo">078</span>    {<a name="line.78"></a>
+<span class="sourceLineNo">079</span>      e.printStackTrace();<a name="line.79"></a>
+<span class="sourceLineNo">080</span>    }<a name="line.80"></a>
+<span class="sourceLineNo">081</span><a name="line.81"></a>
+<span class="sourceLineNo">082</span>  }<a name="line.82"></a>
+<span class="sourceLineNo">083</span>}<a name="line.83"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

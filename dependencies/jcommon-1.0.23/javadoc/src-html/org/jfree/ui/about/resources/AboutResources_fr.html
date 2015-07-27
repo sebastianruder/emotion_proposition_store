@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="de">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>/* ========================================================================<a name="line.1"></a>
+<span class="sourceLineNo">002</span> * JCommon : a free general purpose class library for the Java(tm) platform<a name="line.2"></a>
+<span class="sourceLineNo">003</span> * ========================================================================<a name="line.3"></a>
+<span class="sourceLineNo">004</span> *<a name="line.4"></a>
+<span class="sourceLineNo">005</span> * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * <a name="line.6"></a>
+<span class="sourceLineNo">007</span> * Project Info:  http://www.jfree.org/jcommon/index.html<a name="line.7"></a>
+<span class="sourceLineNo">008</span> *<a name="line.8"></a>
+<span class="sourceLineNo">009</span> * This library is free software; you can redistribute it and/or modify it <a name="line.9"></a>
+<span class="sourceLineNo">010</span> * under the terms of the GNU Lesser General Public License as published by <a name="line.10"></a>
+<span class="sourceLineNo">011</span> * the Free Software Foundation; either version 2.1 of the License, or <a name="line.11"></a>
+<span class="sourceLineNo">012</span> * (at your option) any later version.<a name="line.12"></a>
+<span class="sourceLineNo">013</span> *<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * This library is distributed in the hope that it will be useful, but <a name="line.14"></a>
+<span class="sourceLineNo">015</span> * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY <a name="line.15"></a>
+<span class="sourceLineNo">016</span> * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public <a name="line.16"></a>
+<span class="sourceLineNo">017</span> * License for more details.<a name="line.17"></a>
+<span class="sourceLineNo">018</span> *<a name="line.18"></a>
+<span class="sourceLineNo">019</span> * You should have received a copy of the GNU Lesser General Public<a name="line.19"></a>
+<span class="sourceLineNo">020</span> * License along with this library; if not, write to the Free Software<a name="line.20"></a>
+<span class="sourceLineNo">021</span> * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, <a name="line.21"></a>
+<span class="sourceLineNo">022</span> * USA.  <a name="line.22"></a>
+<span class="sourceLineNo">023</span> *<a name="line.23"></a>
+<span class="sourceLineNo">024</span> * [Java is a trademark or registered trademark of Sun Microsystems, Inc. <a name="line.24"></a>
+<span class="sourceLineNo">025</span> * in the United States and other countries.]<a name="line.25"></a>
+<span class="sourceLineNo">026</span> * <a name="line.26"></a>
+<span class="sourceLineNo">027</span> * ----------------------<a name="line.27"></a>
+<span class="sourceLineNo">028</span> * AboutResources_fr.java<a name="line.28"></a>
+<span class="sourceLineNo">029</span> * ----------------------<a name="line.29"></a>
+<span class="sourceLineNo">030</span> *<a name="line.30"></a>
+<span class="sourceLineNo">031</span> * Original Author: Anthony Boulestreau;<a name="line.31"></a>
+<span class="sourceLineNo">032</span> * Contributor(s): -;<a name="line.32"></a>
+<span class="sourceLineNo">033</span> *<a name="line.33"></a>
+<span class="sourceLineNo">034</span> * $Id: AboutResources_fr.java,v 1.5 2007/11/02 17:50:36 taqua Exp $<a name="line.34"></a>
+<span class="sourceLineNo">035</span> *<a name="line.35"></a>
+<span class="sourceLineNo">036</span> * Changes<a name="line.36"></a>
+<span class="sourceLineNo">037</span> * -------<a name="line.37"></a>
+<span class="sourceLineNo">038</span> * 26-Mar-2002 : Version 1 (AB);<a name="line.38"></a>
+<span class="sourceLineNo">039</span> * 14-Oct-2002 : Fixed errors reported by Checkstyle (DG);<a name="line.39"></a>
+<span class="sourceLineNo">040</span> *<a name="line.40"></a>
+<span class="sourceLineNo">041</span> */<a name="line.41"></a>
+<span class="sourceLineNo">042</span><a name="line.42"></a>
+<span class="sourceLineNo">043</span>package org.jfree.ui.about.resources;<a name="line.43"></a>
+<span class="sourceLineNo">044</span><a name="line.44"></a>
+<span class="sourceLineNo">045</span>import java.awt.event.ActionEvent;<a name="line.45"></a>
+<span class="sourceLineNo">046</span>import java.awt.event.KeyEvent;<a name="line.46"></a>
+<span class="sourceLineNo">047</span>import java.util.ListResourceBundle;<a name="line.47"></a>
+<span class="sourceLineNo">048</span>import javax.swing.KeyStroke;<a name="line.48"></a>
+<span class="sourceLineNo">049</span><a name="line.49"></a>
+<span class="sourceLineNo">050</span>/**<a name="line.50"></a>
+<span class="sourceLineNo">051</span> * A resource bundle that stores all the user interface items that might need localisation.<a name="line.51"></a>
+<span class="sourceLineNo">052</span> *<a name="line.52"></a>
+<span class="sourceLineNo">053</span> * @author Anthony Boulestreau<a name="line.53"></a>
+<span class="sourceLineNo">054</span> */<a name="line.54"></a>
+<span class="sourceLineNo">055</span>public class AboutResources_fr extends ListResourceBundle {<a name="line.55"></a>
+<span class="sourceLineNo">056</span><a name="line.56"></a>
+<span class="sourceLineNo">057</span>    /**<a name="line.57"></a>
+<span class="sourceLineNo">058</span>     * Default constructor.<a name="line.58"></a>
+<span class="sourceLineNo">059</span>     */<a name="line.59"></a>
+<span class="sourceLineNo">060</span>    public AboutResources_fr() {<a name="line.60"></a>
+<span class="sourceLineNo">061</span>    }<a name="line.61"></a>
+<span class="sourceLineNo">062</span><a name="line.62"></a>
+<span class="sourceLineNo">063</span>    /**<a name="line.63"></a>
+<span class="sourceLineNo">064</span>     * Returns the array of strings in the resource bundle.<a name="line.64"></a>
+<span class="sourceLineNo">065</span>     *<a name="line.65"></a>
+<span class="sourceLineNo">066</span>     * @return the resources.<a name="line.66"></a>
+<span class="sourceLineNo">067</span>     */<a name="line.67"></a>
+<span class="sourceLineNo">068</span>    public Object[][] getContents() {<a name="line.68"></a>
+<span class="sourceLineNo">069</span>        return CONTENTS;<a name="line.69"></a>
+<span class="sourceLineNo">070</span>    }<a name="line.70"></a>
+<span class="sourceLineNo">071</span><a name="line.71"></a>
+<span class="sourceLineNo">072</span>    /** The resources to be localised. */<a name="line.72"></a>
+<span class="sourceLineNo">073</span>    private static final Object[][] CONTENTS = {<a name="line.73"></a>
+<span class="sourceLineNo">074</span><a name="line.74"></a>
+<span class="sourceLineNo">075</span>            {"about-frame.tab.about", "A propos de"},<a name="line.75"></a>
+<span class="sourceLineNo">076</span>            {"about-frame.tab.system", "Syst\u00e8me"},<a name="line.76"></a>
+<span class="sourceLineNo">077</span>            {"about-frame.tab.contributors", "D\u00e9veloppeurs"},<a name="line.77"></a>
+<span class="sourceLineNo">078</span>            {"about-frame.tab.licence", "Licence"},<a name="line.78"></a>
+<span class="sourceLineNo">079</span>            {"about-frame.tab.libraries", "Biblioth\u00e8que"},<a name="line.79"></a>
+<span class="sourceLineNo">080</span><a name="line.80"></a>
+<span class="sourceLineNo">081</span>            {"contributors-table.column.name", "Nom:"},<a name="line.81"></a>
+<span class="sourceLineNo">082</span>            {"contributors-table.column.contact", "Contact:"},<a name="line.82"></a>
+<span class="sourceLineNo">083</span><a name="line.83"></a>
+<span class="sourceLineNo">084</span>            {"libraries-table.column.name", "Nom:"},<a name="line.84"></a>
+<span class="sourceLineNo">085</span>            {"libraries-table.column.version", "Version:"},<a name="line.85"></a>
+<span class="sourceLineNo">086</span>            {"libraries-table.column.licence", "Licence:"},<a name="line.86"></a>
+<span class="sourceLineNo">087</span>            {"libraries-table.column.info", "Autre Renseignement:"},<a name="line.87"></a>
+<span class="sourceLineNo">088</span><a name="line.88"></a>
+<span class="sourceLineNo">089</span>            {"system-frame.title", "Propri\u00e9t\u00e9s du Syst\u00e8me"},<a name="line.89"></a>
+<span class="sourceLineNo">090</span><a name="line.90"></a>
+<span class="sourceLineNo">091</span>            {"system-frame.button.close", "Fermer"},<a name="line.91"></a>
+<span class="sourceLineNo">092</span><a name="line.92"></a>
+<span class="sourceLineNo">093</span>            {"system-frame.menu.file", "Fichier"},<a name="line.93"></a>
+<span class="sourceLineNo">094</span>            {"system-frame.menu.file.mnemonic", new Character('F')},<a name="line.94"></a>
+<span class="sourceLineNo">095</span><a name="line.95"></a>
+<span class="sourceLineNo">096</span>            {"system-frame.menu.file.close", "Fermer"},<a name="line.96"></a>
+<span class="sourceLineNo">097</span>            {"system-frame.menu.file.close.mnemonic", new Character('C')},<a name="line.97"></a>
+<span class="sourceLineNo">098</span><a name="line.98"></a>
+<span class="sourceLineNo">099</span>            {"system-frame.menu.edit", "Edition"},<a name="line.99"></a>
+<span class="sourceLineNo">100</span>            {"system-frame.menu.edit.mnemonic", new Character('E')},<a name="line.100"></a>
+<span class="sourceLineNo">101</span><a name="line.101"></a>
+<span class="sourceLineNo">102</span>            {"system-frame.menu.edit.copy", "Copier"},<a name="line.102"></a>
+<span class="sourceLineNo">103</span>            {"system-frame.menu.edit.copy.mnemonic", new Character('C')},<a name="line.103"></a>
+<span class="sourceLineNo">104</span><a name="line.104"></a>
+<span class="sourceLineNo">105</span>            {"system-properties-table.column.name", "Nom de la Propri\u00e9t\u00e9:"},<a name="line.105"></a>
+<span class="sourceLineNo">106</span>            {"system-properties-table.column.value", "Valeur:"},<a name="line.106"></a>
+<span class="sourceLineNo">107</span><a name="line.107"></a>
+<span class="sourceLineNo">108</span>            {"system-properties-panel.popup-menu.copy", "Copier" },<a name="line.108"></a>
+<span class="sourceLineNo">109</span>            {"system-properties-panel.popup-menu.copy.accelerator",<a name="line.109"></a>
+<span class="sourceLineNo">110</span>            KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.CTRL_MASK) },<a name="line.110"></a>
+<span class="sourceLineNo">111</span><a name="line.111"></a>
+<span class="sourceLineNo">112</span>    };<a name="line.112"></a>
+<span class="sourceLineNo">113</span><a name="line.113"></a>
+<span class="sourceLineNo">114</span>}<a name="line.114"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

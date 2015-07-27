@@ -1,0 +1,789 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="de">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>package com.keypoint;<a name="line.1"></a>
+<span class="sourceLineNo">002</span><a name="line.2"></a>
+<span class="sourceLineNo">003</span>import java.awt.Image;<a name="line.3"></a>
+<span class="sourceLineNo">004</span>import java.awt.image.ImageObserver;<a name="line.4"></a>
+<span class="sourceLineNo">005</span>import java.awt.image.PixelGrabber;<a name="line.5"></a>
+<span class="sourceLineNo">006</span>import java.io.ByteArrayOutputStream;<a name="line.6"></a>
+<span class="sourceLineNo">007</span>import java.io.IOException;<a name="line.7"></a>
+<span class="sourceLineNo">008</span>import java.util.zip.CRC32;<a name="line.8"></a>
+<span class="sourceLineNo">009</span>import java.util.zip.Deflater;<a name="line.9"></a>
+<span class="sourceLineNo">010</span>import java.util.zip.DeflaterOutputStream;<a name="line.10"></a>
+<span class="sourceLineNo">011</span><a name="line.11"></a>
+<span class="sourceLineNo">012</span>/**<a name="line.12"></a>
+<span class="sourceLineNo">013</span> * PngEncoder takes a Java Image object and creates a byte string which can be<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * saved as a PNG file.  The Image is presumed to use the DirectColorModel.<a name="line.14"></a>
+<span class="sourceLineNo">015</span> *<a name="line.15"></a>
+<span class="sourceLineNo">016</span> * &lt;p&gt;Thanks to Jay Denny at KeyPoint Software<a name="line.16"></a>
+<span class="sourceLineNo">017</span> *    http://www.keypoint.com/<a name="line.17"></a>
+<span class="sourceLineNo">018</span> * who let me develop this code on company time.&lt;/p&gt;<a name="line.18"></a>
+<span class="sourceLineNo">019</span> *<a name="line.19"></a>
+<span class="sourceLineNo">020</span> * &lt;p&gt;You may contact me with (probably very-much-needed) improvements,<a name="line.20"></a>
+<span class="sourceLineNo">021</span> * comments, and bug fixes at:&lt;/p&gt;<a name="line.21"></a>
+<span class="sourceLineNo">022</span> *<a name="line.22"></a>
+<span class="sourceLineNo">023</span> *   &lt;p&gt;&lt;code&gt;david@catcode.com&lt;/code&gt;&lt;/p&gt;<a name="line.23"></a>
+<span class="sourceLineNo">024</span> *<a name="line.24"></a>
+<span class="sourceLineNo">025</span> * &lt;p&gt;This library is free software; you can redistribute it and/or<a name="line.25"></a>
+<span class="sourceLineNo">026</span> * modify it under the terms of the GNU Lesser General Public<a name="line.26"></a>
+<span class="sourceLineNo">027</span> * License as published by the Free Software Foundation; either<a name="line.27"></a>
+<span class="sourceLineNo">028</span> * version 2.1 of the License, or (at your option) any later version.&lt;/p&gt;<a name="line.28"></a>
+<span class="sourceLineNo">029</span> *<a name="line.29"></a>
+<span class="sourceLineNo">030</span> * &lt;p&gt;This library is distributed in the hope that it will be useful,<a name="line.30"></a>
+<span class="sourceLineNo">031</span> * but WITHOUT ANY WARRANTY; without even the implied warranty of<a name="line.31"></a>
+<span class="sourceLineNo">032</span> * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU<a name="line.32"></a>
+<span class="sourceLineNo">033</span> * Lesser General Public License for more details.&lt;/p&gt;<a name="line.33"></a>
+<span class="sourceLineNo">034</span> *<a name="line.34"></a>
+<span class="sourceLineNo">035</span> * &lt;p&gt;You should have received a copy of the GNU Lesser General Public<a name="line.35"></a>
+<span class="sourceLineNo">036</span> * License along with this library; if not, write to the Free Software<a name="line.36"></a>
+<span class="sourceLineNo">037</span> * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,<a name="line.37"></a>
+<span class="sourceLineNo">038</span> * USA. A copy of the GNU LGPL may be found at<a name="line.38"></a>
+<span class="sourceLineNo">039</span> * &lt;code&gt;http://www.gnu.org/copyleft/lesser.html&lt;/code&gt;&lt;/p&gt;<a name="line.39"></a>
+<span class="sourceLineNo">040</span> *<a name="line.40"></a>
+<span class="sourceLineNo">041</span> * @author J. David Eisenberg<a name="line.41"></a>
+<span class="sourceLineNo">042</span> * @version 1.5, 19 Oct 2003<a name="line.42"></a>
+<span class="sourceLineNo">043</span> *<a name="line.43"></a>
+<span class="sourceLineNo">044</span> * CHANGES:<a name="line.44"></a>
+<span class="sourceLineNo">045</span> * --------<a name="line.45"></a>
+<span class="sourceLineNo">046</span> * 19-Nov-2002 : CODING STYLE CHANGES ONLY (by David Gilbert for Object<a name="line.46"></a>
+<span class="sourceLineNo">047</span> *               Refinery Limited);<a name="line.47"></a>
+<span class="sourceLineNo">048</span> * 19-Sep-2003 : Fix for platforms using EBCDIC (contributed by Paulo Soares);<a name="line.48"></a>
+<span class="sourceLineNo">049</span> * 19-Oct-2003 : Change private fields to protected fields so that<a name="line.49"></a>
+<span class="sourceLineNo">050</span> *               PngEncoderB can inherit them (JDE)<a name="line.50"></a>
+<span class="sourceLineNo">051</span> *               Fixed bug with calculation of nRows<a name="line.51"></a>
+<span class="sourceLineNo">052</span> * 15-Aug-2008 : Added scrunch.end() in writeImageData() method - see<a name="line.52"></a>
+<span class="sourceLineNo">053</span> *               JFreeChart bug report 2037930 (David Gilbert);<a name="line.53"></a>
+<span class="sourceLineNo">054</span> */<a name="line.54"></a>
+<span class="sourceLineNo">055</span><a name="line.55"></a>
+<span class="sourceLineNo">056</span>public class PngEncoder {<a name="line.56"></a>
+<span class="sourceLineNo">057</span><a name="line.57"></a>
+<span class="sourceLineNo">058</span>    /** Constant specifying that alpha channel should be encoded. */<a name="line.58"></a>
+<span class="sourceLineNo">059</span>    public static final boolean ENCODE_ALPHA = true;<a name="line.59"></a>
+<span class="sourceLineNo">060</span><a name="line.60"></a>
+<span class="sourceLineNo">061</span>    /** Constant specifying that alpha channel should not be encoded. */<a name="line.61"></a>
+<span class="sourceLineNo">062</span>    public static final boolean NO_ALPHA = false;<a name="line.62"></a>
+<span class="sourceLineNo">063</span><a name="line.63"></a>
+<span class="sourceLineNo">064</span>    /** Constants for filter (NONE). */<a name="line.64"></a>
+<span class="sourceLineNo">065</span>    public static final int FILTER_NONE = 0;<a name="line.65"></a>
+<span class="sourceLineNo">066</span><a name="line.66"></a>
+<span class="sourceLineNo">067</span>    /** Constants for filter (SUB). */<a name="line.67"></a>
+<span class="sourceLineNo">068</span>    public static final int FILTER_SUB = 1;<a name="line.68"></a>
+<span class="sourceLineNo">069</span><a name="line.69"></a>
+<span class="sourceLineNo">070</span>    /** Constants for filter (UP). */<a name="line.70"></a>
+<span class="sourceLineNo">071</span>    public static final int FILTER_UP = 2;<a name="line.71"></a>
+<span class="sourceLineNo">072</span><a name="line.72"></a>
+<span class="sourceLineNo">073</span>    /** Constants for filter (LAST). */<a name="line.73"></a>
+<span class="sourceLineNo">074</span>    public static final int FILTER_LAST = 2;<a name="line.74"></a>
+<span class="sourceLineNo">075</span><a name="line.75"></a>
+<span class="sourceLineNo">076</span>    /** IHDR tag. */<a name="line.76"></a>
+<span class="sourceLineNo">077</span>    protected static final byte[] IHDR = {73, 72, 68, 82};<a name="line.77"></a>
+<span class="sourceLineNo">078</span><a name="line.78"></a>
+<span class="sourceLineNo">079</span>    /** IDAT tag. */<a name="line.79"></a>
+<span class="sourceLineNo">080</span>    protected static final byte[] IDAT = {73, 68, 65, 84};<a name="line.80"></a>
+<span class="sourceLineNo">081</span><a name="line.81"></a>
+<span class="sourceLineNo">082</span>    /** IEND tag. */<a name="line.82"></a>
+<span class="sourceLineNo">083</span>    protected static final byte[] IEND = {73, 69, 78, 68};<a name="line.83"></a>
+<span class="sourceLineNo">084</span><a name="line.84"></a>
+<span class="sourceLineNo">085</span>    /** PHYS tag. */<a name="line.85"></a>
+<span class="sourceLineNo">086</span>    protected static final byte[] PHYS = {(byte)'p', (byte)'H', (byte)'Y',<a name="line.86"></a>
+<span class="sourceLineNo">087</span>        (byte)'s'};<a name="line.87"></a>
+<span class="sourceLineNo">088</span><a name="line.88"></a>
+<span class="sourceLineNo">089</span>    /** The png bytes. */<a name="line.89"></a>
+<span class="sourceLineNo">090</span>    protected byte[] pngBytes;<a name="line.90"></a>
+<span class="sourceLineNo">091</span><a name="line.91"></a>
+<span class="sourceLineNo">092</span>    /** The prior row. */<a name="line.92"></a>
+<span class="sourceLineNo">093</span>    protected byte[] priorRow;<a name="line.93"></a>
+<span class="sourceLineNo">094</span><a name="line.94"></a>
+<span class="sourceLineNo">095</span>    /** The left bytes. */<a name="line.95"></a>
+<span class="sourceLineNo">096</span>    protected byte[] leftBytes;<a name="line.96"></a>
+<span class="sourceLineNo">097</span><a name="line.97"></a>
+<span class="sourceLineNo">098</span>    /** The image. */<a name="line.98"></a>
+<span class="sourceLineNo">099</span>    protected Image image;<a name="line.99"></a>
+<span class="sourceLineNo">100</span><a name="line.100"></a>
+<span class="sourceLineNo">101</span>    /** The width. */<a name="line.101"></a>
+<span class="sourceLineNo">102</span>    protected int width;<a name="line.102"></a>
+<span class="sourceLineNo">103</span><a name="line.103"></a>
+<span class="sourceLineNo">104</span>    /** The height. */<a name="line.104"></a>
+<span class="sourceLineNo">105</span>    protected int height;<a name="line.105"></a>
+<span class="sourceLineNo">106</span><a name="line.106"></a>
+<span class="sourceLineNo">107</span>    /** The byte position. */<a name="line.107"></a>
+<span class="sourceLineNo">108</span>    protected int bytePos;<a name="line.108"></a>
+<span class="sourceLineNo">109</span><a name="line.109"></a>
+<span class="sourceLineNo">110</span>    /** The maximum position. */<a name="line.110"></a>
+<span class="sourceLineNo">111</span>    protected int maxPos;<a name="line.111"></a>
+<span class="sourceLineNo">112</span><a name="line.112"></a>
+<span class="sourceLineNo">113</span>    /** CRC. */<a name="line.113"></a>
+<span class="sourceLineNo">114</span>    protected CRC32 crc = new CRC32();<a name="line.114"></a>
+<span class="sourceLineNo">115</span><a name="line.115"></a>
+<span class="sourceLineNo">116</span>    /** The CRC value. */<a name="line.116"></a>
+<span class="sourceLineNo">117</span>    protected long crcValue;<a name="line.117"></a>
+<span class="sourceLineNo">118</span><a name="line.118"></a>
+<span class="sourceLineNo">119</span>    /** Encode alpha? */<a name="line.119"></a>
+<span class="sourceLineNo">120</span>    protected boolean encodeAlpha;<a name="line.120"></a>
+<span class="sourceLineNo">121</span><a name="line.121"></a>
+<span class="sourceLineNo">122</span>    /** The filter type. */<a name="line.122"></a>
+<span class="sourceLineNo">123</span>    protected int filter;<a name="line.123"></a>
+<span class="sourceLineNo">124</span><a name="line.124"></a>
+<span class="sourceLineNo">125</span>    /** The bytes-per-pixel. */<a name="line.125"></a>
+<span class="sourceLineNo">126</span>    protected int bytesPerPixel;<a name="line.126"></a>
+<span class="sourceLineNo">127</span><a name="line.127"></a>
+<span class="sourceLineNo">128</span>    /** The physical pixel dimension : number of pixels per inch on the X axis. */<a name="line.128"></a>
+<span class="sourceLineNo">129</span>    private int xDpi = 0;<a name="line.129"></a>
+<span class="sourceLineNo">130</span><a name="line.130"></a>
+<span class="sourceLineNo">131</span>    /** The physical pixel dimension : number of pixels per inch on the Y axis. */<a name="line.131"></a>
+<span class="sourceLineNo">132</span>    private int yDpi = 0;<a name="line.132"></a>
+<span class="sourceLineNo">133</span><a name="line.133"></a>
+<span class="sourceLineNo">134</span>    /** Used for conversion of DPI to Pixels per Meter. */<a name="line.134"></a>
+<span class="sourceLineNo">135</span>    static private float INCH_IN_METER_UNIT = 0.0254f;<a name="line.135"></a>
+<span class="sourceLineNo">136</span><a name="line.136"></a>
+<span class="sourceLineNo">137</span>    /**<a name="line.137"></a>
+<span class="sourceLineNo">138</span>     * The compression level (1 = best speed, 9 = best compression,<a name="line.138"></a>
+<span class="sourceLineNo">139</span>     * 0 = no compression).<a name="line.139"></a>
+<span class="sourceLineNo">140</span>     */<a name="line.140"></a>
+<span class="sourceLineNo">141</span>    protected int compressionLevel;<a name="line.141"></a>
+<span class="sourceLineNo">142</span><a name="line.142"></a>
+<span class="sourceLineNo">143</span>    /**<a name="line.143"></a>
+<span class="sourceLineNo">144</span>     * Class constructor.<a name="line.144"></a>
+<span class="sourceLineNo">145</span>     */<a name="line.145"></a>
+<span class="sourceLineNo">146</span>    public PngEncoder() {<a name="line.146"></a>
+<span class="sourceLineNo">147</span>        this(null, false, FILTER_NONE, 0);<a name="line.147"></a>
+<span class="sourceLineNo">148</span>    }<a name="line.148"></a>
+<span class="sourceLineNo">149</span><a name="line.149"></a>
+<span class="sourceLineNo">150</span>    /**<a name="line.150"></a>
+<span class="sourceLineNo">151</span>     * Class constructor specifying Image to encode, with no alpha channel<a name="line.151"></a>
+<span class="sourceLineNo">152</span>     * encoding.<a name="line.152"></a>
+<span class="sourceLineNo">153</span>     *<a name="line.153"></a>
+<span class="sourceLineNo">154</span>     * @param image A Java Image object which uses the DirectColorModel<a name="line.154"></a>
+<span class="sourceLineNo">155</span>     * @see java.awt.Image<a name="line.155"></a>
+<span class="sourceLineNo">156</span>     */<a name="line.156"></a>
+<span class="sourceLineNo">157</span>    public PngEncoder(Image image) {<a name="line.157"></a>
+<span class="sourceLineNo">158</span>        this(image, false, FILTER_NONE, 0);<a name="line.158"></a>
+<span class="sourceLineNo">159</span>    }<a name="line.159"></a>
+<span class="sourceLineNo">160</span><a name="line.160"></a>
+<span class="sourceLineNo">161</span>    /**<a name="line.161"></a>
+<span class="sourceLineNo">162</span>     * Class constructor specifying Image to encode, and whether to encode<a name="line.162"></a>
+<span class="sourceLineNo">163</span>     * alpha.<a name="line.163"></a>
+<span class="sourceLineNo">164</span>     *<a name="line.164"></a>
+<span class="sourceLineNo">165</span>     * @param image A Java Image object which uses the DirectColorModel<a name="line.165"></a>
+<span class="sourceLineNo">166</span>     * @param encodeAlpha Encode the alpha channel? false=no; true=yes<a name="line.166"></a>
+<span class="sourceLineNo">167</span>     * @see java.awt.Image<a name="line.167"></a>
+<span class="sourceLineNo">168</span>     */<a name="line.168"></a>
+<span class="sourceLineNo">169</span>    public PngEncoder(Image image, boolean encodeAlpha) {<a name="line.169"></a>
+<span class="sourceLineNo">170</span>        this(image, encodeAlpha, FILTER_NONE, 0);<a name="line.170"></a>
+<span class="sourceLineNo">171</span>    }<a name="line.171"></a>
+<span class="sourceLineNo">172</span><a name="line.172"></a>
+<span class="sourceLineNo">173</span>    /**<a name="line.173"></a>
+<span class="sourceLineNo">174</span>     * Class constructor specifying Image to encode, whether to encode alpha,<a name="line.174"></a>
+<span class="sourceLineNo">175</span>     * and filter to use.<a name="line.175"></a>
+<span class="sourceLineNo">176</span>     *<a name="line.176"></a>
+<span class="sourceLineNo">177</span>     * @param image A Java Image object which uses the DirectColorModel<a name="line.177"></a>
+<span class="sourceLineNo">178</span>     * @param encodeAlpha Encode the alpha channel? false=no; true=yes<a name="line.178"></a>
+<span class="sourceLineNo">179</span>     * @param whichFilter 0=none, 1=sub, 2=up<a name="line.179"></a>
+<span class="sourceLineNo">180</span>     * @see java.awt.Image<a name="line.180"></a>
+<span class="sourceLineNo">181</span>     */<a name="line.181"></a>
+<span class="sourceLineNo">182</span>    public PngEncoder(Image image, boolean encodeAlpha, int whichFilter) {<a name="line.182"></a>
+<span class="sourceLineNo">183</span>        this(image, encodeAlpha, whichFilter, 0);<a name="line.183"></a>
+<span class="sourceLineNo">184</span>    }<a name="line.184"></a>
+<span class="sourceLineNo">185</span><a name="line.185"></a>
+<span class="sourceLineNo">186</span><a name="line.186"></a>
+<span class="sourceLineNo">187</span>    /**<a name="line.187"></a>
+<span class="sourceLineNo">188</span>     * Class constructor specifying Image source to encode, whether to encode<a name="line.188"></a>
+<span class="sourceLineNo">189</span>     * alpha, filter to use, and compression level.<a name="line.189"></a>
+<span class="sourceLineNo">190</span>     *<a name="line.190"></a>
+<span class="sourceLineNo">191</span>     * @param image A Java Image object<a name="line.191"></a>
+<span class="sourceLineNo">192</span>     * @param encodeAlpha Encode the alpha channel? false=no; true=yes<a name="line.192"></a>
+<span class="sourceLineNo">193</span>     * @param whichFilter 0=none, 1=sub, 2=up<a name="line.193"></a>
+<span class="sourceLineNo">194</span>     * @param compLevel 0..9 (1 = best speed, 9 = best compression, 0 = no<a name="line.194"></a>
+<span class="sourceLineNo">195</span>     *        compression)<a name="line.195"></a>
+<span class="sourceLineNo">196</span>     * @see java.awt.Image<a name="line.196"></a>
+<span class="sourceLineNo">197</span>     */<a name="line.197"></a>
+<span class="sourceLineNo">198</span>    public PngEncoder(Image image, boolean encodeAlpha, int whichFilter,<a name="line.198"></a>
+<span class="sourceLineNo">199</span>            int compLevel) {<a name="line.199"></a>
+<span class="sourceLineNo">200</span>        this.image = image;<a name="line.200"></a>
+<span class="sourceLineNo">201</span>        this.encodeAlpha = encodeAlpha;<a name="line.201"></a>
+<span class="sourceLineNo">202</span>        setFilter(whichFilter);<a name="line.202"></a>
+<span class="sourceLineNo">203</span>        if (compLevel &gt;= 0 &amp;&amp; compLevel &lt;= 9) {<a name="line.203"></a>
+<span class="sourceLineNo">204</span>            this.compressionLevel = compLevel;<a name="line.204"></a>
+<span class="sourceLineNo">205</span>        }<a name="line.205"></a>
+<span class="sourceLineNo">206</span>    }<a name="line.206"></a>
+<span class="sourceLineNo">207</span><a name="line.207"></a>
+<span class="sourceLineNo">208</span>    /**<a name="line.208"></a>
+<span class="sourceLineNo">209</span>     * Set the image to be encoded.<a name="line.209"></a>
+<span class="sourceLineNo">210</span>     *<a name="line.210"></a>
+<span class="sourceLineNo">211</span>     * @param image A Java Image object which uses the DirectColorModel<a name="line.211"></a>
+<span class="sourceLineNo">212</span>     * @see java.awt.Image<a name="line.212"></a>
+<span class="sourceLineNo">213</span>     * @see java.awt.image.DirectColorModel<a name="line.213"></a>
+<span class="sourceLineNo">214</span>     */<a name="line.214"></a>
+<span class="sourceLineNo">215</span>    public void setImage(Image image) {<a name="line.215"></a>
+<span class="sourceLineNo">216</span>        this.image = image;<a name="line.216"></a>
+<span class="sourceLineNo">217</span>        this.pngBytes = null;<a name="line.217"></a>
+<span class="sourceLineNo">218</span>    }<a name="line.218"></a>
+<span class="sourceLineNo">219</span><a name="line.219"></a>
+<span class="sourceLineNo">220</span>    /**<a name="line.220"></a>
+<span class="sourceLineNo">221</span>     * Returns the image to be encoded.<a name="line.221"></a>
+<span class="sourceLineNo">222</span>     *<a name="line.222"></a>
+<span class="sourceLineNo">223</span>     * @return The image.<a name="line.223"></a>
+<span class="sourceLineNo">224</span>     */<a name="line.224"></a>
+<span class="sourceLineNo">225</span>    public Image getImage() {<a name="line.225"></a>
+<span class="sourceLineNo">226</span>      return this.image;<a name="line.226"></a>
+<span class="sourceLineNo">227</span>    }<a name="line.227"></a>
+<span class="sourceLineNo">228</span><a name="line.228"></a>
+<span class="sourceLineNo">229</span>  /**<a name="line.229"></a>
+<span class="sourceLineNo">230</span>     * Creates an array of bytes that is the PNG equivalent of the current<a name="line.230"></a>
+<span class="sourceLineNo">231</span>     * image, specifying whether to encode alpha or not.<a name="line.231"></a>
+<span class="sourceLineNo">232</span>     *<a name="line.232"></a>
+<span class="sourceLineNo">233</span>     * @param encodeAlpha boolean false=no alpha, true=encode alpha<a name="line.233"></a>
+<span class="sourceLineNo">234</span>     * @return an array of bytes, or null if there was a problem<a name="line.234"></a>
+<span class="sourceLineNo">235</span>     */<a name="line.235"></a>
+<span class="sourceLineNo">236</span>    public byte[] pngEncode(boolean encodeAlpha) {<a name="line.236"></a>
+<span class="sourceLineNo">237</span>        byte[]  pngIdBytes = {-119, 80, 78, 71, 13, 10, 26, 10};<a name="line.237"></a>
+<span class="sourceLineNo">238</span><a name="line.238"></a>
+<span class="sourceLineNo">239</span>        if (this.image == null) {<a name="line.239"></a>
+<span class="sourceLineNo">240</span>            return null;<a name="line.240"></a>
+<span class="sourceLineNo">241</span>        }<a name="line.241"></a>
+<span class="sourceLineNo">242</span>        this.width = this.image.getWidth(null);<a name="line.242"></a>
+<span class="sourceLineNo">243</span>        this.height = this.image.getHeight(null);<a name="line.243"></a>
+<span class="sourceLineNo">244</span><a name="line.244"></a>
+<span class="sourceLineNo">245</span>        /*<a name="line.245"></a>
+<span class="sourceLineNo">246</span>         * start with an array that is big enough to hold all the pixels<a name="line.246"></a>
+<span class="sourceLineNo">247</span>         * (plus filter bytes), and an extra 200 bytes for header info<a name="line.247"></a>
+<span class="sourceLineNo">248</span>         */<a name="line.248"></a>
+<span class="sourceLineNo">249</span>        this.pngBytes = new byte[((this.width + 1) * this.height * 3) + 200];<a name="line.249"></a>
+<span class="sourceLineNo">250</span><a name="line.250"></a>
+<span class="sourceLineNo">251</span>        /*<a name="line.251"></a>
+<span class="sourceLineNo">252</span>         * keep track of largest byte written to the array<a name="line.252"></a>
+<span class="sourceLineNo">253</span>         */<a name="line.253"></a>
+<span class="sourceLineNo">254</span>        this.maxPos = 0;<a name="line.254"></a>
+<span class="sourceLineNo">255</span><a name="line.255"></a>
+<span class="sourceLineNo">256</span>        this.bytePos = writeBytes(pngIdBytes, 0);<a name="line.256"></a>
+<span class="sourceLineNo">257</span>        //hdrPos = bytePos;<a name="line.257"></a>
+<span class="sourceLineNo">258</span>        writeHeader();<a name="line.258"></a>
+<span class="sourceLineNo">259</span>        writeResolution();<a name="line.259"></a>
+<span class="sourceLineNo">260</span>        //dataPos = bytePos;<a name="line.260"></a>
+<span class="sourceLineNo">261</span>        if (writeImageData()) {<a name="line.261"></a>
+<span class="sourceLineNo">262</span>            writeEnd();<a name="line.262"></a>
+<span class="sourceLineNo">263</span>            this.pngBytes = resizeByteArray(this.pngBytes, this.maxPos);<a name="line.263"></a>
+<span class="sourceLineNo">264</span>        }<a name="line.264"></a>
+<span class="sourceLineNo">265</span>        else {<a name="line.265"></a>
+<span class="sourceLineNo">266</span>            this.pngBytes = null;<a name="line.266"></a>
+<span class="sourceLineNo">267</span>        }<a name="line.267"></a>
+<span class="sourceLineNo">268</span>        return this.pngBytes;<a name="line.268"></a>
+<span class="sourceLineNo">269</span>    }<a name="line.269"></a>
+<span class="sourceLineNo">270</span><a name="line.270"></a>
+<span class="sourceLineNo">271</span>    /**<a name="line.271"></a>
+<span class="sourceLineNo">272</span>     * Creates an array of bytes that is the PNG equivalent of the current<a name="line.272"></a>
+<span class="sourceLineNo">273</span>     * image.  Alpha encoding is determined by its setting in the constructor.<a name="line.273"></a>
+<span class="sourceLineNo">274</span>     *<a name="line.274"></a>
+<span class="sourceLineNo">275</span>     * @return an array of bytes, or null if there was a problem<a name="line.275"></a>
+<span class="sourceLineNo">276</span>     */<a name="line.276"></a>
+<span class="sourceLineNo">277</span>    public byte[] pngEncode() {<a name="line.277"></a>
+<span class="sourceLineNo">278</span>        return pngEncode(this.encodeAlpha);<a name="line.278"></a>
+<span class="sourceLineNo">279</span>    }<a name="line.279"></a>
+<span class="sourceLineNo">280</span><a name="line.280"></a>
+<span class="sourceLineNo">281</span>    /**<a name="line.281"></a>
+<span class="sourceLineNo">282</span>     * Set the alpha encoding on or off.<a name="line.282"></a>
+<span class="sourceLineNo">283</span>     *<a name="line.283"></a>
+<span class="sourceLineNo">284</span>     * @param encodeAlpha  false=no, true=yes<a name="line.284"></a>
+<span class="sourceLineNo">285</span>     */<a name="line.285"></a>
+<span class="sourceLineNo">286</span>    public void setEncodeAlpha(boolean encodeAlpha) {<a name="line.286"></a>
+<span class="sourceLineNo">287</span>        this.encodeAlpha = encodeAlpha;<a name="line.287"></a>
+<span class="sourceLineNo">288</span>    }<a name="line.288"></a>
+<span class="sourceLineNo">289</span><a name="line.289"></a>
+<span class="sourceLineNo">290</span>    /**<a name="line.290"></a>
+<span class="sourceLineNo">291</span>     * Retrieve alpha encoding status.<a name="line.291"></a>
+<span class="sourceLineNo">292</span>     *<a name="line.292"></a>
+<span class="sourceLineNo">293</span>     * @return boolean false=no, true=yes<a name="line.293"></a>
+<span class="sourceLineNo">294</span>     */<a name="line.294"></a>
+<span class="sourceLineNo">295</span>    public boolean getEncodeAlpha() {<a name="line.295"></a>
+<span class="sourceLineNo">296</span>        return this.encodeAlpha;<a name="line.296"></a>
+<span class="sourceLineNo">297</span>    }<a name="line.297"></a>
+<span class="sourceLineNo">298</span><a name="line.298"></a>
+<span class="sourceLineNo">299</span>    /**<a name="line.299"></a>
+<span class="sourceLineNo">300</span>     * Set the filter to use.<a name="line.300"></a>
+<span class="sourceLineNo">301</span>     *<a name="line.301"></a>
+<span class="sourceLineNo">302</span>     * @param whichFilter from constant list<a name="line.302"></a>
+<span class="sourceLineNo">303</span>     */<a name="line.303"></a>
+<span class="sourceLineNo">304</span>    public void setFilter(int whichFilter) {<a name="line.304"></a>
+<span class="sourceLineNo">305</span>        this.filter = FILTER_NONE;<a name="line.305"></a>
+<span class="sourceLineNo">306</span>        if (whichFilter &lt;= FILTER_LAST) {<a name="line.306"></a>
+<span class="sourceLineNo">307</span>            this.filter = whichFilter;<a name="line.307"></a>
+<span class="sourceLineNo">308</span>        }<a name="line.308"></a>
+<span class="sourceLineNo">309</span>    }<a name="line.309"></a>
+<span class="sourceLineNo">310</span><a name="line.310"></a>
+<span class="sourceLineNo">311</span>    /**<a name="line.311"></a>
+<span class="sourceLineNo">312</span>     * Retrieve filtering scheme.<a name="line.312"></a>
+<span class="sourceLineNo">313</span>     *<a name="line.313"></a>
+<span class="sourceLineNo">314</span>     * @return int (see constant list)<a name="line.314"></a>
+<span class="sourceLineNo">315</span>     */<a name="line.315"></a>
+<span class="sourceLineNo">316</span>    public int getFilter() {<a name="line.316"></a>
+<span class="sourceLineNo">317</span>        return this.filter;<a name="line.317"></a>
+<span class="sourceLineNo">318</span>    }<a name="line.318"></a>
+<span class="sourceLineNo">319</span><a name="line.319"></a>
+<span class="sourceLineNo">320</span>    /**<a name="line.320"></a>
+<span class="sourceLineNo">321</span>     * Set the compression level to use.<a name="line.321"></a>
+<span class="sourceLineNo">322</span>     *<a name="line.322"></a>
+<span class="sourceLineNo">323</span>     * @param level the compression level (1 = best speed, 9 = best compression,<a name="line.323"></a>
+<span class="sourceLineNo">324</span>     *        0 = no compression)<a name="line.324"></a>
+<span class="sourceLineNo">325</span>     */<a name="line.325"></a>
+<span class="sourceLineNo">326</span>    public void setCompressionLevel(int level) {<a name="line.326"></a>
+<span class="sourceLineNo">327</span>        if (level &gt;= 0 &amp;&amp; level &lt;= 9) {<a name="line.327"></a>
+<span class="sourceLineNo">328</span>            this.compressionLevel = level;<a name="line.328"></a>
+<span class="sourceLineNo">329</span>        }<a name="line.329"></a>
+<span class="sourceLineNo">330</span>    }<a name="line.330"></a>
+<span class="sourceLineNo">331</span><a name="line.331"></a>
+<span class="sourceLineNo">332</span>    /**<a name="line.332"></a>
+<span class="sourceLineNo">333</span>     * Retrieve compression level.<a name="line.333"></a>
+<span class="sourceLineNo">334</span>     *<a name="line.334"></a>
+<span class="sourceLineNo">335</span>     * @return int (1 = best speed, 9 = best compression, 0 = no compression)<a name="line.335"></a>
+<span class="sourceLineNo">336</span>     */<a name="line.336"></a>
+<span class="sourceLineNo">337</span>    public int getCompressionLevel() {<a name="line.337"></a>
+<span class="sourceLineNo">338</span>        return this.compressionLevel;<a name="line.338"></a>
+<span class="sourceLineNo">339</span>    }<a name="line.339"></a>
+<span class="sourceLineNo">340</span><a name="line.340"></a>
+<span class="sourceLineNo">341</span>    /**<a name="line.341"></a>
+<span class="sourceLineNo">342</span>     * Increase or decrease the length of a byte array.<a name="line.342"></a>
+<span class="sourceLineNo">343</span>     *<a name="line.343"></a>
+<span class="sourceLineNo">344</span>     * @param array The original array.<a name="line.344"></a>
+<span class="sourceLineNo">345</span>     * @param newLength The length you wish the new array to have.<a name="line.345"></a>
+<span class="sourceLineNo">346</span>     * @return Array of newly desired length. If shorter than the<a name="line.346"></a>
+<span class="sourceLineNo">347</span>     *         original, the trailing elements are truncated.<a name="line.347"></a>
+<span class="sourceLineNo">348</span>     */<a name="line.348"></a>
+<span class="sourceLineNo">349</span>    protected byte[] resizeByteArray(byte[] array, int newLength) {<a name="line.349"></a>
+<span class="sourceLineNo">350</span>        byte[]  newArray = new byte[newLength];<a name="line.350"></a>
+<span class="sourceLineNo">351</span>        int     oldLength = array.length;<a name="line.351"></a>
+<span class="sourceLineNo">352</span><a name="line.352"></a>
+<span class="sourceLineNo">353</span>        System.arraycopy(array, 0, newArray, 0, Math.min(oldLength, newLength));<a name="line.353"></a>
+<span class="sourceLineNo">354</span>        return newArray;<a name="line.354"></a>
+<span class="sourceLineNo">355</span>    }<a name="line.355"></a>
+<span class="sourceLineNo">356</span><a name="line.356"></a>
+<span class="sourceLineNo">357</span>    /**<a name="line.357"></a>
+<span class="sourceLineNo">358</span>     * Write an array of bytes into the pngBytes array.<a name="line.358"></a>
+<span class="sourceLineNo">359</span>     * Note: This routine has the side effect of updating<a name="line.359"></a>
+<span class="sourceLineNo">360</span>     * maxPos, the largest element written in the array.<a name="line.360"></a>
+<span class="sourceLineNo">361</span>     * The array is resized by 1000 bytes or the length<a name="line.361"></a>
+<span class="sourceLineNo">362</span>     * of the data to be written, whichever is larger.<a name="line.362"></a>
+<span class="sourceLineNo">363</span>     *<a name="line.363"></a>
+<span class="sourceLineNo">364</span>     * @param data The data to be written into pngBytes.<a name="line.364"></a>
+<span class="sourceLineNo">365</span>     * @param offset The starting point to write to.<a name="line.365"></a>
+<span class="sourceLineNo">366</span>     * @return The next place to be written to in the pngBytes array.<a name="line.366"></a>
+<span class="sourceLineNo">367</span>     */<a name="line.367"></a>
+<span class="sourceLineNo">368</span>    protected int writeBytes(byte[] data, int offset) {<a name="line.368"></a>
+<span class="sourceLineNo">369</span>        this.maxPos = Math.max(this.maxPos, offset + data.length);<a name="line.369"></a>
+<span class="sourceLineNo">370</span>        if (data.length + offset &gt; this.pngBytes.length) {<a name="line.370"></a>
+<span class="sourceLineNo">371</span>            this.pngBytes = resizeByteArray(this.pngBytes, this.pngBytes.length<a name="line.371"></a>
+<span class="sourceLineNo">372</span>                    + Math.max(1000, data.length));<a name="line.372"></a>
+<span class="sourceLineNo">373</span>        }<a name="line.373"></a>
+<span class="sourceLineNo">374</span>        System.arraycopy(data, 0, this.pngBytes, offset, data.length);<a name="line.374"></a>
+<span class="sourceLineNo">375</span>        return offset + data.length;<a name="line.375"></a>
+<span class="sourceLineNo">376</span>    }<a name="line.376"></a>
+<span class="sourceLineNo">377</span><a name="line.377"></a>
+<span class="sourceLineNo">378</span>    /**<a name="line.378"></a>
+<span class="sourceLineNo">379</span>     * Write an array of bytes into the pngBytes array, specifying number of<a name="line.379"></a>
+<span class="sourceLineNo">380</span>     * bytes to write. Note: This routine has the side effect of updating<a name="line.380"></a>
+<span class="sourceLineNo">381</span>     * maxPos, the largest element written in the array.<a name="line.381"></a>
+<span class="sourceLineNo">382</span>     * The array is resized by 1000 bytes or the length<a name="line.382"></a>
+<span class="sourceLineNo">383</span>     * of the data to be written, whichever is larger.<a name="line.383"></a>
+<span class="sourceLineNo">384</span>     *<a name="line.384"></a>
+<span class="sourceLineNo">385</span>     * @param data The data to be written into pngBytes.<a name="line.385"></a>
+<span class="sourceLineNo">386</span>     * @param nBytes The number of bytes to be written.<a name="line.386"></a>
+<span class="sourceLineNo">387</span>     * @param offset The starting point to write to.<a name="line.387"></a>
+<span class="sourceLineNo">388</span>     * @return The next place to be written to in the pngBytes array.<a name="line.388"></a>
+<span class="sourceLineNo">389</span>     */<a name="line.389"></a>
+<span class="sourceLineNo">390</span>    protected int writeBytes(byte[] data, int nBytes, int offset) {<a name="line.390"></a>
+<span class="sourceLineNo">391</span>        this.maxPos = Math.max(this.maxPos, offset + nBytes);<a name="line.391"></a>
+<span class="sourceLineNo">392</span>        if (nBytes + offset &gt; this.pngBytes.length) {<a name="line.392"></a>
+<span class="sourceLineNo">393</span>            this.pngBytes = resizeByteArray(this.pngBytes, this.pngBytes.length<a name="line.393"></a>
+<span class="sourceLineNo">394</span>                    + Math.max(1000, nBytes));<a name="line.394"></a>
+<span class="sourceLineNo">395</span>        }<a name="line.395"></a>
+<span class="sourceLineNo">396</span>        System.arraycopy(data, 0, this.pngBytes, offset, nBytes);<a name="line.396"></a>
+<span class="sourceLineNo">397</span>        return offset + nBytes;<a name="line.397"></a>
+<span class="sourceLineNo">398</span>    }<a name="line.398"></a>
+<span class="sourceLineNo">399</span><a name="line.399"></a>
+<span class="sourceLineNo">400</span>    /**<a name="line.400"></a>
+<span class="sourceLineNo">401</span>     * Write a two-byte integer into the pngBytes array at a given position.<a name="line.401"></a>
+<span class="sourceLineNo">402</span>     *<a name="line.402"></a>
+<span class="sourceLineNo">403</span>     * @param n The integer to be written into pngBytes.<a name="line.403"></a>
+<span class="sourceLineNo">404</span>     * @param offset The starting point to write to.<a name="line.404"></a>
+<span class="sourceLineNo">405</span>     * @return The next place to be written to in the pngBytes array.<a name="line.405"></a>
+<span class="sourceLineNo">406</span>     */<a name="line.406"></a>
+<span class="sourceLineNo">407</span>    protected int writeInt2(int n, int offset) {<a name="line.407"></a>
+<span class="sourceLineNo">408</span>        byte[] temp = {(byte) ((n &gt;&gt; 8) &amp; 0xff), (byte) (n &amp; 0xff)};<a name="line.408"></a>
+<span class="sourceLineNo">409</span>        return writeBytes(temp, offset);<a name="line.409"></a>
+<span class="sourceLineNo">410</span>    }<a name="line.410"></a>
+<span class="sourceLineNo">411</span><a name="line.411"></a>
+<span class="sourceLineNo">412</span>    /**<a name="line.412"></a>
+<span class="sourceLineNo">413</span>     * Write a four-byte integer into the pngBytes array at a given position.<a name="line.413"></a>
+<span class="sourceLineNo">414</span>     *<a name="line.414"></a>
+<span class="sourceLineNo">415</span>     * @param n The integer to be written into pngBytes.<a name="line.415"></a>
+<span class="sourceLineNo">416</span>     * @param offset The starting point to write to.<a name="line.416"></a>
+<span class="sourceLineNo">417</span>     * @return The next place to be written to in the pngBytes array.<a name="line.417"></a>
+<span class="sourceLineNo">418</span>     */<a name="line.418"></a>
+<span class="sourceLineNo">419</span>    protected int writeInt4(int n, int offset) {<a name="line.419"></a>
+<span class="sourceLineNo">420</span>        byte[] temp = {(byte) ((n &gt;&gt; 24) &amp; 0xff),<a name="line.420"></a>
+<span class="sourceLineNo">421</span>                       (byte) ((n &gt;&gt; 16) &amp; 0xff),<a name="line.421"></a>
+<span class="sourceLineNo">422</span>                       (byte) ((n &gt;&gt; 8) &amp; 0xff),<a name="line.422"></a>
+<span class="sourceLineNo">423</span>                       (byte) (n &amp; 0xff)};<a name="line.423"></a>
+<span class="sourceLineNo">424</span>        return writeBytes(temp, offset);<a name="line.424"></a>
+<span class="sourceLineNo">425</span>    }<a name="line.425"></a>
+<span class="sourceLineNo">426</span><a name="line.426"></a>
+<span class="sourceLineNo">427</span>    /**<a name="line.427"></a>
+<span class="sourceLineNo">428</span>     * Write a single byte into the pngBytes array at a given position.<a name="line.428"></a>
+<span class="sourceLineNo">429</span>     *<a name="line.429"></a>
+<span class="sourceLineNo">430</span>     * @param b The integer to be written into pngBytes.<a name="line.430"></a>
+<span class="sourceLineNo">431</span>     * @param offset The starting point to write to.<a name="line.431"></a>
+<span class="sourceLineNo">432</span>     * @return The next place to be written to in the pngBytes array.<a name="line.432"></a>
+<span class="sourceLineNo">433</span>     */<a name="line.433"></a>
+<span class="sourceLineNo">434</span>    protected int writeByte(int b, int offset) {<a name="line.434"></a>
+<span class="sourceLineNo">435</span>        byte[] temp = {(byte) b};<a name="line.435"></a>
+<span class="sourceLineNo">436</span>        return writeBytes(temp, offset);<a name="line.436"></a>
+<span class="sourceLineNo">437</span>    }<a name="line.437"></a>
+<span class="sourceLineNo">438</span><a name="line.438"></a>
+<span class="sourceLineNo">439</span>    /**<a name="line.439"></a>
+<span class="sourceLineNo">440</span>     * Write a PNG "IHDR" chunk into the pngBytes array.<a name="line.440"></a>
+<span class="sourceLineNo">441</span>     */<a name="line.441"></a>
+<span class="sourceLineNo">442</span>    protected void writeHeader() {<a name="line.442"></a>
+<span class="sourceLineNo">443</span><a name="line.443"></a>
+<span class="sourceLineNo">444</span>        int startPos = this.bytePos = writeInt4(13, this.bytePos);<a name="line.444"></a>
+<span class="sourceLineNo">445</span>        this.bytePos = writeBytes(IHDR, this.bytePos);<a name="line.445"></a>
+<span class="sourceLineNo">446</span>        this.width = this.image.getWidth(null);<a name="line.446"></a>
+<span class="sourceLineNo">447</span>        this.height = this.image.getHeight(null);<a name="line.447"></a>
+<span class="sourceLineNo">448</span>        this.bytePos = writeInt4(this.width, this.bytePos);<a name="line.448"></a>
+<span class="sourceLineNo">449</span>        this.bytePos = writeInt4(this.height, this.bytePos);<a name="line.449"></a>
+<span class="sourceLineNo">450</span>        this.bytePos = writeByte(8, this.bytePos); // bit depth<a name="line.450"></a>
+<span class="sourceLineNo">451</span>        this.bytePos = writeByte((this.encodeAlpha) ? 6 : 2, this.bytePos);<a name="line.451"></a>
+<span class="sourceLineNo">452</span>            // direct model<a name="line.452"></a>
+<span class="sourceLineNo">453</span>        this.bytePos = writeByte(0, this.bytePos); // compression method<a name="line.453"></a>
+<span class="sourceLineNo">454</span>        this.bytePos = writeByte(0, this.bytePos); // filter method<a name="line.454"></a>
+<span class="sourceLineNo">455</span>        this.bytePos = writeByte(0, this.bytePos); // no interlace<a name="line.455"></a>
+<span class="sourceLineNo">456</span>        this.crc.reset();<a name="line.456"></a>
+<span class="sourceLineNo">457</span>        this.crc.update(this.pngBytes, startPos, this.bytePos - startPos);<a name="line.457"></a>
+<span class="sourceLineNo">458</span>        this.crcValue = this.crc.getValue();<a name="line.458"></a>
+<span class="sourceLineNo">459</span>        this.bytePos = writeInt4((int) this.crcValue, this.bytePos);<a name="line.459"></a>
+<span class="sourceLineNo">460</span>    }<a name="line.460"></a>
+<span class="sourceLineNo">461</span><a name="line.461"></a>
+<span class="sourceLineNo">462</span>    /**<a name="line.462"></a>
+<span class="sourceLineNo">463</span>     * Perform "sub" filtering on the given row.<a name="line.463"></a>
+<span class="sourceLineNo">464</span>     * Uses temporary array leftBytes to store the original values<a name="line.464"></a>
+<span class="sourceLineNo">465</span>     * of the previous pixels.  The array is 16 bytes long, which<a name="line.465"></a>
+<span class="sourceLineNo">466</span>     * will easily hold two-byte samples plus two-byte alpha.<a name="line.466"></a>
+<span class="sourceLineNo">467</span>     *<a name="line.467"></a>
+<span class="sourceLineNo">468</span>     * @param pixels The array holding the scan lines being built<a name="line.468"></a>
+<span class="sourceLineNo">469</span>     * @param startPos Starting position within pixels of bytes to be filtered.<a name="line.469"></a>
+<span class="sourceLineNo">470</span>     * @param width Width of a scanline in pixels.<a name="line.470"></a>
+<span class="sourceLineNo">471</span>     */<a name="line.471"></a>
+<span class="sourceLineNo">472</span>    protected void filterSub(byte[] pixels, int startPos, int width) {<a name="line.472"></a>
+<span class="sourceLineNo">473</span>        int offset = this.bytesPerPixel;<a name="line.473"></a>
+<span class="sourceLineNo">474</span>        int actualStart = startPos + offset;<a name="line.474"></a>
+<span class="sourceLineNo">475</span>        int nBytes = width * this.bytesPerPixel;<a name="line.475"></a>
+<span class="sourceLineNo">476</span>        int leftInsert = offset;<a name="line.476"></a>
+<span class="sourceLineNo">477</span>        int leftExtract = 0;<a name="line.477"></a>
+<span class="sourceLineNo">478</span><a name="line.478"></a>
+<span class="sourceLineNo">479</span>        for (int i = actualStart; i &lt; startPos + nBytes; i++) {<a name="line.479"></a>
+<span class="sourceLineNo">480</span>            this.leftBytes[leftInsert] =  pixels[i];<a name="line.480"></a>
+<span class="sourceLineNo">481</span>            pixels[i] = (byte) ((pixels[i] - this.leftBytes[leftExtract])<a name="line.481"></a>
+<span class="sourceLineNo">482</span>                     % 256);<a name="line.482"></a>
+<span class="sourceLineNo">483</span>            leftInsert = (leftInsert + 1) % 0x0f;<a name="line.483"></a>
+<span class="sourceLineNo">484</span>            leftExtract = (leftExtract + 1) % 0x0f;<a name="line.484"></a>
+<span class="sourceLineNo">485</span>        }<a name="line.485"></a>
+<span class="sourceLineNo">486</span>    }<a name="line.486"></a>
+<span class="sourceLineNo">487</span><a name="line.487"></a>
+<span class="sourceLineNo">488</span>    /**<a name="line.488"></a>
+<span class="sourceLineNo">489</span>     * Perform "up" filtering on the given row.<a name="line.489"></a>
+<span class="sourceLineNo">490</span>     * Side effect: refills the prior row with current row<a name="line.490"></a>
+<span class="sourceLineNo">491</span>     *<a name="line.491"></a>
+<span class="sourceLineNo">492</span>     * @param pixels The array holding the scan lines being built<a name="line.492"></a>
+<span class="sourceLineNo">493</span>     * @param startPos Starting position within pixels of bytes to be filtered.<a name="line.493"></a>
+<span class="sourceLineNo">494</span>     * @param width Width of a scanline in pixels.<a name="line.494"></a>
+<span class="sourceLineNo">495</span>     */<a name="line.495"></a>
+<span class="sourceLineNo">496</span>    protected void filterUp(byte[] pixels, int startPos, int width) {<a name="line.496"></a>
+<span class="sourceLineNo">497</span><a name="line.497"></a>
+<span class="sourceLineNo">498</span>        final int nBytes = width * this.bytesPerPixel;<a name="line.498"></a>
+<span class="sourceLineNo">499</span><a name="line.499"></a>
+<span class="sourceLineNo">500</span>        for (int i = 0; i &lt; nBytes; i++) {<a name="line.500"></a>
+<span class="sourceLineNo">501</span>            final byte currentByte = pixels[startPos + i];<a name="line.501"></a>
+<span class="sourceLineNo">502</span>            pixels[startPos + i] = (byte) ((pixels[startPos  + i]<a name="line.502"></a>
+<span class="sourceLineNo">503</span>                    - this.priorRow[i]) % 256);<a name="line.503"></a>
+<span class="sourceLineNo">504</span>            this.priorRow[i] = currentByte;<a name="line.504"></a>
+<span class="sourceLineNo">505</span>        }<a name="line.505"></a>
+<span class="sourceLineNo">506</span>    }<a name="line.506"></a>
+<span class="sourceLineNo">507</span><a name="line.507"></a>
+<span class="sourceLineNo">508</span>    /**<a name="line.508"></a>
+<span class="sourceLineNo">509</span>     * Write the image data into the pngBytes array.<a name="line.509"></a>
+<span class="sourceLineNo">510</span>     * This will write one or more PNG "IDAT" chunks. In order<a name="line.510"></a>
+<span class="sourceLineNo">511</span>     * to conserve memory, this method grabs as many rows as will<a name="line.511"></a>
+<span class="sourceLineNo">512</span>     * fit into 32K bytes, or the whole image; whichever is less.<a name="line.512"></a>
+<span class="sourceLineNo">513</span>     *<a name="line.513"></a>
+<span class="sourceLineNo">514</span>     *<a name="line.514"></a>
+<span class="sourceLineNo">515</span>     * @return true if no errors; false if error grabbing pixels<a name="line.515"></a>
+<span class="sourceLineNo">516</span>     */<a name="line.516"></a>
+<span class="sourceLineNo">517</span>    protected boolean writeImageData() {<a name="line.517"></a>
+<span class="sourceLineNo">518</span>        int rowsLeft = this.height;  // number of rows remaining to write<a name="line.518"></a>
+<span class="sourceLineNo">519</span>        int startRow = 0;       // starting row to process this time through<a name="line.519"></a>
+<span class="sourceLineNo">520</span>        int nRows;              // how many rows to grab at a time<a name="line.520"></a>
+<span class="sourceLineNo">521</span><a name="line.521"></a>
+<span class="sourceLineNo">522</span>        byte[] scanLines;       // the scan lines to be compressed<a name="line.522"></a>
+<span class="sourceLineNo">523</span>        int scanPos;            // where we are in the scan lines<a name="line.523"></a>
+<span class="sourceLineNo">524</span>        int startPos;           // where this line's actual pixels start (used<a name="line.524"></a>
+<span class="sourceLineNo">525</span>                                // for filtering)<a name="line.525"></a>
+<span class="sourceLineNo">526</span><a name="line.526"></a>
+<span class="sourceLineNo">527</span>        byte[] compressedLines; // the resultant compressed lines<a name="line.527"></a>
+<span class="sourceLineNo">528</span>        int nCompressed;        // how big is the compressed area?<a name="line.528"></a>
+<span class="sourceLineNo">529</span><a name="line.529"></a>
+<span class="sourceLineNo">530</span>        //int depth;              // color depth ( handle only 8 or 32 )<a name="line.530"></a>
+<span class="sourceLineNo">531</span><a name="line.531"></a>
+<span class="sourceLineNo">532</span>        PixelGrabber pg;<a name="line.532"></a>
+<span class="sourceLineNo">533</span><a name="line.533"></a>
+<span class="sourceLineNo">534</span>        this.bytesPerPixel = (this.encodeAlpha) ? 4 : 3;<a name="line.534"></a>
+<span class="sourceLineNo">535</span><a name="line.535"></a>
+<span class="sourceLineNo">536</span>        Deflater scrunch = new Deflater(this.compressionLevel);<a name="line.536"></a>
+<span class="sourceLineNo">537</span>        ByteArrayOutputStream outBytes = new ByteArrayOutputStream(1024);<a name="line.537"></a>
+<span class="sourceLineNo">538</span><a name="line.538"></a>
+<span class="sourceLineNo">539</span>        DeflaterOutputStream compBytes = new DeflaterOutputStream(outBytes,<a name="line.539"></a>
+<span class="sourceLineNo">540</span>                scrunch);<a name="line.540"></a>
+<span class="sourceLineNo">541</span>        try {<a name="line.541"></a>
+<span class="sourceLineNo">542</span>            while (rowsLeft &gt; 0) {<a name="line.542"></a>
+<span class="sourceLineNo">543</span>                nRows = Math.min(32767 / (this.width<a name="line.543"></a>
+<span class="sourceLineNo">544</span>                        * (this.bytesPerPixel + 1)), rowsLeft);<a name="line.544"></a>
+<span class="sourceLineNo">545</span>                nRows = Math.max(nRows, 1);<a name="line.545"></a>
+<span class="sourceLineNo">546</span><a name="line.546"></a>
+<span class="sourceLineNo">547</span>                int[] pixels = new int[this.width * nRows];<a name="line.547"></a>
+<span class="sourceLineNo">548</span><a name="line.548"></a>
+<span class="sourceLineNo">549</span>                pg = new PixelGrabber(this.image, 0, startRow,<a name="line.549"></a>
+<span class="sourceLineNo">550</span>                        this.width, nRows, pixels, 0, this.width);<a name="line.550"></a>
+<span class="sourceLineNo">551</span>                try {<a name="line.551"></a>
+<span class="sourceLineNo">552</span>                    pg.grabPixels();<a name="line.552"></a>
+<span class="sourceLineNo">553</span>                }<a name="line.553"></a>
+<span class="sourceLineNo">554</span>                catch (Exception e) {<a name="line.554"></a>
+<span class="sourceLineNo">555</span>                    System.err.println("interrupted waiting for pixels!");<a name="line.555"></a>
+<span class="sourceLineNo">556</span>                    return false;<a name="line.556"></a>
+<span class="sourceLineNo">557</span>                }<a name="line.557"></a>
+<span class="sourceLineNo">558</span>                if ((pg.getStatus() &amp; ImageObserver.ABORT) != 0) {<a name="line.558"></a>
+<span class="sourceLineNo">559</span>                    System.err.println("image fetch aborted or errored");<a name="line.559"></a>
+<span class="sourceLineNo">560</span>                    return false;<a name="line.560"></a>
+<span class="sourceLineNo">561</span>                }<a name="line.561"></a>
+<span class="sourceLineNo">562</span><a name="line.562"></a>
+<span class="sourceLineNo">563</span>                /*<a name="line.563"></a>
+<span class="sourceLineNo">564</span>                 * Create a data chunk. scanLines adds "nRows" for<a name="line.564"></a>
+<span class="sourceLineNo">565</span>                 * the filter bytes.<a name="line.565"></a>
+<span class="sourceLineNo">566</span>                 */<a name="line.566"></a>
+<span class="sourceLineNo">567</span>                scanLines = new byte[this.width * nRows * this.bytesPerPixel<a name="line.567"></a>
+<span class="sourceLineNo">568</span>                                     + nRows];<a name="line.568"></a>
+<span class="sourceLineNo">569</span><a name="line.569"></a>
+<span class="sourceLineNo">570</span>                if (this.filter == FILTER_SUB) {<a name="line.570"></a>
+<span class="sourceLineNo">571</span>                    this.leftBytes = new byte[16];<a name="line.571"></a>
+<span class="sourceLineNo">572</span>                }<a name="line.572"></a>
+<span class="sourceLineNo">573</span>                if (this.filter == FILTER_UP) {<a name="line.573"></a>
+<span class="sourceLineNo">574</span>                    this.priorRow = new byte[this.width * this.bytesPerPixel];<a name="line.574"></a>
+<span class="sourceLineNo">575</span>                }<a name="line.575"></a>
+<span class="sourceLineNo">576</span><a name="line.576"></a>
+<span class="sourceLineNo">577</span>                scanPos = 0;<a name="line.577"></a>
+<span class="sourceLineNo">578</span>                startPos = 1;<a name="line.578"></a>
+<span class="sourceLineNo">579</span>                for (int i = 0; i &lt; this.width * nRows; i++) {<a name="line.579"></a>
+<span class="sourceLineNo">580</span>                    if (i % this.width == 0) {<a name="line.580"></a>
+<span class="sourceLineNo">581</span>                        scanLines[scanPos++] = (byte) this.filter;<a name="line.581"></a>
+<span class="sourceLineNo">582</span>                        startPos = scanPos;<a name="line.582"></a>
+<span class="sourceLineNo">583</span>                    }<a name="line.583"></a>
+<span class="sourceLineNo">584</span>                    scanLines[scanPos++] = (byte) ((pixels[i] &gt;&gt; 16) &amp; 0xff);<a name="line.584"></a>
+<span class="sourceLineNo">585</span>                    scanLines[scanPos++] = (byte) ((pixels[i] &gt;&gt;  8) &amp; 0xff);<a name="line.585"></a>
+<span class="sourceLineNo">586</span>                    scanLines[scanPos++] = (byte) ((pixels[i]) &amp; 0xff);<a name="line.586"></a>
+<span class="sourceLineNo">587</span>                    if (this.encodeAlpha) {<a name="line.587"></a>
+<span class="sourceLineNo">588</span>                        scanLines[scanPos++] = (byte) ((pixels[i] &gt;&gt; 24)<a name="line.588"></a>
+<span class="sourceLineNo">589</span>                                &amp; 0xff);<a name="line.589"></a>
+<span class="sourceLineNo">590</span>                    }<a name="line.590"></a>
+<span class="sourceLineNo">591</span>                    if ((i % this.width == this.width - 1)<a name="line.591"></a>
+<span class="sourceLineNo">592</span>                            &amp;&amp; (this.filter != FILTER_NONE)) {<a name="line.592"></a>
+<span class="sourceLineNo">593</span>                        if (this.filter == FILTER_SUB) {<a name="line.593"></a>
+<span class="sourceLineNo">594</span>                            filterSub(scanLines, startPos, this.width);<a name="line.594"></a>
+<span class="sourceLineNo">595</span>                        }<a name="line.595"></a>
+<span class="sourceLineNo">596</span>                        if (this.filter == FILTER_UP) {<a name="line.596"></a>
+<span class="sourceLineNo">597</span>                            filterUp(scanLines, startPos, this.width);<a name="line.597"></a>
+<span class="sourceLineNo">598</span>                        }<a name="line.598"></a>
+<span class="sourceLineNo">599</span>                    }<a name="line.599"></a>
+<span class="sourceLineNo">600</span>                }<a name="line.600"></a>
+<span class="sourceLineNo">601</span><a name="line.601"></a>
+<span class="sourceLineNo">602</span>                /*<a name="line.602"></a>
+<span class="sourceLineNo">603</span>                 * Write these lines to the output area<a name="line.603"></a>
+<span class="sourceLineNo">604</span>                 */<a name="line.604"></a>
+<span class="sourceLineNo">605</span>                compBytes.write(scanLines, 0, scanPos);<a name="line.605"></a>
+<span class="sourceLineNo">606</span><a name="line.606"></a>
+<span class="sourceLineNo">607</span>                startRow += nRows;<a name="line.607"></a>
+<span class="sourceLineNo">608</span>                rowsLeft -= nRows;<a name="line.608"></a>
+<span class="sourceLineNo">609</span>            }<a name="line.609"></a>
+<span class="sourceLineNo">610</span>            compBytes.close();<a name="line.610"></a>
+<span class="sourceLineNo">611</span><a name="line.611"></a>
+<span class="sourceLineNo">612</span>            /*<a name="line.612"></a>
+<span class="sourceLineNo">613</span>             * Write the compressed bytes<a name="line.613"></a>
+<span class="sourceLineNo">614</span>             */<a name="line.614"></a>
+<span class="sourceLineNo">615</span>            compressedLines = outBytes.toByteArray();<a name="line.615"></a>
+<span class="sourceLineNo">616</span>            nCompressed = compressedLines.length;<a name="line.616"></a>
+<span class="sourceLineNo">617</span><a name="line.617"></a>
+<span class="sourceLineNo">618</span>            this.crc.reset();<a name="line.618"></a>
+<span class="sourceLineNo">619</span>            this.bytePos = writeInt4(nCompressed, this.bytePos);<a name="line.619"></a>
+<span class="sourceLineNo">620</span>            this.bytePos = writeBytes(IDAT, this.bytePos);<a name="line.620"></a>
+<span class="sourceLineNo">621</span>            this.crc.update(IDAT);<a name="line.621"></a>
+<span class="sourceLineNo">622</span>            this.bytePos = writeBytes(compressedLines, nCompressed,<a name="line.622"></a>
+<span class="sourceLineNo">623</span>                    this.bytePos);<a name="line.623"></a>
+<span class="sourceLineNo">624</span>            this.crc.update(compressedLines, 0, nCompressed);<a name="line.624"></a>
+<span class="sourceLineNo">625</span><a name="line.625"></a>
+<span class="sourceLineNo">626</span>            this.crcValue = this.crc.getValue();<a name="line.626"></a>
+<span class="sourceLineNo">627</span>            this.bytePos = writeInt4((int) this.crcValue, this.bytePos);<a name="line.627"></a>
+<span class="sourceLineNo">628</span>            scrunch.finish();<a name="line.628"></a>
+<span class="sourceLineNo">629</span>            scrunch.end();<a name="line.629"></a>
+<span class="sourceLineNo">630</span>            return true;<a name="line.630"></a>
+<span class="sourceLineNo">631</span>        }<a name="line.631"></a>
+<span class="sourceLineNo">632</span>        catch (IOException e) {<a name="line.632"></a>
+<span class="sourceLineNo">633</span>            System.err.println(e.toString());<a name="line.633"></a>
+<span class="sourceLineNo">634</span>            return false;<a name="line.634"></a>
+<span class="sourceLineNo">635</span>        }<a name="line.635"></a>
+<span class="sourceLineNo">636</span>    }<a name="line.636"></a>
+<span class="sourceLineNo">637</span><a name="line.637"></a>
+<span class="sourceLineNo">638</span>    /**<a name="line.638"></a>
+<span class="sourceLineNo">639</span>     * Write a PNG "IEND" chunk into the pngBytes array.<a name="line.639"></a>
+<span class="sourceLineNo">640</span>     */<a name="line.640"></a>
+<span class="sourceLineNo">641</span>    protected void writeEnd() {<a name="line.641"></a>
+<span class="sourceLineNo">642</span>        this.bytePos = writeInt4(0, this.bytePos);<a name="line.642"></a>
+<span class="sourceLineNo">643</span>        this.bytePos = writeBytes(IEND, this.bytePos);<a name="line.643"></a>
+<span class="sourceLineNo">644</span>        this.crc.reset();<a name="line.644"></a>
+<span class="sourceLineNo">645</span>        this.crc.update(IEND);<a name="line.645"></a>
+<span class="sourceLineNo">646</span>        this.crcValue = this.crc.getValue();<a name="line.646"></a>
+<span class="sourceLineNo">647</span>        this.bytePos = writeInt4((int) this.crcValue, this.bytePos);<a name="line.647"></a>
+<span class="sourceLineNo">648</span>    }<a name="line.648"></a>
+<span class="sourceLineNo">649</span><a name="line.649"></a>
+<span class="sourceLineNo">650</span><a name="line.650"></a>
+<span class="sourceLineNo">651</span>    /**<a name="line.651"></a>
+<span class="sourceLineNo">652</span>     * Set the DPI for the X axis.<a name="line.652"></a>
+<span class="sourceLineNo">653</span>     *<a name="line.653"></a>
+<span class="sourceLineNo">654</span>     * @param xDpi  The number of dots per inch<a name="line.654"></a>
+<span class="sourceLineNo">655</span>     */<a name="line.655"></a>
+<span class="sourceLineNo">656</span>    public void setXDpi(int xDpi) {<a name="line.656"></a>
+<span class="sourceLineNo">657</span>        this.xDpi = Math.round(xDpi / INCH_IN_METER_UNIT);<a name="line.657"></a>
+<span class="sourceLineNo">658</span><a name="line.658"></a>
+<span class="sourceLineNo">659</span>    }<a name="line.659"></a>
+<span class="sourceLineNo">660</span><a name="line.660"></a>
+<span class="sourceLineNo">661</span>    /**<a name="line.661"></a>
+<span class="sourceLineNo">662</span>     * Get the DPI for the X axis.<a name="line.662"></a>
+<span class="sourceLineNo">663</span>     *<a name="line.663"></a>
+<span class="sourceLineNo">664</span>     * @return The number of dots per inch<a name="line.664"></a>
+<span class="sourceLineNo">665</span>     */<a name="line.665"></a>
+<span class="sourceLineNo">666</span>    public int getXDpi() {<a name="line.666"></a>
+<span class="sourceLineNo">667</span>        return Math.round(this.xDpi * INCH_IN_METER_UNIT);<a name="line.667"></a>
+<span class="sourceLineNo">668</span>    }<a name="line.668"></a>
+<span class="sourceLineNo">669</span><a name="line.669"></a>
+<span class="sourceLineNo">670</span>    /**<a name="line.670"></a>
+<span class="sourceLineNo">671</span>     * Set the DPI for the Y axis.<a name="line.671"></a>
+<span class="sourceLineNo">672</span>     *<a name="line.672"></a>
+<span class="sourceLineNo">673</span>     * @param yDpi  The number of dots per inch<a name="line.673"></a>
+<span class="sourceLineNo">674</span>     */<a name="line.674"></a>
+<span class="sourceLineNo">675</span>    public void setYDpi(int yDpi) {<a name="line.675"></a>
+<span class="sourceLineNo">676</span>        this.yDpi = Math.round(yDpi / INCH_IN_METER_UNIT);<a name="line.676"></a>
+<span class="sourceLineNo">677</span>    }<a name="line.677"></a>
+<span class="sourceLineNo">678</span><a name="line.678"></a>
+<span class="sourceLineNo">679</span>    /**<a name="line.679"></a>
+<span class="sourceLineNo">680</span>     * Get the DPI for the Y axis.<a name="line.680"></a>
+<span class="sourceLineNo">681</span>     *<a name="line.681"></a>
+<span class="sourceLineNo">682</span>     * @return The number of dots per inch<a name="line.682"></a>
+<span class="sourceLineNo">683</span>     */<a name="line.683"></a>
+<span class="sourceLineNo">684</span>    public int getYDpi() {<a name="line.684"></a>
+<span class="sourceLineNo">685</span>        return Math.round(this.yDpi * INCH_IN_METER_UNIT);<a name="line.685"></a>
+<span class="sourceLineNo">686</span>    }<a name="line.686"></a>
+<span class="sourceLineNo">687</span><a name="line.687"></a>
+<span class="sourceLineNo">688</span>    /**<a name="line.688"></a>
+<span class="sourceLineNo">689</span>     * Set the DPI resolution.<a name="line.689"></a>
+<span class="sourceLineNo">690</span>     *<a name="line.690"></a>
+<span class="sourceLineNo">691</span>     * @param xDpi  The number of dots per inch for the X axis.<a name="line.691"></a>
+<span class="sourceLineNo">692</span>     * @param yDpi  The number of dots per inch for the Y axis.<a name="line.692"></a>
+<span class="sourceLineNo">693</span>     */<a name="line.693"></a>
+<span class="sourceLineNo">694</span>    public void setDpi(int xDpi, int yDpi) {<a name="line.694"></a>
+<span class="sourceLineNo">695</span>        this.xDpi = Math.round(xDpi / INCH_IN_METER_UNIT);<a name="line.695"></a>
+<span class="sourceLineNo">696</span>        this.yDpi = Math.round(yDpi / INCH_IN_METER_UNIT);<a name="line.696"></a>
+<span class="sourceLineNo">697</span>    }<a name="line.697"></a>
+<span class="sourceLineNo">698</span><a name="line.698"></a>
+<span class="sourceLineNo">699</span>    /**<a name="line.699"></a>
+<span class="sourceLineNo">700</span>     * Write a PNG "pHYs" chunk into the pngBytes array.<a name="line.700"></a>
+<span class="sourceLineNo">701</span>     */<a name="line.701"></a>
+<span class="sourceLineNo">702</span>    protected void writeResolution() {<a name="line.702"></a>
+<span class="sourceLineNo">703</span>        if (this.xDpi &gt; 0 &amp;&amp; this.yDpi &gt; 0) {<a name="line.703"></a>
+<span class="sourceLineNo">704</span><a name="line.704"></a>
+<span class="sourceLineNo">705</span>            final int startPos = this.bytePos = writeInt4(9, this.bytePos);<a name="line.705"></a>
+<span class="sourceLineNo">706</span>            this.bytePos = writeBytes(PHYS, this.bytePos);<a name="line.706"></a>
+<span class="sourceLineNo">707</span>            this.bytePos = writeInt4(this.xDpi, this.bytePos);<a name="line.707"></a>
+<span class="sourceLineNo">708</span>            this.bytePos = writeInt4(this.yDpi, this.bytePos);<a name="line.708"></a>
+<span class="sourceLineNo">709</span>            this.bytePos = writeByte(1, this.bytePos); // unit is the meter.<a name="line.709"></a>
+<span class="sourceLineNo">710</span><a name="line.710"></a>
+<span class="sourceLineNo">711</span>            this.crc.reset();<a name="line.711"></a>
+<span class="sourceLineNo">712</span>            this.crc.update(this.pngBytes, startPos, this.bytePos - startPos);<a name="line.712"></a>
+<span class="sourceLineNo">713</span>            this.crcValue = this.crc.getValue();<a name="line.713"></a>
+<span class="sourceLineNo">714</span>            this.bytePos = writeInt4((int) this.crcValue, this.bytePos);<a name="line.714"></a>
+<span class="sourceLineNo">715</span>        }<a name="line.715"></a>
+<span class="sourceLineNo">716</span>    }<a name="line.716"></a>
+<span class="sourceLineNo">717</span>}<a name="line.717"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

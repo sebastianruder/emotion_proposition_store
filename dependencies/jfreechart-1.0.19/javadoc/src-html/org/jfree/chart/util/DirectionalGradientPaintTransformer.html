@@ -1,0 +1,211 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="de">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>/* ===========================================================<a name="line.1"></a>
+<span class="sourceLineNo">002</span> * JFreeChart : a free chart library for the Java(tm) platform<a name="line.2"></a>
+<span class="sourceLineNo">003</span> * ===========================================================<a name="line.3"></a>
+<span class="sourceLineNo">004</span> *<a name="line.4"></a>
+<span class="sourceLineNo">005</span> * (C) Copyright 2000-2014, by Object Refinery Limited and Contributors.<a name="line.5"></a>
+<span class="sourceLineNo">006</span> *<a name="line.6"></a>
+<span class="sourceLineNo">007</span> * Project Info:  http://www.jfree.org/jfreechart/index.html<a name="line.7"></a>
+<span class="sourceLineNo">008</span> *<a name="line.8"></a>
+<span class="sourceLineNo">009</span> * This library is free software; you can redistribute it and/or modify it<a name="line.9"></a>
+<span class="sourceLineNo">010</span> * under the terms of the GNU Lesser General Public License as published by<a name="line.10"></a>
+<span class="sourceLineNo">011</span> * the Free Software Foundation; either version 2.1 of the License, or<a name="line.11"></a>
+<span class="sourceLineNo">012</span> * (at your option) any later version.<a name="line.12"></a>
+<span class="sourceLineNo">013</span> *<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * This library is distributed in the hope that it will be useful, but<a name="line.14"></a>
+<span class="sourceLineNo">015</span> * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY<a name="line.15"></a>
+<span class="sourceLineNo">016</span> * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public<a name="line.16"></a>
+<span class="sourceLineNo">017</span> * License for more details.<a name="line.17"></a>
+<span class="sourceLineNo">018</span> *<a name="line.18"></a>
+<span class="sourceLineNo">019</span> * You should have received a copy of the GNU Lesser General Public<a name="line.19"></a>
+<span class="sourceLineNo">020</span> * License along with this library; if not, write to the Free Software<a name="line.20"></a>
+<span class="sourceLineNo">021</span> * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,<a name="line.21"></a>
+<span class="sourceLineNo">022</span> * USA.<a name="line.22"></a>
+<span class="sourceLineNo">023</span> *<a name="line.23"></a>
+<span class="sourceLineNo">024</span> * [Oracle and Java are registered trademarks of Oracle and/or its affiliates. <a name="line.24"></a>
+<span class="sourceLineNo">025</span> * Other names may be trademarks of their respective owners.]<a name="line.25"></a>
+<span class="sourceLineNo">026</span> *<a name="line.26"></a>
+<span class="sourceLineNo">027</span> * ----------------------------------------<a name="line.27"></a>
+<span class="sourceLineNo">028</span> * DirectionalGradientPaintTransformer.java<a name="line.28"></a>
+<span class="sourceLineNo">029</span> * ----------------------------------------<a name="line.29"></a>
+<span class="sourceLineNo">030</span> * (C) Copyright 2013-2014 by Peter Kolb and Contributors.<a name="line.30"></a>
+<span class="sourceLineNo">031</span> *<a name="line.31"></a>
+<span class="sourceLineNo">032</span> * Original Author:  Peter Kolb;<a name="line.32"></a>
+<span class="sourceLineNo">033</span> * Contributor(s):   David Gilbert (for Object Refinery Limited);<a name="line.33"></a>
+<span class="sourceLineNo">034</span> *<a name="line.34"></a>
+<span class="sourceLineNo">035</span> * Changes:<a name="line.35"></a>
+<span class="sourceLineNo">036</span> * --------<a name="line.36"></a>
+<span class="sourceLineNo">037</span> * 21-Nov-2013 : Version 1, with modifications by DG (PK);<a name="line.37"></a>
+<span class="sourceLineNo">038</span> *<a name="line.38"></a>
+<span class="sourceLineNo">039</span> */<a name="line.39"></a>
+<span class="sourceLineNo">040</span><a name="line.40"></a>
+<span class="sourceLineNo">041</span>package org.jfree.chart.util;<a name="line.41"></a>
+<span class="sourceLineNo">042</span><a name="line.42"></a>
+<span class="sourceLineNo">043</span>import java.awt.GradientPaint;<a name="line.43"></a>
+<span class="sourceLineNo">044</span>import java.awt.geom.Rectangle2D;<a name="line.44"></a>
+<span class="sourceLineNo">045</span>import java.awt.Shape;<a name="line.45"></a>
+<span class="sourceLineNo">046</span>import org.jfree.ui.GradientPaintTransformer;<a name="line.46"></a>
+<span class="sourceLineNo">047</span><a name="line.47"></a>
+<span class="sourceLineNo">048</span>/**<a name="line.48"></a>
+<span class="sourceLineNo">049</span> * Transforms a &lt;code&gt;GradientPaint&lt;/code&gt; to range over the width of a target <a name="line.49"></a>
+<span class="sourceLineNo">050</span> * shape.  The orientation of the resulting &lt;code&gt;GradientPaint&lt;/code&gt;<a name="line.50"></a>
+<span class="sourceLineNo">051</span> * depend on the coordinates of the original paint:<a name="line.51"></a>
+<span class="sourceLineNo">052</span> *<a name="line.52"></a>
+<span class="sourceLineNo">053</span> * &lt;ul&gt;<a name="line.53"></a>
+<span class="sourceLineNo">054</span> * &lt;li&gt; If the original paint starts at 0,0 and ends at a point 0, y != 0,<a name="line.54"></a>
+<span class="sourceLineNo">055</span> * the resulting paint will have a vertical orientation.<a name="line.55"></a>
+<span class="sourceLineNo">056</span> * &lt;li&gt; If the original paint starts at 0,0 and ends at a point x !=0, 0,<a name="line.56"></a>
+<span class="sourceLineNo">057</span> * the resulting paint will have a horizontal orientation.<a name="line.57"></a>
+<span class="sourceLineNo">058</span> * &lt;li&gt; If the original paint starts at 0,0 and ends at a point x != 0, y != 0,<a name="line.58"></a>
+<span class="sourceLineNo">059</span> * the resulting paint will have a diagonal orientation from the upper left to<a name="line.59"></a>
+<span class="sourceLineNo">060</span> * the lower right edge. Lines of equal color will have a 45 ∞ angle,<a name="line.60"></a>
+<span class="sourceLineNo">061</span> * pointing upwards from left to right.<a name="line.61"></a>
+<span class="sourceLineNo">062</span> * &lt;li&gt; If the original paint starts at a point x != 0, y != 0,<a name="line.62"></a>
+<span class="sourceLineNo">063</span> * the resulting paint will have a diagonal orientation from the lower left to<a name="line.63"></a>
+<span class="sourceLineNo">064</span> * the upper right edge. Lines of equal color will have a 45 ∞ angle,<a name="line.64"></a>
+<span class="sourceLineNo">065</span> * pointing downwards from left to right.<a name="line.65"></a>
+<span class="sourceLineNo">066</span> * &lt;/ul&gt;<a name="line.66"></a>
+<span class="sourceLineNo">067</span> * &lt;p&gt;In all cases, the cyclic flag of the original paint will be taken into <a name="line.67"></a>
+<span class="sourceLineNo">068</span> * account.&lt;/p&gt;<a name="line.68"></a>
+<span class="sourceLineNo">069</span> *<a name="line.69"></a>
+<span class="sourceLineNo">070</span> * @author Peter Kolb<a name="line.70"></a>
+<span class="sourceLineNo">071</span> * @since 1.0.17<a name="line.71"></a>
+<span class="sourceLineNo">072</span> */<a name="line.72"></a>
+<span class="sourceLineNo">073</span>public class DirectionalGradientPaintTransformer <a name="line.73"></a>
+<span class="sourceLineNo">074</span>        implements GradientPaintTransformer {<a name="line.74"></a>
+<span class="sourceLineNo">075</span>    <a name="line.75"></a>
+<span class="sourceLineNo">076</span>    /**<a name="line.76"></a>
+<span class="sourceLineNo">077</span>     * Default constructor.<a name="line.77"></a>
+<span class="sourceLineNo">078</span>     */<a name="line.78"></a>
+<span class="sourceLineNo">079</span>    public DirectionalGradientPaintTransformer() {<a name="line.79"></a>
+<span class="sourceLineNo">080</span>        super();    <a name="line.80"></a>
+<span class="sourceLineNo">081</span>    }<a name="line.81"></a>
+<span class="sourceLineNo">082</span>    <a name="line.82"></a>
+<span class="sourceLineNo">083</span>    /**<a name="line.83"></a>
+<span class="sourceLineNo">084</span>     * Transforms a &lt;code&gt;GradientPaint&lt;/code&gt; instance to fit some target <a name="line.84"></a>
+<span class="sourceLineNo">085</span>     * shape.<a name="line.85"></a>
+<span class="sourceLineNo">086</span>     * <a name="line.86"></a>
+<span class="sourceLineNo">087</span>     * @param paint  the original paint (not &lt;code&gt;null&lt;/code&gt;).<a name="line.87"></a>
+<span class="sourceLineNo">088</span>     * @param target  the reference area (not &lt;code&gt;null&lt;/code&gt;).<a name="line.88"></a>
+<span class="sourceLineNo">089</span>     * <a name="line.89"></a>
+<span class="sourceLineNo">090</span>     * @return A transformed paint.<a name="line.90"></a>
+<span class="sourceLineNo">091</span>     */<a name="line.91"></a>
+<span class="sourceLineNo">092</span>    @Override<a name="line.92"></a>
+<span class="sourceLineNo">093</span>    public GradientPaint transform(GradientPaint paint, Shape target) {<a name="line.93"></a>
+<span class="sourceLineNo">094</span>        //get the coordinates of the original GradientPaint<a name="line.94"></a>
+<span class="sourceLineNo">095</span>        final double px1 = paint.getPoint1().getX();<a name="line.95"></a>
+<span class="sourceLineNo">096</span>        final double py1 = paint.getPoint1().getY();<a name="line.96"></a>
+<span class="sourceLineNo">097</span>        final double px2 = paint.getPoint2().getX();<a name="line.97"></a>
+<span class="sourceLineNo">098</span>        final double py2 = paint.getPoint2().getY();<a name="line.98"></a>
+<span class="sourceLineNo">099</span>        //get the coordinates of the shape that is to be filled<a name="line.99"></a>
+<span class="sourceLineNo">100</span>        final Rectangle2D bounds = target.getBounds();<a name="line.100"></a>
+<span class="sourceLineNo">101</span>        final float bx = (float)bounds.getX();<a name="line.101"></a>
+<span class="sourceLineNo">102</span>        final float by = (float)bounds.getY();<a name="line.102"></a>
+<span class="sourceLineNo">103</span>        final float bw = (float)bounds.getWidth();<a name="line.103"></a>
+<span class="sourceLineNo">104</span>        final float bh = (float)bounds.getHeight();<a name="line.104"></a>
+<span class="sourceLineNo">105</span>        //reserve variables to store the coordinates of the resulting GradientPaint<a name="line.105"></a>
+<span class="sourceLineNo">106</span>        float rx1, ry1, rx2, ry2;<a name="line.106"></a>
+<span class="sourceLineNo">107</span>        if (px1 == 0 &amp;&amp; py1 == 0) {<a name="line.107"></a>
+<span class="sourceLineNo">108</span>            //start point is upper left corner<a name="line.108"></a>
+<span class="sourceLineNo">109</span>            rx1 = bx;<a name="line.109"></a>
+<span class="sourceLineNo">110</span>            ry1 = by;<a name="line.110"></a>
+<span class="sourceLineNo">111</span>            if (px2 != 0.0f &amp;&amp; py2 != 0.0f) {<a name="line.111"></a>
+<span class="sourceLineNo">112</span>                //end point is lower right corner --&gt; diagonal gradient<a name="line.112"></a>
+<span class="sourceLineNo">113</span>                float offset = (paint.isCyclic()) ? (bw + bh) / 4.0f <a name="line.113"></a>
+<span class="sourceLineNo">114</span>                        : (bw + bh) / 2.0f ;<a name="line.114"></a>
+<span class="sourceLineNo">115</span>                rx2 = bx + offset;<a name="line.115"></a>
+<span class="sourceLineNo">116</span>                ry2 = by + offset;<a name="line.116"></a>
+<span class="sourceLineNo">117</span>            }<a name="line.117"></a>
+<span class="sourceLineNo">118</span>            else {<a name="line.118"></a>
+<span class="sourceLineNo">119</span>                //end point is either lower left corner --&gt; vertical gradient<a name="line.119"></a>
+<span class="sourceLineNo">120</span>                //or end point is upper right corner --&gt; horizontal gradient<a name="line.120"></a>
+<span class="sourceLineNo">121</span>                rx2 = (px2 == 0) ? rx1 : (paint.isCyclic() ? (rx1 + bw / 2.0f) <a name="line.121"></a>
+<span class="sourceLineNo">122</span>                        : (rx1 + bw));<a name="line.122"></a>
+<span class="sourceLineNo">123</span>                ry2 = (py2 == 0) ? ry1 : (paint.isCyclic() ? (ry1 + bh / 2.0f) <a name="line.123"></a>
+<span class="sourceLineNo">124</span>                        : (ry1 + bh));<a name="line.124"></a>
+<span class="sourceLineNo">125</span>            }<a name="line.125"></a>
+<span class="sourceLineNo">126</span>        }<a name="line.126"></a>
+<span class="sourceLineNo">127</span>        else {<a name="line.127"></a>
+<span class="sourceLineNo">128</span>            //start point is lower left right corner --&gt; diagonal gradient<a name="line.128"></a>
+<span class="sourceLineNo">129</span>            rx1 = bx;<a name="line.129"></a>
+<span class="sourceLineNo">130</span>            ry1 = by + bh;<a name="line.130"></a>
+<span class="sourceLineNo">131</span>            float offset = (paint.isCyclic()) ? (bw + bh) / 4.0f <a name="line.131"></a>
+<span class="sourceLineNo">132</span>                    : (bw + bh) / 2.0f;<a name="line.132"></a>
+<span class="sourceLineNo">133</span>            rx2 = bx + offset;<a name="line.133"></a>
+<span class="sourceLineNo">134</span>            ry2 = by + bh - offset;<a name="line.134"></a>
+<span class="sourceLineNo">135</span>        }<a name="line.135"></a>
+<span class="sourceLineNo">136</span>        return new GradientPaint(rx1, ry1, paint.getColor1(), rx2, ry2, <a name="line.136"></a>
+<span class="sourceLineNo">137</span>                paint.getColor2(), paint.isCyclic());<a name="line.137"></a>
+<span class="sourceLineNo">138</span>    }<a name="line.138"></a>
+<span class="sourceLineNo">139</span>}<a name="line.139"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

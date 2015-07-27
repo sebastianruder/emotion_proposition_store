@@ -1,0 +1,222 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="de">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>/* ==================<a name="line.1"></a>
+<span class="sourceLineNo">002</span> * BarChartDemo1.java<a name="line.2"></a>
+<span class="sourceLineNo">003</span> * ==================<a name="line.3"></a>
+<span class="sourceLineNo">004</span> *<a name="line.4"></a>
+<span class="sourceLineNo">005</span> * Copyright (c) 2005-2014, Object Refinery Limited.<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * All rights reserved.<a name="line.6"></a>
+<span class="sourceLineNo">007</span> *<a name="line.7"></a>
+<span class="sourceLineNo">008</span> * http://www.jfree.org/jfreechart/index.html<a name="line.8"></a>
+<span class="sourceLineNo">009</span> *<a name="line.9"></a>
+<span class="sourceLineNo">010</span> * Redistribution and use in source and binary forms, with or without<a name="line.10"></a>
+<span class="sourceLineNo">011</span> * modification, are permitted provided that the following conditions are met:<a name="line.11"></a>
+<span class="sourceLineNo">012</span> *   - Redistributions of source code must retain the above copyright<a name="line.12"></a>
+<span class="sourceLineNo">013</span> *     notice, this list of conditions and the following disclaimer.<a name="line.13"></a>
+<span class="sourceLineNo">014</span> *   - Redistributions in binary form must reproduce the above copyright<a name="line.14"></a>
+<span class="sourceLineNo">015</span> *     notice, this list of conditions and the following disclaimer in the<a name="line.15"></a>
+<span class="sourceLineNo">016</span> *     documentation and/or other materials provided with the distribution.<a name="line.16"></a>
+<span class="sourceLineNo">017</span> *   - Neither the name of the Object Refinery Limited nor the<a name="line.17"></a>
+<span class="sourceLineNo">018</span> *     names of its contributors may be used to endorse or promote products<a name="line.18"></a>
+<span class="sourceLineNo">019</span> *     derived from this software without specific prior written permission.<a name="line.19"></a>
+<span class="sourceLineNo">020</span> *<a name="line.20"></a>
+<span class="sourceLineNo">021</span> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" <a name="line.21"></a>
+<span class="sourceLineNo">022</span> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE <a name="line.22"></a>
+<span class="sourceLineNo">023</span> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE <a name="line.23"></a>
+<span class="sourceLineNo">024</span> * ARE DISCLAIMED. IN NO EVENT SHALL OBJECT REFINERY LIMITED BE LIABLE FOR ANY<a name="line.24"></a>
+<span class="sourceLineNo">025</span> * DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES<a name="line.25"></a>
+<span class="sourceLineNo">026</span> * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;<a name="line.26"></a>
+<span class="sourceLineNo">027</span> * LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND<a name="line.27"></a>
+<span class="sourceLineNo">028</span> * ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT<a name="line.28"></a>
+<span class="sourceLineNo">029</span> * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS<a name="line.29"></a>
+<span class="sourceLineNo">030</span> * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.<a name="line.30"></a>
+<span class="sourceLineNo">031</span> *<a name="line.31"></a>
+<span class="sourceLineNo">032</span> * Original Author:  David Gilbert (for Object Refinery Limited);<a name="line.32"></a>
+<span class="sourceLineNo">033</span> * Contributor(s):   -;<a name="line.33"></a>
+<span class="sourceLineNo">034</span> *<a name="line.34"></a>
+<span class="sourceLineNo">035</span> * Changes<a name="line.35"></a>
+<span class="sourceLineNo">036</span> * -------<a name="line.36"></a>
+<span class="sourceLineNo">037</span> * 09-Mar-2005 : Version 1 (DG);<a name="line.37"></a>
+<span class="sourceLineNo">038</span> * 11-Mar-2014 : Use new ChartFactory method (DG);<a name="line.38"></a>
+<span class="sourceLineNo">039</span> * 25-Jun-2014 : Update to use real data (DG);<a name="line.39"></a>
+<span class="sourceLineNo">040</span> * <a name="line.40"></a>
+<span class="sourceLineNo">041</span> */<a name="line.41"></a>
+<span class="sourceLineNo">042</span><a name="line.42"></a>
+<span class="sourceLineNo">043</span>package org.jfree.chart.demo;<a name="line.43"></a>
+<span class="sourceLineNo">044</span><a name="line.44"></a>
+<span class="sourceLineNo">045</span>import java.awt.Color;<a name="line.45"></a>
+<span class="sourceLineNo">046</span>import java.awt.Dimension;<a name="line.46"></a>
+<span class="sourceLineNo">047</span><a name="line.47"></a>
+<span class="sourceLineNo">048</span>import org.jfree.chart.ChartFactory;<a name="line.48"></a>
+<span class="sourceLineNo">049</span>import org.jfree.chart.ChartPanel;<a name="line.49"></a>
+<span class="sourceLineNo">050</span>import org.jfree.chart.JFreeChart;<a name="line.50"></a>
+<span class="sourceLineNo">051</span>import org.jfree.chart.StandardChartTheme;<a name="line.51"></a>
+<span class="sourceLineNo">052</span>import org.jfree.chart.axis.NumberAxis;<a name="line.52"></a>
+<span class="sourceLineNo">053</span>import org.jfree.chart.block.BlockBorder;<a name="line.53"></a>
+<span class="sourceLineNo">054</span>import org.jfree.chart.plot.CategoryPlot;<a name="line.54"></a>
+<span class="sourceLineNo">055</span>import org.jfree.chart.renderer.category.BarRenderer;<a name="line.55"></a>
+<span class="sourceLineNo">056</span>import org.jfree.chart.title.TextTitle;<a name="line.56"></a>
+<span class="sourceLineNo">057</span>import org.jfree.data.category.CategoryDataset;<a name="line.57"></a>
+<span class="sourceLineNo">058</span>import org.jfree.data.category.DefaultCategoryDataset;<a name="line.58"></a>
+<span class="sourceLineNo">059</span>import org.jfree.ui.ApplicationFrame;<a name="line.59"></a>
+<span class="sourceLineNo">060</span>import org.jfree.ui.RefineryUtilities;<a name="line.60"></a>
+<span class="sourceLineNo">061</span><a name="line.61"></a>
+<span class="sourceLineNo">062</span>/**<a name="line.62"></a>
+<span class="sourceLineNo">063</span> * A simple demonstration application showing how to create a bar chart.<a name="line.63"></a>
+<span class="sourceLineNo">064</span> */<a name="line.64"></a>
+<span class="sourceLineNo">065</span>public class BarChartDemo1 extends ApplicationFrame {<a name="line.65"></a>
+<span class="sourceLineNo">066</span><a name="line.66"></a>
+<span class="sourceLineNo">067</span>    private static final long serialVersionUID = 1L;<a name="line.67"></a>
+<span class="sourceLineNo">068</span><a name="line.68"></a>
+<span class="sourceLineNo">069</span>    static {<a name="line.69"></a>
+<span class="sourceLineNo">070</span>        // set a theme using the new shadow generator feature available in<a name="line.70"></a>
+<span class="sourceLineNo">071</span>        // 1.0.14 - for backwards compatibility it is not enabled by default<a name="line.71"></a>
+<span class="sourceLineNo">072</span>        ChartFactory.setChartTheme(new StandardChartTheme("JFree/Shadow",<a name="line.72"></a>
+<span class="sourceLineNo">073</span>                true));<a name="line.73"></a>
+<span class="sourceLineNo">074</span>    }<a name="line.74"></a>
+<span class="sourceLineNo">075</span><a name="line.75"></a>
+<span class="sourceLineNo">076</span>    /**<a name="line.76"></a>
+<span class="sourceLineNo">077</span>     * Creates a new demo instance.<a name="line.77"></a>
+<span class="sourceLineNo">078</span>     *<a name="line.78"></a>
+<span class="sourceLineNo">079</span>     * @param title  the frame title.<a name="line.79"></a>
+<span class="sourceLineNo">080</span>     */<a name="line.80"></a>
+<span class="sourceLineNo">081</span>    public BarChartDemo1(String title) {<a name="line.81"></a>
+<span class="sourceLineNo">082</span>        super(title);<a name="line.82"></a>
+<span class="sourceLineNo">083</span>        CategoryDataset dataset = createDataset();<a name="line.83"></a>
+<span class="sourceLineNo">084</span>        JFreeChart chart = createChart(dataset);<a name="line.84"></a>
+<span class="sourceLineNo">085</span>        ChartPanel chartPanel = new ChartPanel(chart);<a name="line.85"></a>
+<span class="sourceLineNo">086</span>        chartPanel.setFillZoomRectangle(true);<a name="line.86"></a>
+<span class="sourceLineNo">087</span>        chartPanel.setMouseWheelEnabled(true);<a name="line.87"></a>
+<span class="sourceLineNo">088</span>        chartPanel.setPreferredSize(new Dimension(500, 270));<a name="line.88"></a>
+<span class="sourceLineNo">089</span>        setContentPane(chartPanel);<a name="line.89"></a>
+<span class="sourceLineNo">090</span>    }<a name="line.90"></a>
+<span class="sourceLineNo">091</span><a name="line.91"></a>
+<span class="sourceLineNo">092</span>    /**<a name="line.92"></a>
+<span class="sourceLineNo">093</span>     * Returns a sample dataset.<a name="line.93"></a>
+<span class="sourceLineNo">094</span>     *<a name="line.94"></a>
+<span class="sourceLineNo">095</span>     * @return The dataset.<a name="line.95"></a>
+<span class="sourceLineNo">096</span>     */<a name="line.96"></a>
+<span class="sourceLineNo">097</span>    private static CategoryDataset createDataset() {<a name="line.97"></a>
+<span class="sourceLineNo">098</span>        DefaultCategoryDataset dataset = new DefaultCategoryDataset();<a name="line.98"></a>
+<span class="sourceLineNo">099</span>        dataset.addValue(7445, "JFreeSVG", "Warm-up");<a name="line.99"></a>
+<span class="sourceLineNo">100</span>        dataset.addValue(24448, "Batik", "Warm-up");<a name="line.100"></a>
+<span class="sourceLineNo">101</span>        dataset.addValue(4297, "JFreeSVG", "Test");<a name="line.101"></a>
+<span class="sourceLineNo">102</span>        dataset.addValue(21022, "Batik", "Test");<a name="line.102"></a>
+<span class="sourceLineNo">103</span>        return dataset;<a name="line.103"></a>
+<span class="sourceLineNo">104</span>    }<a name="line.104"></a>
+<span class="sourceLineNo">105</span><a name="line.105"></a>
+<span class="sourceLineNo">106</span>    /**<a name="line.106"></a>
+<span class="sourceLineNo">107</span>     * Creates a sample chart.<a name="line.107"></a>
+<span class="sourceLineNo">108</span>     *<a name="line.108"></a>
+<span class="sourceLineNo">109</span>     * @param dataset  the dataset.<a name="line.109"></a>
+<span class="sourceLineNo">110</span>     *<a name="line.110"></a>
+<span class="sourceLineNo">111</span>     * @return The chart.<a name="line.111"></a>
+<span class="sourceLineNo">112</span>     */<a name="line.112"></a>
+<span class="sourceLineNo">113</span>    private static JFreeChart createChart(CategoryDataset dataset) {<a name="line.113"></a>
+<span class="sourceLineNo">114</span>        JFreeChart chart = ChartFactory.createBarChart(<a name="line.114"></a>
+<span class="sourceLineNo">115</span>            "Performance: JFreeSVG vs Batik", null /* x-axis label*/, <a name="line.115"></a>
+<span class="sourceLineNo">116</span>                "Milliseconds" /* y-axis label */, dataset);<a name="line.116"></a>
+<span class="sourceLineNo">117</span>        chart.addSubtitle(new TextTitle("Time to generate 1000 charts in SVG " <a name="line.117"></a>
+<span class="sourceLineNo">118</span>                + "format (lower bars = better performance)"));<a name="line.118"></a>
+<span class="sourceLineNo">119</span>        chart.setBackgroundPaint(Color.white);<a name="line.119"></a>
+<span class="sourceLineNo">120</span>        CategoryPlot plot = (CategoryPlot) chart.getPlot();<a name="line.120"></a>
+<span class="sourceLineNo">121</span><a name="line.121"></a>
+<span class="sourceLineNo">122</span>        // ******************************************************************<a name="line.122"></a>
+<span class="sourceLineNo">123</span>        //  More than 150 demo applications are included with the JFreeChart<a name="line.123"></a>
+<span class="sourceLineNo">124</span>        //  Developer Guide...for more information, see:<a name="line.124"></a>
+<span class="sourceLineNo">125</span>        //<a name="line.125"></a>
+<span class="sourceLineNo">126</span>        //  &gt;   http://www.object-refinery.com/jfreechart/guide.html<a name="line.126"></a>
+<span class="sourceLineNo">127</span>        //<a name="line.127"></a>
+<span class="sourceLineNo">128</span>        // ******************************************************************<a name="line.128"></a>
+<span class="sourceLineNo">129</span><a name="line.129"></a>
+<span class="sourceLineNo">130</span>        NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();<a name="line.130"></a>
+<span class="sourceLineNo">131</span>        rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());<a name="line.131"></a>
+<span class="sourceLineNo">132</span>        BarRenderer renderer = (BarRenderer) plot.getRenderer();<a name="line.132"></a>
+<span class="sourceLineNo">133</span>        renderer.setDrawBarOutline(false);<a name="line.133"></a>
+<span class="sourceLineNo">134</span>        chart.getLegend().setFrame(BlockBorder.NONE);<a name="line.134"></a>
+<span class="sourceLineNo">135</span>        return chart;<a name="line.135"></a>
+<span class="sourceLineNo">136</span>    }<a name="line.136"></a>
+<span class="sourceLineNo">137</span><a name="line.137"></a>
+<span class="sourceLineNo">138</span>    /**<a name="line.138"></a>
+<span class="sourceLineNo">139</span>     * Starting point for the demonstration application.<a name="line.139"></a>
+<span class="sourceLineNo">140</span>     *<a name="line.140"></a>
+<span class="sourceLineNo">141</span>     * @param args  ignored.<a name="line.141"></a>
+<span class="sourceLineNo">142</span>     */<a name="line.142"></a>
+<span class="sourceLineNo">143</span>    public static void main(String[] args) {<a name="line.143"></a>
+<span class="sourceLineNo">144</span>        BarChartDemo1 demo = new BarChartDemo1("JFreeChart: BarChartDemo1.java");<a name="line.144"></a>
+<span class="sourceLineNo">145</span>        demo.pack();<a name="line.145"></a>
+<span class="sourceLineNo">146</span>        RefineryUtilities.centerFrameOnScreen(demo);<a name="line.146"></a>
+<span class="sourceLineNo">147</span>        demo.setVisible(true);<a name="line.147"></a>
+<span class="sourceLineNo">148</span>    }<a name="line.148"></a>
+<span class="sourceLineNo">149</span><a name="line.149"></a>
+<span class="sourceLineNo">150</span>}<a name="line.150"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

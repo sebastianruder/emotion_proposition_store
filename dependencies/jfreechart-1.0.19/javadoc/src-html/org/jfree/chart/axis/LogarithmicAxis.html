@@ -1,0 +1,1163 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="de">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>/* ===========================================================<a name="line.1"></a>
+<span class="sourceLineNo">002</span> * JFreeChart : a free chart library for the Java(tm) platform<a name="line.2"></a>
+<span class="sourceLineNo">003</span> * ===========================================================<a name="line.3"></a>
+<span class="sourceLineNo">004</span> *<a name="line.4"></a>
+<span class="sourceLineNo">005</span> * (C) Copyright 2000-2014, by Object Refinery Limited and Contributors.<a name="line.5"></a>
+<span class="sourceLineNo">006</span> *<a name="line.6"></a>
+<span class="sourceLineNo">007</span> * Project Info:  http://www.jfree.org/jfreechart/index.html<a name="line.7"></a>
+<span class="sourceLineNo">008</span> *<a name="line.8"></a>
+<span class="sourceLineNo">009</span> * This library is free software; you can redistribute it and/or modify it<a name="line.9"></a>
+<span class="sourceLineNo">010</span> * under the terms of the GNU Lesser General Public License as published by<a name="line.10"></a>
+<span class="sourceLineNo">011</span> * the Free Software Foundation; either version 2.1 of the License, or<a name="line.11"></a>
+<span class="sourceLineNo">012</span> * (at your option) any later version.<a name="line.12"></a>
+<span class="sourceLineNo">013</span> *<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * This library is distributed in the hope that it will be useful, but<a name="line.14"></a>
+<span class="sourceLineNo">015</span> * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY<a name="line.15"></a>
+<span class="sourceLineNo">016</span> * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public<a name="line.16"></a>
+<span class="sourceLineNo">017</span> * License for more details.<a name="line.17"></a>
+<span class="sourceLineNo">018</span> *<a name="line.18"></a>
+<span class="sourceLineNo">019</span> * You should have received a copy of the GNU Lesser General Public<a name="line.19"></a>
+<span class="sourceLineNo">020</span> * License along with this library; if not, write to the Free Software<a name="line.20"></a>
+<span class="sourceLineNo">021</span> * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,<a name="line.21"></a>
+<span class="sourceLineNo">022</span> * USA.<a name="line.22"></a>
+<span class="sourceLineNo">023</span> *<a name="line.23"></a>
+<span class="sourceLineNo">024</span> * [Oracle and Java are registered trademarks of Oracle and/or its affiliates. <a name="line.24"></a>
+<span class="sourceLineNo">025</span> * Other names may be trademarks of their respective owners.]<a name="line.25"></a>
+<span class="sourceLineNo">026</span> *<a name="line.26"></a>
+<span class="sourceLineNo">027</span> * --------------------<a name="line.27"></a>
+<span class="sourceLineNo">028</span> * LogarithmicAxis.java<a name="line.28"></a>
+<span class="sourceLineNo">029</span> * --------------------<a name="line.29"></a>
+<span class="sourceLineNo">030</span> * (C) Copyright 2000-2014, by Object Refinery Limited and Contributors.<a name="line.30"></a>
+<span class="sourceLineNo">031</span> *<a name="line.31"></a>
+<span class="sourceLineNo">032</span> * Original Author:  Michael Duffy / Eric Thomas;<a name="line.32"></a>
+<span class="sourceLineNo">033</span> * Contributor(s):   David Gilbert (for Object Refinery Limited);<a name="line.33"></a>
+<span class="sourceLineNo">034</span> *                   David M. O'Donnell;<a name="line.34"></a>
+<span class="sourceLineNo">035</span> *                   Scott Sams;<a name="line.35"></a>
+<span class="sourceLineNo">036</span> *                   Sergei Ivanov;<a name="line.36"></a>
+<span class="sourceLineNo">037</span> *<a name="line.37"></a>
+<span class="sourceLineNo">038</span> * Changes<a name="line.38"></a>
+<span class="sourceLineNo">039</span> * -------<a name="line.39"></a>
+<span class="sourceLineNo">040</span> * 14-Mar-2002 : Version 1 contributed by Michael Duffy (DG);<a name="line.40"></a>
+<span class="sourceLineNo">041</span> * 19-Apr-2002 : drawVerticalString() is now drawRotatedString() in<a name="line.41"></a>
+<span class="sourceLineNo">042</span> *               RefineryUtilities (DG);<a name="line.42"></a>
+<span class="sourceLineNo">043</span> * 23-Apr-2002 : Added a range property (DG);<a name="line.43"></a>
+<span class="sourceLineNo">044</span> * 15-May-2002 : Modified to be able to deal with negative and zero values (via<a name="line.44"></a>
+<span class="sourceLineNo">045</span> *               new 'adjustedLog10()' method);  occurrences of "Math.log(10)"<a name="line.45"></a>
+<span class="sourceLineNo">046</span> *               changed to "LOG10_VALUE"; changed 'intValue()' to<a name="line.46"></a>
+<span class="sourceLineNo">047</span> *               'longValue()' in 'refreshTicks()' to fix label-text value<a name="line.47"></a>
+<span class="sourceLineNo">048</span> *               out-of-range problem; removed 'draw()' method; added<a name="line.48"></a>
+<span class="sourceLineNo">049</span> *               'autoRangeMinimumSize' check; added 'log10TickLabelsFlag'<a name="line.49"></a>
+<span class="sourceLineNo">050</span> *               parameter flag and implementation (ET);<a name="line.50"></a>
+<span class="sourceLineNo">051</span> * 25-Jun-2002 : Removed redundant import (DG);<a name="line.51"></a>
+<span class="sourceLineNo">052</span> * 25-Jul-2002 : Changed order of parameters in ValueAxis constructor (DG);<a name="line.52"></a>
+<span class="sourceLineNo">053</span> * 16-Jul-2002 : Implemented support for plotting positive values arbitrarily<a name="line.53"></a>
+<span class="sourceLineNo">054</span> *               close to zero (added 'allowNegativesFlag' flag) (ET).<a name="line.54"></a>
+<span class="sourceLineNo">055</span> * 05-Sep-2002 : Updated constructor reflecting changes in the Axis class (DG);<a name="line.55"></a>
+<span class="sourceLineNo">056</span> * 02-Oct-2002 : Fixed errors reported by Checkstyle (DG);<a name="line.56"></a>
+<span class="sourceLineNo">057</span> * 08-Nov-2002 : Moved to new package com.jrefinery.chart.axis (DG);<a name="line.57"></a>
+<span class="sourceLineNo">058</span> * 22-Nov-2002 : Bug fixes from David M. O'Donnell (DG);<a name="line.58"></a>
+<span class="sourceLineNo">059</span> * 14-Jan-2003 : Changed autoRangeMinimumSize from Number --&gt; double (DG);<a name="line.59"></a>
+<span class="sourceLineNo">060</span> * 20-Jan-2003 : Removed unnecessary constructors (DG);<a name="line.60"></a>
+<span class="sourceLineNo">061</span> * 26-Mar-2003 : Implemented Serializable (DG);<a name="line.61"></a>
+<span class="sourceLineNo">062</span> * 08-May-2003 : Fixed plotting of datasets with lower==upper bounds when<a name="line.62"></a>
+<span class="sourceLineNo">063</span> *               'minAutoRange' is very small; added 'strictValuesFlag'<a name="line.63"></a>
+<span class="sourceLineNo">064</span> *               and default functionality of throwing a runtime exception<a name="line.64"></a>
+<span class="sourceLineNo">065</span> *               if 'allowNegativesFlag' is false and any values are less<a name="line.65"></a>
+<span class="sourceLineNo">066</span> *               than or equal to zero; added 'expTickLabelsFlag' and<a name="line.66"></a>
+<span class="sourceLineNo">067</span> *               changed to use "1e#"-style tick labels by default<a name="line.67"></a>
+<span class="sourceLineNo">068</span> *               ("10^n"-style tick labels still supported via 'set'<a name="line.68"></a>
+<span class="sourceLineNo">069</span> *               method); improved generation of tick labels when range of<a name="line.69"></a>
+<span class="sourceLineNo">070</span> *               values is small; changed to use 'NumberFormat.getInstance()'<a name="line.70"></a>
+<span class="sourceLineNo">071</span> *               to create 'numberFormatterObj' (ET);<a name="line.71"></a>
+<span class="sourceLineNo">072</span> * 14-May-2003 : Merged HorizontalLogarithmicAxis and<a name="line.72"></a>
+<span class="sourceLineNo">073</span> *               VerticalLogarithmicAxis (DG);<a name="line.73"></a>
+<span class="sourceLineNo">074</span> * 29-Oct-2003 : Added workaround for font alignment in PDF output (DG);<a name="line.74"></a>
+<span class="sourceLineNo">075</span> * 07-Nov-2003 : Modified to use new NumberTick class (DG);<a name="line.75"></a>
+<span class="sourceLineNo">076</span> * 08-Apr-2004 : Use numberFormatOverride if set - see patch 930139 (DG);<a name="line.76"></a>
+<span class="sourceLineNo">077</span> * 11-Jan-2005 : Removed deprecated code in preparation for 1.0.0 release (DG);<a name="line.77"></a>
+<span class="sourceLineNo">078</span> * 21-Apr-2005 : Added support for upper and lower margins; added<a name="line.78"></a>
+<span class="sourceLineNo">079</span> *               get/setAutoRangeNextLogFlag() methods and changed<a name="line.79"></a>
+<span class="sourceLineNo">080</span> *               default to 'autoRangeNextLogFlag'==false (ET);<a name="line.80"></a>
+<span class="sourceLineNo">081</span> * 22-Apr-2005 : Removed refreshTicks() and fixed names and parameters for<a name="line.81"></a>
+<span class="sourceLineNo">082</span> *               refreshHorizontalTicks() &amp; refreshVerticalTicks();<a name="line.82"></a>
+<span class="sourceLineNo">083</span> *               changed javadoc on setExpTickLabelsFlag() to specify<a name="line.83"></a>
+<span class="sourceLineNo">084</span> *               proper default (ET);<a name="line.84"></a>
+<span class="sourceLineNo">085</span> * 22-Apr-2005 : Renamed refreshHorizontalTicks --&gt; refreshTicksHorizontal<a name="line.85"></a>
+<span class="sourceLineNo">086</span> *               (and likewise the vertical version) for consistency with<a name="line.86"></a>
+<span class="sourceLineNo">087</span> *               other axis classes (DG);<a name="line.87"></a>
+<span class="sourceLineNo">088</span> * ------------- JFREECHART 1.0.x ---------------------------------------------<a name="line.88"></a>
+<span class="sourceLineNo">089</span> * 02-Feb-2007 : Removed author tags all over JFreeChart sources (DG);<a name="line.89"></a>
+<span class="sourceLineNo">090</span> * 02-Mar-2007 : Applied patch 1671069 to fix zooming (DG);<a name="line.90"></a>
+<span class="sourceLineNo">091</span> * 22-Mar-2007 : Use new defaultAutoRange attribute (DG);<a name="line.91"></a>
+<span class="sourceLineNo">092</span> *<a name="line.92"></a>
+<span class="sourceLineNo">093</span> */<a name="line.93"></a>
+<span class="sourceLineNo">094</span><a name="line.94"></a>
+<span class="sourceLineNo">095</span>package org.jfree.chart.axis;<a name="line.95"></a>
+<span class="sourceLineNo">096</span><a name="line.96"></a>
+<span class="sourceLineNo">097</span>import java.awt.Graphics2D;<a name="line.97"></a>
+<span class="sourceLineNo">098</span>import java.awt.geom.Rectangle2D;<a name="line.98"></a>
+<span class="sourceLineNo">099</span>import java.text.DecimalFormat;<a name="line.99"></a>
+<span class="sourceLineNo">100</span>import java.text.NumberFormat;<a name="line.100"></a>
+<span class="sourceLineNo">101</span>import java.util.List;<a name="line.101"></a>
+<span class="sourceLineNo">102</span><a name="line.102"></a>
+<span class="sourceLineNo">103</span>import org.jfree.chart.plot.Plot;<a name="line.103"></a>
+<span class="sourceLineNo">104</span>import org.jfree.chart.plot.ValueAxisPlot;<a name="line.104"></a>
+<span class="sourceLineNo">105</span>import org.jfree.data.Range;<a name="line.105"></a>
+<span class="sourceLineNo">106</span>import org.jfree.ui.RectangleEdge;<a name="line.106"></a>
+<span class="sourceLineNo">107</span>import org.jfree.ui.TextAnchor;<a name="line.107"></a>
+<span class="sourceLineNo">108</span><a name="line.108"></a>
+<span class="sourceLineNo">109</span>/**<a name="line.109"></a>
+<span class="sourceLineNo">110</span> * A numerical axis that uses a logarithmic scale.<a name="line.110"></a>
+<span class="sourceLineNo">111</span> */<a name="line.111"></a>
+<span class="sourceLineNo">112</span>public class LogarithmicAxis extends NumberAxis {<a name="line.112"></a>
+<span class="sourceLineNo">113</span><a name="line.113"></a>
+<span class="sourceLineNo">114</span>    /** For serialization. */<a name="line.114"></a>
+<span class="sourceLineNo">115</span>    private static final long serialVersionUID = 2502918599004103054L;<a name="line.115"></a>
+<span class="sourceLineNo">116</span><a name="line.116"></a>
+<span class="sourceLineNo">117</span>    /** Useful constant for log(10). */<a name="line.117"></a>
+<span class="sourceLineNo">118</span>    public static final double LOG10_VALUE = Math.log(10.0);<a name="line.118"></a>
+<span class="sourceLineNo">119</span><a name="line.119"></a>
+<span class="sourceLineNo">120</span>    /** Smallest arbitrarily-close-to-zero value allowed. */<a name="line.120"></a>
+<span class="sourceLineNo">121</span>    public static final double SMALL_LOG_VALUE = 1e-100;<a name="line.121"></a>
+<span class="sourceLineNo">122</span><a name="line.122"></a>
+<span class="sourceLineNo">123</span>    /** Flag set true to allow negative values in data. */<a name="line.123"></a>
+<span class="sourceLineNo">124</span>    protected boolean allowNegativesFlag = false;<a name="line.124"></a>
+<span class="sourceLineNo">125</span><a name="line.125"></a>
+<span class="sourceLineNo">126</span>    /**<a name="line.126"></a>
+<span class="sourceLineNo">127</span>     * Flag set true make axis throw exception if any values are &amp;lt;= 0 and <a name="line.127"></a>
+<span class="sourceLineNo">128</span>     * 'allowNegativesFlag' is false.<a name="line.128"></a>
+<span class="sourceLineNo">129</span>     */<a name="line.129"></a>
+<span class="sourceLineNo">130</span>    protected boolean strictValuesFlag = true;<a name="line.130"></a>
+<span class="sourceLineNo">131</span><a name="line.131"></a>
+<span class="sourceLineNo">132</span>    /** Number formatter for generating numeric strings. */<a name="line.132"></a>
+<span class="sourceLineNo">133</span>    protected final NumberFormat numberFormatterObj<a name="line.133"></a>
+<span class="sourceLineNo">134</span>        = NumberFormat.getInstance();<a name="line.134"></a>
+<span class="sourceLineNo">135</span><a name="line.135"></a>
+<span class="sourceLineNo">136</span>    /** Flag set true for "1e#"-style tick labels. */<a name="line.136"></a>
+<span class="sourceLineNo">137</span>    protected boolean expTickLabelsFlag = false;<a name="line.137"></a>
+<span class="sourceLineNo">138</span><a name="line.138"></a>
+<span class="sourceLineNo">139</span>    /** Flag set true for "10^n"-style tick labels. */<a name="line.139"></a>
+<span class="sourceLineNo">140</span>    protected boolean log10TickLabelsFlag = false;<a name="line.140"></a>
+<span class="sourceLineNo">141</span><a name="line.141"></a>
+<span class="sourceLineNo">142</span>    /** True to make 'autoAdjustRange()' select "10^n" values. */<a name="line.142"></a>
+<span class="sourceLineNo">143</span>    protected boolean autoRangeNextLogFlag = false;<a name="line.143"></a>
+<span class="sourceLineNo">144</span><a name="line.144"></a>
+<span class="sourceLineNo">145</span>    /** Helper flag for log axis processing. */<a name="line.145"></a>
+<span class="sourceLineNo">146</span>    protected boolean smallLogFlag = false;<a name="line.146"></a>
+<span class="sourceLineNo">147</span><a name="line.147"></a>
+<span class="sourceLineNo">148</span>    /**<a name="line.148"></a>
+<span class="sourceLineNo">149</span>     * Creates a new axis.<a name="line.149"></a>
+<span class="sourceLineNo">150</span>     *<a name="line.150"></a>
+<span class="sourceLineNo">151</span>     * @param label  the axis label.<a name="line.151"></a>
+<span class="sourceLineNo">152</span>     */<a name="line.152"></a>
+<span class="sourceLineNo">153</span>    public LogarithmicAxis(String label) {<a name="line.153"></a>
+<span class="sourceLineNo">154</span>        super(label);<a name="line.154"></a>
+<span class="sourceLineNo">155</span>        setupNumberFmtObj();      //setup number formatter obj<a name="line.155"></a>
+<span class="sourceLineNo">156</span>    }<a name="line.156"></a>
+<span class="sourceLineNo">157</span><a name="line.157"></a>
+<span class="sourceLineNo">158</span>    /**<a name="line.158"></a>
+<span class="sourceLineNo">159</span>     * Sets the 'allowNegativesFlag' flag; true to allow negative values<a name="line.159"></a>
+<span class="sourceLineNo">160</span>     * in data, false to be able to plot positive values arbitrarily close to<a name="line.160"></a>
+<span class="sourceLineNo">161</span>     * zero.<a name="line.161"></a>
+<span class="sourceLineNo">162</span>     *<a name="line.162"></a>
+<span class="sourceLineNo">163</span>     * @param flgVal  the new value of the flag.<a name="line.163"></a>
+<span class="sourceLineNo">164</span>     */<a name="line.164"></a>
+<span class="sourceLineNo">165</span>    public void setAllowNegativesFlag(boolean flgVal) {<a name="line.165"></a>
+<span class="sourceLineNo">166</span>        this.allowNegativesFlag = flgVal;<a name="line.166"></a>
+<span class="sourceLineNo">167</span>    }<a name="line.167"></a>
+<span class="sourceLineNo">168</span><a name="line.168"></a>
+<span class="sourceLineNo">169</span>    /**<a name="line.169"></a>
+<span class="sourceLineNo">170</span>     * Returns the 'allowNegativesFlag' flag; true to allow negative values<a name="line.170"></a>
+<span class="sourceLineNo">171</span>     * in data, false to be able to plot positive values arbitrarily close<a name="line.171"></a>
+<span class="sourceLineNo">172</span>     * to zero.<a name="line.172"></a>
+<span class="sourceLineNo">173</span>     *<a name="line.173"></a>
+<span class="sourceLineNo">174</span>     * @return The flag.<a name="line.174"></a>
+<span class="sourceLineNo">175</span>     */<a name="line.175"></a>
+<span class="sourceLineNo">176</span>    public boolean getAllowNegativesFlag() {<a name="line.176"></a>
+<span class="sourceLineNo">177</span>        return this.allowNegativesFlag;<a name="line.177"></a>
+<span class="sourceLineNo">178</span>    }<a name="line.178"></a>
+<span class="sourceLineNo">179</span><a name="line.179"></a>
+<span class="sourceLineNo">180</span>    /**<a name="line.180"></a>
+<span class="sourceLineNo">181</span>     * Sets the 'strictValuesFlag' flag; if true and 'allowNegativesFlag'<a name="line.181"></a>
+<span class="sourceLineNo">182</span>     * is false then this axis will throw a runtime exception if any of its<a name="line.182"></a>
+<span class="sourceLineNo">183</span>     * values are less than or equal to zero; if false then the axis will<a name="line.183"></a>
+<span class="sourceLineNo">184</span>     * adjust for values less than or equal to zero as needed.<a name="line.184"></a>
+<span class="sourceLineNo">185</span>     *<a name="line.185"></a>
+<span class="sourceLineNo">186</span>     * @param flgVal true for strict enforcement.<a name="line.186"></a>
+<span class="sourceLineNo">187</span>     */<a name="line.187"></a>
+<span class="sourceLineNo">188</span>    public void setStrictValuesFlag(boolean flgVal) {<a name="line.188"></a>
+<span class="sourceLineNo">189</span>        this.strictValuesFlag = flgVal;<a name="line.189"></a>
+<span class="sourceLineNo">190</span>    }<a name="line.190"></a>
+<span class="sourceLineNo">191</span><a name="line.191"></a>
+<span class="sourceLineNo">192</span>    /**<a name="line.192"></a>
+<span class="sourceLineNo">193</span>     * Returns the 'strictValuesFlag' flag; if true and 'allowNegativesFlag'<a name="line.193"></a>
+<span class="sourceLineNo">194</span>     * is false then this axis will throw a runtime exception if any of its<a name="line.194"></a>
+<span class="sourceLineNo">195</span>     * values are less than or equal to zero; if false then the axis will<a name="line.195"></a>
+<span class="sourceLineNo">196</span>     * adjust for values less than or equal to zero as needed.<a name="line.196"></a>
+<span class="sourceLineNo">197</span>     *<a name="line.197"></a>
+<span class="sourceLineNo">198</span>     * @return &lt;code&gt;true&lt;/code&gt; if strict enforcement is enabled.<a name="line.198"></a>
+<span class="sourceLineNo">199</span>     */<a name="line.199"></a>
+<span class="sourceLineNo">200</span>    public boolean getStrictValuesFlag() {<a name="line.200"></a>
+<span class="sourceLineNo">201</span>        return this.strictValuesFlag;<a name="line.201"></a>
+<span class="sourceLineNo">202</span>    }<a name="line.202"></a>
+<span class="sourceLineNo">203</span><a name="line.203"></a>
+<span class="sourceLineNo">204</span>    /**<a name="line.204"></a>
+<span class="sourceLineNo">205</span>     * Sets the 'expTickLabelsFlag' flag.  If the 'log10TickLabelsFlag'<a name="line.205"></a>
+<span class="sourceLineNo">206</span>     * is false then this will set whether or not "1e#"-style tick labels<a name="line.206"></a>
+<span class="sourceLineNo">207</span>     * are used.  The default is to use regular numeric tick labels.<a name="line.207"></a>
+<span class="sourceLineNo">208</span>     *<a name="line.208"></a>
+<span class="sourceLineNo">209</span>     * @param flgVal true for "1e#"-style tick labels, false for<a name="line.209"></a>
+<span class="sourceLineNo">210</span>     * log10 or regular numeric tick labels.<a name="line.210"></a>
+<span class="sourceLineNo">211</span>     */<a name="line.211"></a>
+<span class="sourceLineNo">212</span>    public void setExpTickLabelsFlag(boolean flgVal) {<a name="line.212"></a>
+<span class="sourceLineNo">213</span>        this.expTickLabelsFlag = flgVal;<a name="line.213"></a>
+<span class="sourceLineNo">214</span>        setupNumberFmtObj();             //setup number formatter obj<a name="line.214"></a>
+<span class="sourceLineNo">215</span>    }<a name="line.215"></a>
+<span class="sourceLineNo">216</span><a name="line.216"></a>
+<span class="sourceLineNo">217</span>    /**<a name="line.217"></a>
+<span class="sourceLineNo">218</span>     * Returns the 'expTickLabelsFlag' flag.<a name="line.218"></a>
+<span class="sourceLineNo">219</span>     *<a name="line.219"></a>
+<span class="sourceLineNo">220</span>     * @return &lt;code&gt;true&lt;/code&gt; for "1e#"-style tick labels,<a name="line.220"></a>
+<span class="sourceLineNo">221</span>     *         &lt;code&gt;false&lt;/code&gt; for log10 or regular numeric tick labels.<a name="line.221"></a>
+<span class="sourceLineNo">222</span>     */<a name="line.222"></a>
+<span class="sourceLineNo">223</span>    public boolean getExpTickLabelsFlag() {<a name="line.223"></a>
+<span class="sourceLineNo">224</span>      return this.expTickLabelsFlag;<a name="line.224"></a>
+<span class="sourceLineNo">225</span>    }<a name="line.225"></a>
+<span class="sourceLineNo">226</span><a name="line.226"></a>
+<span class="sourceLineNo">227</span>    /**<a name="line.227"></a>
+<span class="sourceLineNo">228</span>     * Sets the 'log10TickLabelsFlag' flag.  The default value is false.<a name="line.228"></a>
+<span class="sourceLineNo">229</span>     *<a name="line.229"></a>
+<span class="sourceLineNo">230</span>     * @param flag true for "10^n"-style tick labels, false for "1e#"-style<a name="line.230"></a>
+<span class="sourceLineNo">231</span>     * or regular numeric tick labels.<a name="line.231"></a>
+<span class="sourceLineNo">232</span>     */<a name="line.232"></a>
+<span class="sourceLineNo">233</span>    public void setLog10TickLabelsFlag(boolean flag) {<a name="line.233"></a>
+<span class="sourceLineNo">234</span>        this.log10TickLabelsFlag = flag;<a name="line.234"></a>
+<span class="sourceLineNo">235</span>    }<a name="line.235"></a>
+<span class="sourceLineNo">236</span><a name="line.236"></a>
+<span class="sourceLineNo">237</span>    /**<a name="line.237"></a>
+<span class="sourceLineNo">238</span>     * Returns the 'log10TickLabelsFlag' flag.<a name="line.238"></a>
+<span class="sourceLineNo">239</span>     *<a name="line.239"></a>
+<span class="sourceLineNo">240</span>     * @return &lt;code&gt;true&lt;/code&gt; for "10^n"-style tick labels,<a name="line.240"></a>
+<span class="sourceLineNo">241</span>     *         &lt;code&gt;false&lt;/code&gt; for "1e#"-style or regular numeric tick<a name="line.241"></a>
+<span class="sourceLineNo">242</span>     *         labels.<a name="line.242"></a>
+<span class="sourceLineNo">243</span>     */<a name="line.243"></a>
+<span class="sourceLineNo">244</span>    public boolean getLog10TickLabelsFlag() {<a name="line.244"></a>
+<span class="sourceLineNo">245</span>        return this.log10TickLabelsFlag;<a name="line.245"></a>
+<span class="sourceLineNo">246</span>    }<a name="line.246"></a>
+<span class="sourceLineNo">247</span><a name="line.247"></a>
+<span class="sourceLineNo">248</span>    /**<a name="line.248"></a>
+<span class="sourceLineNo">249</span>     * Sets the 'autoRangeNextLogFlag' flag.  This determines whether or<a name="line.249"></a>
+<span class="sourceLineNo">250</span>     * not the 'autoAdjustRange()' method will select the next "10^n"<a name="line.250"></a>
+<span class="sourceLineNo">251</span>     * values when determining the upper and lower bounds.  The default<a name="line.251"></a>
+<span class="sourceLineNo">252</span>     * value is false.<a name="line.252"></a>
+<span class="sourceLineNo">253</span>     *<a name="line.253"></a>
+<span class="sourceLineNo">254</span>     * @param flag &lt;code&gt;true&lt;/code&gt; to make the 'autoAdjustRange()'<a name="line.254"></a>
+<span class="sourceLineNo">255</span>     * method select the next "10^n" values, &lt;code&gt;false&lt;/code&gt; to not.<a name="line.255"></a>
+<span class="sourceLineNo">256</span>     */<a name="line.256"></a>
+<span class="sourceLineNo">257</span>    public void setAutoRangeNextLogFlag(boolean flag) {<a name="line.257"></a>
+<span class="sourceLineNo">258</span>        this.autoRangeNextLogFlag = flag;<a name="line.258"></a>
+<span class="sourceLineNo">259</span>    }<a name="line.259"></a>
+<span class="sourceLineNo">260</span><a name="line.260"></a>
+<span class="sourceLineNo">261</span>    /**<a name="line.261"></a>
+<span class="sourceLineNo">262</span>     * Returns the 'autoRangeNextLogFlag' flag.<a name="line.262"></a>
+<span class="sourceLineNo">263</span>     *<a name="line.263"></a>
+<span class="sourceLineNo">264</span>     * @return &lt;code&gt;true&lt;/code&gt; if the 'autoAdjustRange()' method will<a name="line.264"></a>
+<span class="sourceLineNo">265</span>     * select the next "10^n" values, &lt;code&gt;false&lt;/code&gt; if not.<a name="line.265"></a>
+<span class="sourceLineNo">266</span>     */<a name="line.266"></a>
+<span class="sourceLineNo">267</span>    public boolean getAutoRangeNextLogFlag() {<a name="line.267"></a>
+<span class="sourceLineNo">268</span>        return this.autoRangeNextLogFlag;<a name="line.268"></a>
+<span class="sourceLineNo">269</span>    }<a name="line.269"></a>
+<span class="sourceLineNo">270</span><a name="line.270"></a>
+<span class="sourceLineNo">271</span>    /**<a name="line.271"></a>
+<span class="sourceLineNo">272</span>     * Overridden version that calls original and then sets up flag for<a name="line.272"></a>
+<span class="sourceLineNo">273</span>     * log axis processing.<a name="line.273"></a>
+<span class="sourceLineNo">274</span>     *<a name="line.274"></a>
+<span class="sourceLineNo">275</span>     * @param range  the new range.<a name="line.275"></a>
+<span class="sourceLineNo">276</span>     */<a name="line.276"></a>
+<span class="sourceLineNo">277</span>    @Override<a name="line.277"></a>
+<span class="sourceLineNo">278</span>    public void setRange(Range range) {<a name="line.278"></a>
+<span class="sourceLineNo">279</span>        super.setRange(range);      // call parent method<a name="line.279"></a>
+<span class="sourceLineNo">280</span>        setupSmallLogFlag();        // setup flag based on bounds values<a name="line.280"></a>
+<span class="sourceLineNo">281</span>    }<a name="line.281"></a>
+<span class="sourceLineNo">282</span><a name="line.282"></a>
+<span class="sourceLineNo">283</span>    /**<a name="line.283"></a>
+<span class="sourceLineNo">284</span>     * Sets up flag for log axis processing.  Set true if negative values<a name="line.284"></a>
+<span class="sourceLineNo">285</span>     * not allowed and the lower bound is between 0 and 10.<a name="line.285"></a>
+<span class="sourceLineNo">286</span>     */<a name="line.286"></a>
+<span class="sourceLineNo">287</span>    protected void setupSmallLogFlag() {<a name="line.287"></a>
+<span class="sourceLineNo">288</span>        // set flag true if negative values not allowed and the<a name="line.288"></a>
+<span class="sourceLineNo">289</span>        // lower bound is between 0 and 10:<a name="line.289"></a>
+<span class="sourceLineNo">290</span>        double lowerVal = getRange().getLowerBound();<a name="line.290"></a>
+<span class="sourceLineNo">291</span>        this.smallLogFlag = (!this.allowNegativesFlag &amp;&amp; lowerVal &lt; 10.0<a name="line.291"></a>
+<span class="sourceLineNo">292</span>                &amp;&amp; lowerVal &gt; 0.0);<a name="line.292"></a>
+<span class="sourceLineNo">293</span>    }<a name="line.293"></a>
+<span class="sourceLineNo">294</span><a name="line.294"></a>
+<span class="sourceLineNo">295</span>    /**<a name="line.295"></a>
+<span class="sourceLineNo">296</span>     * Sets up the number formatter object according to the<a name="line.296"></a>
+<span class="sourceLineNo">297</span>     * 'expTickLabelsFlag' flag.<a name="line.297"></a>
+<span class="sourceLineNo">298</span>     */<a name="line.298"></a>
+<span class="sourceLineNo">299</span>    protected void setupNumberFmtObj() {<a name="line.299"></a>
+<span class="sourceLineNo">300</span>        if (this.numberFormatterObj instanceof DecimalFormat) {<a name="line.300"></a>
+<span class="sourceLineNo">301</span>            //setup for "1e#"-style tick labels or regular<a name="line.301"></a>
+<span class="sourceLineNo">302</span>            // numeric tick labels, depending on flag:<a name="line.302"></a>
+<span class="sourceLineNo">303</span>            ((DecimalFormat) this.numberFormatterObj).applyPattern(<a name="line.303"></a>
+<span class="sourceLineNo">304</span>                    this.expTickLabelsFlag ? "0E0" : "0.###");<a name="line.304"></a>
+<span class="sourceLineNo">305</span>        }<a name="line.305"></a>
+<span class="sourceLineNo">306</span>    }<a name="line.306"></a>
+<span class="sourceLineNo">307</span><a name="line.307"></a>
+<span class="sourceLineNo">308</span>    /**<a name="line.308"></a>
+<span class="sourceLineNo">309</span>     * Returns the log10 value, depending on if values between 0 and<a name="line.309"></a>
+<span class="sourceLineNo">310</span>     * 1 are being plotted.  If negative values are not allowed and<a name="line.310"></a>
+<span class="sourceLineNo">311</span>     * the lower bound is between 0 and 10 then a normal log is<a name="line.311"></a>
+<span class="sourceLineNo">312</span>     * returned; otherwise the returned value is adjusted if the<a name="line.312"></a>
+<span class="sourceLineNo">313</span>     * given value is less than 10.<a name="line.313"></a>
+<span class="sourceLineNo">314</span>     *<a name="line.314"></a>
+<span class="sourceLineNo">315</span>     * @param val the value.<a name="line.315"></a>
+<span class="sourceLineNo">316</span>     *<a name="line.316"></a>
+<span class="sourceLineNo">317</span>     * @return log&lt;sub&gt;10&lt;/sub&gt;(val).<a name="line.317"></a>
+<span class="sourceLineNo">318</span>     *<a name="line.318"></a>
+<span class="sourceLineNo">319</span>     * @see #switchedPow10(double)<a name="line.319"></a>
+<span class="sourceLineNo">320</span>     */<a name="line.320"></a>
+<span class="sourceLineNo">321</span>    protected double switchedLog10(double val) {<a name="line.321"></a>
+<span class="sourceLineNo">322</span>        return this.smallLogFlag ? Math.log(val)<a name="line.322"></a>
+<span class="sourceLineNo">323</span>                / LOG10_VALUE : adjustedLog10(val);<a name="line.323"></a>
+<span class="sourceLineNo">324</span>    }<a name="line.324"></a>
+<span class="sourceLineNo">325</span><a name="line.325"></a>
+<span class="sourceLineNo">326</span>    /**<a name="line.326"></a>
+<span class="sourceLineNo">327</span>     * Returns a power of 10, depending on if values between 0 and<a name="line.327"></a>
+<span class="sourceLineNo">328</span>     * 1 are being plotted.  If negative values are not allowed and<a name="line.328"></a>
+<span class="sourceLineNo">329</span>     * the lower bound is between 0 and 10 then a normal power is<a name="line.329"></a>
+<span class="sourceLineNo">330</span>     * returned; otherwise the returned value is adjusted if the<a name="line.330"></a>
+<span class="sourceLineNo">331</span>     * given value is less than 1.<a name="line.331"></a>
+<span class="sourceLineNo">332</span>     *<a name="line.332"></a>
+<span class="sourceLineNo">333</span>     * @param val the value.<a name="line.333"></a>
+<span class="sourceLineNo">334</span>     *<a name="line.334"></a>
+<span class="sourceLineNo">335</span>     * @return 10&lt;sup&gt;val&lt;/sup&gt;.<a name="line.335"></a>
+<span class="sourceLineNo">336</span>     *<a name="line.336"></a>
+<span class="sourceLineNo">337</span>     * @since 1.0.5<a name="line.337"></a>
+<span class="sourceLineNo">338</span>     * @see #switchedLog10(double)<a name="line.338"></a>
+<span class="sourceLineNo">339</span>     */<a name="line.339"></a>
+<span class="sourceLineNo">340</span>    public double switchedPow10(double val) {<a name="line.340"></a>
+<span class="sourceLineNo">341</span>        return this.smallLogFlag ? Math.pow(10.0, val) : adjustedPow10(val);<a name="line.341"></a>
+<span class="sourceLineNo">342</span>    }<a name="line.342"></a>
+<span class="sourceLineNo">343</span><a name="line.343"></a>
+<span class="sourceLineNo">344</span>    /**<a name="line.344"></a>
+<span class="sourceLineNo">345</span>     * Returns an adjusted log10 value for graphing purposes.  The first<a name="line.345"></a>
+<span class="sourceLineNo">346</span>     * adjustment is that negative values are changed to positive during<a name="line.346"></a>
+<span class="sourceLineNo">347</span>     * the calculations, and then the answer is negated at the end.  The<a name="line.347"></a>
+<span class="sourceLineNo">348</span>     * second is that, for values less than 10, an increasingly large<a name="line.348"></a>
+<span class="sourceLineNo">349</span>     * (0 to 1) scaling factor is added such that at 0 the value is<a name="line.349"></a>
+<span class="sourceLineNo">350</span>     * adjusted to 1, resulting in a returned result of 0.<a name="line.350"></a>
+<span class="sourceLineNo">351</span>     *<a name="line.351"></a>
+<span class="sourceLineNo">352</span>     * @param val  value for which log10 should be calculated.<a name="line.352"></a>
+<span class="sourceLineNo">353</span>     *<a name="line.353"></a>
+<span class="sourceLineNo">354</span>     * @return An adjusted log&lt;sub&gt;10&lt;/sub&gt;(val).<a name="line.354"></a>
+<span class="sourceLineNo">355</span>     *<a name="line.355"></a>
+<span class="sourceLineNo">356</span>     * @see #adjustedPow10(double)<a name="line.356"></a>
+<span class="sourceLineNo">357</span>     */<a name="line.357"></a>
+<span class="sourceLineNo">358</span>    public double adjustedLog10(double val) {<a name="line.358"></a>
+<span class="sourceLineNo">359</span>        boolean negFlag = (val &lt; 0.0);<a name="line.359"></a>
+<span class="sourceLineNo">360</span>        if (negFlag) {<a name="line.360"></a>
+<span class="sourceLineNo">361</span>            val = -val;          // if negative then set flag and make positive<a name="line.361"></a>
+<span class="sourceLineNo">362</span>        }<a name="line.362"></a>
+<span class="sourceLineNo">363</span>        if (val &lt; 10.0) {                // if &lt; 10 then<a name="line.363"></a>
+<span class="sourceLineNo">364</span>            val += (10.0 - val) / 10.0;  //increase so 0 translates to 0<a name="line.364"></a>
+<span class="sourceLineNo">365</span>        }<a name="line.365"></a>
+<span class="sourceLineNo">366</span>        //return value; negate if original value was negative:<a name="line.366"></a>
+<span class="sourceLineNo">367</span>        double res = Math.log(val) / LOG10_VALUE;<a name="line.367"></a>
+<span class="sourceLineNo">368</span>        return negFlag ? (-res) : res;<a name="line.368"></a>
+<span class="sourceLineNo">369</span>    }<a name="line.369"></a>
+<span class="sourceLineNo">370</span><a name="line.370"></a>
+<span class="sourceLineNo">371</span>    /**<a name="line.371"></a>
+<span class="sourceLineNo">372</span>     * Returns an adjusted power of 10 value for graphing purposes.  The first<a name="line.372"></a>
+<span class="sourceLineNo">373</span>     * adjustment is that negative values are changed to positive during<a name="line.373"></a>
+<span class="sourceLineNo">374</span>     * the calculations, and then the answer is negated at the end.  The<a name="line.374"></a>
+<span class="sourceLineNo">375</span>     * second is that, for values less than 1, a progressive logarithmic<a name="line.375"></a>
+<span class="sourceLineNo">376</span>     * offset is subtracted such that at 0 the returned result is also 0.<a name="line.376"></a>
+<span class="sourceLineNo">377</span>     *<a name="line.377"></a>
+<span class="sourceLineNo">378</span>     * @param val  value for which power of 10 should be calculated.<a name="line.378"></a>
+<span class="sourceLineNo">379</span>     *<a name="line.379"></a>
+<span class="sourceLineNo">380</span>     * @return An adjusted 10&lt;sup&gt;val&lt;/sup&gt;.<a name="line.380"></a>
+<span class="sourceLineNo">381</span>     *<a name="line.381"></a>
+<span class="sourceLineNo">382</span>     * @since 1.0.5<a name="line.382"></a>
+<span class="sourceLineNo">383</span>     * @see #adjustedLog10(double)<a name="line.383"></a>
+<span class="sourceLineNo">384</span>     */<a name="line.384"></a>
+<span class="sourceLineNo">385</span>    public double adjustedPow10(double val) {<a name="line.385"></a>
+<span class="sourceLineNo">386</span>        boolean negFlag = (val &lt; 0.0);<a name="line.386"></a>
+<span class="sourceLineNo">387</span>        if (negFlag) {<a name="line.387"></a>
+<span class="sourceLineNo">388</span>            val = -val; // if negative then set flag and make positive<a name="line.388"></a>
+<span class="sourceLineNo">389</span>        }<a name="line.389"></a>
+<span class="sourceLineNo">390</span>        double res;<a name="line.390"></a>
+<span class="sourceLineNo">391</span>        if (val &lt; 1.0) {<a name="line.391"></a>
+<span class="sourceLineNo">392</span>            res = (Math.pow(10, val + 1.0) - 10.0) / 9.0; //invert adjustLog10<a name="line.392"></a>
+<span class="sourceLineNo">393</span>        }<a name="line.393"></a>
+<span class="sourceLineNo">394</span>        else {<a name="line.394"></a>
+<span class="sourceLineNo">395</span>            res = Math.pow(10, val);<a name="line.395"></a>
+<span class="sourceLineNo">396</span>        }<a name="line.396"></a>
+<span class="sourceLineNo">397</span>        return negFlag ? (-res) : res;<a name="line.397"></a>
+<span class="sourceLineNo">398</span>    }<a name="line.398"></a>
+<span class="sourceLineNo">399</span><a name="line.399"></a>
+<span class="sourceLineNo">400</span>    /**<a name="line.400"></a>
+<span class="sourceLineNo">401</span>     * Returns the largest (closest to positive infinity) double value that is<a name="line.401"></a>
+<span class="sourceLineNo">402</span>     * not greater than the argument, is equal to a mathematical integer and<a name="line.402"></a>
+<span class="sourceLineNo">403</span>     * satisfying the condition that log base 10 of the value is an integer<a name="line.403"></a>
+<span class="sourceLineNo">404</span>     * (i.e., the value returned will be a power of 10: 1, 10, 100, 1000, etc.).<a name="line.404"></a>
+<span class="sourceLineNo">405</span>     *<a name="line.405"></a>
+<span class="sourceLineNo">406</span>     * @param lower a double value below which a floor will be calcualted.<a name="line.406"></a>
+<span class="sourceLineNo">407</span>     *<a name="line.407"></a>
+<span class="sourceLineNo">408</span>     * @return 10&lt;sup&gt;N&lt;/sup&gt; with N .. { 1 ... }<a name="line.408"></a>
+<span class="sourceLineNo">409</span>     */<a name="line.409"></a>
+<span class="sourceLineNo">410</span>    protected double computeLogFloor(double lower) {<a name="line.410"></a>
+<span class="sourceLineNo">411</span><a name="line.411"></a>
+<span class="sourceLineNo">412</span>        double logFloor;<a name="line.412"></a>
+<span class="sourceLineNo">413</span>        if (this.allowNegativesFlag) {<a name="line.413"></a>
+<span class="sourceLineNo">414</span>            //negative values are allowed<a name="line.414"></a>
+<span class="sourceLineNo">415</span>            if (lower &gt; 10.0) {   //parameter value is &gt; 10<a name="line.415"></a>
+<span class="sourceLineNo">416</span>                // The Math.log() function is based on e not 10.<a name="line.416"></a>
+<span class="sourceLineNo">417</span>                logFloor = Math.log(lower) / LOG10_VALUE;<a name="line.417"></a>
+<span class="sourceLineNo">418</span>                logFloor = Math.floor(logFloor);<a name="line.418"></a>
+<span class="sourceLineNo">419</span>                logFloor = Math.pow(10, logFloor);<a name="line.419"></a>
+<span class="sourceLineNo">420</span>            }<a name="line.420"></a>
+<span class="sourceLineNo">421</span>            else if (lower &lt; -10.0) {   //parameter value is &lt; -10<a name="line.421"></a>
+<span class="sourceLineNo">422</span>                //calculate log using positive value:<a name="line.422"></a>
+<span class="sourceLineNo">423</span>                logFloor = Math.log(-lower) / LOG10_VALUE;<a name="line.423"></a>
+<span class="sourceLineNo">424</span>                //calculate floor using negative value:<a name="line.424"></a>
+<span class="sourceLineNo">425</span>                logFloor = Math.floor(-logFloor);<a name="line.425"></a>
+<span class="sourceLineNo">426</span>                //calculate power using positive value; then negate<a name="line.426"></a>
+<span class="sourceLineNo">427</span>                logFloor = -Math.pow(10, -logFloor);<a name="line.427"></a>
+<span class="sourceLineNo">428</span>            }<a name="line.428"></a>
+<span class="sourceLineNo">429</span>            else {<a name="line.429"></a>
+<span class="sourceLineNo">430</span>                //parameter value is -10 &gt; val &lt; 10<a name="line.430"></a>
+<span class="sourceLineNo">431</span>                logFloor = Math.floor(lower);   //use as-is<a name="line.431"></a>
+<span class="sourceLineNo">432</span>            }<a name="line.432"></a>
+<span class="sourceLineNo">433</span>        }<a name="line.433"></a>
+<span class="sourceLineNo">434</span>        else {<a name="line.434"></a>
+<span class="sourceLineNo">435</span>            //negative values not allowed<a name="line.435"></a>
+<span class="sourceLineNo">436</span>            if (lower &gt; 0.0) {   //parameter value is &gt; 0<a name="line.436"></a>
+<span class="sourceLineNo">437</span>                // The Math.log() function is based on e not 10.<a name="line.437"></a>
+<span class="sourceLineNo">438</span>                logFloor = Math.log(lower) / LOG10_VALUE;<a name="line.438"></a>
+<span class="sourceLineNo">439</span>                logFloor = Math.floor(logFloor);<a name="line.439"></a>
+<span class="sourceLineNo">440</span>                logFloor = Math.pow(10, logFloor);<a name="line.440"></a>
+<span class="sourceLineNo">441</span>            }<a name="line.441"></a>
+<span class="sourceLineNo">442</span>            else {<a name="line.442"></a>
+<span class="sourceLineNo">443</span>                //parameter value is &lt;= 0<a name="line.443"></a>
+<span class="sourceLineNo">444</span>                logFloor = Math.floor(lower);   //use as-is<a name="line.444"></a>
+<span class="sourceLineNo">445</span>            }<a name="line.445"></a>
+<span class="sourceLineNo">446</span>        }<a name="line.446"></a>
+<span class="sourceLineNo">447</span>        return logFloor;<a name="line.447"></a>
+<span class="sourceLineNo">448</span>    }<a name="line.448"></a>
+<span class="sourceLineNo">449</span><a name="line.449"></a>
+<span class="sourceLineNo">450</span>    /**<a name="line.450"></a>
+<span class="sourceLineNo">451</span>     * Returns the smallest (closest to negative infinity) double value that is<a name="line.451"></a>
+<span class="sourceLineNo">452</span>     * not less than the argument, is equal to a mathematical integer and<a name="line.452"></a>
+<span class="sourceLineNo">453</span>     * satisfying the condition that log base 10 of the value is an integer<a name="line.453"></a>
+<span class="sourceLineNo">454</span>     * (i.e., the value returned will be a power of 10: 1, 10, 100, 1000, etc.).<a name="line.454"></a>
+<span class="sourceLineNo">455</span>     *<a name="line.455"></a>
+<span class="sourceLineNo">456</span>     * @param upper a double value above which a ceiling will be calcualted.<a name="line.456"></a>
+<span class="sourceLineNo">457</span>     *<a name="line.457"></a>
+<span class="sourceLineNo">458</span>     * @return 10&lt;sup&gt;N&lt;/sup&gt; with N .. { 1 ... }<a name="line.458"></a>
+<span class="sourceLineNo">459</span>     */<a name="line.459"></a>
+<span class="sourceLineNo">460</span>    protected double computeLogCeil(double upper) {<a name="line.460"></a>
+<span class="sourceLineNo">461</span><a name="line.461"></a>
+<span class="sourceLineNo">462</span>        double logCeil;<a name="line.462"></a>
+<span class="sourceLineNo">463</span>        if (this.allowNegativesFlag) {<a name="line.463"></a>
+<span class="sourceLineNo">464</span>            //negative values are allowed<a name="line.464"></a>
+<span class="sourceLineNo">465</span>            if (upper &gt; 10.0) {<a name="line.465"></a>
+<span class="sourceLineNo">466</span>                //parameter value is &gt; 10<a name="line.466"></a>
+<span class="sourceLineNo">467</span>                // The Math.log() function is based on e not 10.<a name="line.467"></a>
+<span class="sourceLineNo">468</span>                logCeil = Math.log(upper) / LOG10_VALUE;<a name="line.468"></a>
+<span class="sourceLineNo">469</span>                logCeil = Math.ceil(logCeil);<a name="line.469"></a>
+<span class="sourceLineNo">470</span>                logCeil = Math.pow(10, logCeil);<a name="line.470"></a>
+<span class="sourceLineNo">471</span>            }<a name="line.471"></a>
+<span class="sourceLineNo">472</span>            else if (upper &lt; -10.0) {<a name="line.472"></a>
+<span class="sourceLineNo">473</span>                //parameter value is &lt; -10<a name="line.473"></a>
+<span class="sourceLineNo">474</span>                //calculate log using positive value:<a name="line.474"></a>
+<span class="sourceLineNo">475</span>                logCeil = Math.log(-upper) / LOG10_VALUE;<a name="line.475"></a>
+<span class="sourceLineNo">476</span>                //calculate ceil using negative value:<a name="line.476"></a>
+<span class="sourceLineNo">477</span>                logCeil = Math.ceil(-logCeil);<a name="line.477"></a>
+<span class="sourceLineNo">478</span>                //calculate power using positive value; then negate<a name="line.478"></a>
+<span class="sourceLineNo">479</span>                logCeil = -Math.pow(10, -logCeil);<a name="line.479"></a>
+<span class="sourceLineNo">480</span>            }<a name="line.480"></a>
+<span class="sourceLineNo">481</span>            else {<a name="line.481"></a>
+<span class="sourceLineNo">482</span>               //parameter value is -10 &gt; val &lt; 10<a name="line.482"></a>
+<span class="sourceLineNo">483</span>               logCeil = Math.ceil(upper);     //use as-is<a name="line.483"></a>
+<span class="sourceLineNo">484</span>            }<a name="line.484"></a>
+<span class="sourceLineNo">485</span>        }<a name="line.485"></a>
+<span class="sourceLineNo">486</span>        else {<a name="line.486"></a>
+<span class="sourceLineNo">487</span>            //negative values not allowed<a name="line.487"></a>
+<span class="sourceLineNo">488</span>            if (upper &gt; 0.0) {<a name="line.488"></a>
+<span class="sourceLineNo">489</span>                //parameter value is &gt; 0<a name="line.489"></a>
+<span class="sourceLineNo">490</span>                // The Math.log() function is based on e not 10.<a name="line.490"></a>
+<span class="sourceLineNo">491</span>                logCeil = Math.log(upper) / LOG10_VALUE;<a name="line.491"></a>
+<span class="sourceLineNo">492</span>                logCeil = Math.ceil(logCeil);<a name="line.492"></a>
+<span class="sourceLineNo">493</span>                logCeil = Math.pow(10, logCeil);<a name="line.493"></a>
+<span class="sourceLineNo">494</span>            }<a name="line.494"></a>
+<span class="sourceLineNo">495</span>            else {<a name="line.495"></a>
+<span class="sourceLineNo">496</span>                //parameter value is &lt;= 0<a name="line.496"></a>
+<span class="sourceLineNo">497</span>                logCeil = Math.ceil(upper);     //use as-is<a name="line.497"></a>
+<span class="sourceLineNo">498</span>            }<a name="line.498"></a>
+<span class="sourceLineNo">499</span>        }<a name="line.499"></a>
+<span class="sourceLineNo">500</span>        return logCeil;<a name="line.500"></a>
+<span class="sourceLineNo">501</span>    }<a name="line.501"></a>
+<span class="sourceLineNo">502</span><a name="line.502"></a>
+<span class="sourceLineNo">503</span>    /**<a name="line.503"></a>
+<span class="sourceLineNo">504</span>     * Rescales the axis to ensure that all data is visible.<a name="line.504"></a>
+<span class="sourceLineNo">505</span>     */<a name="line.505"></a>
+<span class="sourceLineNo">506</span>    @Override<a name="line.506"></a>
+<span class="sourceLineNo">507</span>    public void autoAdjustRange() {<a name="line.507"></a>
+<span class="sourceLineNo">508</span><a name="line.508"></a>
+<span class="sourceLineNo">509</span>        Plot plot = getPlot();<a name="line.509"></a>
+<span class="sourceLineNo">510</span>        if (plot == null) {<a name="line.510"></a>
+<span class="sourceLineNo">511</span>            return;  // no plot, no data.<a name="line.511"></a>
+<span class="sourceLineNo">512</span>        }<a name="line.512"></a>
+<span class="sourceLineNo">513</span><a name="line.513"></a>
+<span class="sourceLineNo">514</span>        if (plot instanceof ValueAxisPlot) {<a name="line.514"></a>
+<span class="sourceLineNo">515</span>            ValueAxisPlot vap = (ValueAxisPlot) plot;<a name="line.515"></a>
+<span class="sourceLineNo">516</span><a name="line.516"></a>
+<span class="sourceLineNo">517</span>            double lower;<a name="line.517"></a>
+<span class="sourceLineNo">518</span>            Range r = vap.getDataRange(this);<a name="line.518"></a>
+<span class="sourceLineNo">519</span>            if (r == null) {<a name="line.519"></a>
+<span class="sourceLineNo">520</span>                   //no real data present<a name="line.520"></a>
+<span class="sourceLineNo">521</span>                r = getDefaultAutoRange();<a name="line.521"></a>
+<span class="sourceLineNo">522</span>                lower = r.getLowerBound();    //get lower bound value<a name="line.522"></a>
+<span class="sourceLineNo">523</span>            }<a name="line.523"></a>
+<span class="sourceLineNo">524</span>            else {<a name="line.524"></a>
+<span class="sourceLineNo">525</span>                //actual data is present<a name="line.525"></a>
+<span class="sourceLineNo">526</span>                lower = r.getLowerBound();    //get lower bound value<a name="line.526"></a>
+<span class="sourceLineNo">527</span>                if (this.strictValuesFlag<a name="line.527"></a>
+<span class="sourceLineNo">528</span>                        &amp;&amp; !this.allowNegativesFlag &amp;&amp; lower &lt;= 0.0) {<a name="line.528"></a>
+<span class="sourceLineNo">529</span>                    //strict flag set, allow-negatives not set and values &lt;= 0<a name="line.529"></a>
+<span class="sourceLineNo">530</span>                    throw new RuntimeException("Values less than or equal to "<a name="line.530"></a>
+<span class="sourceLineNo">531</span>                            + "zero not allowed with logarithmic axis");<a name="line.531"></a>
+<span class="sourceLineNo">532</span>                }<a name="line.532"></a>
+<span class="sourceLineNo">533</span>            }<a name="line.533"></a>
+<span class="sourceLineNo">534</span><a name="line.534"></a>
+<span class="sourceLineNo">535</span>            //apply lower margin by decreasing lower bound:<a name="line.535"></a>
+<span class="sourceLineNo">536</span>            final double lowerMargin;<a name="line.536"></a>
+<span class="sourceLineNo">537</span>            if (lower &gt; 0.0 &amp;&amp; (lowerMargin = getLowerMargin()) &gt; 0.0) {<a name="line.537"></a>
+<span class="sourceLineNo">538</span>                   //lower bound and margin OK; get log10 of lower bound<a name="line.538"></a>
+<span class="sourceLineNo">539</span>                final double logLower = (Math.log(lower) / LOG10_VALUE);<a name="line.539"></a>
+<span class="sourceLineNo">540</span>                double logAbs;      //get absolute value of log10 value<a name="line.540"></a>
+<span class="sourceLineNo">541</span>                if ((logAbs = Math.abs(logLower)) &lt; 1.0) {<a name="line.541"></a>
+<span class="sourceLineNo">542</span>                    logAbs = 1.0;     //if less than 1.0 then make it 1.0<a name="line.542"></a>
+<span class="sourceLineNo">543</span>                }              //subtract out margin and get exponential value:<a name="line.543"></a>
+<span class="sourceLineNo">544</span>                lower = Math.pow(10, (logLower - (logAbs * lowerMargin)));<a name="line.544"></a>
+<span class="sourceLineNo">545</span>            }<a name="line.545"></a>
+<span class="sourceLineNo">546</span><a name="line.546"></a>
+<span class="sourceLineNo">547</span>            //if flag then change to log version of lowest value<a name="line.547"></a>
+<span class="sourceLineNo">548</span>            // to make range begin at a 10^n value:<a name="line.548"></a>
+<span class="sourceLineNo">549</span>            if (this.autoRangeNextLogFlag) {<a name="line.549"></a>
+<span class="sourceLineNo">550</span>                lower = computeLogFloor(lower);<a name="line.550"></a>
+<span class="sourceLineNo">551</span>            }<a name="line.551"></a>
+<span class="sourceLineNo">552</span><a name="line.552"></a>
+<span class="sourceLineNo">553</span>            if (!this.allowNegativesFlag &amp;&amp; lower &gt;= 0.0<a name="line.553"></a>
+<span class="sourceLineNo">554</span>                    &amp;&amp; lower &lt; SMALL_LOG_VALUE) {<a name="line.554"></a>
+<span class="sourceLineNo">555</span>                //negatives not allowed and lower range bound is zero<a name="line.555"></a>
+<span class="sourceLineNo">556</span>                lower = r.getLowerBound();    //use data range bound instead<a name="line.556"></a>
+<span class="sourceLineNo">557</span>            }<a name="line.557"></a>
+<span class="sourceLineNo">558</span><a name="line.558"></a>
+<span class="sourceLineNo">559</span>            double upper = r.getUpperBound();<a name="line.559"></a>
+<span class="sourceLineNo">560</span><a name="line.560"></a>
+<span class="sourceLineNo">561</span>             //apply upper margin by increasing upper bound:<a name="line.561"></a>
+<span class="sourceLineNo">562</span>            final double upperMargin;<a name="line.562"></a>
+<span class="sourceLineNo">563</span>            if (upper &gt; 0.0 &amp;&amp; (upperMargin = getUpperMargin()) &gt; 0.0) {<a name="line.563"></a>
+<span class="sourceLineNo">564</span>                   //upper bound and margin OK; get log10 of upper bound<a name="line.564"></a>
+<span class="sourceLineNo">565</span>                final double logUpper = (Math.log(upper) / LOG10_VALUE);<a name="line.565"></a>
+<span class="sourceLineNo">566</span>                double logAbs;      //get absolute value of log10 value<a name="line.566"></a>
+<span class="sourceLineNo">567</span>                if ((logAbs = Math.abs(logUpper)) &lt; 1.0) {<a name="line.567"></a>
+<span class="sourceLineNo">568</span>                    logAbs = 1.0;     //if less than 1.0 then make it 1.0<a name="line.568"></a>
+<span class="sourceLineNo">569</span>                }              //add in margin and get exponential value:<a name="line.569"></a>
+<span class="sourceLineNo">570</span>                upper = Math.pow(10, (logUpper + (logAbs * upperMargin)));<a name="line.570"></a>
+<span class="sourceLineNo">571</span>            }<a name="line.571"></a>
+<span class="sourceLineNo">572</span><a name="line.572"></a>
+<span class="sourceLineNo">573</span>            if (!this.allowNegativesFlag &amp;&amp; upper &lt; 1.0 &amp;&amp; upper &gt; 0.0<a name="line.573"></a>
+<span class="sourceLineNo">574</span>                    &amp;&amp; lower &gt; 0.0) {<a name="line.574"></a>
+<span class="sourceLineNo">575</span>                //negatives not allowed and upper bound between 0 &amp; 1<a name="line.575"></a>
+<span class="sourceLineNo">576</span>                //round up to nearest significant digit for bound:<a name="line.576"></a>
+<span class="sourceLineNo">577</span>                //get negative exponent:<a name="line.577"></a>
+<span class="sourceLineNo">578</span>                double expVal = Math.log(upper) / LOG10_VALUE;<a name="line.578"></a>
+<span class="sourceLineNo">579</span>                expVal = Math.ceil(-expVal + 0.001); //get positive exponent<a name="line.579"></a>
+<span class="sourceLineNo">580</span>                expVal = Math.pow(10, expVal);      //create multiplier value<a name="line.580"></a>
+<span class="sourceLineNo">581</span>                //multiply, round up, and divide for bound value:<a name="line.581"></a>
+<span class="sourceLineNo">582</span>                upper = (expVal &gt; 0.0) ? Math.ceil(upper * expVal) / expVal<a name="line.582"></a>
+<span class="sourceLineNo">583</span>                    : Math.ceil(upper);<a name="line.583"></a>
+<span class="sourceLineNo">584</span>            }<a name="line.584"></a>
+<span class="sourceLineNo">585</span>            else {<a name="line.585"></a>
+<span class="sourceLineNo">586</span>                //negatives allowed or upper bound not between 0 &amp; 1<a name="line.586"></a>
+<span class="sourceLineNo">587</span>                //if flag then change to log version of highest value to<a name="line.587"></a>
+<span class="sourceLineNo">588</span>                // make range begin at a 10^n value; else use nearest int<a name="line.588"></a>
+<span class="sourceLineNo">589</span>                upper = (this.autoRangeNextLogFlag) ? computeLogCeil(upper)<a name="line.589"></a>
+<span class="sourceLineNo">590</span>                    : Math.ceil(upper);<a name="line.590"></a>
+<span class="sourceLineNo">591</span>            }<a name="line.591"></a>
+<span class="sourceLineNo">592</span>            // ensure the autorange is at least &lt;minRange&gt; in size...<a name="line.592"></a>
+<span class="sourceLineNo">593</span>            double minRange = getAutoRangeMinimumSize();<a name="line.593"></a>
+<span class="sourceLineNo">594</span>            if (upper - lower &lt; minRange) {<a name="line.594"></a>
+<span class="sourceLineNo">595</span>                upper = (upper + lower + minRange) / 2;<a name="line.595"></a>
+<span class="sourceLineNo">596</span>                lower = (upper + lower - minRange) / 2;<a name="line.596"></a>
+<span class="sourceLineNo">597</span>                //if autorange still below minimum then adjust by 1%<a name="line.597"></a>
+<span class="sourceLineNo">598</span>                // (can be needed when minRange is very small):<a name="line.598"></a>
+<span class="sourceLineNo">599</span>                if (upper - lower &lt; minRange) {<a name="line.599"></a>
+<span class="sourceLineNo">600</span>                    double absUpper = Math.abs(upper);<a name="line.600"></a>
+<span class="sourceLineNo">601</span>                    //need to account for case where upper==0.0<a name="line.601"></a>
+<span class="sourceLineNo">602</span>                    double adjVal = (absUpper &gt; SMALL_LOG_VALUE) ? absUpper<a name="line.602"></a>
+<span class="sourceLineNo">603</span>                        / 100.0 : 0.01;<a name="line.603"></a>
+<span class="sourceLineNo">604</span>                    upper = (upper + lower + adjVal) / 2;<a name="line.604"></a>
+<span class="sourceLineNo">605</span>                    lower = (upper + lower - adjVal) / 2;<a name="line.605"></a>
+<span class="sourceLineNo">606</span>                }<a name="line.606"></a>
+<span class="sourceLineNo">607</span>            }<a name="line.607"></a>
+<span class="sourceLineNo">608</span><a name="line.608"></a>
+<span class="sourceLineNo">609</span>            setRange(new Range(lower, upper), false, false);<a name="line.609"></a>
+<span class="sourceLineNo">610</span>            setupSmallLogFlag();       //setup flag based on bounds values<a name="line.610"></a>
+<span class="sourceLineNo">611</span>        }<a name="line.611"></a>
+<span class="sourceLineNo">612</span>    }<a name="line.612"></a>
+<span class="sourceLineNo">613</span><a name="line.613"></a>
+<span class="sourceLineNo">614</span>    /**<a name="line.614"></a>
+<span class="sourceLineNo">615</span>     * Converts a data value to a coordinate in Java2D space, assuming that<a name="line.615"></a>
+<span class="sourceLineNo">616</span>     * the axis runs along one edge of the specified plotArea.<a name="line.616"></a>
+<span class="sourceLineNo">617</span>     * Note that it is possible for the coordinate to fall outside the<a name="line.617"></a>
+<span class="sourceLineNo">618</span>     * plotArea.<a name="line.618"></a>
+<span class="sourceLineNo">619</span>     *<a name="line.619"></a>
+<span class="sourceLineNo">620</span>     * @param value  the data value.<a name="line.620"></a>
+<span class="sourceLineNo">621</span>     * @param plotArea  the area for plotting the data.<a name="line.621"></a>
+<span class="sourceLineNo">622</span>     * @param edge  the axis location.<a name="line.622"></a>
+<span class="sourceLineNo">623</span>     *<a name="line.623"></a>
+<span class="sourceLineNo">624</span>     * @return The Java2D coordinate.<a name="line.624"></a>
+<span class="sourceLineNo">625</span>     */<a name="line.625"></a>
+<span class="sourceLineNo">626</span>    @Override<a name="line.626"></a>
+<span class="sourceLineNo">627</span>    public double valueToJava2D(double value, Rectangle2D plotArea,<a name="line.627"></a>
+<span class="sourceLineNo">628</span>                                RectangleEdge edge) {<a name="line.628"></a>
+<span class="sourceLineNo">629</span><a name="line.629"></a>
+<span class="sourceLineNo">630</span>        Range range = getRange();<a name="line.630"></a>
+<span class="sourceLineNo">631</span>        double axisMin = switchedLog10(range.getLowerBound());<a name="line.631"></a>
+<span class="sourceLineNo">632</span>        double axisMax = switchedLog10(range.getUpperBound());<a name="line.632"></a>
+<span class="sourceLineNo">633</span><a name="line.633"></a>
+<span class="sourceLineNo">634</span>        double min = 0.0;<a name="line.634"></a>
+<span class="sourceLineNo">635</span>        double max = 0.0;<a name="line.635"></a>
+<span class="sourceLineNo">636</span>        if (RectangleEdge.isTopOrBottom(edge)) {<a name="line.636"></a>
+<span class="sourceLineNo">637</span>            min = plotArea.getMinX();<a name="line.637"></a>
+<span class="sourceLineNo">638</span>            max = plotArea.getMaxX();<a name="line.638"></a>
+<span class="sourceLineNo">639</span>        }<a name="line.639"></a>
+<span class="sourceLineNo">640</span>        else if (RectangleEdge.isLeftOrRight(edge)) {<a name="line.640"></a>
+<span class="sourceLineNo">641</span>            min = plotArea.getMaxY();<a name="line.641"></a>
+<span class="sourceLineNo">642</span>            max = plotArea.getMinY();<a name="line.642"></a>
+<span class="sourceLineNo">643</span>        }<a name="line.643"></a>
+<span class="sourceLineNo">644</span><a name="line.644"></a>
+<span class="sourceLineNo">645</span>        value = switchedLog10(value);<a name="line.645"></a>
+<span class="sourceLineNo">646</span><a name="line.646"></a>
+<span class="sourceLineNo">647</span>        if (isInverted()) {<a name="line.647"></a>
+<span class="sourceLineNo">648</span>            return max - (((value - axisMin) / (axisMax - axisMin))<a name="line.648"></a>
+<span class="sourceLineNo">649</span>                    * (max - min));<a name="line.649"></a>
+<span class="sourceLineNo">650</span>        }<a name="line.650"></a>
+<span class="sourceLineNo">651</span>        else {<a name="line.651"></a>
+<span class="sourceLineNo">652</span>            return min + (((value - axisMin) / (axisMax - axisMin))<a name="line.652"></a>
+<span class="sourceLineNo">653</span>                    * (max - min));<a name="line.653"></a>
+<span class="sourceLineNo">654</span>        }<a name="line.654"></a>
+<span class="sourceLineNo">655</span><a name="line.655"></a>
+<span class="sourceLineNo">656</span>    }<a name="line.656"></a>
+<span class="sourceLineNo">657</span><a name="line.657"></a>
+<span class="sourceLineNo">658</span>    /**<a name="line.658"></a>
+<span class="sourceLineNo">659</span>     * Converts a coordinate in Java2D space to the corresponding data<a name="line.659"></a>
+<span class="sourceLineNo">660</span>     * value, assuming that the axis runs along one edge of the specified<a name="line.660"></a>
+<span class="sourceLineNo">661</span>     * plotArea.<a name="line.661"></a>
+<span class="sourceLineNo">662</span>     *<a name="line.662"></a>
+<span class="sourceLineNo">663</span>     * @param java2DValue  the coordinate in Java2D space.<a name="line.663"></a>
+<span class="sourceLineNo">664</span>     * @param plotArea  the area in which the data is plotted.<a name="line.664"></a>
+<span class="sourceLineNo">665</span>     * @param edge  the axis location.<a name="line.665"></a>
+<span class="sourceLineNo">666</span>     *<a name="line.666"></a>
+<span class="sourceLineNo">667</span>     * @return The data value.<a name="line.667"></a>
+<span class="sourceLineNo">668</span>     */<a name="line.668"></a>
+<span class="sourceLineNo">669</span>    @Override<a name="line.669"></a>
+<span class="sourceLineNo">670</span>    public double java2DToValue(double java2DValue, Rectangle2D plotArea,<a name="line.670"></a>
+<span class="sourceLineNo">671</span>                                RectangleEdge edge) {<a name="line.671"></a>
+<span class="sourceLineNo">672</span><a name="line.672"></a>
+<span class="sourceLineNo">673</span>        Range range = getRange();<a name="line.673"></a>
+<span class="sourceLineNo">674</span>        double axisMin = switchedLog10(range.getLowerBound());<a name="line.674"></a>
+<span class="sourceLineNo">675</span>        double axisMax = switchedLog10(range.getUpperBound());<a name="line.675"></a>
+<span class="sourceLineNo">676</span><a name="line.676"></a>
+<span class="sourceLineNo">677</span>        double plotMin = 0.0;<a name="line.677"></a>
+<span class="sourceLineNo">678</span>        double plotMax = 0.0;<a name="line.678"></a>
+<span class="sourceLineNo">679</span>        if (RectangleEdge.isTopOrBottom(edge)) {<a name="line.679"></a>
+<span class="sourceLineNo">680</span>            plotMin = plotArea.getX();<a name="line.680"></a>
+<span class="sourceLineNo">681</span>            plotMax = plotArea.getMaxX();<a name="line.681"></a>
+<span class="sourceLineNo">682</span>        }<a name="line.682"></a>
+<span class="sourceLineNo">683</span>        else if (RectangleEdge.isLeftOrRight(edge)) {<a name="line.683"></a>
+<span class="sourceLineNo">684</span>            plotMin = plotArea.getMaxY();<a name="line.684"></a>
+<span class="sourceLineNo">685</span>            plotMax = plotArea.getMinY();<a name="line.685"></a>
+<span class="sourceLineNo">686</span>        }<a name="line.686"></a>
+<span class="sourceLineNo">687</span><a name="line.687"></a>
+<span class="sourceLineNo">688</span>        if (isInverted()) {<a name="line.688"></a>
+<span class="sourceLineNo">689</span>            return switchedPow10(axisMax - ((java2DValue - plotMin)<a name="line.689"></a>
+<span class="sourceLineNo">690</span>                    / (plotMax - plotMin)) * (axisMax - axisMin));<a name="line.690"></a>
+<span class="sourceLineNo">691</span>        }<a name="line.691"></a>
+<span class="sourceLineNo">692</span>        else {<a name="line.692"></a>
+<span class="sourceLineNo">693</span>            return switchedPow10(axisMin + ((java2DValue - plotMin)<a name="line.693"></a>
+<span class="sourceLineNo">694</span>                    / (plotMax - plotMin)) * (axisMax - axisMin));<a name="line.694"></a>
+<span class="sourceLineNo">695</span>        }<a name="line.695"></a>
+<span class="sourceLineNo">696</span>    }<a name="line.696"></a>
+<span class="sourceLineNo">697</span><a name="line.697"></a>
+<span class="sourceLineNo">698</span>    /**<a name="line.698"></a>
+<span class="sourceLineNo">699</span>     * Zooms in on the current range.<a name="line.699"></a>
+<span class="sourceLineNo">700</span>     *<a name="line.700"></a>
+<span class="sourceLineNo">701</span>     * @param lowerPercent  the new lower bound.<a name="line.701"></a>
+<span class="sourceLineNo">702</span>     * @param upperPercent  the new upper bound.<a name="line.702"></a>
+<span class="sourceLineNo">703</span>     */<a name="line.703"></a>
+<span class="sourceLineNo">704</span>    @Override<a name="line.704"></a>
+<span class="sourceLineNo">705</span>    public void zoomRange(double lowerPercent, double upperPercent) {<a name="line.705"></a>
+<span class="sourceLineNo">706</span>        double startLog = switchedLog10(getRange().getLowerBound());<a name="line.706"></a>
+<span class="sourceLineNo">707</span>        double lengthLog = switchedLog10(getRange().getUpperBound()) - startLog;<a name="line.707"></a>
+<span class="sourceLineNo">708</span>        Range adjusted;<a name="line.708"></a>
+<span class="sourceLineNo">709</span><a name="line.709"></a>
+<span class="sourceLineNo">710</span>        if (isInverted()) {<a name="line.710"></a>
+<span class="sourceLineNo">711</span>            adjusted = new Range(<a name="line.711"></a>
+<span class="sourceLineNo">712</span>                    switchedPow10(startLog + (lengthLog * (1 - upperPercent))),<a name="line.712"></a>
+<span class="sourceLineNo">713</span>                    switchedPow10(startLog + (lengthLog * (1 - lowerPercent))));<a name="line.713"></a>
+<span class="sourceLineNo">714</span>        }<a name="line.714"></a>
+<span class="sourceLineNo">715</span>        else {<a name="line.715"></a>
+<span class="sourceLineNo">716</span>            adjusted = new Range(<a name="line.716"></a>
+<span class="sourceLineNo">717</span>                    switchedPow10(startLog + (lengthLog * lowerPercent)),<a name="line.717"></a>
+<span class="sourceLineNo">718</span>                    switchedPow10(startLog + (lengthLog * upperPercent)));<a name="line.718"></a>
+<span class="sourceLineNo">719</span>        }<a name="line.719"></a>
+<span class="sourceLineNo">720</span><a name="line.720"></a>
+<span class="sourceLineNo">721</span>        setRange(adjusted);<a name="line.721"></a>
+<span class="sourceLineNo">722</span>    }<a name="line.722"></a>
+<span class="sourceLineNo">723</span><a name="line.723"></a>
+<span class="sourceLineNo">724</span>    /**<a name="line.724"></a>
+<span class="sourceLineNo">725</span>     * Calculates the positions of the tick labels for the axis, storing the<a name="line.725"></a>
+<span class="sourceLineNo">726</span>     * results in the tick label list (ready for drawing).<a name="line.726"></a>
+<span class="sourceLineNo">727</span>     *<a name="line.727"></a>
+<span class="sourceLineNo">728</span>     * @param g2  the graphics device.<a name="line.728"></a>
+<span class="sourceLineNo">729</span>     * @param dataArea  the area in which the plot should be drawn.<a name="line.729"></a>
+<span class="sourceLineNo">730</span>     * @param edge  the location of the axis.<a name="line.730"></a>
+<span class="sourceLineNo">731</span>     *<a name="line.731"></a>
+<span class="sourceLineNo">732</span>     * @return A list of ticks.<a name="line.732"></a>
+<span class="sourceLineNo">733</span>     */<a name="line.733"></a>
+<span class="sourceLineNo">734</span>    @Override<a name="line.734"></a>
+<span class="sourceLineNo">735</span>    protected List refreshTicksHorizontal(Graphics2D g2, Rectangle2D dataArea,<a name="line.735"></a>
+<span class="sourceLineNo">736</span>            RectangleEdge edge) {<a name="line.736"></a>
+<span class="sourceLineNo">737</span><a name="line.737"></a>
+<span class="sourceLineNo">738</span>        List ticks = new java.util.ArrayList();<a name="line.738"></a>
+<span class="sourceLineNo">739</span>        Range range = getRange();<a name="line.739"></a>
+<span class="sourceLineNo">740</span><a name="line.740"></a>
+<span class="sourceLineNo">741</span>        //get lower bound value:<a name="line.741"></a>
+<span class="sourceLineNo">742</span>        double lowerBoundVal = range.getLowerBound();<a name="line.742"></a>
+<span class="sourceLineNo">743</span>              //if small log values and lower bound value too small<a name="line.743"></a>
+<span class="sourceLineNo">744</span>              // then set to a small value (don't allow &lt;= 0):<a name="line.744"></a>
+<span class="sourceLineNo">745</span>        if (this.smallLogFlag &amp;&amp; lowerBoundVal &lt; SMALL_LOG_VALUE) {<a name="line.745"></a>
+<span class="sourceLineNo">746</span>            lowerBoundVal = SMALL_LOG_VALUE;<a name="line.746"></a>
+<span class="sourceLineNo">747</span>        }<a name="line.747"></a>
+<span class="sourceLineNo">748</span><a name="line.748"></a>
+<span class="sourceLineNo">749</span>        //get upper bound value<a name="line.749"></a>
+<span class="sourceLineNo">750</span>        double upperBoundVal = range.getUpperBound();<a name="line.750"></a>
+<span class="sourceLineNo">751</span><a name="line.751"></a>
+<span class="sourceLineNo">752</span>        //get log10 version of lower bound and round to integer:<a name="line.752"></a>
+<span class="sourceLineNo">753</span>        int iBegCount = (int) Math.rint(switchedLog10(lowerBoundVal));<a name="line.753"></a>
+<span class="sourceLineNo">754</span>        //get log10 version of upper bound and round to integer:<a name="line.754"></a>
+<span class="sourceLineNo">755</span>        int iEndCount = (int) Math.rint(switchedLog10(upperBoundVal));<a name="line.755"></a>
+<span class="sourceLineNo">756</span><a name="line.756"></a>
+<span class="sourceLineNo">757</span>        if (iBegCount == iEndCount &amp;&amp; iBegCount &gt; 0<a name="line.757"></a>
+<span class="sourceLineNo">758</span>                &amp;&amp; Math.pow(10, iBegCount) &gt; lowerBoundVal) {<a name="line.758"></a>
+<span class="sourceLineNo">759</span>              //only 1 power of 10 value, it's &gt; 0 and its resulting<a name="line.759"></a>
+<span class="sourceLineNo">760</span>              // tick value will be larger than lower bound of data<a name="line.760"></a>
+<span class="sourceLineNo">761</span>            --iBegCount;       //decrement to generate more ticks<a name="line.761"></a>
+<span class="sourceLineNo">762</span>        }<a name="line.762"></a>
+<span class="sourceLineNo">763</span><a name="line.763"></a>
+<span class="sourceLineNo">764</span>        double currentTickValue;<a name="line.764"></a>
+<span class="sourceLineNo">765</span>        String tickLabel;<a name="line.765"></a>
+<span class="sourceLineNo">766</span>        boolean zeroTickFlag = false;<a name="line.766"></a>
+<span class="sourceLineNo">767</span>        for (int i = iBegCount; i &lt;= iEndCount; i++) {<a name="line.767"></a>
+<span class="sourceLineNo">768</span>            //for each power of 10 value; create ten ticks<a name="line.768"></a>
+<span class="sourceLineNo">769</span>            for (int j = 0; j &lt; 10; ++j) {<a name="line.769"></a>
+<span class="sourceLineNo">770</span>                //for each tick to be displayed<a name="line.770"></a>
+<span class="sourceLineNo">771</span>                if (this.smallLogFlag) {<a name="line.771"></a>
+<span class="sourceLineNo">772</span>                    //small log values in use; create numeric value for tick<a name="line.772"></a>
+<span class="sourceLineNo">773</span>                    currentTickValue = Math.pow(10, i) + (Math.pow(10, i) * j);<a name="line.773"></a>
+<span class="sourceLineNo">774</span>                    if (this.expTickLabelsFlag<a name="line.774"></a>
+<span class="sourceLineNo">775</span>                        || (i &lt; 0 &amp;&amp; currentTickValue &gt; 0.0<a name="line.775"></a>
+<span class="sourceLineNo">776</span>                        &amp;&amp; currentTickValue &lt; 1.0)) {<a name="line.776"></a>
+<span class="sourceLineNo">777</span>                        //showing "1e#"-style ticks or negative exponent<a name="line.777"></a>
+<span class="sourceLineNo">778</span>                        // generating tick value between 0 &amp; 1; show fewer<a name="line.778"></a>
+<span class="sourceLineNo">779</span>                        if (j == 0 || (i &gt; -4 &amp;&amp; j &lt; 2)<a name="line.779"></a>
+<span class="sourceLineNo">780</span>                                   || currentTickValue &gt;= upperBoundVal) {<a name="line.780"></a>
+<span class="sourceLineNo">781</span>                          //first tick of series, or not too small a value and<a name="line.781"></a>
+<span class="sourceLineNo">782</span>                          // one of first 3 ticks, or last tick to be displayed<a name="line.782"></a>
+<span class="sourceLineNo">783</span>                            // set exact number of fractional digits to be shown<a name="line.783"></a>
+<span class="sourceLineNo">784</span>                            // (no effect if showing "1e#"-style ticks):<a name="line.784"></a>
+<span class="sourceLineNo">785</span>                            this.numberFormatterObj<a name="line.785"></a>
+<span class="sourceLineNo">786</span>                                .setMaximumFractionDigits(-i);<a name="line.786"></a>
+<span class="sourceLineNo">787</span>                               //create tick label (force use of fmt obj):<a name="line.787"></a>
+<span class="sourceLineNo">788</span>                            tickLabel = makeTickLabel(currentTickValue, true);<a name="line.788"></a>
+<span class="sourceLineNo">789</span>                        }<a name="line.789"></a>
+<span class="sourceLineNo">790</span>                        else {    //no tick label to be shown<a name="line.790"></a>
+<span class="sourceLineNo">791</span>                            tickLabel = "";<a name="line.791"></a>
+<span class="sourceLineNo">792</span>                        }<a name="line.792"></a>
+<span class="sourceLineNo">793</span>                    }<a name="line.793"></a>
+<span class="sourceLineNo">794</span>                    else {     //tick value not between 0 &amp; 1<a name="line.794"></a>
+<span class="sourceLineNo">795</span>                               //show tick label if it's the first or last in<a name="line.795"></a>
+<span class="sourceLineNo">796</span>                               // the set, or if it's 1-5; beyond that show<a name="line.796"></a>
+<span class="sourceLineNo">797</span>                               // fewer as the values get larger:<a name="line.797"></a>
+<span class="sourceLineNo">798</span>                        tickLabel = (j &lt; 1 || (i &lt; 1 &amp;&amp; j &lt; 5) || (j &lt; 4 - i)<a name="line.798"></a>
+<span class="sourceLineNo">799</span>                                         || currentTickValue &gt;= upperBoundVal)<a name="line.799"></a>
+<span class="sourceLineNo">800</span>                                         ? makeTickLabel(currentTickValue) : "";<a name="line.800"></a>
+<span class="sourceLineNo">801</span>                    }<a name="line.801"></a>
+<span class="sourceLineNo">802</span>                }<a name="line.802"></a>
+<span class="sourceLineNo">803</span>                else { //not small log values in use; allow for values &lt;= 0<a name="line.803"></a>
+<span class="sourceLineNo">804</span>                    if (zeroTickFlag) {   //if did zero tick last iter then<a name="line.804"></a>
+<span class="sourceLineNo">805</span>                        --j;              //decrement to do 1.0 tick now<a name="line.805"></a>
+<span class="sourceLineNo">806</span>                    }     //calculate power-of-ten value for tick:<a name="line.806"></a>
+<span class="sourceLineNo">807</span>                    currentTickValue = (i &gt;= 0)<a name="line.807"></a>
+<span class="sourceLineNo">808</span>                        ? Math.pow(10, i) + (Math.pow(10, i) * j)<a name="line.808"></a>
+<span class="sourceLineNo">809</span>                        : -(Math.pow(10, -i) - (Math.pow(10, -i - 1) * j));<a name="line.809"></a>
+<span class="sourceLineNo">810</span>                    if (!zeroTickFlag) {  // did not do zero tick last iteration<a name="line.810"></a>
+<span class="sourceLineNo">811</span>                        if (Math.abs(currentTickValue - 1.0) &lt; 0.0001<a name="line.811"></a>
+<span class="sourceLineNo">812</span>                            &amp;&amp; lowerBoundVal &lt;= 0.0 &amp;&amp; upperBoundVal &gt;= 0.0) {<a name="line.812"></a>
+<span class="sourceLineNo">813</span>                            //tick value is 1.0 and 0.0 is within data range<a name="line.813"></a>
+<span class="sourceLineNo">814</span>                            currentTickValue = 0.0;     //set tick value to zero<a name="line.814"></a>
+<span class="sourceLineNo">815</span>                            zeroTickFlag = true;        //indicate zero tick<a name="line.815"></a>
+<span class="sourceLineNo">816</span>                        }<a name="line.816"></a>
+<span class="sourceLineNo">817</span>                    }<a name="line.817"></a>
+<span class="sourceLineNo">818</span>                    else {     //did zero tick last iteration<a name="line.818"></a>
+<span class="sourceLineNo">819</span>                        zeroTickFlag = false;         //clear flag<a name="line.819"></a>
+<span class="sourceLineNo">820</span>                    }               //create tick label string:<a name="line.820"></a>
+<span class="sourceLineNo">821</span>                               //show tick label if "1e#"-style and it's one<a name="line.821"></a>
+<span class="sourceLineNo">822</span>                               // of the first two, if it's the first or last<a name="line.822"></a>
+<span class="sourceLineNo">823</span>                               // in the set, or if it's 1-5; beyond that<a name="line.823"></a>
+<span class="sourceLineNo">824</span>                               // show fewer as the values get larger:<a name="line.824"></a>
+<span class="sourceLineNo">825</span>                    tickLabel = ((this.expTickLabelsFlag &amp;&amp; j &lt; 2)<a name="line.825"></a>
+<span class="sourceLineNo">826</span>                                || j &lt; 1<a name="line.826"></a>
+<span class="sourceLineNo">827</span>                                || (i &lt; 1 &amp;&amp; j &lt; 5) || (j &lt; 4 - i)<a name="line.827"></a>
+<span class="sourceLineNo">828</span>                                || currentTickValue &gt;= upperBoundVal)<a name="line.828"></a>
+<span class="sourceLineNo">829</span>                                   ? makeTickLabel(currentTickValue) : "";<a name="line.829"></a>
+<span class="sourceLineNo">830</span>                }<a name="line.830"></a>
+<span class="sourceLineNo">831</span><a name="line.831"></a>
+<span class="sourceLineNo">832</span>                if (currentTickValue &gt; upperBoundVal) {<a name="line.832"></a>
+<span class="sourceLineNo">833</span>                    return ticks;   // if past highest data value then exit<a name="line.833"></a>
+<span class="sourceLineNo">834</span>                                    // method<a name="line.834"></a>
+<span class="sourceLineNo">835</span>                }<a name="line.835"></a>
+<span class="sourceLineNo">836</span><a name="line.836"></a>
+<span class="sourceLineNo">837</span>                if (currentTickValue &gt;= lowerBoundVal - SMALL_LOG_VALUE) {<a name="line.837"></a>
+<span class="sourceLineNo">838</span>                    //tick value not below lowest data value<a name="line.838"></a>
+<span class="sourceLineNo">839</span>                    TextAnchor anchor;<a name="line.839"></a>
+<span class="sourceLineNo">840</span>                    TextAnchor rotationAnchor;<a name="line.840"></a>
+<span class="sourceLineNo">841</span>                    double angle = 0.0;<a name="line.841"></a>
+<span class="sourceLineNo">842</span>                    if (isVerticalTickLabels()) {<a name="line.842"></a>
+<span class="sourceLineNo">843</span>                        anchor = TextAnchor.CENTER_RIGHT;<a name="line.843"></a>
+<span class="sourceLineNo">844</span>                        rotationAnchor = TextAnchor.CENTER_RIGHT;<a name="line.844"></a>
+<span class="sourceLineNo">845</span>                        if (edge == RectangleEdge.TOP) {<a name="line.845"></a>
+<span class="sourceLineNo">846</span>                            angle = Math.PI / 2.0;<a name="line.846"></a>
+<span class="sourceLineNo">847</span>                        }<a name="line.847"></a>
+<span class="sourceLineNo">848</span>                        else {<a name="line.848"></a>
+<span class="sourceLineNo">849</span>                            angle = -Math.PI / 2.0;<a name="line.849"></a>
+<span class="sourceLineNo">850</span>                        }<a name="line.850"></a>
+<span class="sourceLineNo">851</span>                    }<a name="line.851"></a>
+<span class="sourceLineNo">852</span>                    else {<a name="line.852"></a>
+<span class="sourceLineNo">853</span>                        if (edge == RectangleEdge.TOP) {<a name="line.853"></a>
+<span class="sourceLineNo">854</span>                            anchor = TextAnchor.BOTTOM_CENTER;<a name="line.854"></a>
+<span class="sourceLineNo">855</span>                            rotationAnchor = TextAnchor.BOTTOM_CENTER;<a name="line.855"></a>
+<span class="sourceLineNo">856</span>                        }<a name="line.856"></a>
+<span class="sourceLineNo">857</span>                        else {<a name="line.857"></a>
+<span class="sourceLineNo">858</span>                            anchor = TextAnchor.TOP_CENTER;<a name="line.858"></a>
+<span class="sourceLineNo">859</span>                            rotationAnchor = TextAnchor.TOP_CENTER;<a name="line.859"></a>
+<span class="sourceLineNo">860</span>                        }<a name="line.860"></a>
+<span class="sourceLineNo">861</span>                    }<a name="line.861"></a>
+<span class="sourceLineNo">862</span><a name="line.862"></a>
+<span class="sourceLineNo">863</span>                    Tick tick = new NumberTick(new Double(currentTickValue),<a name="line.863"></a>
+<span class="sourceLineNo">864</span>                            tickLabel, anchor, rotationAnchor, angle);<a name="line.864"></a>
+<span class="sourceLineNo">865</span>                    ticks.add(tick);<a name="line.865"></a>
+<span class="sourceLineNo">866</span>                }<a name="line.866"></a>
+<span class="sourceLineNo">867</span>            }<a name="line.867"></a>
+<span class="sourceLineNo">868</span>        }<a name="line.868"></a>
+<span class="sourceLineNo">869</span>        return ticks;<a name="line.869"></a>
+<span class="sourceLineNo">870</span><a name="line.870"></a>
+<span class="sourceLineNo">871</span>    }<a name="line.871"></a>
+<span class="sourceLineNo">872</span><a name="line.872"></a>
+<span class="sourceLineNo">873</span>    /**<a name="line.873"></a>
+<span class="sourceLineNo">874</span>     * Calculates the positions of the tick labels for the axis, storing the<a name="line.874"></a>
+<span class="sourceLineNo">875</span>     * results in the tick label list (ready for drawing).<a name="line.875"></a>
+<span class="sourceLineNo">876</span>     *<a name="line.876"></a>
+<span class="sourceLineNo">877</span>     * @param g2  the graphics device.<a name="line.877"></a>
+<span class="sourceLineNo">878</span>     * @param dataArea  the area in which the plot should be drawn.<a name="line.878"></a>
+<span class="sourceLineNo">879</span>     * @param edge  the location of the axis.<a name="line.879"></a>
+<span class="sourceLineNo">880</span>     *<a name="line.880"></a>
+<span class="sourceLineNo">881</span>     * @return A list of ticks.<a name="line.881"></a>
+<span class="sourceLineNo">882</span>     */<a name="line.882"></a>
+<span class="sourceLineNo">883</span>    @Override<a name="line.883"></a>
+<span class="sourceLineNo">884</span>    protected List refreshTicksVertical(Graphics2D g2, Rectangle2D dataArea,<a name="line.884"></a>
+<span class="sourceLineNo">885</span>            RectangleEdge edge) {<a name="line.885"></a>
+<span class="sourceLineNo">886</span><a name="line.886"></a>
+<span class="sourceLineNo">887</span>        List ticks = new java.util.ArrayList();<a name="line.887"></a>
+<span class="sourceLineNo">888</span><a name="line.888"></a>
+<span class="sourceLineNo">889</span>        //get lower bound value:<a name="line.889"></a>
+<span class="sourceLineNo">890</span>        double lowerBoundVal = getRange().getLowerBound();<a name="line.890"></a>
+<span class="sourceLineNo">891</span>        //if small log values and lower bound value too small<a name="line.891"></a>
+<span class="sourceLineNo">892</span>        // then set to a small value (don't allow &lt;= 0):<a name="line.892"></a>
+<span class="sourceLineNo">893</span>        if (this.smallLogFlag &amp;&amp; lowerBoundVal &lt; SMALL_LOG_VALUE) {<a name="line.893"></a>
+<span class="sourceLineNo">894</span>            lowerBoundVal = SMALL_LOG_VALUE;<a name="line.894"></a>
+<span class="sourceLineNo">895</span>        }<a name="line.895"></a>
+<span class="sourceLineNo">896</span>        //get upper bound value<a name="line.896"></a>
+<span class="sourceLineNo">897</span>        double upperBoundVal = getRange().getUpperBound();<a name="line.897"></a>
+<span class="sourceLineNo">898</span><a name="line.898"></a>
+<span class="sourceLineNo">899</span>        //get log10 version of lower bound and round to integer:<a name="line.899"></a>
+<span class="sourceLineNo">900</span>        int iBegCount = (int) Math.rint(switchedLog10(lowerBoundVal));<a name="line.900"></a>
+<span class="sourceLineNo">901</span>        //get log10 version of upper bound and round to integer:<a name="line.901"></a>
+<span class="sourceLineNo">902</span>        int iEndCount = (int) Math.rint(switchedLog10(upperBoundVal));<a name="line.902"></a>
+<span class="sourceLineNo">903</span><a name="line.903"></a>
+<span class="sourceLineNo">904</span>        if (iBegCount == iEndCount &amp;&amp; iBegCount &gt; 0<a name="line.904"></a>
+<span class="sourceLineNo">905</span>                &amp;&amp; Math.pow(10, iBegCount) &gt; lowerBoundVal) {<a name="line.905"></a>
+<span class="sourceLineNo">906</span>              //only 1 power of 10 value, it's &gt; 0 and its resulting<a name="line.906"></a>
+<span class="sourceLineNo">907</span>              // tick value will be larger than lower bound of data<a name="line.907"></a>
+<span class="sourceLineNo">908</span>            --iBegCount;       //decrement to generate more ticks<a name="line.908"></a>
+<span class="sourceLineNo">909</span>        }<a name="line.909"></a>
+<span class="sourceLineNo">910</span><a name="line.910"></a>
+<span class="sourceLineNo">911</span>        double tickVal;<a name="line.911"></a>
+<span class="sourceLineNo">912</span>        String tickLabel;<a name="line.912"></a>
+<span class="sourceLineNo">913</span>        boolean zeroTickFlag = false;<a name="line.913"></a>
+<span class="sourceLineNo">914</span>        for (int i = iBegCount; i &lt;= iEndCount; i++) {<a name="line.914"></a>
+<span class="sourceLineNo">915</span>            //for each tick with a label to be displayed<a name="line.915"></a>
+<span class="sourceLineNo">916</span>            int jEndCount = 10;<a name="line.916"></a>
+<span class="sourceLineNo">917</span>            if (i == iEndCount) {<a name="line.917"></a>
+<span class="sourceLineNo">918</span>                jEndCount = 1;<a name="line.918"></a>
+<span class="sourceLineNo">919</span>            }<a name="line.919"></a>
+<span class="sourceLineNo">920</span><a name="line.920"></a>
+<span class="sourceLineNo">921</span>            for (int j = 0; j &lt; jEndCount; j++) {<a name="line.921"></a>
+<span class="sourceLineNo">922</span>                //for each tick to be displayed<a name="line.922"></a>
+<span class="sourceLineNo">923</span>                if (this.smallLogFlag) {<a name="line.923"></a>
+<span class="sourceLineNo">924</span>                    //small log values in use<a name="line.924"></a>
+<span class="sourceLineNo">925</span>                    tickVal = Math.pow(10, i) + (Math.pow(10, i) * j);<a name="line.925"></a>
+<span class="sourceLineNo">926</span>                    if (j == 0) {<a name="line.926"></a>
+<span class="sourceLineNo">927</span>                        //first tick of group; create label text<a name="line.927"></a>
+<span class="sourceLineNo">928</span>                        if (this.log10TickLabelsFlag) {<a name="line.928"></a>
+<span class="sourceLineNo">929</span>                            //if flag then<a name="line.929"></a>
+<span class="sourceLineNo">930</span>                            tickLabel = "10^" + i;   //create "log10"-type label<a name="line.930"></a>
+<span class="sourceLineNo">931</span>                        }<a name="line.931"></a>
+<span class="sourceLineNo">932</span>                        else {    //not "log10"-type label<a name="line.932"></a>
+<span class="sourceLineNo">933</span>                            if (this.expTickLabelsFlag) {<a name="line.933"></a>
+<span class="sourceLineNo">934</span>                                //if flag then<a name="line.934"></a>
+<span class="sourceLineNo">935</span>                                tickLabel = "1e" + i;  //create "1e#"-type label<a name="line.935"></a>
+<span class="sourceLineNo">936</span>                            }<a name="line.936"></a>
+<span class="sourceLineNo">937</span>                            else {    //not "1e#"-type label<a name="line.937"></a>
+<span class="sourceLineNo">938</span>                                if (i &gt;= 0) {   // if positive exponent then<a name="line.938"></a>
+<span class="sourceLineNo">939</span>                                                // make integer<a name="line.939"></a>
+<span class="sourceLineNo">940</span>                                    NumberFormat format<a name="line.940"></a>
+<span class="sourceLineNo">941</span>                                        = getNumberFormatOverride();<a name="line.941"></a>
+<span class="sourceLineNo">942</span>                                    if (format != null) {<a name="line.942"></a>
+<span class="sourceLineNo">943</span>                                        tickLabel = format.format(tickVal);<a name="line.943"></a>
+<span class="sourceLineNo">944</span>                                    }<a name="line.944"></a>
+<span class="sourceLineNo">945</span>                                    else {<a name="line.945"></a>
+<span class="sourceLineNo">946</span>                                        tickLabel = Long.toString((long)<a name="line.946"></a>
+<span class="sourceLineNo">947</span>                                                Math.rint(tickVal));<a name="line.947"></a>
+<span class="sourceLineNo">948</span>                                    }<a name="line.948"></a>
+<span class="sourceLineNo">949</span>                                }<a name="line.949"></a>
+<span class="sourceLineNo">950</span>                                else {<a name="line.950"></a>
+<span class="sourceLineNo">951</span>                                    //negative exponent; create fractional value<a name="line.951"></a>
+<span class="sourceLineNo">952</span>                                    //set exact number of fractional digits to<a name="line.952"></a>
+<span class="sourceLineNo">953</span>                                    // be shown:<a name="line.953"></a>
+<span class="sourceLineNo">954</span>                                    this.numberFormatterObj<a name="line.954"></a>
+<span class="sourceLineNo">955</span>                                        .setMaximumFractionDigits(-i);<a name="line.955"></a>
+<span class="sourceLineNo">956</span>                                    //create tick label:<a name="line.956"></a>
+<span class="sourceLineNo">957</span>                                    tickLabel = this.numberFormatterObj.format(<a name="line.957"></a>
+<span class="sourceLineNo">958</span>                                            tickVal);<a name="line.958"></a>
+<span class="sourceLineNo">959</span>                                }<a name="line.959"></a>
+<span class="sourceLineNo">960</span>                            }<a name="line.960"></a>
+<span class="sourceLineNo">961</span>                        }<a name="line.961"></a>
+<span class="sourceLineNo">962</span>                    }<a name="line.962"></a>
+<span class="sourceLineNo">963</span>                    else {   //not first tick to be displayed<a name="line.963"></a>
+<span class="sourceLineNo">964</span>                        tickLabel = "";     //no tick label<a name="line.964"></a>
+<span class="sourceLineNo">965</span>                    }<a name="line.965"></a>
+<span class="sourceLineNo">966</span>                }<a name="line.966"></a>
+<span class="sourceLineNo">967</span>                else { //not small log values in use; allow for values &lt;= 0<a name="line.967"></a>
+<span class="sourceLineNo">968</span>                    if (zeroTickFlag) {      //if did zero tick last iter then<a name="line.968"></a>
+<span class="sourceLineNo">969</span>                        --j;<a name="line.969"></a>
+<span class="sourceLineNo">970</span>                    }               //decrement to do 1.0 tick now<a name="line.970"></a>
+<span class="sourceLineNo">971</span>                    tickVal = (i &gt;= 0) ? Math.pow(10, i) + (Math.pow(10, i) * j)<a name="line.971"></a>
+<span class="sourceLineNo">972</span>                             : -(Math.pow(10, -i) - (Math.pow(10, -i - 1) * j));<a name="line.972"></a>
+<span class="sourceLineNo">973</span>                    if (j == 0) {  //first tick of group<a name="line.973"></a>
+<span class="sourceLineNo">974</span>                        if (!zeroTickFlag) {     // did not do zero tick last<a name="line.974"></a>
+<span class="sourceLineNo">975</span>                                                 // iteration<a name="line.975"></a>
+<span class="sourceLineNo">976</span>                            if (i &gt; iBegCount &amp;&amp; i &lt; iEndCount<a name="line.976"></a>
+<span class="sourceLineNo">977</span>                                    &amp;&amp; Math.abs(tickVal - 1.0) &lt; 0.0001) {<a name="line.977"></a>
+<span class="sourceLineNo">978</span>                                // not first or last tick on graph and value<a name="line.978"></a>
+<span class="sourceLineNo">979</span>                                // is 1.0<a name="line.979"></a>
+<span class="sourceLineNo">980</span>                                tickVal = 0.0;        //change value to 0.0<a name="line.980"></a>
+<span class="sourceLineNo">981</span>                                zeroTickFlag = true;  //indicate zero tick<a name="line.981"></a>
+<span class="sourceLineNo">982</span>                                tickLabel = "0";      //create label for tick<a name="line.982"></a>
+<span class="sourceLineNo">983</span>                            }<a name="line.983"></a>
+<span class="sourceLineNo">984</span>                            else {<a name="line.984"></a>
+<span class="sourceLineNo">985</span>                                //first or last tick on graph or value is 1.0<a name="line.985"></a>
+<span class="sourceLineNo">986</span>                                //create label for tick:<a name="line.986"></a>
+<span class="sourceLineNo">987</span>                                if (this.log10TickLabelsFlag) {<a name="line.987"></a>
+<span class="sourceLineNo">988</span>                                       //create "log10"-type label<a name="line.988"></a>
+<span class="sourceLineNo">989</span>                                    tickLabel = (((i &lt; 0) ? "-" : "")<a name="line.989"></a>
+<span class="sourceLineNo">990</span>                                            + "10^" + Math.abs(i));<a name="line.990"></a>
+<span class="sourceLineNo">991</span>                                }<a name="line.991"></a>
+<span class="sourceLineNo">992</span>                                else {<a name="line.992"></a>
+<span class="sourceLineNo">993</span>                                    if (this.expTickLabelsFlag) {<a name="line.993"></a>
+<span class="sourceLineNo">994</span>                                           //create "1e#"-type label<a name="line.994"></a>
+<span class="sourceLineNo">995</span>                                        tickLabel = (((i &lt; 0) ? "-" : "")<a name="line.995"></a>
+<span class="sourceLineNo">996</span>                                                + "1e" + Math.abs(i));<a name="line.996"></a>
+<span class="sourceLineNo">997</span>                                    }<a name="line.997"></a>
+<span class="sourceLineNo">998</span>                                    else {<a name="line.998"></a>
+<span class="sourceLineNo">999</span>                                        NumberFormat format<a name="line.999"></a>
+<span class="sourceLineNo">1000</span>                                            = getNumberFormatOverride();<a name="line.1000"></a>
+<span class="sourceLineNo">1001</span>                                        if (format != null) {<a name="line.1001"></a>
+<span class="sourceLineNo">1002</span>                                            tickLabel = format.format(tickVal);<a name="line.1002"></a>
+<span class="sourceLineNo">1003</span>                                        }<a name="line.1003"></a>
+<span class="sourceLineNo">1004</span>                                        else {<a name="line.1004"></a>
+<span class="sourceLineNo">1005</span>                                            tickLabel =  Long.toString(<a name="line.1005"></a>
+<span class="sourceLineNo">1006</span>                                                    (long) Math.rint(tickVal));<a name="line.1006"></a>
+<span class="sourceLineNo">1007</span>                                        }<a name="line.1007"></a>
+<span class="sourceLineNo">1008</span>                                    }<a name="line.1008"></a>
+<span class="sourceLineNo">1009</span>                                }<a name="line.1009"></a>
+<span class="sourceLineNo">1010</span>                            }<a name="line.1010"></a>
+<span class="sourceLineNo">1011</span>                        }<a name="line.1011"></a>
+<span class="sourceLineNo">1012</span>                        else {     // did zero tick last iteration<a name="line.1012"></a>
+<span class="sourceLineNo">1013</span>                            tickLabel = "";         //no label<a name="line.1013"></a>
+<span class="sourceLineNo">1014</span>                            zeroTickFlag = false;   //clear flag<a name="line.1014"></a>
+<span class="sourceLineNo">1015</span>                        }<a name="line.1015"></a>
+<span class="sourceLineNo">1016</span>                    }<a name="line.1016"></a>
+<span class="sourceLineNo">1017</span>                    else {       // not first tick of group<a name="line.1017"></a>
+<span class="sourceLineNo">1018</span>                        tickLabel = "";           //no label<a name="line.1018"></a>
+<span class="sourceLineNo">1019</span>                        zeroTickFlag = false;     //make sure flag cleared<a name="line.1019"></a>
+<span class="sourceLineNo">1020</span>                    }<a name="line.1020"></a>
+<span class="sourceLineNo">1021</span>                }<a name="line.1021"></a>
+<span class="sourceLineNo">1022</span><a name="line.1022"></a>
+<span class="sourceLineNo">1023</span>                if (tickVal &gt; upperBoundVal) {<a name="line.1023"></a>
+<span class="sourceLineNo">1024</span>                    return ticks;  //if past highest data value then exit method<a name="line.1024"></a>
+<span class="sourceLineNo">1025</span>                }<a name="line.1025"></a>
+<span class="sourceLineNo">1026</span><a name="line.1026"></a>
+<span class="sourceLineNo">1027</span>                if (tickVal &gt;= lowerBoundVal - SMALL_LOG_VALUE) {<a name="line.1027"></a>
+<span class="sourceLineNo">1028</span>                    //tick value not below lowest data value<a name="line.1028"></a>
+<span class="sourceLineNo">1029</span>                    TextAnchor anchor;<a name="line.1029"></a>
+<span class="sourceLineNo">1030</span>                    TextAnchor rotationAnchor;<a name="line.1030"></a>
+<span class="sourceLineNo">1031</span>                    double angle = 0.0;<a name="line.1031"></a>
+<span class="sourceLineNo">1032</span>                    if (isVerticalTickLabels()) {<a name="line.1032"></a>
+<span class="sourceLineNo">1033</span>                        if (edge == RectangleEdge.LEFT) {<a name="line.1033"></a>
+<span class="sourceLineNo">1034</span>                            anchor = TextAnchor.BOTTOM_CENTER;<a name="line.1034"></a>
+<span class="sourceLineNo">1035</span>                            rotationAnchor = TextAnchor.BOTTOM_CENTER;<a name="line.1035"></a>
+<span class="sourceLineNo">1036</span>                            angle = -Math.PI / 2.0;<a name="line.1036"></a>
+<span class="sourceLineNo">1037</span>                        }<a name="line.1037"></a>
+<span class="sourceLineNo">1038</span>                        else {<a name="line.1038"></a>
+<span class="sourceLineNo">1039</span>                            anchor = TextAnchor.BOTTOM_CENTER;<a name="line.1039"></a>
+<span class="sourceLineNo">1040</span>                            rotationAnchor = TextAnchor.BOTTOM_CENTER;<a name="line.1040"></a>
+<span class="sourceLineNo">1041</span>                            angle = Math.PI / 2.0;<a name="line.1041"></a>
+<span class="sourceLineNo">1042</span>                        }<a name="line.1042"></a>
+<span class="sourceLineNo">1043</span>                    }<a name="line.1043"></a>
+<span class="sourceLineNo">1044</span>                    else {<a name="line.1044"></a>
+<span class="sourceLineNo">1045</span>                        if (edge == RectangleEdge.LEFT) {<a name="line.1045"></a>
+<span class="sourceLineNo">1046</span>                            anchor = TextAnchor.CENTER_RIGHT;<a name="line.1046"></a>
+<span class="sourceLineNo">1047</span>                            rotationAnchor = TextAnchor.CENTER_RIGHT;<a name="line.1047"></a>
+<span class="sourceLineNo">1048</span>                        }<a name="line.1048"></a>
+<span class="sourceLineNo">1049</span>                        else {<a name="line.1049"></a>
+<span class="sourceLineNo">1050</span>                            anchor = TextAnchor.CENTER_LEFT;<a name="line.1050"></a>
+<span class="sourceLineNo">1051</span>                            rotationAnchor = TextAnchor.CENTER_LEFT;<a name="line.1051"></a>
+<span class="sourceLineNo">1052</span>                        }<a name="line.1052"></a>
+<span class="sourceLineNo">1053</span>                    }<a name="line.1053"></a>
+<span class="sourceLineNo">1054</span>                    //create tick object and add to list:<a name="line.1054"></a>
+<span class="sourceLineNo">1055</span>                    ticks.add(new NumberTick(new Double(tickVal), tickLabel,<a name="line.1055"></a>
+<span class="sourceLineNo">1056</span>                            anchor, rotationAnchor, angle));<a name="line.1056"></a>
+<span class="sourceLineNo">1057</span>                }<a name="line.1057"></a>
+<span class="sourceLineNo">1058</span>            }<a name="line.1058"></a>
+<span class="sourceLineNo">1059</span>        }<a name="line.1059"></a>
+<span class="sourceLineNo">1060</span>        return ticks;<a name="line.1060"></a>
+<span class="sourceLineNo">1061</span>    }<a name="line.1061"></a>
+<span class="sourceLineNo">1062</span><a name="line.1062"></a>
+<span class="sourceLineNo">1063</span>    /**<a name="line.1063"></a>
+<span class="sourceLineNo">1064</span>     * Converts the given value to a tick label string.<a name="line.1064"></a>
+<span class="sourceLineNo">1065</span>     *<a name="line.1065"></a>
+<span class="sourceLineNo">1066</span>     * @param val the value to convert.<a name="line.1066"></a>
+<span class="sourceLineNo">1067</span>     * @param forceFmtFlag true to force the number-formatter object<a name="line.1067"></a>
+<span class="sourceLineNo">1068</span>     * to be used.<a name="line.1068"></a>
+<span class="sourceLineNo">1069</span>     *<a name="line.1069"></a>
+<span class="sourceLineNo">1070</span>     * @return The tick label string.<a name="line.1070"></a>
+<span class="sourceLineNo">1071</span>     */<a name="line.1071"></a>
+<span class="sourceLineNo">1072</span>    protected String makeTickLabel(double val, boolean forceFmtFlag) {<a name="line.1072"></a>
+<span class="sourceLineNo">1073</span>        if (this.expTickLabelsFlag || forceFmtFlag) {<a name="line.1073"></a>
+<span class="sourceLineNo">1074</span>            //using exponents or force-formatter flag is set<a name="line.1074"></a>
+<span class="sourceLineNo">1075</span>            // (convert 'E' to lower-case 'e'):<a name="line.1075"></a>
+<span class="sourceLineNo">1076</span>            return this.numberFormatterObj.format(val).toLowerCase();<a name="line.1076"></a>
+<span class="sourceLineNo">1077</span>        }<a name="line.1077"></a>
+<span class="sourceLineNo">1078</span>        return getTickUnit().valueToString(val);<a name="line.1078"></a>
+<span class="sourceLineNo">1079</span>    }<a name="line.1079"></a>
+<span class="sourceLineNo">1080</span><a name="line.1080"></a>
+<span class="sourceLineNo">1081</span>    /**<a name="line.1081"></a>
+<span class="sourceLineNo">1082</span>     * Converts the given value to a tick label string.<a name="line.1082"></a>
+<span class="sourceLineNo">1083</span>     * @param val the value to convert.<a name="line.1083"></a>
+<span class="sourceLineNo">1084</span>     *<a name="line.1084"></a>
+<span class="sourceLineNo">1085</span>     * @return The tick label string.<a name="line.1085"></a>
+<span class="sourceLineNo">1086</span>     */<a name="line.1086"></a>
+<span class="sourceLineNo">1087</span>    protected String makeTickLabel(double val) {<a name="line.1087"></a>
+<span class="sourceLineNo">1088</span>        return makeTickLabel(val, false);<a name="line.1088"></a>
+<span class="sourceLineNo">1089</span>    }<a name="line.1089"></a>
+<span class="sourceLineNo">1090</span><a name="line.1090"></a>
+<span class="sourceLineNo">1091</span>}<a name="line.1091"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

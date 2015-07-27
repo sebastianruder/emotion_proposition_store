@@ -1,0 +1,412 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="de">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>/* ========================================================================<a name="line.1"></a>
+<span class="sourceLineNo">002</span> * JCommon : a free general purpose class library for the Java(tm) platform<a name="line.2"></a>
+<span class="sourceLineNo">003</span> * ========================================================================<a name="line.3"></a>
+<span class="sourceLineNo">004</span> *<a name="line.4"></a>
+<span class="sourceLineNo">005</span> * (C) Copyright 2000-2005, by Object Refinery Limited and Contributors.<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * <a name="line.6"></a>
+<span class="sourceLineNo">007</span> * Project Info:  http://www.jfree.org/jcommon/index.html<a name="line.7"></a>
+<span class="sourceLineNo">008</span> *<a name="line.8"></a>
+<span class="sourceLineNo">009</span> * This library is free software; you can redistribute it and/or modify it <a name="line.9"></a>
+<span class="sourceLineNo">010</span> * under the terms of the GNU Lesser General Public License as published by <a name="line.10"></a>
+<span class="sourceLineNo">011</span> * the Free Software Foundation; either version 2.1 of the License, or <a name="line.11"></a>
+<span class="sourceLineNo">012</span> * (at your option) any later version.<a name="line.12"></a>
+<span class="sourceLineNo">013</span> *<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * This library is distributed in the hope that it will be useful, but <a name="line.14"></a>
+<span class="sourceLineNo">015</span> * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY <a name="line.15"></a>
+<span class="sourceLineNo">016</span> * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public <a name="line.16"></a>
+<span class="sourceLineNo">017</span> * License for more details.<a name="line.17"></a>
+<span class="sourceLineNo">018</span> *<a name="line.18"></a>
+<span class="sourceLineNo">019</span> * You should have received a copy of the GNU Lesser General Public<a name="line.19"></a>
+<span class="sourceLineNo">020</span> * License along with this library; if not, write to the Free Software<a name="line.20"></a>
+<span class="sourceLineNo">021</span> * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, <a name="line.21"></a>
+<span class="sourceLineNo">022</span> * USA.  <a name="line.22"></a>
+<span class="sourceLineNo">023</span> *<a name="line.23"></a>
+<span class="sourceLineNo">024</span> * [Java is a trademark or registered trademark of Sun Microsystems, Inc. <a name="line.24"></a>
+<span class="sourceLineNo">025</span> * in the United States and other countries.]<a name="line.25"></a>
+<span class="sourceLineNo">026</span> * <a name="line.26"></a>
+<span class="sourceLineNo">027</span> * -----------------<a name="line.27"></a>
+<span class="sourceLineNo">028</span> * WizardDialog.java<a name="line.28"></a>
+<span class="sourceLineNo">029</span> * -----------------<a name="line.29"></a>
+<span class="sourceLineNo">030</span> * (C) Copyright 2000-2004, by Object Refinery Limited.<a name="line.30"></a>
+<span class="sourceLineNo">031</span> *<a name="line.31"></a>
+<span class="sourceLineNo">032</span> * Original Author:  David Gilbert (for Object Refinery Limited);<a name="line.32"></a>
+<span class="sourceLineNo">033</span> * Contributor(s):   -;<a name="line.33"></a>
+<span class="sourceLineNo">034</span> *<a name="line.34"></a>
+<span class="sourceLineNo">035</span> * $Id: WizardDialog.java,v 1.6 2007/11/02 17:50:36 taqua Exp $<a name="line.35"></a>
+<span class="sourceLineNo">036</span> *<a name="line.36"></a>
+<span class="sourceLineNo">037</span> * Changes (from 26-Oct-2001)<a name="line.37"></a>
+<span class="sourceLineNo">038</span> * --------------------------<a name="line.38"></a>
+<span class="sourceLineNo">039</span> * 26-Oct-2001 : Changed package to com.jrefinery.ui.*;<a name="line.39"></a>
+<span class="sourceLineNo">040</span> * 14-Oct-2002 : Fixed errors reported by Checkstyle (DG);<a name="line.40"></a>
+<span class="sourceLineNo">041</span> *<a name="line.41"></a>
+<span class="sourceLineNo">042</span> */<a name="line.42"></a>
+<span class="sourceLineNo">043</span><a name="line.43"></a>
+<span class="sourceLineNo">044</span>package org.jfree.ui;<a name="line.44"></a>
+<span class="sourceLineNo">045</span><a name="line.45"></a>
+<span class="sourceLineNo">046</span>import java.awt.BorderLayout;<a name="line.46"></a>
+<span class="sourceLineNo">047</span>import java.awt.Container;<a name="line.47"></a>
+<span class="sourceLineNo">048</span>import java.awt.event.ActionEvent;<a name="line.48"></a>
+<span class="sourceLineNo">049</span>import java.awt.event.ActionListener;<a name="line.49"></a>
+<span class="sourceLineNo">050</span>import java.util.ArrayList;<a name="line.50"></a>
+<span class="sourceLineNo">051</span>import javax.swing.BorderFactory;<a name="line.51"></a>
+<span class="sourceLineNo">052</span>import javax.swing.JButton;<a name="line.52"></a>
+<span class="sourceLineNo">053</span>import javax.swing.JDialog;<a name="line.53"></a>
+<span class="sourceLineNo">054</span>import javax.swing.JFrame;<a name="line.54"></a>
+<span class="sourceLineNo">055</span>import javax.swing.JPanel;<a name="line.55"></a>
+<span class="sourceLineNo">056</span><a name="line.56"></a>
+<span class="sourceLineNo">057</span>/**<a name="line.57"></a>
+<span class="sourceLineNo">058</span> * A dialog that presents the user with a sequence of steps for completing a task.  The dialog<a name="line.58"></a>
+<span class="sourceLineNo">059</span> * contains "Next" and "Previous" buttons, allowing the user to navigate through the task.<a name="line.59"></a>
+<span class="sourceLineNo">060</span> * &lt;P&gt;<a name="line.60"></a>
+<span class="sourceLineNo">061</span> * When the user backs up by one or more steps, the dialog keeps the completed steps so that<a name="line.61"></a>
+<span class="sourceLineNo">062</span> * they can be reused if the user doesn't change anything - this handles the cases where the user<a name="line.62"></a>
+<span class="sourceLineNo">063</span> * backs up a few steps just to review what has been completed.<a name="line.63"></a>
+<span class="sourceLineNo">064</span> * &lt;p&gt;<a name="line.64"></a>
+<span class="sourceLineNo">065</span> * But if the user changes some options in an earlier step, then the dialog may have to discard<a name="line.65"></a>
+<span class="sourceLineNo">066</span> * the later steps and have them repeated.<a name="line.66"></a>
+<span class="sourceLineNo">067</span> * &lt;P&gt;<a name="line.67"></a>
+<span class="sourceLineNo">068</span> * THIS CLASS IS NOT WORKING CORRECTLY YET.<a name="line.68"></a>
+<span class="sourceLineNo">069</span> *<a name="line.69"></a>
+<span class="sourceLineNo">070</span> *<a name="line.70"></a>
+<span class="sourceLineNo">071</span> * @author David Gilbert<a name="line.71"></a>
+<span class="sourceLineNo">072</span> */<a name="line.72"></a>
+<span class="sourceLineNo">073</span>public class WizardDialog extends JDialog implements ActionListener {<a name="line.73"></a>
+<span class="sourceLineNo">074</span><a name="line.74"></a>
+<span class="sourceLineNo">075</span>    /** The end result of the wizard sequence. */<a name="line.75"></a>
+<span class="sourceLineNo">076</span>    private Object result;<a name="line.76"></a>
+<span class="sourceLineNo">077</span><a name="line.77"></a>
+<span class="sourceLineNo">078</span>    /** The current step in the wizard process (starting at step zero). */<a name="line.78"></a>
+<span class="sourceLineNo">079</span>    private int step;<a name="line.79"></a>
+<span class="sourceLineNo">080</span><a name="line.80"></a>
+<span class="sourceLineNo">081</span>    /** A reference to the current panel. */<a name="line.81"></a>
+<span class="sourceLineNo">082</span>    private WizardPanel currentPanel;<a name="line.82"></a>
+<span class="sourceLineNo">083</span><a name="line.83"></a>
+<span class="sourceLineNo">084</span>    /** A list of references to the panels the user has already seen - used for navigating through<a name="line.84"></a>
+<span class="sourceLineNo">085</span>        the steps that have already been completed. */<a name="line.85"></a>
+<span class="sourceLineNo">086</span>    private java.util.List panels;<a name="line.86"></a>
+<span class="sourceLineNo">087</span><a name="line.87"></a>
+<span class="sourceLineNo">088</span>    /** A handy reference to the "previous" button. */<a name="line.88"></a>
+<span class="sourceLineNo">089</span>    private JButton previousButton;<a name="line.89"></a>
+<span class="sourceLineNo">090</span><a name="line.90"></a>
+<span class="sourceLineNo">091</span>    /** A handy reference to the "next" button. */<a name="line.91"></a>
+<span class="sourceLineNo">092</span>    private JButton nextButton;<a name="line.92"></a>
+<span class="sourceLineNo">093</span><a name="line.93"></a>
+<span class="sourceLineNo">094</span>    /** A handy reference to the "finish" button. */<a name="line.94"></a>
+<span class="sourceLineNo">095</span>    private JButton finishButton;<a name="line.95"></a>
+<span class="sourceLineNo">096</span><a name="line.96"></a>
+<span class="sourceLineNo">097</span>    /** A handy reference to the "help" button. */<a name="line.97"></a>
+<span class="sourceLineNo">098</span>    private JButton helpButton;<a name="line.98"></a>
+<span class="sourceLineNo">099</span><a name="line.99"></a>
+<span class="sourceLineNo">100</span>    /**<a name="line.100"></a>
+<span class="sourceLineNo">101</span>     * Standard constructor - builds and returns a new WizardDialog.<a name="line.101"></a>
+<span class="sourceLineNo">102</span>     *<a name="line.102"></a>
+<span class="sourceLineNo">103</span>     * @param owner  the owner.<a name="line.103"></a>
+<span class="sourceLineNo">104</span>     * @param modal  modal?<a name="line.104"></a>
+<span class="sourceLineNo">105</span>     * @param title  the title.<a name="line.105"></a>
+<span class="sourceLineNo">106</span>     * @param firstPanel  the first panel.<a name="line.106"></a>
+<span class="sourceLineNo">107</span>     */<a name="line.107"></a>
+<span class="sourceLineNo">108</span>    public WizardDialog(final JDialog owner, final boolean modal,<a name="line.108"></a>
+<span class="sourceLineNo">109</span>                        final String title, final WizardPanel firstPanel) {<a name="line.109"></a>
+<span class="sourceLineNo">110</span><a name="line.110"></a>
+<span class="sourceLineNo">111</span>        super(owner, title + " : step 1", modal);<a name="line.111"></a>
+<span class="sourceLineNo">112</span>        this.result = null;<a name="line.112"></a>
+<span class="sourceLineNo">113</span>        this.currentPanel = firstPanel;<a name="line.113"></a>
+<span class="sourceLineNo">114</span>        this.step = 0;<a name="line.114"></a>
+<span class="sourceLineNo">115</span>        this.panels = new ArrayList();<a name="line.115"></a>
+<span class="sourceLineNo">116</span>        this.panels.add(firstPanel);<a name="line.116"></a>
+<span class="sourceLineNo">117</span>        setContentPane(createContent());<a name="line.117"></a>
+<span class="sourceLineNo">118</span><a name="line.118"></a>
+<span class="sourceLineNo">119</span>    }<a name="line.119"></a>
+<span class="sourceLineNo">120</span><a name="line.120"></a>
+<span class="sourceLineNo">121</span>    /**<a name="line.121"></a>
+<span class="sourceLineNo">122</span>     * Standard constructor - builds a new WizardDialog owned by the specified JFrame.<a name="line.122"></a>
+<span class="sourceLineNo">123</span>     *<a name="line.123"></a>
+<span class="sourceLineNo">124</span>     * @param owner  the owner.<a name="line.124"></a>
+<span class="sourceLineNo">125</span>     * @param modal  modal?<a name="line.125"></a>
+<span class="sourceLineNo">126</span>     * @param title  the title.<a name="line.126"></a>
+<span class="sourceLineNo">127</span>     * @param firstPanel  the first panel.<a name="line.127"></a>
+<span class="sourceLineNo">128</span>     */<a name="line.128"></a>
+<span class="sourceLineNo">129</span>    public WizardDialog(final JFrame owner, final boolean modal,<a name="line.129"></a>
+<span class="sourceLineNo">130</span>                        final String title, final WizardPanel firstPanel) {<a name="line.130"></a>
+<span class="sourceLineNo">131</span><a name="line.131"></a>
+<span class="sourceLineNo">132</span>        super(owner, title + " : step 1", modal);<a name="line.132"></a>
+<span class="sourceLineNo">133</span>        this.result = null;<a name="line.133"></a>
+<span class="sourceLineNo">134</span>        this.currentPanel = firstPanel;<a name="line.134"></a>
+<span class="sourceLineNo">135</span>        this.step = 0;<a name="line.135"></a>
+<span class="sourceLineNo">136</span>        this.panels = new ArrayList();<a name="line.136"></a>
+<span class="sourceLineNo">137</span>        this.panels.add(firstPanel);<a name="line.137"></a>
+<span class="sourceLineNo">138</span>        setContentPane(createContent());<a name="line.138"></a>
+<span class="sourceLineNo">139</span>    }<a name="line.139"></a>
+<span class="sourceLineNo">140</span><a name="line.140"></a>
+<span class="sourceLineNo">141</span>    /**<a name="line.141"></a>
+<span class="sourceLineNo">142</span>     * Returns the result of the wizard sequence.<a name="line.142"></a>
+<span class="sourceLineNo">143</span>     *<a name="line.143"></a>
+<span class="sourceLineNo">144</span>     * @return the result.<a name="line.144"></a>
+<span class="sourceLineNo">145</span>     */<a name="line.145"></a>
+<span class="sourceLineNo">146</span>    public Object getResult() {<a name="line.146"></a>
+<span class="sourceLineNo">147</span>        return this.result;<a name="line.147"></a>
+<span class="sourceLineNo">148</span>    }<a name="line.148"></a>
+<span class="sourceLineNo">149</span><a name="line.149"></a>
+<span class="sourceLineNo">150</span>    /**<a name="line.150"></a>
+<span class="sourceLineNo">151</span>     * Returns the total number of steps in the wizard sequence, if this number is known.  Otherwise<a name="line.151"></a>
+<span class="sourceLineNo">152</span>     * this method returns zero.  Subclasses should override this method unless the number of steps<a name="line.152"></a>
+<span class="sourceLineNo">153</span>     * is not known.<a name="line.153"></a>
+<span class="sourceLineNo">154</span>     *<a name="line.154"></a>
+<span class="sourceLineNo">155</span>     * @return the number of steps.<a name="line.155"></a>
+<span class="sourceLineNo">156</span>     */<a name="line.156"></a>
+<span class="sourceLineNo">157</span>    public int getStepCount() {<a name="line.157"></a>
+<span class="sourceLineNo">158</span>        return 0;<a name="line.158"></a>
+<span class="sourceLineNo">159</span>    }<a name="line.159"></a>
+<span class="sourceLineNo">160</span><a name="line.160"></a>
+<span class="sourceLineNo">161</span>    /**<a name="line.161"></a>
+<span class="sourceLineNo">162</span>     * Returns true if it is possible to back up to the previous panel, and false otherwise.<a name="line.162"></a>
+<span class="sourceLineNo">163</span>     *<a name="line.163"></a>
+<span class="sourceLineNo">164</span>     * @return boolean.<a name="line.164"></a>
+<span class="sourceLineNo">165</span>     */<a name="line.165"></a>
+<span class="sourceLineNo">166</span>    public boolean canDoPreviousPanel() {<a name="line.166"></a>
+<span class="sourceLineNo">167</span>        return (this.step &gt; 0);<a name="line.167"></a>
+<span class="sourceLineNo">168</span>    }<a name="line.168"></a>
+<span class="sourceLineNo">169</span><a name="line.169"></a>
+<span class="sourceLineNo">170</span>    /**<a name="line.170"></a>
+<span class="sourceLineNo">171</span>     * Returns true if there is a 'next' panel, and false otherwise.<a name="line.171"></a>
+<span class="sourceLineNo">172</span>     *<a name="line.172"></a>
+<span class="sourceLineNo">173</span>     * @return boolean.<a name="line.173"></a>
+<span class="sourceLineNo">174</span>     */<a name="line.174"></a>
+<span class="sourceLineNo">175</span>    public boolean canDoNextPanel() {<a name="line.175"></a>
+<span class="sourceLineNo">176</span>        return this.currentPanel.hasNextPanel();<a name="line.176"></a>
+<span class="sourceLineNo">177</span>    }<a name="line.177"></a>
+<span class="sourceLineNo">178</span><a name="line.178"></a>
+<span class="sourceLineNo">179</span>    /**<a name="line.179"></a>
+<span class="sourceLineNo">180</span>     * Returns true if it is possible to finish the sequence at this point (possibly with defaults<a name="line.180"></a>
+<span class="sourceLineNo">181</span>     * for the remaining entries).<a name="line.181"></a>
+<span class="sourceLineNo">182</span>     *<a name="line.182"></a>
+<span class="sourceLineNo">183</span>     * @return boolean.<a name="line.183"></a>
+<span class="sourceLineNo">184</span>     */<a name="line.184"></a>
+<span class="sourceLineNo">185</span>    public boolean canFinish() {<a name="line.185"></a>
+<span class="sourceLineNo">186</span>        return this.currentPanel.canFinish();<a name="line.186"></a>
+<span class="sourceLineNo">187</span>    }<a name="line.187"></a>
+<span class="sourceLineNo">188</span><a name="line.188"></a>
+<span class="sourceLineNo">189</span>    /**<a name="line.189"></a>
+<span class="sourceLineNo">190</span>     * Returns the panel for the specified step (steps are numbered from zero).<a name="line.190"></a>
+<span class="sourceLineNo">191</span>     *<a name="line.191"></a>
+<span class="sourceLineNo">192</span>     * @param step  the current step.<a name="line.192"></a>
+<span class="sourceLineNo">193</span>     *<a name="line.193"></a>
+<span class="sourceLineNo">194</span>     * @return the panel.<a name="line.194"></a>
+<span class="sourceLineNo">195</span>     */<a name="line.195"></a>
+<span class="sourceLineNo">196</span>    public WizardPanel getWizardPanel(final int step) {<a name="line.196"></a>
+<span class="sourceLineNo">197</span>        if (step &lt; this.panels.size()) {<a name="line.197"></a>
+<span class="sourceLineNo">198</span>            return (WizardPanel) this.panels.get(step);<a name="line.198"></a>
+<span class="sourceLineNo">199</span>        }<a name="line.199"></a>
+<span class="sourceLineNo">200</span>        else {<a name="line.200"></a>
+<span class="sourceLineNo">201</span>            return null;<a name="line.201"></a>
+<span class="sourceLineNo">202</span>        }<a name="line.202"></a>
+<span class="sourceLineNo">203</span>    }<a name="line.203"></a>
+<span class="sourceLineNo">204</span><a name="line.204"></a>
+<span class="sourceLineNo">205</span>    /**<a name="line.205"></a>
+<span class="sourceLineNo">206</span>     * Handles events.<a name="line.206"></a>
+<span class="sourceLineNo">207</span>     *<a name="line.207"></a>
+<span class="sourceLineNo">208</span>     * @param event  the event.<a name="line.208"></a>
+<span class="sourceLineNo">209</span>     */<a name="line.209"></a>
+<span class="sourceLineNo">210</span>    public void actionPerformed(final ActionEvent event) {<a name="line.210"></a>
+<span class="sourceLineNo">211</span>        final String command = event.getActionCommand();<a name="line.211"></a>
+<span class="sourceLineNo">212</span>        if (command.equals("nextButton")) {<a name="line.212"></a>
+<span class="sourceLineNo">213</span>            next();<a name="line.213"></a>
+<span class="sourceLineNo">214</span>        }<a name="line.214"></a>
+<span class="sourceLineNo">215</span>        else if (command.equals("previousButton")) {<a name="line.215"></a>
+<span class="sourceLineNo">216</span>            previous();<a name="line.216"></a>
+<span class="sourceLineNo">217</span>        }<a name="line.217"></a>
+<span class="sourceLineNo">218</span>        else if (command.equals("finishButton")) {<a name="line.218"></a>
+<span class="sourceLineNo">219</span>            finish();<a name="line.219"></a>
+<span class="sourceLineNo">220</span>        }<a name="line.220"></a>
+<span class="sourceLineNo">221</span>    }<a name="line.221"></a>
+<span class="sourceLineNo">222</span><a name="line.222"></a>
+<span class="sourceLineNo">223</span>    /**<a name="line.223"></a>
+<span class="sourceLineNo">224</span>     * Handles a click on the "previous" button, by displaying the previous panel in the sequence.<a name="line.224"></a>
+<span class="sourceLineNo">225</span>     */<a name="line.225"></a>
+<span class="sourceLineNo">226</span>    public void previous() {<a name="line.226"></a>
+<span class="sourceLineNo">227</span>        if (this.step &gt; 0) {<a name="line.227"></a>
+<span class="sourceLineNo">228</span>            final WizardPanel previousPanel = getWizardPanel(this.step - 1);<a name="line.228"></a>
+<span class="sourceLineNo">229</span>            // tell the panel that we are returning<a name="line.229"></a>
+<span class="sourceLineNo">230</span>            previousPanel.returnFromLaterStep();<a name="line.230"></a>
+<span class="sourceLineNo">231</span>            final Container content = getContentPane();<a name="line.231"></a>
+<span class="sourceLineNo">232</span>            content.remove(this.currentPanel);<a name="line.232"></a>
+<span class="sourceLineNo">233</span>            content.add(previousPanel);<a name="line.233"></a>
+<span class="sourceLineNo">234</span>            this.step = this.step - 1;<a name="line.234"></a>
+<span class="sourceLineNo">235</span>            this.currentPanel = previousPanel;<a name="line.235"></a>
+<span class="sourceLineNo">236</span>            setTitle("Step " + (this.step + 1));<a name="line.236"></a>
+<span class="sourceLineNo">237</span>            enableButtons();<a name="line.237"></a>
+<span class="sourceLineNo">238</span>            pack();<a name="line.238"></a>
+<span class="sourceLineNo">239</span>        }<a name="line.239"></a>
+<span class="sourceLineNo">240</span>    }<a name="line.240"></a>
+<span class="sourceLineNo">241</span><a name="line.241"></a>
+<span class="sourceLineNo">242</span>    /**<a name="line.242"></a>
+<span class="sourceLineNo">243</span>     * Displays the next step in the wizard sequence.<a name="line.243"></a>
+<span class="sourceLineNo">244</span>     */<a name="line.244"></a>
+<span class="sourceLineNo">245</span>    public void next() {<a name="line.245"></a>
+<span class="sourceLineNo">246</span><a name="line.246"></a>
+<span class="sourceLineNo">247</span>        WizardPanel nextPanel = getWizardPanel(this.step + 1);<a name="line.247"></a>
+<span class="sourceLineNo">248</span>        if (nextPanel != null) {<a name="line.248"></a>
+<span class="sourceLineNo">249</span>            if (!this.currentPanel.canRedisplayNextPanel()) {<a name="line.249"></a>
+<span class="sourceLineNo">250</span>                nextPanel = this.currentPanel.getNextPanel();<a name="line.250"></a>
+<span class="sourceLineNo">251</span>            }<a name="line.251"></a>
+<span class="sourceLineNo">252</span>        }<a name="line.252"></a>
+<span class="sourceLineNo">253</span>        else {<a name="line.253"></a>
+<span class="sourceLineNo">254</span>            nextPanel = this.currentPanel.getNextPanel();<a name="line.254"></a>
+<span class="sourceLineNo">255</span>        }<a name="line.255"></a>
+<span class="sourceLineNo">256</span><a name="line.256"></a>
+<span class="sourceLineNo">257</span>        this.step = this.step + 1;<a name="line.257"></a>
+<span class="sourceLineNo">258</span>        if (this.step &lt; this.panels.size()) {<a name="line.258"></a>
+<span class="sourceLineNo">259</span>            this.panels.set(this.step, nextPanel);<a name="line.259"></a>
+<span class="sourceLineNo">260</span>        }<a name="line.260"></a>
+<span class="sourceLineNo">261</span>        else {<a name="line.261"></a>
+<span class="sourceLineNo">262</span>            this.panels.add(nextPanel);<a name="line.262"></a>
+<span class="sourceLineNo">263</span>        }<a name="line.263"></a>
+<span class="sourceLineNo">264</span><a name="line.264"></a>
+<span class="sourceLineNo">265</span>        final Container content = getContentPane();<a name="line.265"></a>
+<span class="sourceLineNo">266</span>        content.remove(this.currentPanel);<a name="line.266"></a>
+<span class="sourceLineNo">267</span>        content.add(nextPanel);<a name="line.267"></a>
+<span class="sourceLineNo">268</span><a name="line.268"></a>
+<span class="sourceLineNo">269</span>        this.currentPanel = nextPanel;<a name="line.269"></a>
+<span class="sourceLineNo">270</span>        setTitle("Step " + (this.step + 1));<a name="line.270"></a>
+<span class="sourceLineNo">271</span>        enableButtons();<a name="line.271"></a>
+<span class="sourceLineNo">272</span>        pack();<a name="line.272"></a>
+<span class="sourceLineNo">273</span><a name="line.273"></a>
+<span class="sourceLineNo">274</span>    }<a name="line.274"></a>
+<span class="sourceLineNo">275</span><a name="line.275"></a>
+<span class="sourceLineNo">276</span>    /**<a name="line.276"></a>
+<span class="sourceLineNo">277</span>     * Finishes the wizard.<a name="line.277"></a>
+<span class="sourceLineNo">278</span>     */<a name="line.278"></a>
+<span class="sourceLineNo">279</span>    public void finish() {<a name="line.279"></a>
+<span class="sourceLineNo">280</span>        this.result = this.currentPanel.getResult();<a name="line.280"></a>
+<span class="sourceLineNo">281</span>        setVisible(false);<a name="line.281"></a>
+<span class="sourceLineNo">282</span>    }<a name="line.282"></a>
+<span class="sourceLineNo">283</span><a name="line.283"></a>
+<span class="sourceLineNo">284</span>    /**<a name="line.284"></a>
+<span class="sourceLineNo">285</span>     * Enables/disables the buttons according to the current step.  A good idea would be to ask the<a name="line.285"></a>
+<span class="sourceLineNo">286</span>     * panels to return the status...<a name="line.286"></a>
+<span class="sourceLineNo">287</span>     */<a name="line.287"></a>
+<span class="sourceLineNo">288</span>    private void enableButtons() {<a name="line.288"></a>
+<span class="sourceLineNo">289</span>        this.previousButton.setEnabled(this.step &gt; 0);<a name="line.289"></a>
+<span class="sourceLineNo">290</span>        this.nextButton.setEnabled(canDoNextPanel());<a name="line.290"></a>
+<span class="sourceLineNo">291</span>        this.finishButton.setEnabled(canFinish());<a name="line.291"></a>
+<span class="sourceLineNo">292</span>        this.helpButton.setEnabled(false);<a name="line.292"></a>
+<span class="sourceLineNo">293</span>    }<a name="line.293"></a>
+<span class="sourceLineNo">294</span><a name="line.294"></a>
+<span class="sourceLineNo">295</span>    /**<a name="line.295"></a>
+<span class="sourceLineNo">296</span>     * Checks, whether the user cancelled the dialog.<a name="line.296"></a>
+<span class="sourceLineNo">297</span>     *<a name="line.297"></a>
+<span class="sourceLineNo">298</span>     * @return false.<a name="line.298"></a>
+<span class="sourceLineNo">299</span>     */<a name="line.299"></a>
+<span class="sourceLineNo">300</span>    public boolean isCancelled() {<a name="line.300"></a>
+<span class="sourceLineNo">301</span>        return false;<a name="line.301"></a>
+<span class="sourceLineNo">302</span>    }<a name="line.302"></a>
+<span class="sourceLineNo">303</span><a name="line.303"></a>
+<span class="sourceLineNo">304</span>    /**<a name="line.304"></a>
+<span class="sourceLineNo">305</span>     * Creates a panel containing the user interface for the dialog.<a name="line.305"></a>
+<span class="sourceLineNo">306</span>     *<a name="line.306"></a>
+<span class="sourceLineNo">307</span>     * @return the panel.<a name="line.307"></a>
+<span class="sourceLineNo">308</span>     */<a name="line.308"></a>
+<span class="sourceLineNo">309</span>    public JPanel createContent() {<a name="line.309"></a>
+<span class="sourceLineNo">310</span><a name="line.310"></a>
+<span class="sourceLineNo">311</span>        final JPanel content = new JPanel(new BorderLayout());<a name="line.311"></a>
+<span class="sourceLineNo">312</span>        content.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));<a name="line.312"></a>
+<span class="sourceLineNo">313</span>        content.add((JPanel) this.panels.get(0));<a name="line.313"></a>
+<span class="sourceLineNo">314</span>        final L1R3ButtonPanel buttons = new L1R3ButtonPanel("Help", "Previous", "Next", "Finish");<a name="line.314"></a>
+<span class="sourceLineNo">315</span><a name="line.315"></a>
+<span class="sourceLineNo">316</span>        this.helpButton = buttons.getLeftButton();<a name="line.316"></a>
+<span class="sourceLineNo">317</span>        this.helpButton.setEnabled(false);<a name="line.317"></a>
+<span class="sourceLineNo">318</span><a name="line.318"></a>
+<span class="sourceLineNo">319</span>        this.previousButton = buttons.getRightButton1();<a name="line.319"></a>
+<span class="sourceLineNo">320</span>        this.previousButton.setActionCommand("previousButton");<a name="line.320"></a>
+<span class="sourceLineNo">321</span>        this.previousButton.addActionListener(this);<a name="line.321"></a>
+<span class="sourceLineNo">322</span>        this.previousButton.setEnabled(false);<a name="line.322"></a>
+<span class="sourceLineNo">323</span><a name="line.323"></a>
+<span class="sourceLineNo">324</span>        this.nextButton = buttons.getRightButton2();<a name="line.324"></a>
+<span class="sourceLineNo">325</span>        this.nextButton.setActionCommand("nextButton");<a name="line.325"></a>
+<span class="sourceLineNo">326</span>        this.nextButton.addActionListener(this);<a name="line.326"></a>
+<span class="sourceLineNo">327</span>        this.nextButton.setEnabled(true);<a name="line.327"></a>
+<span class="sourceLineNo">328</span><a name="line.328"></a>
+<span class="sourceLineNo">329</span>        this.finishButton = buttons.getRightButton3();<a name="line.329"></a>
+<span class="sourceLineNo">330</span>        this.finishButton.setActionCommand("finishButton");<a name="line.330"></a>
+<span class="sourceLineNo">331</span>        this.finishButton.addActionListener(this);<a name="line.331"></a>
+<span class="sourceLineNo">332</span>        this.finishButton.setEnabled(false);<a name="line.332"></a>
+<span class="sourceLineNo">333</span><a name="line.333"></a>
+<span class="sourceLineNo">334</span>        buttons.setBorder(BorderFactory.createEmptyBorder(4, 0, 0, 0));<a name="line.334"></a>
+<span class="sourceLineNo">335</span>        content.add(buttons, BorderLayout.SOUTH);<a name="line.335"></a>
+<span class="sourceLineNo">336</span><a name="line.336"></a>
+<span class="sourceLineNo">337</span>        return content;<a name="line.337"></a>
+<span class="sourceLineNo">338</span>    }<a name="line.338"></a>
+<span class="sourceLineNo">339</span><a name="line.339"></a>
+<span class="sourceLineNo">340</span>}<a name="line.340"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

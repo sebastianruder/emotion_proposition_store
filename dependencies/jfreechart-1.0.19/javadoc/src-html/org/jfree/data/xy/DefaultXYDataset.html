@@ -1,0 +1,459 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="de">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>/* ===========================================================<a name="line.1"></a>
+<span class="sourceLineNo">002</span> * JFreeChart : a free chart library for the Java(tm) platform<a name="line.2"></a>
+<span class="sourceLineNo">003</span> * ===========================================================<a name="line.3"></a>
+<span class="sourceLineNo">004</span> *<a name="line.4"></a>
+<span class="sourceLineNo">005</span> * (C) Copyright 2000-2013, by Object Refinery Limited and Contributors.<a name="line.5"></a>
+<span class="sourceLineNo">006</span> *<a name="line.6"></a>
+<span class="sourceLineNo">007</span> * Project Info:  http://www.jfree.org/jfreechart/index.html<a name="line.7"></a>
+<span class="sourceLineNo">008</span> *<a name="line.8"></a>
+<span class="sourceLineNo">009</span> * This library is free software; you can redistribute it and/or modify it<a name="line.9"></a>
+<span class="sourceLineNo">010</span> * under the terms of the GNU Lesser General Public License as published by<a name="line.10"></a>
+<span class="sourceLineNo">011</span> * the Free Software Foundation; either version 2.1 of the License, or<a name="line.11"></a>
+<span class="sourceLineNo">012</span> * (at your option) any later version.<a name="line.12"></a>
+<span class="sourceLineNo">013</span> *<a name="line.13"></a>
+<span class="sourceLineNo">014</span> * This library is distributed in the hope that it will be useful, but<a name="line.14"></a>
+<span class="sourceLineNo">015</span> * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY<a name="line.15"></a>
+<span class="sourceLineNo">016</span> * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public<a name="line.16"></a>
+<span class="sourceLineNo">017</span> * License for more details.<a name="line.17"></a>
+<span class="sourceLineNo">018</span> *<a name="line.18"></a>
+<span class="sourceLineNo">019</span> * You should have received a copy of the GNU Lesser General Public<a name="line.19"></a>
+<span class="sourceLineNo">020</span> * License along with this library; if not, write to the Free Software<a name="line.20"></a>
+<span class="sourceLineNo">021</span> * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301,<a name="line.21"></a>
+<span class="sourceLineNo">022</span> * USA.<a name="line.22"></a>
+<span class="sourceLineNo">023</span> *<a name="line.23"></a>
+<span class="sourceLineNo">024</span> * [Oracle and Java are registered trademarks of Oracle and/or its affiliates. <a name="line.24"></a>
+<span class="sourceLineNo">025</span> * Other names may be trademarks of their respective owners.]<a name="line.25"></a>
+<span class="sourceLineNo">026</span> *<a name="line.26"></a>
+<span class="sourceLineNo">027</span> * ---------------------<a name="line.27"></a>
+<span class="sourceLineNo">028</span> * DefaultXYDataset.java<a name="line.28"></a>
+<span class="sourceLineNo">029</span> * ---------------------<a name="line.29"></a>
+<span class="sourceLineNo">030</span> * (C) Copyright 2006-2008, by Object Refinery Limited and Contributors.<a name="line.30"></a>
+<span class="sourceLineNo">031</span> *<a name="line.31"></a>
+<span class="sourceLineNo">032</span> * Original Author:  David Gilbert (for Object Refinery Limited);<a name="line.32"></a>
+<span class="sourceLineNo">033</span> * Contributor(s):   -;<a name="line.33"></a>
+<span class="sourceLineNo">034</span> *<a name="line.34"></a>
+<span class="sourceLineNo">035</span> * Changes<a name="line.35"></a>
+<span class="sourceLineNo">036</span> * -------<a name="line.36"></a>
+<span class="sourceLineNo">037</span> * 06-Jul-2006 : Version 1 (DG);<a name="line.37"></a>
+<span class="sourceLineNo">038</span> * 02-Nov-2006 : Fixed a problem with adding a new series with the same key<a name="line.38"></a>
+<span class="sourceLineNo">039</span> *               as an existing series (see bug 1589392) (DG);<a name="line.39"></a>
+<span class="sourceLineNo">040</span> * 25-Jan-2007 : Implemented PublicCloneable (DG);<a name="line.40"></a>
+<span class="sourceLineNo">041</span> *<a name="line.41"></a>
+<span class="sourceLineNo">042</span> */<a name="line.42"></a>
+<span class="sourceLineNo">043</span><a name="line.43"></a>
+<span class="sourceLineNo">044</span>package org.jfree.data.xy;<a name="line.44"></a>
+<span class="sourceLineNo">045</span><a name="line.45"></a>
+<span class="sourceLineNo">046</span>import java.util.ArrayList;<a name="line.46"></a>
+<span class="sourceLineNo">047</span>import java.util.Arrays;<a name="line.47"></a>
+<span class="sourceLineNo">048</span>import java.util.List;<a name="line.48"></a>
+<span class="sourceLineNo">049</span><a name="line.49"></a>
+<span class="sourceLineNo">050</span>import org.jfree.data.DomainOrder;<a name="line.50"></a>
+<span class="sourceLineNo">051</span>import org.jfree.data.general.DatasetChangeEvent;<a name="line.51"></a>
+<span class="sourceLineNo">052</span>import org.jfree.util.PublicCloneable;<a name="line.52"></a>
+<span class="sourceLineNo">053</span><a name="line.53"></a>
+<span class="sourceLineNo">054</span>/**<a name="line.54"></a>
+<span class="sourceLineNo">055</span> * A default implementation of the {@link XYDataset} interface that stores<a name="line.55"></a>
+<span class="sourceLineNo">056</span> * data values in arrays of double primitives.<a name="line.56"></a>
+<span class="sourceLineNo">057</span> *<a name="line.57"></a>
+<span class="sourceLineNo">058</span> * @since 1.0.2<a name="line.58"></a>
+<span class="sourceLineNo">059</span> */<a name="line.59"></a>
+<span class="sourceLineNo">060</span>public class DefaultXYDataset extends AbstractXYDataset<a name="line.60"></a>
+<span class="sourceLineNo">061</span>        implements XYDataset, PublicCloneable {<a name="line.61"></a>
+<span class="sourceLineNo">062</span><a name="line.62"></a>
+<span class="sourceLineNo">063</span>    /**<a name="line.63"></a>
+<span class="sourceLineNo">064</span>     * Storage for the series keys.  This list must be kept in sync with the<a name="line.64"></a>
+<span class="sourceLineNo">065</span>     * seriesList.<a name="line.65"></a>
+<span class="sourceLineNo">066</span>     */<a name="line.66"></a>
+<span class="sourceLineNo">067</span>    private List seriesKeys;<a name="line.67"></a>
+<span class="sourceLineNo">068</span><a name="line.68"></a>
+<span class="sourceLineNo">069</span>    /**<a name="line.69"></a>
+<span class="sourceLineNo">070</span>     * Storage for the series in the dataset.  We use a list because the<a name="line.70"></a>
+<span class="sourceLineNo">071</span>     * order of the series is significant.  This list must be kept in sync<a name="line.71"></a>
+<span class="sourceLineNo">072</span>     * with the seriesKeys list.<a name="line.72"></a>
+<span class="sourceLineNo">073</span>     */<a name="line.73"></a>
+<span class="sourceLineNo">074</span>    private List seriesList;<a name="line.74"></a>
+<span class="sourceLineNo">075</span><a name="line.75"></a>
+<span class="sourceLineNo">076</span>    /**<a name="line.76"></a>
+<span class="sourceLineNo">077</span>     * Creates a new &lt;code&gt;DefaultXYDataset&lt;/code&gt; instance, initially<a name="line.77"></a>
+<span class="sourceLineNo">078</span>     * containing no data.<a name="line.78"></a>
+<span class="sourceLineNo">079</span>     */<a name="line.79"></a>
+<span class="sourceLineNo">080</span>    public DefaultXYDataset() {<a name="line.80"></a>
+<span class="sourceLineNo">081</span>        this.seriesKeys = new java.util.ArrayList();<a name="line.81"></a>
+<span class="sourceLineNo">082</span>        this.seriesList = new java.util.ArrayList();<a name="line.82"></a>
+<span class="sourceLineNo">083</span>    }<a name="line.83"></a>
+<span class="sourceLineNo">084</span><a name="line.84"></a>
+<span class="sourceLineNo">085</span>    /**<a name="line.85"></a>
+<span class="sourceLineNo">086</span>     * Returns the number of series in the dataset.<a name="line.86"></a>
+<span class="sourceLineNo">087</span>     *<a name="line.87"></a>
+<span class="sourceLineNo">088</span>     * @return The series count.<a name="line.88"></a>
+<span class="sourceLineNo">089</span>     */<a name="line.89"></a>
+<span class="sourceLineNo">090</span>    @Override<a name="line.90"></a>
+<span class="sourceLineNo">091</span>    public int getSeriesCount() {<a name="line.91"></a>
+<span class="sourceLineNo">092</span>        return this.seriesList.size();<a name="line.92"></a>
+<span class="sourceLineNo">093</span>    }<a name="line.93"></a>
+<span class="sourceLineNo">094</span><a name="line.94"></a>
+<span class="sourceLineNo">095</span>    /**<a name="line.95"></a>
+<span class="sourceLineNo">096</span>     * Returns the key for a series.<a name="line.96"></a>
+<span class="sourceLineNo">097</span>     *<a name="line.97"></a>
+<span class="sourceLineNo">098</span>     * @param series  the series index (in the range &lt;code&gt;0&lt;/code&gt; to<a name="line.98"></a>
+<span class="sourceLineNo">099</span>     *     &lt;code&gt;getSeriesCount() - 1&lt;/code&gt;).<a name="line.99"></a>
+<span class="sourceLineNo">100</span>     *<a name="line.100"></a>
+<span class="sourceLineNo">101</span>     * @return The key for the series.<a name="line.101"></a>
+<span class="sourceLineNo">102</span>     *<a name="line.102"></a>
+<span class="sourceLineNo">103</span>     * @throws IllegalArgumentException if &lt;code&gt;series&lt;/code&gt; is not in the<a name="line.103"></a>
+<span class="sourceLineNo">104</span>     *     specified range.<a name="line.104"></a>
+<span class="sourceLineNo">105</span>     */<a name="line.105"></a>
+<span class="sourceLineNo">106</span>    @Override<a name="line.106"></a>
+<span class="sourceLineNo">107</span>    public Comparable getSeriesKey(int series) {<a name="line.107"></a>
+<span class="sourceLineNo">108</span>        if ((series &lt; 0) || (series &gt;= getSeriesCount())) {<a name="line.108"></a>
+<span class="sourceLineNo">109</span>            throw new IllegalArgumentException("Series index out of bounds");<a name="line.109"></a>
+<span class="sourceLineNo">110</span>        }<a name="line.110"></a>
+<span class="sourceLineNo">111</span>        return (Comparable) this.seriesKeys.get(series);<a name="line.111"></a>
+<span class="sourceLineNo">112</span>    }<a name="line.112"></a>
+<span class="sourceLineNo">113</span><a name="line.113"></a>
+<span class="sourceLineNo">114</span>    /**<a name="line.114"></a>
+<span class="sourceLineNo">115</span>     * Returns the index of the series with the specified key, or -1 if there<a name="line.115"></a>
+<span class="sourceLineNo">116</span>     * is no such series in the dataset.<a name="line.116"></a>
+<span class="sourceLineNo">117</span>     *<a name="line.117"></a>
+<span class="sourceLineNo">118</span>     * @param seriesKey  the series key (&lt;code&gt;null&lt;/code&gt; permitted).<a name="line.118"></a>
+<span class="sourceLineNo">119</span>     *<a name="line.119"></a>
+<span class="sourceLineNo">120</span>     * @return The index, or -1.<a name="line.120"></a>
+<span class="sourceLineNo">121</span>     */<a name="line.121"></a>
+<span class="sourceLineNo">122</span>    @Override<a name="line.122"></a>
+<span class="sourceLineNo">123</span>    public int indexOf(Comparable seriesKey) {<a name="line.123"></a>
+<span class="sourceLineNo">124</span>        return this.seriesKeys.indexOf(seriesKey);<a name="line.124"></a>
+<span class="sourceLineNo">125</span>    }<a name="line.125"></a>
+<span class="sourceLineNo">126</span><a name="line.126"></a>
+<span class="sourceLineNo">127</span>    /**<a name="line.127"></a>
+<span class="sourceLineNo">128</span>     * Returns the order of the domain (x-) values in the dataset.  In this<a name="line.128"></a>
+<span class="sourceLineNo">129</span>     * implementation, we cannot guarantee that the x-values are ordered, so<a name="line.129"></a>
+<span class="sourceLineNo">130</span>     * this method returns &lt;code&gt;DomainOrder.NONE&lt;/code&gt;.<a name="line.130"></a>
+<span class="sourceLineNo">131</span>     *<a name="line.131"></a>
+<span class="sourceLineNo">132</span>     * @return &lt;code&gt;DomainOrder.NONE&lt;/code&gt;.<a name="line.132"></a>
+<span class="sourceLineNo">133</span>     */<a name="line.133"></a>
+<span class="sourceLineNo">134</span>    @Override<a name="line.134"></a>
+<span class="sourceLineNo">135</span>    public DomainOrder getDomainOrder() {<a name="line.135"></a>
+<span class="sourceLineNo">136</span>        return DomainOrder.NONE;<a name="line.136"></a>
+<span class="sourceLineNo">137</span>    }<a name="line.137"></a>
+<span class="sourceLineNo">138</span><a name="line.138"></a>
+<span class="sourceLineNo">139</span>    /**<a name="line.139"></a>
+<span class="sourceLineNo">140</span>     * Returns the number of items in the specified series.<a name="line.140"></a>
+<span class="sourceLineNo">141</span>     *<a name="line.141"></a>
+<span class="sourceLineNo">142</span>     * @param series  the series index (in the range &lt;code&gt;0&lt;/code&gt; to<a name="line.142"></a>
+<span class="sourceLineNo">143</span>     *     &lt;code&gt;getSeriesCount() - 1&lt;/code&gt;).<a name="line.143"></a>
+<span class="sourceLineNo">144</span>     *<a name="line.144"></a>
+<span class="sourceLineNo">145</span>     * @return The item count.<a name="line.145"></a>
+<span class="sourceLineNo">146</span>     *<a name="line.146"></a>
+<span class="sourceLineNo">147</span>     * @throws IllegalArgumentException if &lt;code&gt;series&lt;/code&gt; is not in the<a name="line.147"></a>
+<span class="sourceLineNo">148</span>     *     specified range.<a name="line.148"></a>
+<span class="sourceLineNo">149</span>     */<a name="line.149"></a>
+<span class="sourceLineNo">150</span>    @Override<a name="line.150"></a>
+<span class="sourceLineNo">151</span>    public int getItemCount(int series) {<a name="line.151"></a>
+<span class="sourceLineNo">152</span>        if ((series &lt; 0) || (series &gt;= getSeriesCount())) {<a name="line.152"></a>
+<span class="sourceLineNo">153</span>            throw new IllegalArgumentException("Series index out of bounds");<a name="line.153"></a>
+<span class="sourceLineNo">154</span>        }<a name="line.154"></a>
+<span class="sourceLineNo">155</span>        double[][] seriesArray = (double[][]) this.seriesList.get(series);<a name="line.155"></a>
+<span class="sourceLineNo">156</span>        return seriesArray[0].length;<a name="line.156"></a>
+<span class="sourceLineNo">157</span>    }<a name="line.157"></a>
+<span class="sourceLineNo">158</span><a name="line.158"></a>
+<span class="sourceLineNo">159</span>    /**<a name="line.159"></a>
+<span class="sourceLineNo">160</span>     * Returns the x-value for an item within a series.<a name="line.160"></a>
+<span class="sourceLineNo">161</span>     *<a name="line.161"></a>
+<span class="sourceLineNo">162</span>     * @param series  the series index (in the range &lt;code&gt;0&lt;/code&gt; to<a name="line.162"></a>
+<span class="sourceLineNo">163</span>     *     &lt;code&gt;getSeriesCount() - 1&lt;/code&gt;).<a name="line.163"></a>
+<span class="sourceLineNo">164</span>     * @param item  the item index (in the range &lt;code&gt;0&lt;/code&gt; to<a name="line.164"></a>
+<span class="sourceLineNo">165</span>     *     &lt;code&gt;getItemCount(series)&lt;/code&gt;).<a name="line.165"></a>
+<span class="sourceLineNo">166</span>     *<a name="line.166"></a>
+<span class="sourceLineNo">167</span>     * @return The x-value.<a name="line.167"></a>
+<span class="sourceLineNo">168</span>     *<a name="line.168"></a>
+<span class="sourceLineNo">169</span>     * @throws ArrayIndexOutOfBoundsException if &lt;code&gt;series&lt;/code&gt; is not<a name="line.169"></a>
+<span class="sourceLineNo">170</span>     *     within the specified range.<a name="line.170"></a>
+<span class="sourceLineNo">171</span>     * @throws ArrayIndexOutOfBoundsException if &lt;code&gt;item&lt;/code&gt; is not<a name="line.171"></a>
+<span class="sourceLineNo">172</span>     *     within the specified range.<a name="line.172"></a>
+<span class="sourceLineNo">173</span>     *<a name="line.173"></a>
+<span class="sourceLineNo">174</span>     * @see #getX(int, int)<a name="line.174"></a>
+<span class="sourceLineNo">175</span>     */<a name="line.175"></a>
+<span class="sourceLineNo">176</span>    @Override<a name="line.176"></a>
+<span class="sourceLineNo">177</span>    public double getXValue(int series, int item) {<a name="line.177"></a>
+<span class="sourceLineNo">178</span>        double[][] seriesData = (double[][]) this.seriesList.get(series);<a name="line.178"></a>
+<span class="sourceLineNo">179</span>        return seriesData[0][item];<a name="line.179"></a>
+<span class="sourceLineNo">180</span>    }<a name="line.180"></a>
+<span class="sourceLineNo">181</span><a name="line.181"></a>
+<span class="sourceLineNo">182</span>    /**<a name="line.182"></a>
+<span class="sourceLineNo">183</span>     * Returns the x-value for an item within a series.<a name="line.183"></a>
+<span class="sourceLineNo">184</span>     *<a name="line.184"></a>
+<span class="sourceLineNo">185</span>     * @param series  the series index (in the range &lt;code&gt;0&lt;/code&gt; to<a name="line.185"></a>
+<span class="sourceLineNo">186</span>     *     &lt;code&gt;getSeriesCount() - 1&lt;/code&gt;).<a name="line.186"></a>
+<span class="sourceLineNo">187</span>     * @param item  the item index (in the range &lt;code&gt;0&lt;/code&gt; to<a name="line.187"></a>
+<span class="sourceLineNo">188</span>     *     &lt;code&gt;getItemCount(series)&lt;/code&gt;).<a name="line.188"></a>
+<span class="sourceLineNo">189</span>     *<a name="line.189"></a>
+<span class="sourceLineNo">190</span>     * @return The x-value.<a name="line.190"></a>
+<span class="sourceLineNo">191</span>     *<a name="line.191"></a>
+<span class="sourceLineNo">192</span>     * @throws ArrayIndexOutOfBoundsException if &lt;code&gt;series&lt;/code&gt; is not<a name="line.192"></a>
+<span class="sourceLineNo">193</span>     *     within the specified range.<a name="line.193"></a>
+<span class="sourceLineNo">194</span>     * @throws ArrayIndexOutOfBoundsException if &lt;code&gt;item&lt;/code&gt; is not<a name="line.194"></a>
+<span class="sourceLineNo">195</span>     *     within the specified range.<a name="line.195"></a>
+<span class="sourceLineNo">196</span>     *<a name="line.196"></a>
+<span class="sourceLineNo">197</span>     * @see #getXValue(int, int)<a name="line.197"></a>
+<span class="sourceLineNo">198</span>     */<a name="line.198"></a>
+<span class="sourceLineNo">199</span>    @Override<a name="line.199"></a>
+<span class="sourceLineNo">200</span>    public Number getX(int series, int item) {<a name="line.200"></a>
+<span class="sourceLineNo">201</span>        return new Double(getXValue(series, item));<a name="line.201"></a>
+<span class="sourceLineNo">202</span>    }<a name="line.202"></a>
+<span class="sourceLineNo">203</span><a name="line.203"></a>
+<span class="sourceLineNo">204</span>    /**<a name="line.204"></a>
+<span class="sourceLineNo">205</span>     * Returns the y-value for an item within a series.<a name="line.205"></a>
+<span class="sourceLineNo">206</span>     *<a name="line.206"></a>
+<span class="sourceLineNo">207</span>     * @param series  the series index (in the range &lt;code&gt;0&lt;/code&gt; to<a name="line.207"></a>
+<span class="sourceLineNo">208</span>     *     &lt;code&gt;getSeriesCount() - 1&lt;/code&gt;).<a name="line.208"></a>
+<span class="sourceLineNo">209</span>     * @param item  the item index (in the range &lt;code&gt;0&lt;/code&gt; to<a name="line.209"></a>
+<span class="sourceLineNo">210</span>     *     &lt;code&gt;getItemCount(series)&lt;/code&gt;).<a name="line.210"></a>
+<span class="sourceLineNo">211</span>     *<a name="line.211"></a>
+<span class="sourceLineNo">212</span>     * @return The y-value.<a name="line.212"></a>
+<span class="sourceLineNo">213</span>     *<a name="line.213"></a>
+<span class="sourceLineNo">214</span>     * @throws ArrayIndexOutOfBoundsException if &lt;code&gt;series&lt;/code&gt; is not<a name="line.214"></a>
+<span class="sourceLineNo">215</span>     *     within the specified range.<a name="line.215"></a>
+<span class="sourceLineNo">216</span>     * @throws ArrayIndexOutOfBoundsException if &lt;code&gt;item&lt;/code&gt; is not<a name="line.216"></a>
+<span class="sourceLineNo">217</span>     *     within the specified range.<a name="line.217"></a>
+<span class="sourceLineNo">218</span>     *<a name="line.218"></a>
+<span class="sourceLineNo">219</span>     * @see #getY(int, int)<a name="line.219"></a>
+<span class="sourceLineNo">220</span>     */<a name="line.220"></a>
+<span class="sourceLineNo">221</span>    @Override<a name="line.221"></a>
+<span class="sourceLineNo">222</span>    public double getYValue(int series, int item) {<a name="line.222"></a>
+<span class="sourceLineNo">223</span>        double[][] seriesData = (double[][]) this.seriesList.get(series);<a name="line.223"></a>
+<span class="sourceLineNo">224</span>        return seriesData[1][item];<a name="line.224"></a>
+<span class="sourceLineNo">225</span>    }<a name="line.225"></a>
+<span class="sourceLineNo">226</span><a name="line.226"></a>
+<span class="sourceLineNo">227</span>    /**<a name="line.227"></a>
+<span class="sourceLineNo">228</span>     * Returns the y-value for an item within a series.<a name="line.228"></a>
+<span class="sourceLineNo">229</span>     *<a name="line.229"></a>
+<span class="sourceLineNo">230</span>     * @param series  the series index (in the range &lt;code&gt;0&lt;/code&gt; to<a name="line.230"></a>
+<span class="sourceLineNo">231</span>     *     &lt;code&gt;getSeriesCount() - 1&lt;/code&gt;).<a name="line.231"></a>
+<span class="sourceLineNo">232</span>     * @param item  the item index (in the range &lt;code&gt;0&lt;/code&gt; to<a name="line.232"></a>
+<span class="sourceLineNo">233</span>     *     &lt;code&gt;getItemCount(series)&lt;/code&gt;).<a name="line.233"></a>
+<span class="sourceLineNo">234</span>     *<a name="line.234"></a>
+<span class="sourceLineNo">235</span>     * @return The y-value.<a name="line.235"></a>
+<span class="sourceLineNo">236</span>     *<a name="line.236"></a>
+<span class="sourceLineNo">237</span>     * @throws ArrayIndexOutOfBoundsException if &lt;code&gt;series&lt;/code&gt; is not<a name="line.237"></a>
+<span class="sourceLineNo">238</span>     *     within the specified range.<a name="line.238"></a>
+<span class="sourceLineNo">239</span>     * @throws ArrayIndexOutOfBoundsException if &lt;code&gt;item&lt;/code&gt; is not<a name="line.239"></a>
+<span class="sourceLineNo">240</span>     *     within the specified range.<a name="line.240"></a>
+<span class="sourceLineNo">241</span>     *<a name="line.241"></a>
+<span class="sourceLineNo">242</span>     * @see #getX(int, int)<a name="line.242"></a>
+<span class="sourceLineNo">243</span>     */<a name="line.243"></a>
+<span class="sourceLineNo">244</span>    @Override<a name="line.244"></a>
+<span class="sourceLineNo">245</span>    public Number getY(int series, int item) {<a name="line.245"></a>
+<span class="sourceLineNo">246</span>        return new Double(getYValue(series, item));<a name="line.246"></a>
+<span class="sourceLineNo">247</span>    }<a name="line.247"></a>
+<span class="sourceLineNo">248</span><a name="line.248"></a>
+<span class="sourceLineNo">249</span>    /**<a name="line.249"></a>
+<span class="sourceLineNo">250</span>     * Adds a series or if a series with the same key already exists replaces<a name="line.250"></a>
+<span class="sourceLineNo">251</span>     * the data for that series, then sends a {@link DatasetChangeEvent} to<a name="line.251"></a>
+<span class="sourceLineNo">252</span>     * all registered listeners.<a name="line.252"></a>
+<span class="sourceLineNo">253</span>     *<a name="line.253"></a>
+<span class="sourceLineNo">254</span>     * @param seriesKey  the series key (&lt;code&gt;null&lt;/code&gt; not permitted).<a name="line.254"></a>
+<span class="sourceLineNo">255</span>     * @param data  the data (must be an array with length 2, containing two<a name="line.255"></a>
+<span class="sourceLineNo">256</span>     *     arrays of equal length, the first containing the x-values and the<a name="line.256"></a>
+<span class="sourceLineNo">257</span>     *     second containing the y-values).<a name="line.257"></a>
+<span class="sourceLineNo">258</span>     */<a name="line.258"></a>
+<span class="sourceLineNo">259</span>    public void addSeries(Comparable seriesKey, double[][] data) {<a name="line.259"></a>
+<span class="sourceLineNo">260</span>        if (seriesKey == null) {<a name="line.260"></a>
+<span class="sourceLineNo">261</span>            throw new IllegalArgumentException(<a name="line.261"></a>
+<span class="sourceLineNo">262</span>                    "The 'seriesKey' cannot be null.");<a name="line.262"></a>
+<span class="sourceLineNo">263</span>        }<a name="line.263"></a>
+<span class="sourceLineNo">264</span>        if (data == null) {<a name="line.264"></a>
+<span class="sourceLineNo">265</span>            throw new IllegalArgumentException("The 'data' is null.");<a name="line.265"></a>
+<span class="sourceLineNo">266</span>        }<a name="line.266"></a>
+<span class="sourceLineNo">267</span>        if (data.length != 2) {<a name="line.267"></a>
+<span class="sourceLineNo">268</span>            throw new IllegalArgumentException(<a name="line.268"></a>
+<span class="sourceLineNo">269</span>                    "The 'data' array must have length == 2.");<a name="line.269"></a>
+<span class="sourceLineNo">270</span>        }<a name="line.270"></a>
+<span class="sourceLineNo">271</span>        if (data[0].length != data[1].length) {<a name="line.271"></a>
+<span class="sourceLineNo">272</span>            throw new IllegalArgumentException(<a name="line.272"></a>
+<span class="sourceLineNo">273</span>                "The 'data' array must contain two arrays with equal length.");<a name="line.273"></a>
+<span class="sourceLineNo">274</span>        }<a name="line.274"></a>
+<span class="sourceLineNo">275</span>        int seriesIndex = indexOf(seriesKey);<a name="line.275"></a>
+<span class="sourceLineNo">276</span>        if (seriesIndex == -1) {  // add a new series<a name="line.276"></a>
+<span class="sourceLineNo">277</span>            this.seriesKeys.add(seriesKey);<a name="line.277"></a>
+<span class="sourceLineNo">278</span>            this.seriesList.add(data);<a name="line.278"></a>
+<span class="sourceLineNo">279</span>        }<a name="line.279"></a>
+<span class="sourceLineNo">280</span>        else {  // replace an existing series<a name="line.280"></a>
+<span class="sourceLineNo">281</span>            this.seriesList.remove(seriesIndex);<a name="line.281"></a>
+<span class="sourceLineNo">282</span>            this.seriesList.add(seriesIndex, data);<a name="line.282"></a>
+<span class="sourceLineNo">283</span>        }<a name="line.283"></a>
+<span class="sourceLineNo">284</span>        notifyListeners(new DatasetChangeEvent(this, this));<a name="line.284"></a>
+<span class="sourceLineNo">285</span>    }<a name="line.285"></a>
+<span class="sourceLineNo">286</span><a name="line.286"></a>
+<span class="sourceLineNo">287</span>    /**<a name="line.287"></a>
+<span class="sourceLineNo">288</span>     * Removes a series from the dataset, then sends a<a name="line.288"></a>
+<span class="sourceLineNo">289</span>     * {@link DatasetChangeEvent} to all registered listeners.<a name="line.289"></a>
+<span class="sourceLineNo">290</span>     *<a name="line.290"></a>
+<span class="sourceLineNo">291</span>     * @param seriesKey  the series key (&lt;code&gt;null&lt;/code&gt; not permitted).<a name="line.291"></a>
+<span class="sourceLineNo">292</span>     *<a name="line.292"></a>
+<span class="sourceLineNo">293</span>     */<a name="line.293"></a>
+<span class="sourceLineNo">294</span>    public void removeSeries(Comparable seriesKey) {<a name="line.294"></a>
+<span class="sourceLineNo">295</span>        int seriesIndex = indexOf(seriesKey);<a name="line.295"></a>
+<span class="sourceLineNo">296</span>        if (seriesIndex &gt;= 0) {<a name="line.296"></a>
+<span class="sourceLineNo">297</span>            this.seriesKeys.remove(seriesIndex);<a name="line.297"></a>
+<span class="sourceLineNo">298</span>            this.seriesList.remove(seriesIndex);<a name="line.298"></a>
+<span class="sourceLineNo">299</span>            notifyListeners(new DatasetChangeEvent(this, this));<a name="line.299"></a>
+<span class="sourceLineNo">300</span>        }<a name="line.300"></a>
+<span class="sourceLineNo">301</span>    }<a name="line.301"></a>
+<span class="sourceLineNo">302</span><a name="line.302"></a>
+<span class="sourceLineNo">303</span>    /**<a name="line.303"></a>
+<span class="sourceLineNo">304</span>     * Tests this &lt;code&gt;DefaultXYDataset&lt;/code&gt; instance for equality with an<a name="line.304"></a>
+<span class="sourceLineNo">305</span>     * arbitrary object.  This method returns &lt;code&gt;true&lt;/code&gt; if and only if:<a name="line.305"></a>
+<span class="sourceLineNo">306</span>     * &lt;ul&gt;<a name="line.306"></a>
+<span class="sourceLineNo">307</span>     * &lt;li&gt;&lt;code&gt;obj&lt;/code&gt; is not &lt;code&gt;null&lt;/code&gt;;&lt;/li&gt;<a name="line.307"></a>
+<span class="sourceLineNo">308</span>     * &lt;li&gt;&lt;code&gt;obj&lt;/code&gt; is an instance of<a name="line.308"></a>
+<span class="sourceLineNo">309</span>     *         &lt;code&gt;DefaultXYDataset&lt;/code&gt;;&lt;/li&gt;<a name="line.309"></a>
+<span class="sourceLineNo">310</span>     * &lt;li&gt;both datasets have the same number of series, each containing<a name="line.310"></a>
+<span class="sourceLineNo">311</span>     *         exactly the same values.&lt;/li&gt;<a name="line.311"></a>
+<span class="sourceLineNo">312</span>     * &lt;/ul&gt;<a name="line.312"></a>
+<span class="sourceLineNo">313</span>     *<a name="line.313"></a>
+<span class="sourceLineNo">314</span>     * @param obj  the object (&lt;code&gt;null&lt;/code&gt; permitted).<a name="line.314"></a>
+<span class="sourceLineNo">315</span>     *<a name="line.315"></a>
+<span class="sourceLineNo">316</span>     * @return A boolean.<a name="line.316"></a>
+<span class="sourceLineNo">317</span>     */<a name="line.317"></a>
+<span class="sourceLineNo">318</span>    @Override<a name="line.318"></a>
+<span class="sourceLineNo">319</span>    public boolean equals(Object obj) {<a name="line.319"></a>
+<span class="sourceLineNo">320</span>        if (obj == this) {<a name="line.320"></a>
+<span class="sourceLineNo">321</span>            return true;<a name="line.321"></a>
+<span class="sourceLineNo">322</span>        }<a name="line.322"></a>
+<span class="sourceLineNo">323</span>        if (!(obj instanceof DefaultXYDataset)) {<a name="line.323"></a>
+<span class="sourceLineNo">324</span>            return false;<a name="line.324"></a>
+<span class="sourceLineNo">325</span>        }<a name="line.325"></a>
+<span class="sourceLineNo">326</span>        DefaultXYDataset that = (DefaultXYDataset) obj;<a name="line.326"></a>
+<span class="sourceLineNo">327</span>        if (!this.seriesKeys.equals(that.seriesKeys)) {<a name="line.327"></a>
+<span class="sourceLineNo">328</span>            return false;<a name="line.328"></a>
+<span class="sourceLineNo">329</span>        }<a name="line.329"></a>
+<span class="sourceLineNo">330</span>        for (int i = 0; i &lt; this.seriesList.size(); i++) {<a name="line.330"></a>
+<span class="sourceLineNo">331</span>            double[][] d1 = (double[][]) this.seriesList.get(i);<a name="line.331"></a>
+<span class="sourceLineNo">332</span>            double[][] d2 = (double[][]) that.seriesList.get(i);<a name="line.332"></a>
+<span class="sourceLineNo">333</span>            double[] d1x = d1[0];<a name="line.333"></a>
+<span class="sourceLineNo">334</span>            double[] d2x = d2[0];<a name="line.334"></a>
+<span class="sourceLineNo">335</span>            if (!Arrays.equals(d1x, d2x)) {<a name="line.335"></a>
+<span class="sourceLineNo">336</span>                return false;<a name="line.336"></a>
+<span class="sourceLineNo">337</span>            }<a name="line.337"></a>
+<span class="sourceLineNo">338</span>            double[] d1y = d1[1];<a name="line.338"></a>
+<span class="sourceLineNo">339</span>            double[] d2y = d2[1];<a name="line.339"></a>
+<span class="sourceLineNo">340</span>            if (!Arrays.equals(d1y, d2y)) {<a name="line.340"></a>
+<span class="sourceLineNo">341</span>                return false;<a name="line.341"></a>
+<span class="sourceLineNo">342</span>            }<a name="line.342"></a>
+<span class="sourceLineNo">343</span>        }<a name="line.343"></a>
+<span class="sourceLineNo">344</span>        return true;<a name="line.344"></a>
+<span class="sourceLineNo">345</span>    }<a name="line.345"></a>
+<span class="sourceLineNo">346</span><a name="line.346"></a>
+<span class="sourceLineNo">347</span>    /**<a name="line.347"></a>
+<span class="sourceLineNo">348</span>     * Returns a hash code for this instance.<a name="line.348"></a>
+<span class="sourceLineNo">349</span>     *<a name="line.349"></a>
+<span class="sourceLineNo">350</span>     * @return A hash code.<a name="line.350"></a>
+<span class="sourceLineNo">351</span>     */<a name="line.351"></a>
+<span class="sourceLineNo">352</span>    @Override<a name="line.352"></a>
+<span class="sourceLineNo">353</span>    public int hashCode() {<a name="line.353"></a>
+<span class="sourceLineNo">354</span>        int result;<a name="line.354"></a>
+<span class="sourceLineNo">355</span>        result = this.seriesKeys.hashCode();<a name="line.355"></a>
+<span class="sourceLineNo">356</span>        result = 29 * result + this.seriesList.hashCode();<a name="line.356"></a>
+<span class="sourceLineNo">357</span>        return result;<a name="line.357"></a>
+<span class="sourceLineNo">358</span>    }<a name="line.358"></a>
+<span class="sourceLineNo">359</span><a name="line.359"></a>
+<span class="sourceLineNo">360</span>    /**<a name="line.360"></a>
+<span class="sourceLineNo">361</span>     * Creates an independent copy of this dataset.<a name="line.361"></a>
+<span class="sourceLineNo">362</span>     *<a name="line.362"></a>
+<span class="sourceLineNo">363</span>     * @return The cloned dataset.<a name="line.363"></a>
+<span class="sourceLineNo">364</span>     *<a name="line.364"></a>
+<span class="sourceLineNo">365</span>     * @throws CloneNotSupportedException if there is a problem cloning the<a name="line.365"></a>
+<span class="sourceLineNo">366</span>     *     dataset (for instance, if a non-cloneable object is used for a<a name="line.366"></a>
+<span class="sourceLineNo">367</span>     *     series key).<a name="line.367"></a>
+<span class="sourceLineNo">368</span>     */<a name="line.368"></a>
+<span class="sourceLineNo">369</span>    @Override<a name="line.369"></a>
+<span class="sourceLineNo">370</span>    public Object clone() throws CloneNotSupportedException {<a name="line.370"></a>
+<span class="sourceLineNo">371</span>        DefaultXYDataset clone = (DefaultXYDataset) super.clone();<a name="line.371"></a>
+<span class="sourceLineNo">372</span>        clone.seriesKeys = new java.util.ArrayList(this.seriesKeys);<a name="line.372"></a>
+<span class="sourceLineNo">373</span>        clone.seriesList = new ArrayList(this.seriesList.size());<a name="line.373"></a>
+<span class="sourceLineNo">374</span>        for (int i = 0; i &lt; this.seriesList.size(); i++) {<a name="line.374"></a>
+<span class="sourceLineNo">375</span>            double[][] data = (double[][]) this.seriesList.get(i);<a name="line.375"></a>
+<span class="sourceLineNo">376</span>            double[] x = data[0];<a name="line.376"></a>
+<span class="sourceLineNo">377</span>            double[] y = data[1];<a name="line.377"></a>
+<span class="sourceLineNo">378</span>            double[] xx = new double[x.length];<a name="line.378"></a>
+<span class="sourceLineNo">379</span>            double[] yy = new double[y.length];<a name="line.379"></a>
+<span class="sourceLineNo">380</span>            System.arraycopy(x, 0, xx, 0, x.length);<a name="line.380"></a>
+<span class="sourceLineNo">381</span>            System.arraycopy(y, 0, yy, 0, y.length);<a name="line.381"></a>
+<span class="sourceLineNo">382</span>            clone.seriesList.add(i, new double[][] {xx, yy});<a name="line.382"></a>
+<span class="sourceLineNo">383</span>        }<a name="line.383"></a>
+<span class="sourceLineNo">384</span>        return clone;<a name="line.384"></a>
+<span class="sourceLineNo">385</span>    }<a name="line.385"></a>
+<span class="sourceLineNo">386</span><a name="line.386"></a>
+<span class="sourceLineNo">387</span>}<a name="line.387"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>
