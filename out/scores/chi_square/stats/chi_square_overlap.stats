@@ -1,0 +1,32 @@
+
+chi_square_bigram_NP.overlap
+     anger           anticipation        disgust              fear              joy         
+ Min.   :   0.000   Min.   :   0.00   Min.   :   0.000   Min.   :  0.000   Min.   :   0.00  
+ 1st Qu.:   0.000   1st Qu.:   0.00   1st Qu.:   0.000   1st Qu.:  0.000   1st Qu.:   0.00  
+ Median :   0.000   Median :   0.00   Median :   0.000   Median :  0.000   Median :   0.08  
+ Mean   :  68.591   Mean   :  84.22   Mean   :  72.883   Mean   :  7.994   Mean   : 193.66  
+ 3rd Qu.:   1.272   3rd Qu.:  27.14   3rd Qu.:   1.198   3rd Qu.:  0.096   3rd Qu.: 308.59  
+ Max.   :5821.443   Max.   :2876.28   Max.   :3665.581   Max.   :686.143   Max.   :5052.57  
+    sadness           surprise            trust         
+ Min.   :   0.00   Min.   :   0.000   Min.   :   0.000  
+ 1st Qu.:   0.00   1st Qu.:   0.000   1st Qu.:   0.000  
+ Median :   0.00   Median :   0.000   Median :   0.000  
+ Mean   :  48.08   Mean   :  83.837   Mean   :  89.260  
+ 3rd Qu.:   0.00   3rd Qu.:   2.295   3rd Qu.:   5.989  
+ Max.   :9428.41   Max.   :8393.690   Max.   :2787.859  
+
+chi_square_unigram_NP.overlap
+     anger           anticipation         disgust               fear                joy          
+ Min.   :    0.00   Min.   :    0.00   Min.   :    0.000   Min.   :    0.000   Min.   :    0.00  
+ 1st Qu.:    1.35   1st Qu.:   40.87   1st Qu.:    0.854   1st Qu.:    2.597   1st Qu.:    3.06  
+ Median :   15.62   Median :  102.37   Median :   13.733   Median :   12.676   Median :   35.32  
+ Mean   :  283.19   Mean   :  469.74   Mean   :  274.425   Mean   :  115.316   Mean   :  791.93  
+ 3rd Qu.:  120.92   3rd Qu.:  275.30   3rd Qu.:  129.474   3rd Qu.:   61.905   3rd Qu.:  658.45  
+ Max.   :18139.29   Max.   :18580.96   Max.   :13455.356   Max.   :10333.389   Max.   :52104.84  
+    sadness            surprise            trust         
+ Min.   :    0.00   Min.   :   0.000   Min.   :   0.000  
+ 1st Qu.:    0.05   1st Qu.:   0.551   1st Qu.:   1.708  
+ Median :    1.93   Median :   6.449   Median :  16.307  
+ Mean   :  153.48   Mean   : 260.223   Mean   : 397.806  
+ 3rd Qu.:   11.87   3rd Qu.:  72.183   3rd Qu.: 235.647  
+ Max.   :34789.83   Max.   :8420.132   Max.   :8615.495  

@@ -1,0 +1,175 @@
+
+anger_pmi_unigram_np_cause.txt
+Top 100
+ NRC emotion overlap NRC sentiment overlap
+ Mode :logical       Mode :logical        
+ FALSE:27            FALSE:16             
+ TRUE :12            TRUE :23             
+ NA's :61            NA's :61             
+
+Top 1000
+ NRC emotion overlap NRC sentiment overlap
+ Mode :logical       Mode :logical        
+ FALSE:146           FALSE:87             
+ TRUE :44            TRUE :103            
+ NA's :810           NA's :810            
+
+All
+ NRC emotion overlap NRC sentiment overlap
+ Mode :logical       Mode :logical        
+ FALSE:4430          FALSE:3656           
+ TRUE :608           TRUE :1382           
+ NA's :17590         NA's :17590          
+
+anticipation_pmi_unigram_np_cause.txt
+Top 100
+ NRC emotion overlap NRC sentiment overlap
+ Mode :logical       Mode :logical        
+ FALSE:12            FALSE:10             
+ TRUE :1             TRUE :3              
+ NA's :87            NA's :87             
+
+Top 1000
+ NRC emotion overlap NRC sentiment overlap
+ Mode :logical       Mode :logical        
+ FALSE:127           FALSE:110            
+ TRUE :21            TRUE :38             
+ NA's :852           NA's :852            
+
+All
+ NRC emotion overlap NRC sentiment overlap
+ Mode :logical       Mode :logical        
+ FALSE:6271          FALSE:5395           
+ TRUE :544           TRUE :1420           
+ NA's :79506         NA's :79506          
+
+disgust_pmi_unigram_np_cause.txt
+Top 100
+ NRC emotion overlap NRC sentiment overlap
+ Mode :logical       Mode :logical        
+ FALSE:12            FALSE:5              
+ TRUE :5             TRUE :12             
+ NA's :83            NA's :83             
+
+Top 1000
+ NRC emotion overlap NRC sentiment overlap
+ Mode :logical       Mode :logical        
+ FALSE:145           FALSE:95             
+ TRUE :43            TRUE :93             
+ NA's :812           NA's :812            
+
+All
+ NRC emotion overlap NRC sentiment overlap
+ Mode :logical       Mode :logical        
+ FALSE:4287          FALSE:3495           
+ TRUE :402           TRUE :1194           
+ NA's :13845         NA's :13845          
+
+fear_pmi_unigram_np_cause.txt
+Top 100
+ NRC emotion overlap NRC sentiment overlap
+ Mode :logical       Mode :logical        
+ FALSE:13            FALSE:10             
+ TRUE :20            TRUE :23             
+ NA's :67            NA's :67             
+
+Top 1000
+ NRC emotion overlap NRC sentiment overlap
+ Mode :logical       Mode :logical        
+ FALSE:118           FALSE:80             
+ TRUE :62            TRUE :100            
+ NA's :820           NA's :820            
+
+All
+ NRC emotion overlap NRC sentiment overlap
+ Mode :logical       Mode :logical        
+ FALSE:4253          FALSE:3629           
+ TRUE :751           TRUE :1375           
+ NA's :21723         NA's :21723          
+
+joy_pmi_unigram_np_cause.txt
+Top 100
+ NRC emotion overlap NRC sentiment overlap
+ Mode :logical       Mode :logical        
+ FALSE:29            FALSE:18             
+ TRUE :10            TRUE :21             
+ NA's :61            NA's :61             
+
+Top 1000
+ NRC emotion overlap NRC sentiment overlap
+ Mode :logical       Mode :logical        
+ FALSE:246           FALSE:176            
+ TRUE :78            TRUE :148            
+ NA's :676           NA's :676            
+
+All
+ NRC emotion overlap NRC sentiment overlap
+ Mode :logical       Mode :logical        
+ FALSE:5963          FALSE:4990           
+ TRUE :493           TRUE :1466           
+ NA's :43475         NA's :43475          
+
+sadness_pmi_unigram_np_cause.txt
+Top 100
+ NRC emotion overlap NRC sentiment overlap
+ Mode :logical       Mode :logical        
+ FALSE:13            FALSE:8              
+ TRUE :14            TRUE :19             
+ NA's :73            NA's :73             
+
+Top 1000
+ NRC emotion overlap NRC sentiment overlap
+ Mode :logical       Mode :logical        
+ FALSE:64            FALSE:37             
+ TRUE :27            TRUE :54             
+ NA's :909           NA's :909            
+
+All
+ NRC emotion overlap NRC sentiment overlap
+ Mode :logical       Mode :logical        
+ FALSE:2464          FALSE:2056           
+ TRUE :305           TRUE :713            
+ NA's :8349          NA's :8349           
+
+surprise_pmi_unigram_np_cause.txt
+Top 100
+ NRC emotion overlap NRC sentiment overlap
+ Mode :logical       Mode :logical        
+ FALSE:2             FALSE:2              
+ NA's :98            NA's :98             
+
+Top 1000
+ NRC emotion overlap NRC sentiment overlap
+ Mode :logical       Mode :logical        
+ FALSE:30            FALSE:30             
+ TRUE :3             TRUE :3              
+ NA's :967           NA's :967            
+
+All
+ NRC emotion overlap NRC sentiment overlap
+ Mode :logical       Mode :logical        
+ FALSE:3691          FALSE:3132           
+ TRUE :223           TRUE :782            
+ NA's :18898         NA's :18898          
+
+trust_pmi_unigram_np_cause.txt
+Top 100
+ NRC emotion overlap NRC sentiment overlap
+ Mode :logical       Mode :logical        
+ FALSE:41            FALSE:38             
+ TRUE :7             TRUE :10             
+ NA's :52            NA's :52             
+
+Top 1000
+ NRC emotion overlap NRC sentiment overlap
+ Mode :logical       Mode :logical        
+ FALSE:258           FALSE:247            
+ TRUE :58            TRUE :69             
+ NA's :684           NA's :684            
+
+All
+ NRC emotion overlap NRC sentiment overlap
+ Mode :logical       Mode :logical        
+ FALSE:4458          FALSE:4005           
+ TRUE :635           TRUE :1088           
+ NA's :18799         NA's :18799          

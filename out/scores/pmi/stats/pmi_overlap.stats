@@ -1,0 +1,32 @@
+
+pmi_bigram_NP.overlap
+     anger         anticipation    disgust           fear              joy         
+ Min.   :0.0000   Min.   :0     Min.   :0.000   Min.   :0.00000   Min.   :0.00000  
+ 1st Qu.:0.0000   1st Qu.:0     1st Qu.:0.000   1st Qu.:0.00000   1st Qu.:0.00000  
+ Median :0.6474   Median :0     Median :1.108   Median :0.00000   Median :0.00000  
+ Mean   :0.7970   Mean   :0     Mean   :1.055   Mean   :0.01993   Mean   :0.06038  
+ 3rd Qu.:1.4867   3rd Qu.:0     3rd Qu.:1.855   3rd Qu.:0.00000   3rd Qu.:0.00000  
+ Max.   :2.8879   Max.   :0     Max.   :3.242   Max.   :1.19230   Max.   :1.52762  
+    sadness          surprise         trust       
+ Min.   :0.0000   Min.   :0.000   Min.   :0.0000  
+ 1st Qu.:0.0000   1st Qu.:0.000   1st Qu.:0.0000  
+ Median :0.0000   Median :1.460   Median :0.0000  
+ Mean   :0.5305   Mean   :1.286   Mean   :0.5267  
+ 3rd Qu.:1.0920   3rd Qu.:2.153   3rd Qu.:1.0004  
+ Max.   :3.1993   Max.   :3.155   Max.   :2.7981  
+
+pmi_unigram_NP.overlap
+     anger         anticipation    disgust            fear              joy        
+ Min.   :0.0000   Min.   :0     Min.   :0.0000   Min.   :0.00000   Min.   :0.0000  
+ 1st Qu.:0.7936   1st Qu.:0     1st Qu.:0.7255   1st Qu.:0.00000   1st Qu.:0.0000  
+ Median :1.2225   Median :0     Median :1.2924   Median :0.00000   Median :0.0000  
+ Mean   :1.1823   Mean   :0     Mean   :1.2197   Mean   :0.03308   Mean   :0.1909  
+ 3rd Qu.:1.6203   3rd Qu.:0     3rd Qu.:1.7748   3rd Qu.:0.00000   3rd Qu.:0.3441  
+ Max.   :2.7312   Max.   :0     Max.   :3.0671   Max.   :1.07397   Max.   :1.4380  
+    sadness          surprise          trust       
+ Min.   :0.0000   Min.   :0.0000   Min.   :0.0000  
+ 1st Qu.:0.0000   1st Qu.:0.9836   1st Qu.:0.0000  
+ Median :0.0000   Median :1.6321   Median :0.7127  
+ Mean   :0.3742   Mean   :1.4865   Mean   :0.7224  
+ 3rd Qu.:0.6222   3rd Qu.:2.0564   3rd Qu.:1.1860  
+ Max.   :3.1016   Max.   :3.0969   Max.   :2.6772  
