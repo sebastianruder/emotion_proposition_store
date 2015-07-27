@@ -1,6 +1,5 @@
 import java.io.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Class to compare emotion annotations of the three annotators, calculate stats and inter-annotator agreeement.
@@ -10,14 +9,294 @@ import java.util.Map;
 public class AnnotationComparer {
 
     /**
+     * The directory of the files from which the bigrams should be retrieved.
+     */
+    private static String pmiDir = "/home/sebastian/git/sentiment_analysis/out/scores/pmi/";
+
+    /**
      * Main method to compare annotations.
      * @param args
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
-        args = new String[] { "/home/sebastian/git/sentiment_analysis/annotation/annotated/" };
+        // args = new String[] { "/home/sebastian/git/sentiment_analysis/annotation/annotated/" };
 
-        compareAnnotations(args[0]);
+        // int noOfPatterns = 180;
+        // compareAnnotations(args[0], 180);
+
+        String bigramPath = "/home/sebastian/git/sentiment_analysis/annotation/bigrams_annotated/";
+        int noOfBigrams = 320;
+        compareBigramAnnotations(bigramPath, noOfBigrams);
+    }
+
+    private static void compareBigramAnnotations(String dirPath, int noOfBigrams) throws IOException {
+
+        File dir = new File(dirPath);
+        if (!dir.isDirectory()) {
+            throw new IllegalArgumentException(String.format("%s is not a directory.", dirPath));
+        }
+
+        // get only .annotated files
+        String[] fileNames = dir.list(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                return name.endsWith(".annotated");
+            }
+        });
+
+        // the array of emotions, i.e. categories
+        String[] emotions = new String[] { "joy", "trust", "fear", "surprise", "sadness", "disgust", "anger", "anticipation", "none" };
+
+        String[] sentiments = new String[] { "positive", "negative", "neutral", "none" };
+
+        // matrix to store bigram emotion counts
+        int[][] matrix = new int[noOfBigrams][9];
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                matrix[i][j] = 0;
+            }
+        }
+
+        // matrix to store bigram sentiment counts
+        int[][] sentimentMatrix = new int[noOfBigrams][4];
+        for (int i = 0; i < sentimentMatrix.length; i++) {
+            for (int j = 0; j < sentimentMatrix[0].length; j++) {
+                sentimentMatrix[i][j] = 0;
+            }
+        }
+
+
+        // array to store all annotated bigrams
+        String[] bigrams = new String[matrix.length];
+
+        for (String fileName : fileNames) {
+            String filePath = dirPath + fileName;
+            BufferedReader reader = new BufferedReader(new FileReader(filePath));
+            String line = reader.readLine();
+            int i = -2; // row count
+            while (line != null && !line.equals("")) {
+                if (++i == -1) {
+                    line = reader.readLine();
+                    continue;
+                }
+
+                String[] lineSplit = line.split("\t");
+                bigrams[i] = lineSplit[0];
+                boolean hasEmotion  = lineSplit[1].toLowerCase().equals("yes") ? true : false;
+                if (hasEmotion) {
+                    for (int j = 0; j < emotions.length; j++) {
+                        String emotion = lineSplit[2].toLowerCase();
+                        if (emotion.equals(emotions[j])) {
+                            matrix[i][j]++;
+                            sentimentMatrix[i][Enums.emotionToSentiment(Enums.Emotions.valueOf(emotion)).ordinal()]++;
+                        }
+                    }
+                }
+                else {
+                    // increase none count
+                    matrix[i][8]++;
+                    sentimentMatrix[i][3]++;
+                }
+
+                line = reader.readLine();
+            }
+
+            reader.close();
+        }
+
+        int unanimousCount = 0; // count of unanimously labeled expressions
+        int majorityCount = 0; // count of expressions where the majority agreed
+        int unanimousSentimentCount = 0;
+        int majoritySentimentCount = 0;
+        int[] majEmoCount = new int[emotions.length];
+        int[] majSentimentCount = new int[sentiments.length];
+        Map<String, String> goldBigramEmotionMap = new HashMap<String, String>();
+        Map<String, String> goldBigramSentimentMap = new HashMap<String, String>();
+
+        for (int i = 0; i < matrix.length; i++) {
+            System.out.printf("%s", bigrams[i]);
+            // resultWriter.printf("%s", bigrams[i]);
+
+            for (int j = 0; j < matrix[0].length; j++ ) {
+
+                if (matrix[i][j] == 3) {
+                    unanimousCount++;
+                }
+
+                if (matrix[i][j] >= 2) {
+                    majorityCount++;
+                    majEmoCount[j] += 1;
+                    goldBigramEmotionMap.put(bigrams[i], emotions[j]);
+                }
+
+                if (matrix[i][j] > 0) {
+                    System.out.printf("; %s: %d", emotions[j], matrix[i][j]);
+                }
+            }
+
+            for (int j = 0; j < sentimentMatrix[0].length; j++) {
+
+                if (sentimentMatrix[i][j] == 3) {
+                    unanimousSentimentCount++;
+                }
+
+                if (sentimentMatrix[i][j] >= 2) {
+                    majoritySentimentCount++;
+                    majSentimentCount[j] += 1;
+                    goldBigramSentimentMap.put(bigrams[i], sentiments[j]);
+                }
+
+                if (sentimentMatrix[i][j] > 0) {
+                    System.out.printf("; %s: %d", sentiments[j], sentimentMatrix[i][j]);
+                }
+            }
+
+            System.out.println();
+            // resultWriter.println();
+        }
+
+        double k = calculateFleissKappa(matrix, 3); // Fleiss' kappa for all expressions
+
+        Map<String, String> bigramEmotionMap = AnnotationTaskGenerator.getBigramsForAnnotation(pmiDir, 20);
+        Map<String, String> bigramSentimentMap = new HashMap<String, String>();
+
+        for (Map.Entry<String, String> entry : bigramEmotionMap.entrySet()) {
+            String emotion = entry.getValue();
+            String bigramNgramType = entry.getKey();
+            if (emotion.equals("none")) {
+                bigramSentimentMap.put(bigramNgramType, emotion);
+            }
+            else {
+                bigramSentimentMap.put(bigramNgramType, Enums.emotionToSentiment(Enums.Emotions.valueOf(emotion)).toString());
+            }
+        }
+
+        List<String> ngramTypes = Arrays.asList(new String[] { "np_cause", "s_cause_pred_dobj" });
+
+        System.out.print("\t");
+        for (String ngramType : ngramTypes) {
+            System.out.printf("%s\t\t\t", ngramType);
+        }
+
+        System.out.print("\nEmotion/sentiment\tPrecision\tRecall\tF1\tPrecision\tRecall\tF1");
+
+        System.out.println();
+        for (Enums.Emotions emotionEnum : Enums.Emotions.values()) {
+            System.out.print(emotionEnum.toString() + "\t");
+            for (String ngramType : ngramTypes) {
+                compareAgainstGoldStandard(goldBigramEmotionMap, bigramEmotionMap, Arrays.asList(new String[]{emotionEnum.toString()}), Arrays.asList(new String[]{ngramType}));
+            }
+
+            System.out.println();
+        }
+
+        System.out.print("Total\t");
+        for (String ngramType : ngramTypes) {
+            compareAgainstGoldStandard(goldBigramEmotionMap, bigramEmotionMap, Arrays.asList(emotions), Arrays.asList(new String[]{ ngramType }));
+        }
+
+        System.out.println();
+
+        for (Enums.Sentiment sentimentEnum : Enums.Sentiment.values()) {
+            System.out.print(sentimentEnum.toString() + "\t");
+            for (String ngramType : ngramTypes) {
+                compareAgainstGoldStandard(goldBigramSentimentMap, bigramSentimentMap, Arrays.asList(new String[] {sentimentEnum.toString()}), Arrays.asList(new String[]{ngramType}));
+            }
+
+            System.out.println();
+        }
+
+        System.out.print("total\t");
+        for (String ngramType : ngramTypes) {
+            compareAgainstGoldStandard(goldBigramSentimentMap, bigramSentimentMap, Arrays.asList(sentiments), Arrays.asList(new String[]{ ngramType }));
+        }
+
+        System.out.printf(
+                "\nExpressions with unanimous emotions: %d\n" +
+                        "Expressions with majority emotions: %d\n" +
+                        "\nExpressions with unanimous sentiment: %d\n" +
+                        "Expressions with majority sentiment: %d\n" +
+                        "Fleiss' kappa: %f\n",
+                unanimousCount, majorityCount, unanimousSentimentCount, majoritySentimentCount, k
+        );
+
+        System.out.printf(
+                "\nMajority emotions:\n" +
+                        "Joy:\t%d\n" +
+                        "Trust:\t%d\n" +
+                        "Fear:\t%d\n" +
+                        "Surprise:\t%d\n" +
+                        "Sadness:\t%d\n" +
+                        "Disgust:\t%d\n" +
+                        "Anger:\t%d\n" +
+                        "Anticipation:\t%d\n",
+                majEmoCount[0], majEmoCount[1], majEmoCount[2], majEmoCount[3], majEmoCount[4], majEmoCount[5],
+                majEmoCount[6], majEmoCount[7]
+        );
+
+        System.out.printf(
+                "\nMajority sentiments:\n" +
+                        "Positive:\t%d\n" +
+                        "Negative:\t%d\n" +
+                        "Neutral:\t%d\n" +
+                        "None:\t%d\n",
+                majSentimentCount[0], majSentimentCount[1], majSentimentCount[2], majSentimentCount[3]
+        );
+    }
+
+    /**
+     * Compare a bigram map against a gold standard map. Gold standard contains less bigrams, as only majority bigrams
+     * have been included.
+     * @param goldStandardMap key: bigram, value: gold emotion or sentiment
+     * @param map key: bigram, value: emotion or sentiment
+     */
+    private static void compareAgainstGoldStandard(Map<String, String> goldStandardMap, Map<String, String> map,
+                                                   List<String> emotionsToInclude, List<String> ngramTypesToInclude) {
+
+        int truePositives = 0;
+        int falsePositives = 0;
+        int trueNegatives = 0;
+        int falseNegatives = 0;
+        List<String> truePositiveList = new ArrayList<String>();
+        List<String> falsePositiveList = new ArrayList<String>();
+        List<String> falseNegativeList = new ArrayList<String>();
+        for (Map.Entry<String, String> entry : map.entrySet()) {
+            String emotion = entry.getValue();
+            String bigram = entry.getKey().split("\t")[0];
+            String ngramType = entry.getKey().split("\t")[1];
+
+            if (!emotionsToInclude.contains(emotion) || !ngramTypesToInclude.contains(ngramType)) {
+                if (ngramTypesToInclude.contains(ngramType)) {
+                    if (goldStandardMap.containsKey(bigram)) {
+                        String goldEmotion = goldStandardMap.get(bigram);
+                        if (emotionsToInclude.contains(goldEmotion)) {
+                            falseNegatives++;
+                            falseNegativeList.add(bigram);
+                        }
+                    }
+                }
+
+                continue;
+            }
+
+            if (goldStandardMap.containsKey(bigram)) {
+                String goldEmotion = goldStandardMap.get(bigram);
+                if (emotion.equals(goldEmotion)) {
+                    truePositives++;
+                    truePositiveList.add(bigram);
+                    // System.out.printf("Correct: %s\t%s\n", bigram, emotion);
+                }
+                else {
+                    falsePositives++;
+                    falsePositiveList.add(bigram + ":" + goldEmotion);
+                }
+            }
+        }
+
+        double precision = (double)truePositives / ((double)truePositives + falsePositives);
+        double recall = (double)truePositives / ((double)truePositives + falseNegatives);
+        double fScore = 2 * (precision * recall / (precision + recall));
+        System.out.printf(Locale.US, "%.2f\t%.2f\t%.2f\t", precision, recall, fScore);
     }
 
     /**
@@ -25,7 +304,7 @@ public class AnnotationComparer {
      * @param dirPath the directory of the .annotated files
      * @throws IOException if the directory is not found
      */
-    private static void compareAnnotations(String dirPath) throws IOException {
+    private static void compareAnnotations(String dirPath, int noOfPatterns) throws IOException {
 
         File dir = new File(dirPath);
         if (!dir.isDirectory()) {
@@ -44,7 +323,7 @@ public class AnnotationComparer {
         String[] emotions = new String[] { "joy", "trust", "fear", "surprise", "sadness", "disgust", "anger", "anticipation", "none" };
 
         // matrix to store first choice emotion counts
-        int[][] matrix = new int[190][9];
+        int[][] matrix = new int[noOfPatterns][9];
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix[0].length; j++) {
                 matrix[i][j] = 0;
@@ -52,7 +331,7 @@ public class AnnotationComparer {
         }
 
         // matrix to store first and second choice emotion counts
-        int[][] matrix2ndChoice = new int[190][emotions.length];
+        int[][] matrix2ndChoice = new int[noOfPatterns][emotions.length];
         for (int i = 0; i < matrix2ndChoice.length; i++) {
             for (int j = 0; j < matrix2ndChoice[0].length; j++) {
                 matrix[i][j] = 0;
@@ -60,7 +339,7 @@ public class AnnotationComparer {
         }
 
         // matrix to store degrees of emotions; 25 = 8 emotions * 3 degrees + 1 (none)
-        int[][] degreeMatrix = new int[190][25];
+        int[][] degreeMatrix = new int[noOfPatterns][25];
         for (int i = 0; i < degreeMatrix.length; i++) {
             for (int j = 0; j < degreeMatrix[0].length; j++) {
                 degreeMatrix[i][j] = 0;
@@ -91,7 +370,7 @@ public class AnnotationComparer {
                         }
                         else {
                             String degree = lineSplit[1].split("_")[1];
-                            degreeMatrix[i][j * 3 + degree.length()]++;
+                            degreeMatrix[i][j * 3 + degree.length() - 1]++;
                         }
                     }
 
@@ -211,14 +490,14 @@ public class AnnotationComparer {
 
         String emotionString = String.format(
                 "\nMajority emotions:\n" +
-                        "Joy: %d\n" +
-                        "Trust: %d\n" +
-                        "Fear: %d\n" +
-                        "Surprise: %d\n" +
-                        "Sadness: %d\n" +
-                        "Disgust: %d\n" +
-                        "Anger: %d\n" +
-                        "Anticipation: %d\n",
+                        "Joy:\t%d\n" +
+                        "Trust:\t%d\n" +
+                        "Fear:\t%d\n" +
+                        "Surprise:\t%d\n" +
+                        "Sadness:\t%d\n" +
+                        "Disgust:\t%d\n" +
+                        "Anger:\t%d\n" +
+                        "Anticipation:\t%d\n",
                 majEmoCount[0], majEmoCount[1], majEmoCount[2], majEmoCount[3], majEmoCount[4], majEmoCount[5],
                 majEmoCount[6], majEmoCount[7]
         );

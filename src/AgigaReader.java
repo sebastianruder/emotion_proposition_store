@@ -191,8 +191,6 @@ public class AgigaReader {
 //                                System.out.println(pennString);
 
                                 List<Tree> leaves = root.getLeaves();
-                                Tree leftNode = leaves.get(leftIdx);
-                                Tree rightNode = leaves.get(rightIdx);
 
                                 // retrieve information from emotion map if order is reversed, if object is an NP
                                 Boolean orderIsReversed = emotionMap.get(emotion).get(pattern).get(

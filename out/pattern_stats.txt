@@ -1,653 +1,310 @@
-anticipation	expect that	S	2642
-joy	enjoy	NP	1408
-fear	fear that	S	1380
-anticipation	expect	NP	1338
-anticipation	predict that	S	1246
-trust	rely on	NP	707
-disgust	hate	NP	636
-fear	be afraid that	S	445
-anticipation	prepare for	NP	445
-anticipation	await	NP	441
-anticipation	concern	NP	399
-fear	fear	NP	348
-trust	encourage	NP	326
-fear	worry about	NP	298
-sadness	regret that	S	297
-joy	enjoy that	S	263
-surprise	surprise	NP	263
-disgust	bother	NP	244
-anticipation	look forward to	NP	243
-anticipation	await	S	240
-fear	worry	NP	237
-joy	be proud of	NP	234
-anticipation	anticipate	NP	233
-anticipation	predict	NP	224
-joy	be lucky that	S	212
-anger	provoke	NP	197
-fear	scare	NP	185
-anticipation	hope for	NP	181
-disgust	hate that	S	175
-joy	cheer	NP	175
-anticipation	look forward to	S	167
-disgust	dislike	NP	156
-surprise	stun	NP	155
-anticipation	be hopeful that	S	154
-sadness	regret	NP	148
-trust	count on	NP	145
-trust	trust	NP	141
-disgust	shock	NP	137
-surprise	overwhelm	NP	131
-trust	appeal	NP	121
-trust	impress	NP	117
-sadness	discourage	NP	115
-fear	shun	NP	112
-joy	relish	NP	111
-fear	be afraid of	NP	107
-fear	be anxious that	S	102
-joy	entertain	NP	102
-anger	harass	NP	89
-anticipation	foresee	NP	88
-anticipation	be optimistic that	S	85
-trust	reassure	NP	83
-trust	trust that	S	82
-anger	irritate	NP	80
-anticipation	forecast that	S	80
-joy	please	NP	79
-anticipation	crave	NP	76
-anger	infuriate	NP	75
-sadness	devastate	NP	71
-disgust	alienate	NP	68
-joy	satisfy	NP	68
-joy	savor	NP	68
-anger	be angry that	S	67
-anticipation	covet	NP	67
-anticipation	be intent on	S	64
-sadness	be sad that erb	S	63
-fear	frighten	NP	63
-disgust	upset	NP	62
-joy	arouse	NP	62
-sadness	frustrate	NP	61
-sadness	deplore	NP	59
-anger	offend	NP	57
-sadness	mourn that	S	57
-surprise	confuse	NP	55
-sadness	be disappoint that	NP	55
-sadness	afflict	NP	54
-disgust	despise	NP	53
-sadness	be unhappy that	S	52
-disgust	annoy	NP	52
-joy	be happy about	NP	49
-sadness	trouble	NP	48
-anticipation	forecast	NP	48
-joy	be enthusiastic about	NP	48
-sadness	mourn	NP	46
-joy	delight	NP	46
-disgust	disturb	NP	43
-anticipation	long for	NP	42
-surprise	baffle	NP	42
-trust	captivate	NP	40
-disgust	loathe	NP	40
-joy	be proud of	S	40
-anticipation	desire	NP	39
-anticipation	aspire to	NP	39
-joy	wow	NP	39
-sadness	depress	NP	38
-anger	grate	NP	38
-disgust	insult	NP	37
-anticipation	prepare for	S	37
-anger	excite	NP	36
-anticipation	hope for	S	35
-surprise	rattle	NP	35
-joy	fascinate	NP	35
-surprise	stagger	NP	35
-anger	rankle	NP	34
-surprise	puzzle	NP	33
-anticipation	pine for	NP	32
-surprise	amaze	NP	31
-fear	embarrass	NP	31
-anger	fret about	NP	30
-anticipation	yearn for	NP	30
-surprise	confound	NP	30
-anticipation	intrigue	NP	29
-fear	dread	NP	29
-anger	enrage	NP	29
-disgust	abhor	NP	27
-fear	unnerve	NP	27
-joy	be satisfy that	S	27
-disgust	repel	NP	27
-disgust	disdain	NP	26
-anger	inflame	NP	26
-disgust	scorn	NP	26
-disgust	envy	NP	26
-surprise	startle	NP	25
-sadness	disappoint	NP	24
-anger	aggravate	NP	24
-anger	exacerbate	NP	24
-fear	be frightened that	S	24
-anticipation	aspire	NP	24
-joy	amuse	NP	23
-joy	comfort	NP	23
-disgust	irk	NP	23
-trust	soothe	NP	22
-anticipation	be curious about	NP	21
-disgust	shame	NP	21
-fear	be scared of	NP	20
-sadness	sting	NP	20
-anticipation	be eager for	NP	20
-trust	calm	NP	19
-anger	outrage	NP	19
-fear	intimidate	NP	19
-surprise	boggle	NP	18
-anticipation	count on	S	17
-fear	torment	NP	17
-anger	be angry about	S	17
-fear	be scared that	S	17
-sadness	humiliate	NP	17
-joy	be ecstatic that	S	16
-sadness	be unhappy about	NP	16
-joy	be thrill that	S	16
-joy	rejoice	S	16
-sadness	agonize over	NP	15
-anticipation	be nervous about	NP	15
-sadness	grieve that	S	14
-fear	be anxious about	NP	14
-anticipation	ache for	NP	14
-fear	horrify	NP	14
-anticipation	hunger for	NP	13
-joy	enchant	NP	13
-joy	fulfill	NP	12
-fear	terrify	NP	12
-anger	gall	NP	12
-anger	be mad about	NP	12
-anger	displease	NP	12
-anticipation	be curious about	S	12
-disgust	be ashamed of	S	12
-anger	vex	NP	12
-disgust	disgust	NP	12
-fear	alarm	NP	11
-fear	spook	NP	11
-joy	charm	NP	11
-anticipation	lust after	NP	10
-joy	thrill	NP	10
-fear	menace	NP	9
-fear	be alarm that	S	9
-surprise	astound	NP	9
-sadness	agonize	NP	9
-anger	antagonize	NP	9
-anticipation	be confident of	NP	9
-disgust	be upset by	NP	9
-sadness	be unhappy that	NP	8
-disgust	repulse	NP	8
-surprise	astonish	NP	8
-surprise	be stun that	S	8
-disgust	be ashamed of	NP	8
-anger	be furious about	NP	8
-trust	trust in	NP	7
-fear	faze	NP	7
-disgust	bore	NP	7
-anticipation	be anxious for	NP	7
-anticipation	be apprehensive that	S	7
-joy	be elate that	S	7
-surprise	mystify	NP	6
-fear	demoralize	NP	6
-disgust	sicken	NP	6
-sadness	sadden	NP	6
-joy	take pleasure in	S	6
-anticipation	be confident of	S	6
-trust	take comfort in	NP	6
-surprise	unsettle	NP	6
-anger	exasperate	NP	6
-anger	be angry at	S	6
-sadness	be miserable that	S	5
-fear	be terrify that	S	5
-sadness	rue	NP	5
-joy	be thrill by	NP	5
-anger	embitter	NP	5
-sadness	deplore that	S	5
-fear	be apprehensive about	S	5
-surprise	bewilder	NP	4
-anticipation	be keen on	S	4
-surprise	dazzle	NP	4
-sadness	be disappoint by	NP	4
-joy	be elated that	S	4
-fear	distress	NP	4
-sadness	be devastate by	NP	4
-joy	be happy about	S	4
-sadness	disillusion	NP	4
-joy	gratify	NP	4
-fear	be alarm by	NP	4
-fear	be scare that	S	4
-anticipation	thirst for	NP	4
-sadness	dishearten	NP	4
-anticipation	lust for	NP	3
-surprise	be amaze that	S	3
-disgust	be envious of	NP	3
-joy	hearten	NP	3
-fear	be embarrass for	NP	3
-surprise	be startle by	NP	3
-surprise	be flabbergast that	S	3
-sadness	be sadden that	S	3
-fear	traumatize	NP	2
-surprise	dismay	NP	2
-surprise	floor	NP	2
-joy	take pleasure in	NP	2
-surprise	be confuse by	NP	2
-joy	enrapture	NP	2
-joy	be satisfy by	NP	2
-anger	be irate that	S	2
-surprise	be perplex that	S	2
-surprise	flummox	NP	2
-surprise	disconcert	NP	2
-disgust	be disturb by	NP	2
-anger	be angry with	S	2
-disgust	revolt	NP	2
-disgust	nauseate	NP	2
-joy	be fascinate that	S	2
-joy	elate	NP	2
-surprise	awe	NP	2
-disgust	be bore by	NP	2
-anger	agitate	NP	2
-trust	placate	NP	2
-anticipation	hanker for	NP	2
-sadness	be unhappy about	S	2
-surprise	be bewilder that	S	2
-anger	be incense that	S	2
-disgust	mortify	NP	2
-disgust	be bother by	NP	1
-trust	be encourage that	S	1
-fear	be worry that	S	1
-anger	be incense by	NP	1
-sadness	be frustrate by	NP	1
-surprise	perplex	NP	1
-anger	nettle	NP	1
-anger	fuss about	NP	1
-anticipation	long to	S	1
-anger	madden	NP	1
-surprise	dumbfound	NP	1
-disgust	appall	NP	1
-surprise	be puzzle that	S	1
-anger	be mad about	S	1
-anger	be infuriate that	S	1
-sadness	be frustrate with	NP	1
-surprise	be baffle by	NP	1
-anger	be agitate that	S	1
-anger	affront	NP	1
-fear	be horrify that	S	1
-anger	be furious about	S	1
-joy	be charm that	S	1
-fear	be embarrass about	NP	1
-trust	be reassure that	S	1
-fear	perturb	NP	1
-surprise	be surprise by	NP	1
-sadness	repent	NP	1
-anger	be chagrin that	S	1
-anticipation	foresee that	S	1
-anger	fluster	NP	1
-anger	rile	NP	1
-anger	be wrathful that	S	1
-sadness	dissatisfy	NP	1
-anger	be exasperate that	S	1
-trust	take comfort in	S	1
-trust	enthrall	NP	1
-surprise	be floor by	NP	1
-surprise	stupefy	NP	1
-disgust	feel bitter about	NP	0
-trust	be appeal by	NP	0
-anger	be affront that	S	0
-trust	be calm by	NP	0
-sadness	be depress that	S	0
-fear	be faze by	NP	0
-disgust	be irk that	S	0
-anger	be offend by	NP	0
-anger	be displease by	NP	0
-surprise	befuddle	NP	0
-anticipation	be eager to	S	0
-sadness	be frustrate that	S	0
-surprise	be befuddle that	S	0
-anger	be exacerbate by	NP	0
-sadness	discomfit	NP	0
-anger	be outrage that	S	0
-anger	antagonize	NP	0
-disgust	be repulse by	NP	0
-joy	be exhilarate that	S	0
-fear	be intimidate that	S	0
-joy	be fascinate with	NP	0
-joy	be amuse that	S	0
-anticipation	crave for	NP	0
-sadness	be humiliate that	S	0
-surprise	be awe by	NP	0
-surprise	be dumbfound that	S	0
-trust	bewitch	NP	0
-sadness	be devastate that	S	0
-surprise	be flummox by	NP	0
-surprise	be shock by	NP	0
-fear	be demoralise by	NP	0
-disgust	be bother that	S	0
-trust	be impress that	S	0
-surprise	be overwhelm that	S	0
-disgust	be put by	NP	0
-fear	be demoralize that	S	0
-anticipation	be keen on	NP	0
-trust	mollify	NP	0
-joy	be gratify that	S	0
-anger	be arouse by	NP	0
-sadness	be sting that	S	0
-surprise	be dazzle by	NP	0
-disgust	be alienate by	NP	0
-anger	incense	NP	0
-joy	savour	NP	0
-disgust	be revolt that	S	0
-anger	be indignant over	NP	0
-anticipation	be desperate to	S	0
-fear	be unnerve that	S	0
-fear	be awe that	S	0
-trust	be captivate that	S	0
-sadness	be discourage by	NP	0
-anticipation	be loath to	NP	0
-anger	be provoke that	S	0
-anger	be aggrieve by	NP	0
-disgust	abominate	NP	0
-joy	be enrapture that	S	0
-disgust	be disturb that	S	0
-sadness	be dishearten that	S	0
-joy	be exhilarate by	NP	0
-anger	be excite that	S	0
-sadness	be agonize that	S	0
-surprise	be astonish at	NP	0
-fear	be demoralise that	S	0
-disgust	be appall that	S	0
-sadness	be afflict by	NP	0
-trust	be charm that	S	0
-anger	be antagonize that	S	0
-fear	awe	NP	0
-trust	beguile	NP	0
-joy	be elate by	NP	0
-surprise	be stun by	NP	0
-joy	be arouse that	S	0
-disgust	be shame that	S	0
-disgust	be shock by	NP	0
-anger	be vex that	S	0
-joy	be cheer that	S	0
-disgust	be alienate that	S	0
-fear	be torment that	S	0
-anticipation	hanker after	NP	0
-fear	be faze that	S	0
-sadness	be trouble that	S	0
-sadness	be discomfit by	NP	0
-trust	be mollify that	S	0
-disgust	be gutted about	NP	0
-anger	be outrage by	NP	0
-sadness	be agonize by	NP	0
-sadness	be sadden by	NP	0
-surprise	be astonish by	NP	0
-anticipation	be keen to	S	0
-anger	be annoy that	S	0
-trust	look to	NP	0
-sadness	be dispirit that	S	0
-disgust	be insult by	NP	0
-sadness	dispirit	NP	0
-anger	be antagonize that	S	0
-fear	petrify	NP	0
-fear	be spook by	NP	0
-disgust	be estrange by	NP	0
-surprise	be baffle that	S	0
-trust	be placate by	NP	0
-fear	be scare by	NP	0
-surprise	be unsettle by	NP	0
-joy	be cheer by	NP	0
-joy	be delight by	NP	0
-fear	be intimidate by	NP	0
-fear	be unsettle that	S	0
-anger	be harass by	NP	0
-disgust	be appall by	NP	0
-surprise	be astound by	NP	0
-disgust	be revolt by	NP	0
-fear	be demoralize by	NP	0
-fear	be frighten that	S	0
-sadness	be afflict that	S	0
-anger	be embitter by	NP	0
-disgust	be estrange that	S	0
-joy	be gladden by	NP	0
-anger	be annoy by	NP	0
-disgust	put off	NP	0
-joy	be charm by	NP	0
-surprise	be boggle that	S	0
-disgust	disenchant	NP	0
-anger	be aggrieve that	S	0
-surprise	be disconcert by	NP	0
-joy	be comfort by	NP	0
-trust	be bewitch that	S	0
-trust	be appeal that	S	0
-fear	be perturb that	S	0
-disgust	execrate	NP	0
-anticipation	aspire after	NP	0
-surprise	be unsettle that	S	0
-anger	be embitter that	S	0
-joy	be fascinate by	NP	0
-surprise	be shock that	S	0
-anger	be gall that	S	0
-disgust	be disgust by	NP	0
-joy	take pleasure in	S	0
-joy	be hearten that	S	0
-disgust	turn off	NP	0
-surprise	be stagger that	S	0
-surprise	be bewilder by	NP	0
-surprise	be mystify that	S	0
-trust	be reassure by	NP	0
-anger	be nettle by	NP	0
-anger	be fluster that	S	0
-sadness	be humiliate by	NP	0
-anticipation	be concerned about	S	0
-anger	be abase that	S	0
-sadness	be disappoint by	NP	0
-disgust	be appall at	NP	0
-fear	be menace by	NP	0
-disgust	disgust	NP	0
-joy	be entertain that	S	0
-joy	be happy that	S	0
-joy	be entertain by	NP	0
-anger	be rankle by	NP	0
-disgust	be repulse that	S	0
-surprise	be flabbergast by	NP	0
-fear	be petrify by	NP	0
-trust	be enthrall by	NP	0
-disgust	be nauseate that	S	0
-sadness	be dishearten by	NP	0
-joy	be amuse by	NP	0
-trust	be solace that	S	0
-trust	be conciliate that	S	0
-joy	be please by	NP	0
-trust	be enthrall that	S	0
-surprise	be rattle by	NP	0
-joy	be enrapture by	NP	0
-joy	revel in	NP	0
-trust	conciliate	NP	0
-disgust	be mortify that	S	0
-trust	solace	NP	0
-disgust	be turn that	S	0
-anger	annoy	NP	0
-fear	be horrify by	NP	0
-disgust	be disenchant that	S	0
-fear	be perturb by	NP	0
+disgust	despise	NP	0
+trust	take comfort in	NP	0
 surprise	flabbergast	NP	0
-anticipation	have an itch to	NP	0
-sadness	be disillusion that	S	0
-surprise	nonplus	NP	0
-disgust	be repel by	NP	0
-anger	be irritate by	NP	0
-disgust	be disenchant by	NP	0
-disgust	be disgust that	S	0
-surprise	be stagger by	NP	0
-anger	be antagonize by	NP	0
-surprise	be disconcert that	S	0
-surprise	be mystify by	NP	0
-disgust	contemn	NP	0
-anger	be chagrin by	NP	0
-joy	be comfort that	S	0
-surprise	be astonish that	S	0
-disgust	estrange	NP	0
-anger	chagrin	NP	0
-anger	be abase by	NP	0
-trust	be beguile that	S	0
-disgust	be repel that	S	0
-anger	make a fuss over	NP	0
-fear	be spook that	S	0
-trust	be charm by	NP	0
-anger	be enrage that	S	0
-disgust	be sicken by	NP	0
-anticipation	be intrigue by	NP	0
-anger	abase	NP	0
-anticipation	count on	NP	0
-joy	be wow that	S	0
-joy	be joyful about	S	0
-anger	be irritate that	S	0
-fear	be unsettle by	NP	0
-sadness	feel sorrow that	S	0
-anger	be displease that	S	0
-trust	be encourage by	NP	0
-fear	be traumatize by	NP	0
-joy	be joyful about	NP	0
-trust	be beguile by	NP	0
-fear	be torment by	NP	0
-fear	be petrify that	S	0
-surprise	be stupefy that	S	0
-fear	be worry by	NP	0
-trust	be soothe by	NP	0
-disgust	be abash that	S	0
-surprise	be nonplus by	NP	0
-anticipation	be intrigue that	S	0
-anger	be inflame that	S	0
-fear	be distress that	S	0
-anger	be nettle that	S	0
-sadness	be discomfit that	S	0
-disgust	be shame by	NP	0
-disgust	be nauseate by	NP	0
-surprise	be befuddle by	NP	0
-disgust	be bore that	S	0
-joy	be fulfill that	S	0
-anticipation	hope for	S	0
-anger	be harass that	S	0
-surprise	be surprise that	S	0
-sadness	be trouble by	NP	0
-surprise	be dazzle that	S	0
-fear	unsettle	NP	0
-sadness	be disappoint that	S	0
-anger	be offend that	S	0
-surprise	be dismay by	NP	0
-sadness	be dissatisfy by	NP	0
-joy	be wow by	NP	0
-anger	be arouse that	S	0
-anger	be aggravate that	S	0
-joy	be gladden that	S	0
-anger	be agitate by	NP	0
-anger	be grate by	NP	0
-anticipation	be concerned about	NP	0
-surprise	be confound by	NP	0
-anger	be fluster by	NP	0
-disgust	be turn by	NP	0
-joy	be content that	S	0
-anger	be affront by	NP	0
-anger	be rankle that	S	0
-sadness	be discourage that	S	0
-sadness	be dispirit by	NP	0
-fear	be traumatize that	S	0
-trust	be calm that	S	0
-surprise	be floor that	S	0
-surprise	be rattle that	S	0
-trust	be conciliate by	NP	0
-sadness	disappoint	NP	0
-trust	be mollify by	NP	0
-trust	be placate that	S	0
-sadness	be melancholic that	S	0
-joy	be gratify by	NP	0
-disgust	be disgust by	NP	0
-surprise	be dismay that	S	0
-sadness	be sting by	NP	0
-trust	be captivate by	NP	0
-surprise	be overwhelm by	NP	0
-sadness	be dissatisfy that	S	0
-fear	be worry about	S	0
-sadness	be disappoint that	S	0
-fear	be unnerve by	NP	0
-anger	arouse	NP	0
-trust	be solace by	NP	0
-joy	be be by	NP	0
-trust	be impress by	NP	0
-trust	be bewitch by	NP	0
+joy	impress	NP	0
 surprise	shock	NP	0
-surprise	be boggle by	NP	0
-surprise	be dumbfound by	NP	0
-surprise	be confound that	S	0
-trust	charm	NP	0
-disgust	be abash by	NP	0
-trust	place reliance on	NP	0
-disgust	be irk by	NP	0
-surprise	be awe that	S	0
-disgust	be annoy by	NP	0
-joy	gladden	NP	0
-anger	be provoke by	NP	0
-anger	be rile that	S	0
-joy	be excite about	NP	0
-disgust	be put that	S	0
-anger	aggrieve	NP	0
-disgust	be upset that	S	0
-disgust	be sicken that	S	0
-sadness	be disillusion by	NP	0
-anger	be rile by	NP	0
-surprise	be startle that	S	0
-anger	be exasperate by	NP	0
-joy	be hearten by	NP	0
-disgust	be averse to	NP	0
-fear	be terrify by	NP	0
-joy	be glad that	S	0
-sadness	agonise over	NP	0
-anger	be infuriate by	NP	0
-fear	be distress by	NP	0
-surprise	be flummox that	S	0
-anger	be aggravate by	NP	0
-disgust	be disgust that	S	0
-disgust	be shock that	S	0
-anger	be madden by	NP	0
-joy	be enchant by	NP	0
-surprise	be astound that	S	0
-anger	be antagonize by	NP	0
-disgust	be mortify by	NP	0
-sadness	discourage	NP	0
-surprise	be puzzle by	NP	0
-joy	be enchant that	S	0
-anger	be inflame by	NP	0
-anger	be enrage by	NP	0
+disgust	be alienate by	NP	0
+anticipation	be intrigue by	NP	0
+anticipation	expect that	S	0
+fear	be rattle that	S	0
+trust	be reassure that	S	0
+anger	annoy	NP	0
+sadness	be unhappy about	NP	0
+disgust	be repel by	NP	0
+fear	be spook by	NP	0
+sadness	regret that	S	0
+surprise	be stun that	S	0
+joy	be arouse that	S	0
+joy	take pleasure in	S	0
+anticipation	aspire	NP	0
+anger	be inflame that	S	0
+anticipation	forecast that	S	0
+anger	fret about	NP	0
+joy	thrill	NP	0
+surprise	puzzle	NP	0
+joy	be ecstatic that	S	0
+joy	relish	NP	0
+surprise	amaze	NP	0
+disgust	shun	NP	0
+anger	insult	NP	0
+sadness	be disappoint by	NP	0
+fear	intimidate	NP	0
+surprise	be wow that	S	0
+disgust	be shame by	NP	0
+sadness	be unhappy that	NP	0
 joy	be arouse by	NP	0
-joy	exhilarate	NP	0
-joy	be overjoyed that	S	0
-anger	be madden that	S	0
-disgust	be annoy that	S	0
-fear	be menace that	S	0
-fear	be frighten by	NP	0
-surprise	be perplex by	NP	0
-anger	be excite by	NP	0
-sadness	be depress by	NP	0
-anger	be gall by	NP	0
-surprise	be nonplus that	S	0
-anticipation	be hesitant to	S	0
-anger	be exacerbate that	S	0
-disgust	abash	NP	0
-anger	be obsess with	NP	0
-surprise	be confuse that	S	0
-sadness	be discourage by	NP	0
-anger	be grate that	S	0
-anger	make a fuss about	NP	0
-joy	be fulfill by	NP	0
-surprise	be stupefy by	NP	0
-joy	be be that	S	0
-sadness	be discourage that	S	0
-disgust	be insult that	S	0
-joy	be please that	S	0
+anger	inflame	NP	0
+joy	be mad about	NP	0
+fear	be rattle by	NP	0
+surprise	bewilder	NP	0
+disgust	hate	NP	0
+anger	irritate	NP	0
+anger	be rankle that	S	0
+anticipation	prepare for	S	0
+fear	be terrify that	S	0
+disgust	disdain	NP	0
+disgust	be ashamed of	NP	0
+anticipation	be hopeful that	S	0
+surprise	be puzzle by	NP	0
+anticipation	be eager for	NP	0
+trust	rely on	NP	0
+joy	be satisfy that	S	0
+disgust	disgust	NP	0
+joy	be soothe that	S	0
+anger	be irk by	NP	0
+joy	be proud of	NP	0
+joy	be entertain that	S	0
+anger	be vex that	S	0
+anticipation	covet	NP	0
+anger	be afflict by	NP	0
+trust	count on	S	0
+sadness	mourn that	S	0
+anticipation	hunger for	NP	0
+anticipation	forecast	NP	0
+joy	be excite by	NP	0
+trust	be charm that	S	0
+surprise	be boggle that	S	0
+anger	be infuriate by	NP	0
+joy	be captivate by	NP	0
 joy	be delight that	S	0
-fear	be awe by	NP	0
-fear	be worry about	NP	0
-surprise	be amaze by	NP	0
-trust	be soothe that	S	0
-fear	demoralise	NP	0
-anger	make a fuss of	NP	0
+joy	be thrill by	NP	0
+surprise	be wow by	NP	0
+anger	fuss about	NP	0
+trust	count on	NP	0
+sadness	be depress by	NP	0
+joy	be delight by	NP	0
+sadness	be depress that	S	0
+sadness	be sadden that	S	0
+anger	be enrage that	S	0
+fear	scare	NP	0
+anger	harass	NP	0
+anger	provoke	NP	0
+joy	take pleasure in	NP	0
+disgust	be alienate that	S	0
+anger	incense	NP	0
+surprise	be confound by	NP	0
+anger	be bother that	S	0
+sadness	be disappoint that	S	0
+surprise	be flabbergast that	S	0
+disgust	be horrify that	S	0
+surprise	confound	NP	0
+surprise	be confound that	S	0
+joy	be lucky that	S	0
+surprise	baffle	NP	0
+surprise	be amaze that	S	0
+sadness	upset	NP	0
+anger	be grate by	NP	0
+anger	be sting by	NP	0
+surprise	stagger	NP	0
+disgust	deplore	NP	0
+anger	be angry at	S	0
+fear	be worry by	NP	0
+surprise	be bewilder that	S	0
+surprise	be startle by	NP	0
+anger	be torment that	S	0
+sadness	be displease by	NP	0
+anticipation	hope for	S	0
+joy	amuse	NP	0
 anger	be vex by	NP	0
+anger	be rankle by	NP	0
+surprise	surprise	NP	0
+anticipation	be intrigue that	S	0
+joy	take pleasure in	S	0
+disgust	dislike	NP	0
+trust	take comfort in	S	0
+joy	be fulfill that	S	0
+anger	be angry that	S	0
+joy	be proud of	S	0
+anger	be aggravate by	NP	0
+trust	charm	NP	0
+fear	be afraid of	NP	0
+anticipation	await	NP	0
+surprise	wow	NP	0
+anger	irk	NP	0
+fear	be scared that	S	0
+fear	be frighten by	NP	0
+disgust	be disgust that	S	0
+anger	be torment by	NP	0
+disgust	be repel that	S	0
+disgust	repel	NP	0
+anticipation	crave	NP	0
+disgust	loathe	NP	0
+anger	disturb	NP	0
+anger	be irate that	S	0
+anger	be incense by	NP	0
+sadness	be upset by	NP	0
+anticipation	predict	NP	0
+sadness	agonize over	NP	0
+surprise	be startle that	S	0
+joy	be enthusiastic about	NP	0
+fear	be unnerve by	NP	0
+anticipation	predict that	S	0
+sadness	sadden	NP	0
+fear	fear that	S	0
+disgust	be ashamed of	S	0
+anger	be bother by	NP	0
+joy	be happy about	NP	0
+anger	grate	NP	0
+anger	be offend by	NP	0
+anticipation	be curious about	NP	0
+anticipation	anticipate	NP	0
+joy	enjoy that	S	0
+fear	be nervous about	NP	0
+anticipation	prepare for	NP	0
+disgust	shame	NP	0
+joy	be please that	S	0
+disgust	be disgust by	NP	0
+surprise	be baffle that	S	0
+sadness	regret	NP	0
+joy	be elated that	S	0
+surprise	confuse	NP	0
+sadness	be upset that	S	0
+sadness	grieve that	S	0
+fear	be worry that	S	0
+disgust	horrify	NP	0
+surprise	be shock that	S	0
+joy	comfort	NP	0
+joy	desire	NP	0
+joy	be satisfy by	NP	0
+surprise	be amaze by	NP	0
+surprise	stun	NP	0
+anger	offend	NP	0
+fear	unnerve	NP	0
+anger	be frustrate that	S	0
+anger	be aggravate that	S	0
+trust	reassure	NP	0
+joy	captivate	NP	0
+surprise	be baffle by	NP	0
+anger	enrage	NP	0
+disgust	abhor	NP	0
+anger	be insult by	NP	0
+joy	excite	NP	0
+joy	fulfill	NP	0
+sadness	be sadden by	NP	0
+anger	be disturb by	NP	0
+joy	cheer	NP	0
+surprise	boggle	NP	0
+sadness	be unhappy that	S	0
+anger	frustrate	NP	0
+fear	worry about	NP	0
+sadness	disappoint	NP	0
+joy	be entertain by	NP	0
+fear	be unnerve that	S	0
+anticipation	aspire to	NP	0
+joy	savor	NP	0
+sadness	displease	NP	0
+joy	soothe	NP	0
+fear	be scare by	NP	0
+anticipation	look forward to	NP	0
+anticipation	be intent on	S	0
+anger	be inflame by	NP	0
+anger	outrage	NP	0
+surprise	be surprise by	NP	0
+joy	be comfort by	NP	0
+joy	be captivate that	S	0
+fear	be frighten that	S	0
+anger	infuriate	NP	0
+joy	arouse	NP	0
+sadness	mourn	NP	0
+surprise	be stagger by	NP	0
+anger	torment	NP	0
+fear	be anxious about	NP	0
+anticipation	ache for	NP	0
+anger	be incense that	S	0
+fear	be afraid that	S	0
+anger	be afflict that	S	0
+surprise	startle	NP	0
+fear	be apprehensive about	S	0
+anger	be disturb that	S	0
+joy	be impress by	NP	0
+fear	rattle	NP	0
+anticipation	expect	NP	0
+joy	be impress that	S	0
+disgust	be horrify by	NP	0
+joy	be soothe by	NP	0
+joy	satisfy	NP	0
+sadness	pine for	NP	0
+anger	be insult that	S	0
+anger	be infuriate that	S	0
+joy	be amuse that	S	0
+joy	please	NP	0
+anger	be grate that	S	0
+trust	be reassure by	NP	0
+joy	be cheer by	NP	0
+disgust	alienate	NP	0
+joy	be excite that	S	0
+surprise	be boggle by	NP	0
+joy	be please by	NP	0
+anger	sting	NP	0
+anger	be outrage that	S	0
+surprise	be confuse that	S	0
+anticipation	foresee	NP	0
+anger	be harass that	S	0
+anticipation	hope for	NP	0
+anger	be frustrate by	NP	0
+anticipation	long for	NP	0
+sadness	be sad that	S	0
+anticipation	be curious about	S	0
+anger	aggravate	NP	0
+fear	frighten	NP	0
+anger	be irritate by	NP	0
+anticipation	look forward to	S	0
+trust	be charm by	NP	0
+sadness	be unhappy about	S	0
+surprise	be bewilder by	NP	0
+trust	trust that	S	0
+fear	dread	NP	0
+anger	be annoy that	S	0
+fear	be scare that	S	0
+sadness	depress	NP	0
+fear	terrify	NP	0
+surprise	be puzzle that	S	0
+anger	be offend that	S	0
+anger	be angry about	S	0
+anger	scorn	NP	0
+anticipation	intrigue	NP	0
+surprise	be stagger that	S	0
+sadness	be disappoint that	NP	0
+surprise	be flabbergast by	NP	0
+surprise	be stun by	NP	0
+disgust	be shame that	S	0
+fear	be terrify by	NP	0
+surprise	be confuse by	NP	0
+fear	fear	NP	0
+anger	be provoke that	S	0
+fear	worry	NP	0
+surprise	be surprise that	S	0
+anger	be angry with	S	0
+fear	be intimidate by	NP	0
+fear	be intimidate that	S	0
+joy	be fulfill by	NP	0
+joy	delight	NP	0
+sadness	be displease that	S	0
+anger	rankle	NP	0
+joy	entertain	NP	0
+anger	be provoke by	NP	0
+joy	be cheer that	S	0
+fear	be frightened that	S	0
+surprise	be shock by	NP	0
+joy	enjoy	NP	0
+anger	be irk that	S	0
+fear	be spook that	S	0
+joy	be happy about	S	0
+anger	be annoy by	NP	0
+joy	be amuse by	NP	0
+anger	vex	NP	0
+joy	be comfort that	S	0
+fear	be scared of	NP	0
+fear	spook	NP	0
+anger	bother	NP	0
+anger	be harass by	NP	0
+fear	be anxious that	S	0
+anticipation	yearn for	NP	0
+trust	trust	NP	0
+anger	be enrage by	NP	0
+anger	be outrage by	NP	0
+joy	be thrill that	S	0
+anger	be irritate that	S	0
+anger	be sting that	S	0
+anger	afflict	NP	0
+joy	be mad about	S	0

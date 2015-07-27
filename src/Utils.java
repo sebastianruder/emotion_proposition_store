@@ -353,16 +353,18 @@ public class Utils {
     }
 
     /**
-     * Combines two paths into a single valid path.
-     * @param path1 the first path
-     * @param path2 the second path
+     * Combines a variable number of paths into a single valid path.
+     * @param paths a variable number of file path strings
      * @return the combined path
      */
-    public static String combine(String path1, String path2)
+    public static String combine(String... paths)
     {
-        File file1 = new File(path1);
-        File file2 = new File(file1, path2);
-        return file2.getPath();
+        File file = new File(paths[0]);
+        for (int i = 1; i < paths.length; i++) {
+            file = new File(file, paths[i]);
+        }
+
+        return file.getPath();
     }
 
     /**
@@ -380,13 +382,42 @@ public class Utils {
         String[] fileNames = fileDir.list(new FilenameFilter() {
             @Override
             public boolean accept(File dir, String name) {
-                return name.endsWith(extension);
+                if (extension.equals("*")) {
+                    return true;
+                }
+                else {
+                    return name.endsWith(extension);
+                }
             }
         });
 
         for (String fileName : fileNames) {
-            File file = new File(dir + fileName);
+            File file = new File(Utils.combine(dir, fileName));
             file.delete();
         }
+    }
+
+    /**
+     * Retrieves the files in a directory that match all of the specified patterns. You can -- of course -- AND your
+     * patterns together as well.
+     * @param dir the directory from which the files should be retrieved
+     * @param patterns the patterns that the file name should match
+     * @return a list of file names
+     */
+    public static List<String> getFileNames(String dir, final String... patterns) {
+        File fileDir = new File(dir);
+        List<String> fileNames = Arrays.asList(fileDir.list(new FilenameFilter() {
+            @Override
+            public boolean accept(File dir, String name) {
+                boolean isAccepted = true;
+                for (String pattern : patterns) {
+                    isAccepted &= name.matches(String.format(".*%s.*", pattern));
+                };
+
+                return isAccepted;
+            }
+        }));
+
+        return fileNames;
     }
 }

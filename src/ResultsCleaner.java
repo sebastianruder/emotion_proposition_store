@@ -16,8 +16,117 @@ public class ResultsCleaner {
      */
     public static void main(String[] args) throws IOException {
 
-        args = new String[] { "/home/sebastian/git/sentiment_analysis/out/results_all.txt" };
-        removeDuplicates(args[0]);
+        String dir = "/home/sebastian/git/sentiment_analysis/out/";
+
+        args = new String[] { Utils.combine(dir, "results_final/collocations.txt") };
+        // removeDuplicates(args[0]);
+        //List<String> idList = removeDuplicatesWithCollocations(args[0]);
+        //writeWithoutDuplicates(Utils.combine(dir, "results.txt"), Utils.combine(dir, "results_cleaned.txt"), idList);
+        removePatterns(Utils.combine(dir, "results_cleaned.txt"), Utils.combine(dir, "results_cleaned_removed.txt"));
+    }
+
+    private static void removePatterns(String oldFilePath, String newFilePath) throws IOException {
+
+        List<String> patterns = new ArrayList<String> (Arrays.asList("depress", "aggravate", "rattle", "afflict", "inflame"));
+
+        // clean-up file before adding to it
+        File file = new File(newFilePath);
+        file.delete();
+        PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(newFilePath, true)));
+
+        BufferedReader reader = new BufferedReader(new FileReader(oldFilePath));
+        String line = reader.readLine();
+        int i = 0;
+        while (line != null && !line.equals("")) {
+
+            if (line.startsWith("#")) {
+                line = reader.readLine();
+                continue;
+            }
+
+            String pattern = line.split("\t")[2];
+            boolean containsPattern = false;
+            for (String removePattern : patterns) {
+                if (Arrays.asList(pattern.split(" ")).contains(removePattern)) {
+                    containsPattern = true;
+                }
+            }
+
+            if (!containsPattern) {
+                writer.println(line);
+                if (++i % 1000 == 0) {
+                    System.out.println("Line #" + i);
+                }
+            }
+
+            line = reader.readLine();
+        }
+
+        writer.close();
+    }
+
+    private static void writeWithoutDuplicates(String oldFilePath, String newFilePath, List<String> idList) throws IOException {
+
+        // clean-up file before adding to it
+        File file = new File(newFilePath);
+        file.delete();
+        PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(newFilePath, true)));
+
+        BufferedReader reader = new BufferedReader(new FileReader(oldFilePath));
+        String line = reader.readLine();
+        int i = 0;
+        while (line != null && !line.equals("")) {
+
+            if (line.startsWith("#")) {
+                line = reader.readLine();
+                continue;
+            }
+
+            String id = line.split("\t")[0];
+            if (idList.contains(id)) {
+                writer.println(line);
+                if (++i % 1000 == 0) {
+                    System.out.println("Line #" + ++i);
+                }
+            }
+
+            line = reader.readLine();
+        }
+
+        writer.close();
+    }
+
+    private static List<String> removeDuplicatesWithCollocations(String filePath) throws IOException {
+
+        Map<String, String> sentenceIdMap = new HashMap<String, String>();
+
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        String line = reader.readLine();
+        while (line != null && !line.equals("")) {
+
+            if (line.startsWith("#")) {
+                line = reader.readLine();
+                continue;
+            }
+
+            String id = line.split("\t")[0];
+            try {
+                String sentence = line.split("\t")[1];
+                sentenceIdMap.put(sentence, id);
+            }
+            catch (ArrayIndexOutOfBoundsException ex){
+                // there is one erroneous line without an id; skip that one
+            }
+
+            line = reader.readLine();
+        }
+
+        List<String> idList = new ArrayList<String>();
+        for (String sentence : sentenceIdMap.keySet()) {
+            idList.add(sentenceIdMap.get(sentence));
+        }
+
+        return idList;
     }
 
     /**

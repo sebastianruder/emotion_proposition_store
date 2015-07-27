@@ -88,4 +88,40 @@ public class Extensions
         double value = map.containsKey(key) ? map.get(key) : 0;
         map.put(key, value + 1);
     }
+
+    /**
+     * Sorts a map by its values and returns it.
+     * @param map the map that should be sorted
+     * @return the map sorted by values
+     */
+    public static Map<String, Map<String, Double>> sortByAggregatedValue(Map<String, Map<String, Double>> map, final boolean desc) {
+        List<Map.Entry<String, Map<String, Double>>> list =
+                new LinkedList<Map.Entry<String, Map<String, Double>>>( map.entrySet() );
+        Collections.sort(list, new Comparator<Map.Entry<String, Map<String, Double>>>() {
+            public int compare(Map.Entry<String, Map<String, Double>> o1, Map.Entry<String, Map<String, Double>> o2) {
+                double score1 = 0;
+                for (Map.Entry<String, Double> entry : o1.getValue().entrySet()) {
+                    score1 += entry.getValue();
+                }
+
+                double score2 = 0;
+                for (Map.Entry<String, Double> entry : o2.getValue().entrySet()) {
+                    score2 += entry.getValue();
+                }
+
+                if (desc) return - Double.compare(score1, score2);
+                else {
+                    return Double.compare(score1, score2);
+                }
+            }
+        });
+
+        Map<String, Map<String, Double>> result = new LinkedHashMap<String, Map<String, Double>>();
+        for (Map.Entry<String, Map<String, Double>> entry : list)
+        {
+            result.put(entry.getKey(), entry.getValue());
+        }
+
+        return result;
+    }
 }
