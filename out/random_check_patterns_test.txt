@@ -1,0 +1,337 @@
+emotion word	pattern
+surprise	dumbfound/Verb
+anticipation	count/Verb on/IN
+joy	be/Verb RB proud/JJ of/IN
+trust	take/Verb comfort/NN in/IN
+joy	gladden/Verb
+joy	revel in/Verb
+joy	gratify/Verb
+anger	exasperate/Verb
+joy	fulfill/Verb
+anger	affront/Verb
+anger	antagonize/Verb
+anticipation	be/Verb loath/JJ to/TO
+fear	shun/Verb
+anger	fuss/Verb about/IN
+anger	displease/Verb
+anticipation	assume/Verb
+anticipation	assume/Verb that/IN
+anger	inflame/Verb
+surprise	astonish/Verb
+disgust	appall/Verb
+anticipation	be/Verb RB keen/JJ to/TO
+anger	rankle/Verb
+disgust	annoy/Verb
+anticipation	hanker/Verb for/IN
+anger	antagonize/Verb
+joy	be/Verb RB enthusiastic/JJ about/IN
+fear	intimidate/Verb
+anticipation	predict/Verb
+fear	unsettle/Verb
+anticipation	be/Verb RB curious/JJ about/IN
+surprise	be/Verb astonish/VBD at/IN
+disgust	be/Verb RB ashamed/JJ of/IN
+anticipation	foresee/Verb that/IN
+trust	mollify/Verb
+anger	excite/Verb
+anger	make/Verb a/DT fuss/NNS of/IN
+joy	enjoy/Verb
+anticipation	have/Verb an/DT itch/NN to/TO
+sadness	repent/Verb
+sadness	be/Verb RB unhappy/JJ about/IN
+surprise	puzzle/Verb
+fear	fear/Verb
+anger	aggravate/Verb
+trust	reassure/Verb
+disgust	bore/Verb
+disgust	feel/Verb RB bitter/JJ about/IN
+anticipation	be/Verb RB concerned/VBN about/IN
+anticipation	lust/Verb for/IN
+joy	be/Verb RB content/JJ (?! to) (?!\d) that/IN
+anger	embitter/Verb
+fear	demoralise/Verb
+surprise	befuddle/Verb
+sadness	dispirit/Verb
+anger	harass/Verb
+joy	take/Verb pleasure/NN in/IN
+anticipation	prepare/Verb for/IN
+disgust	contemn/Verb
+sadness	be/Verb RB frustrate/VBN with/IN
+sadness	humiliate/Verb
+sadness	deplore/Verb
+sadness	be/Verb sad/JJ that/Verb
+anger	be/Verb RB mad/JJ about/IN
+sadness	deplore/Verb that/IN
+surprise	surprise/Verb
+surprise	rattle/Verb
+fear	perturb/Verb
+joy	be/Verb RB elated/JJ that/IN
+joy	wow/Verb
+disgust	turn off/Verb
+anger	provoke/Verb
+trust	conciliate/Verb
+sadness	rue/Verb
+sadness	disappoint/Verb
+anticipation	be/Verb RB nervous/JJ about/IN
+anticipation	concern/Verb
+trust	beguile/Verb
+fear	be/Verb RB afraid/JJ that/IN
+joy	be/Verb RB fascinate/VBN with/IN
+sadness	agonize/Verb over/IN
+anger	be/Verb RB furious/JJ about/IN
+anticipation	anticipate/Verb
+anger	vex/Verb
+anger	aggrieve/Verb
+anticipation	be/Verb RB intent/JJ on/IN
+surprise	confound/Verb
+disgust	disdain/Verb
+anticipation	crave/Verb
+surprise	bewilder/Verb
+joy	savour/Verb
+anger	infuriate/Verb
+disgust	revolt/Verb
+disgust	nauseate/Verb
+joy	enrapture/Verb
+anticipation	hope/Verb for/IN
+anticipation	be/Verb RB hesitant/JJ to/IN
+trust	appeal/Verb
+anger	be/Verb obsess/VBD with/IN
+anger	be/Verb angry/JJ about/IN
+anger	abase/Verb
+joy	be/Verb RB ecstatic/JJ that/IN
+disgust	execrate/Verb
+anticipation	thirst/Verb for/IN
+joy	take/Verb pleasure/NPB in/IN
+sadness	trouble/Verb
+anticipation	hope/Verb for/IN
+surprise	stupefy/Verb
+trust	soothe/Verb
+anger	gall/Verb
+trust	charm/Verb
+anticipation	hanker/Verb after/IN
+joy	fascinate/Verb
+fear	be/Verb RB scared/JJ of/IN
+anger	be/Verb angry/JJ that/IN
+sadness	be/Verb melancholic/JJ that/IN
+joy	be/Verb RB joyful/JJ about/IN
+joy	be/Verb RB proud/JJ of/IN
+disgust	be/Verb appall/VBD at/IN
+trust	bewitch/Verb
+surprise	boggle/Verb
+sadness	discourage/Verb
+anger	grate/Verb
+anticipation	covet/Verb
+fear	frighten/Verb
+anger	make/Verb a/DT fuss/NNS about/IN
+anger	rile/Verb
+anticipation	be/Verb RB curious/JJ about/IN
+anticipation	crave/Verb for/IN
+surprise	amaze/Verb
+disgust	envy/Verb
+sadness	disillusion/Verb
+surprise	flabbergast/Verb
+disgust	hate/Verb that/IN
+anticipation	expect/Verb that/IN
+sadness	frustrate/Verb
+fear	spook/Verb
+sadness	sadden/Verb
+trust	rely/Verb on/IN
+joy	enchant/Verb
+anger	be/Verb wrathful/JJ that/IN
+disgust	hate/Verb
+surprise	dismay/Verb
+surprise	floor/Verb
+disgust	disgust/Verb
+joy	be/Verb RB happy/JJ about/IN
+sadness	be/Verb RB unhappy/JJ about/IN
+anticipation	foresee/Verb
+disgust	abhor/Verb
+anticipation	be/Verb RB concerned/VBN about/IN
+trust	solace/Verb
+joy	be/Verb RB excite/VBN about/IN
+surprise	confuse/Verb
+joy	enjoy/Verb that/IN
+trust	count/Verb on/IN
+fear	be/Verb RB apprehensive/JJ about/IN
+surprise	stun/Verb
+joy	entertain/Verb
+surprise	startle/Verb
+disgust	insult/Verb
+sadness	regret/Verb that/IN
+anticipation	be/Verb RB anxious/JJ for/IN
+sadness	be/Verb RB unhappy/JJ that/IN
+disgust	abash/Verb
+sadness	agonise/Verb over/IN
+disgust	upset/Verb
+anger	nettle/Verb
+fear	alarm/Verb
+anger	outrage/Verb
+anticipation	aspire/Verb after/IN
+joy	cheer/Verb
+disgust	bother/Verb
+sadness	feel/Verb sorrow/NN that/IN
+anticipation	look/Verb forward/RB to/TO
+joy	thrill/Verb
+joy	comfort/Verb
+disgust	disenchant/Verb
+anger	offend/Verb
+anger	be/Verb angry/JJ with/IN
+disgust	be/Verb averse/JJ to/IN
+anticipation	be/Verb RB keen/JJ on/IN
+fear	be/Verb RB embarrass/VBN about/IN
+sadness	be/Verb RB disappoint/VBN that/IN
+joy	exhilarate/Verb
+joy	inspire/Verb
+sadness	agonize/Verb
+anticipation	aspire/Verb to/TO
+trust	encourage/Verb
+disgust	shock/Verb
+sadness	regret/Verb
+sadness	sting/Verb
+disgust	repel/Verb
+joy	attract/Verb
+trust	impress/Verb
+anticipation	await/Verb
+fear	dread/Verb
+trust	placate/Verb
+sadness	grieve/Verb that/IN
+joy	take/Verb pleasure/NN in/IN
+fear	be/Verb RB anxious/JJ that/IN
+fear	demoralize/Verb
+disgust	disgust/Verb
+fear	awe/Verb
+disgust	be/Verb RB envious/JJ of/IN
+joy	be/Verb RB lucky/JJ that/IN
+trust	trust/Verb that/IN
+disgust	repulse/Verb
+fear	avoid/Verb
+surprise	disconcert/Verb
+trust	enthrall/Verb
+disgust	be/Verb RB ashamed/JJ of/IN
+anticipation	lust/Verb after/IN
+anticipation	be/Verb RB hopeful/JJ that/IN
+disgust	put off/Verb
+disgust	mortify/Verb
+anticipation	long/Verb RB for/IN
+joy	please/Verb
+anger	incense/Verb
+anticipation	forecast/Verb
+anger	chagrin/Verb
+anger	be/Verb angry/JJ at/IN
+joy	rejoice/Verb
+anger	be/Verb RB furious/JJ about/IN
+anticipation	be/Verb RB confident/JJ of/IN
+joy	relish/Verb
+fear	faze/Verb
+disgust	irk/Verb
+trust	trust/Verb
+fear	traumatize/Verb
+fear	be/Verb RB anxious/JJ about/IN
+sadness	devastate/Verb
+fear	be/Verb RB scared/JJ that/IN
+anger	irritate/Verb
+fear	distress/Verb
+anticipation	intrigue/Verb
+sadness	mourn/Verb that/IN
+sadness	disappoint/Verb
+anticipation	be/Verb RB keen/JJ on/IN
+surprise	mystify/Verb
+fear	be/Verb RB worry/VBN about/IN
+fear	unnerve/Verb
+trust	look/Verb to/IN
+fear	embarrass/Verb
+anticipation	count/Verb on/IN
+joy	elate/Verb
+anticipation	aspire/Verb
+surprise	awe/Verb
+trust	calm/Verb
+sadness	mourn/Verb
+anticipation	hunger/Verb for/IN
+disgust	dislike/Verb
+surprise	shock/Verb
+joy	be/Verb RB glad/JJ (?! to) (?!\d) that/IN
+trust	place/Verb reliance/NN on/IN
+disgust	disturb/Verb
+disgust	alienate/Verb
+fear	be/Verb RB afraid/JJ of/IN
+anticipation	forecast/Verb that/IN
+surprise	stagger/Verb
+anticipation	be/Verb RB apprehensive/JJ that/IN
+anticipation	be/Verb RB confident/JJ of/IN
+trust	trust/Verb in/IN
+sadness	discomfit/Verb
+disgust	estrange/Verb
+surprise	astound/Verb
+joy	delight/Verb
+sadness	depress/Verb
+disgust	loathe/Verb
+anger	annoy/Verb
+disgust	abominate/Verb
+fear	scare/Verb
+surprise	unsettle/Verb
+fear	be/Verb RB embarrass/VBN for/IN
+sadness	dishearten/Verb
+sadness	be/Verb RB miserable/JJ that/IN
+joy	amuse/Verb
+anticipation	ache/Verb for/IN
+joy	be/Verb RB joyful/JJ about/IN
+surprise	flummox/Verb
+joy	charm/Verb
+joy	be/Verb RB happy/JJ (?! to) (?!\d) that/IN
+anger	agitate/Verb
+fear	petrify/Verb
+disgust	sicken/Verb
+surprise	overwhelm/Verb
+joy	savor/Verb
+fear	worry/Verb about/IN
+joy	be/Verb RB overjoyed/JJ that/IN
+joy	hearten/Verb
+joy	satisfy/Verb
+sadness	discourage/Verb
+anticipation	hope/Verb for/IN
+trust	take/Verb comfort/NN in/IN
+fear	terrify/Verb
+fear	be/Verb RB worry/VBN about/IN
+anticipation	await/Verb
+anticipation	be/Verb RB desperate/JJ to/IN
+anger	arouse/Verb
+anger	fluster/Verb
+fear	be/Verb RB frightened/JJ that/IN
+anger	make/Verb a/DT fuss/NNS over/IN
+fear	worry/Verb
+surprise	perplex/Verb
+fear	menace/Verb
+anticipation	yearn/Verb for/IN
+anger	be/Verb RB indignant/JJ over/IN
+fear	horrify/Verb
+surprise	dazzle/Verb
+surprise	baffle/Verb
+sadness	dissatisfy/Verb
+anger	fret/Verb about/IN
+disgust	scorn/Verb
+trust	captivate/Verb
+fear	torment/Verb
+anticipation	desire/Verb
+anger	enrage/Verb
+joy	arouse/Verb
+anticipation	pine/Verb for/IN
+joy	be/Verb RB happy/JJ about/IN
+disgust	shame/Verb
+fear	fear/Verb that/IN
+anticipation	be/Verb RB eager/JJ for/IN
+sadness	be/Verb RB unhappy/JJ that/IN
+anger	exacerbate/Verb
+anger	madden/Verb
+anger	be/Verb RB mad/JJ about/IN
+anticipation	long/Verb RB to/TO
+disgust	be/Verb RB gutted/JJ about/IN
+disgust	despise/Verb
+anticipation	be/Verb RB eager/JJ to/IN
+anger	be/Verb irate/JJ that/IN
+anticipation	prepare/Verb for/IN
+anticipation	be/Verb RB optimistic/JJ that/IN
+sadness	afflict/Verb
+anticipation	expect/Verb
+anticipation	predict/Verb that/IN
+surprise	nonplus/Verb
+anticipation	look/Verb forward/RB to/TO

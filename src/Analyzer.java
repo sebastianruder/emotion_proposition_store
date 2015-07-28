@@ -236,7 +236,6 @@ public class Analyzer {
         Map<String, Double> emotionNgramFreqs = ngramEnum.equals(Enums.Ngram.unigram) ? this.emotionNgramTypeUnigramFreqs.get(ngramSource) : this.emotionNgramTypeBigramFreqs.get(ngramSource);
         double ngramCount = 0;
         ngramCount = this.causeUnigramCount.get(ngramSource.toString());
-
         // initializes the final ngram - PMI map
         Map<String, Double> PMIMap = new HashMap<String, Double>();
 

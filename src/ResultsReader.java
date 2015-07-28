@@ -466,5 +466,4 @@ public class ResultsReader {
         System.out.println("Done");
         return extractions;
     }
-
 }

@@ -12,6 +12,7 @@ startle	surprise_II	anger_III
 trust	trust_II	
 scare	fear_II	surprise_II
 confuse	surprise_III	fear_III
+be happy about	joy_II
 disdain	disgust_I	
 fret about	fear_III	anticipation_II
 be flabbergast that	surprise_II	
@@ -30,7 +31,7 @@ deplore	disgust_II
 relish	joy_I	anticipation_III
 be anxious that	fear_III	anger_III
 comfort	joy_II	
-be intent on	anticipation_III	
+be intent on	anticipation_III
 aggravate	anger_III
 provoke	anger_II	
 be curious about	anticipation_III	
@@ -166,7 +167,7 @@ alienate	sadness_III
 be eager for	anticipation_II	
 be amaze that	surprise_I	
 cheer	joy_II	
-please	joy_II	
+please	joy_II
 disturb	anger_III
 be angry at	anger_II	
 offend	anger_II	disgust_II
