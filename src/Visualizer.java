@@ -12,13 +12,16 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.AbstractRenderer;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.GroupedStackedBarRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
+import org.jfree.chart.title.LegendTitle;
 import org.jfree.data.KeyToGroupMap;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.ui.RectangleEdge;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.awt.*;
@@ -46,7 +49,7 @@ public class Visualizer {
 
 
         for (Enums.Metric metricEnum : Enums.Metric.values()) {
-            if (metricEnum.equals(Enums.Metric.chi_square)) continue;
+            // if (metricEnum.equals(Enums.Metric.chi_square)) continue;
 
             String metric = metricEnum.toString();
             String metricDir = Utils.combine(rootDir, metric);
@@ -198,6 +201,9 @@ public class Visualizer {
                 renderer.setSeriesPaint(emotionEnum.ordinal(), emotionToColor(emotionEnum));
             }
 
+            seriesChart.getLegend().setItemFont(new Font("SansSerif", Font.PLAIN, 25));
+            ((AbstractRenderer) xyPlot.getRenderer()).setBaseLegendShape(new Rectangle(30,30));
+
             String seriesFileName = String.format("%s_%s_%s_comparison_%s.jpg", metric, ngram, ngramType, topNSeries);
             saveChart(metricDir, seriesFileName, seriesChart, 1280, 800);
             // displayChart("", seriesChart);
@@ -299,6 +305,10 @@ public class Visualizer {
         renderer.setSeriesPaint(5, Color.gray);
 
         plot.setRenderer(renderer);
+
+        chart.getLegend().setItemFont(new Font("SansSerif", Font.PLAIN, 25));
+        ((AbstractRenderer) plot.getRenderer()).setBaseLegendShape(new Rectangle(30,30));
+
         String chartFileName = String.format("%s_%s_nrc_overlap_%d.jpg", metric, ngramType, topN);
         saveChart(metricDir, chartFileName, chart, 1280, 800);
 
@@ -419,6 +429,9 @@ public class Visualizer {
                     renderer.setSeriesPaint(emotionEnum.ordinal(), emotionToColor(emotionEnum));
                 }
             }
+
+            chart.getLegend().setItemFont(new Font("SansSerif", Font.PLAIN, 25));
+            ((AbstractRenderer) categoryPlot.getRenderer()).setBaseLegendShape(new Rectangle(30,30));
 
             String chartFileName = String.format("%s_%s_%s_%s_overlap_%d.jpg", metric, ngram, ngramType, emotionOrSentiment.toLowerCase(), topN);
             saveChart(metricDir, chartFileName, chart, 1280, 800);

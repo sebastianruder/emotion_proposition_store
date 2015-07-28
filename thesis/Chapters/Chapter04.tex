@@ -4,7 +4,9 @@
 
 \label{ch:analysis} % For referencing the chapter elsewhere, use \autoref{ch:mathtest}
 
-In this chapter, we will perform different distributional analyses on the extracted propositions regarding a variety of aspects to gain further insights. We will initially give an overview of the nature and distribution of the extracted propositions as well as evaluate the productivity of the patterns that produced them.
+We have described in the last chapter in a way the process of sowing the patterns, which was occasionally arduous and dry. In this chapter, we are now finally able to reap the rewards, to harvest the emotion propositions, to take them apart, and look at them in detail.
+
+For this purpose, we will perform different distributional analyses on the extracted propositions regarding a variety of aspects to gain further insights. We will initially give an overview of the nature and distribution of the extracted propositions as well as evaluate the productivity of the patterns that produced them.
 Subsequently, we will compare two association metric frequently employed in sentiment analysis, point-wise mutual information (PMI) and chi-square, for their use in determining ngrams that are most associated with an emotion. We briefly compare the salience of emotion unigrams and bigrams, before we compare the prior probability of association with an emotion for the following configurations of the emotion holder and cause: \begin{inparaenum}[(a)] [\itshape a\upshape)] \item emotion holder; \item NP cause; \item S cause subject + predicate; and \item S cause predicate + object. \end{inparaenum} To this end, we use two evaluation methods: \begin{inparaenum}[(a)] [\itshape a\upshape)] \item We match our bigrams against annotations in the emotion lexicon EmoLex \cite{nrc_emolex} that we presented in chapter \ref{ch:patterns} section \ref{sec:emolex} to obtain an initial guidance. \item Secondly, we let human annotators annotate the most promising configurations of bigrams to obtain a gold standard that we use for evaluation. \end{inparaenum} Finally, an extension of Latent Dirichlet Allocation (LDA) that allows the introduction of supervised category information enables us to generate topics that are associated with our emotions. We investigate different topic configurations and intrinsically evaluate these topics using EmoLex.
 
 \section{Extraction results}
@@ -17,25 +19,25 @@ After removing all extractions that stem from identical sentences, we arrive at 
 	\item \textit{grate}: Although occasionally used emotively, \textit{grate} is most often used in an unemotive context related to cooking.
 	\item \textit{depress}: As economics are a frequent topic, \textit{depress} often refers to sales or prices rather than the mental state of persons.
 	\item \textit{aggravate}: In international politics, \textit{aggravate} often relates to conditions instead of individuals.
-	\item \textit{rattle}: In politics, someone may \textit{rattle off} an argument or an earthquake may \textit{rattle} a city.
+	\item \textit{rattle}: In politics someone may \textit{rattle off} an argument or an earthquake may \textit{rattle} a city.
 	\item \textit{afflict}: An ailment often \textit{afflicts} people.
 	\item \textit{inflame}: \textit{Inflame} is often used metaphorically, i.e. \textit{inflame} the bonfire of terrorism, the spirit of war, etc.
 \end{itemize}
 
 \begin{table}[h]
 \centering
-\begin{tabular}{l|r|r|r}
-{\bf Emotion} & {\bf Frequency} & {\bf\% of total extractions} & {\bf\# of patterns with}\\
-              &                 &                              & {\bf 10+ occurrences}\\\hline
-anticipation  & 966,571          & 54.47                       & 22 \\
-fear          & 249,103          & 14.04                       & 20 \\
-joy           & 231,967          & 13.07                       & 30 \\
-trust         & 89,217           & 5.03                        &  6 \\
-anger         & 64,586           & 3.64                        & 28 \\
-surprise      & 60,221           & 3.39                        & 20 \\
-disgust       & 59,486           & 3.35                        & 15 \\
-sadness       & 53,269           & 3.00                        & 13\\\hline
-Total         & 1,774,420         & 100.00                     & 154                
+\begin{tabular}{l|r|r|r|r}
+{\bf Emotion} & {\bf Frequency} & {\bf\% of total} & {\bf\# of patterns with} & {\bf total \#} \\
+& & {\bf extractions} & {\bf 10+ occurrences} & {\bf of patterns}\\\hline
+anticipation  & 966,571 & 54.47 & 22 & 25\\
+fear          & 249,103 & 14.04 & 20 & 22\\
+joy           & 231,967 & 13.07 & 30 & 31\\
+trust         & 89,217  & 5.03  &  6 & 8\\
+anger         & 64,586  & 3.64  & 28 & 29\\
+surprise      & 60,221  & 3.39  & 20 & 16\\
+disgust       & 59,486  & 3.35  & 14 & 14\\
+sadness       & 53,269  & 3.00  & 13 & 18\\\hline
+Total         & 1,774,420 & 100.00 & 153 & 163              
 \end{tabular}
 \caption{Frequencies of emotions in extractions}
 \label{tab:extraction-emotion-freq}
@@ -236,11 +238,13 @@ Due to space requirements, we display the top 10 patterns for each of Plutchik's
 	\end{minipage}
 \end{table}
 
-Analogous to social media data, which has been found to be predominantly happy \cite{depechemood} due to its subjectivity, neutral predicates are prevalent given the idiosyncracies of the objective news domain. Consequently, anticipation as well as neutral predicates such as \textit{expect}, \textit{predict}, and \textit{rely on} rank highly. Additionally, \textit{enjoy} and \textit{fear} are very productive, which seem to be the preferred ways to indicate the polar opposites of joy and fear. As is according to style conventions of news texts and creative writing, passive forms play a subordinate role and are (except for trust, which had less than ten patterns) not found in the top ten patterns of any emotion. When we look at the distribution between NP causes and S causes between emotions in table \ref{tab:patterns-np-vs-s}, we see that -- except for anticipation and fear -- NP causes dominate -- and quite clearly in the cases of surprise, disgust, and anger. This is due to the prevalent use of the active form of Experiencer psych verbs such as \textit{surprise}, \textit{hate}, \textit{provoke}, etc. which predominantly take a nominal phrase as their argument.
-	
+Analogous to social media data, which has been found to be predominantly happy \cite{depechemood} due to its subjectivity, neutral predicates are prevalent given the idiosyncracies of the objective news domain. Consequently, anticipation as well as neutral predicates such as \textit{expect}, \textit{predict}, and \textit{rely on} rank highly. Additionally, \textit{enjoy} and \textit{fear} are very productive, which seem to be the preferred ways to indicate the polar opposites of joy and fear. As is according to style conventions of news texts and creative writing, passive forms play a subordinate role and are (except for trust, which had fewer than ten patterns) not found in the top ten patterns of any emotion. When we look at the distribution between NP causes and S causes between emotions in table \ref{tab:patterns-np-vs-s}, we see that -- except for anticipation and fear -- NP causes dominate -- and quite clearly in the cases of surprise, disgust, and anger. This is due to the prevalent use of the active form of Experiencer psych verbs such as \textit{surprise}, \textit{hate}, \textit{provoke}, etc. which predominantly take a nominal phrase as their argument, e.g. \textit{the idea of seeing (Pluto) expelled from the society of certified planets)} (\texttt{NYT\_ENG\_19960311.0669/31}) rather than \textit{seeing it expelled from the society of certified planets}.
+
 \section{Distributional analysis of emotion holder and cause}
 
-For the distributional analysis of the results, we first count the occurrences of all unigrams and bigrams respectively for the emotion holder, the NP cause, the S cause as well as the predicate of the S cause together with the subject and together with the object respectively. To guarantee maximum meaningfulness of the results, we treat prepositional objects as one unigram. We convert all ngrams to lowercase if they are not named entities; for named entities, we keep the NE tags in a shortened form for better readability; finally, we remove all stopwords.
+In this section, we will perform various distributional analyses on the results. We will use two association metrics commonly used in sentiment analysis to calculate the degree of association between an emotion and ngrams derived from the nominal or clausal causes. Ordering the ngrams by their association score will allow us to determine the concepts, actions, and events that are most associated with certain emotions. By aggregating the association score across all emotions, we will reveal ambiguous and controversial concepts.
+
+For the distributional analysis, we first count the occurrences of all unigrams and bigrams respectively for the emotion holder, the NP cause, the S cause as well as the predicate of the S cause together with the subject and together with the object respectively. In order to strike a balance between reliable results and context-sensitivity\footnote{Initial experiments revealed that we lack sufficient data to obtain reliable results for trigrams, which would provide additional context helpful for emotion detection.}, we treat prepositional objects as one unigram. We convert all ngrams to lowercase if they are not named entities; for named entities, we keep the NE tags in a shortened form for better readability; finally, we remove all stopwords.
 
 We generate unigrams for the following strings:
 \begin{aenumerate}
@@ -255,7 +259,7 @@ We generate bigrams for the above as well as the following strings:
 	\item The predicate of the S cause concatenated with its object
 \end{aenumerate}
 
-In both of the latter, the predicate is always part of the bigram. The counts of number of unigrams and bigrams for the different configurations can be found in \ref{tab:unigram_bigram_count_ngram_type}. We observe unigram counts around 2m, while bigram counts range around 1m, except for the predicate + direct object configuration.
+In both of the latter, the predicate is always part of the bigram. The counts of number of unigrams and bigrams for the different configurations can be found in table \ref{tab:unigram_bigram_count_ngram_type}. We observe unigram counts around 2m, while bigram counts range around 1m, except for the predicate + direct object configuration.
 
 \begin{table}[h]
 \centering
@@ -271,22 +275,22 @@ Emotion holder        & 2,809,796         & 1,279,699
 \label{tab:unigram_bigram_count_ngram_type}
 \end{table}
 
-We use two association metrics that have been used frequently in sentiment analysis: pointwise mutual information (PMI) and chi-square.
+In order to determine the concepts, actions, and events that are most associated with certain emotions, we use two association metrics that have been used frequently in sentiment analysis: pointwise mutual information (PMI) and chi-square.
 
 \subsection{PMI}
 
-PMI, which is derived from information theory, models the mutual information between two expressions. The PMI for two expressions $x$ and $y$ is defined as the ratio of their joint probability and the product of their individiual probabilities:
+PMI, which is derived from information theory, models the mutual information between two expressions. PMI for two expressions $x$ and $y$ is defined as the ratio of their joint probability and the product of their individual probabilities:
 
 $$pmi(x;y) = log \dfrac{p(x,y)}{p(x)p(y)}$$
 
 with $p(x,y) = \frac{f(x;y)}{N}$ and $p(x)p(y) = \frac{f(x)f(y)}{N^{2}}$, where $f(x)$ is the frequency of $x$ in the corpus and $N$ is the number of extractions.
 
-$x$ and $y$ are associated with each other, if their PMI is greater than 0 -- with their association strength increasing with the PMI score; they are negatively associated if their PMI is less than 0.
+$x$ and $y$ are associated with each other, if their PMI is greater than 0 -- with their association strength increasing with the PMI score; they are negatively associated if their PMI is less than 0, i.e. sadness would be negatively associated with a concept that is prone to evoke joy, e.g. \textbf{ice cream}.
 In our case, $x$ is the emotion and $y$ is a unigram or bigram that occurs with the emotion.
 
 The regular PMI measure has one issue in that if $y$ occurs just once with emotion $x$ and with no other emotion, $p(x,y) = p(y)$, which reduces the above equation to $pmi(x;y) = log \frac{1}{p(x)}$, which is independent of the ngram $y$ as it is just the probability of emotion $x$.
 
-\citeauthor{twitter_hashtags_nrc} simply ignore ngrams that occur less than five times, which, however, only unsatisfactorily mitigates the issue. Instead, in order to penalize such low-frequency observations, we use a simple discounting method that has been described by \citeauthor{pmi_discount} and already put to you use by \citeauthor{matt_dissertation_pmi}. Multiplying the numinator with the discount factor produces the following term:
+\citeauthor{twitter_hashtags_nrc} simply ignore ngrams that occur less than five times, which, however, only unsatisfactorily mitigates the issue. Instead, in order to penalize such low-frequency observations, we use a simple discounting method that has been described by \citeauthor{pmi_discount} and already put to you use by \citeauthor{matt_dissertation_pmi}. Multiplying the numerator with the discount factor produces the following term:
 
 $$\frac{f(x;y)}{N} \cdot \frac{f(x;y)}{f(x;y) + 1}$$
 
@@ -300,7 +304,7 @@ Another common variant of the PMI measure is the normalized PMI score, which res
 
 \subsection{Chi-square}
 
-Chi-square ($\chi^{2}$) is another common measure. Let $n$ be the number of all documents, i.e. extractions, $p(x|y)$ be the conditional probability of emotion $x$ occurring with ngram $y$, $P(x)$ be the fraction of extractions containing emotion $x$, and $F(y)$ be the fraction of extractions containing ngram $y$, which we define as follows:
+Chi-square ($\chi^{2}$) is another common measure to gauge the association between two concepts. Let $n$ be the number of all documents, i.e. extractions, $p(x|y)$ be the conditional probability of emotion $x$ occurring with ngram $y$, $P(x)$ be the fraction of extractions containing emotion $x$, and $F(y)$ be the fraction of extractions containing ngram $y$, which we define as follows:
 
 $$p(x|y) = \frac{p(x;y)}{p(y)}$$
 
@@ -323,7 +327,7 @@ We clearly want to be able to compare values not only among the different types 
 \caption{PMI values for the top 10,000 bigrams for each emotion}\label{fig:pmi distribution}
 \end{figure}
 
-Conversely, $\chi^{2}$ values, whose distribution ranges from 9,426 (sadness) to 73.68 (fear) for the top 100 bigrams of each emotion -- as can be seen in figure \ref{fig:chi-square distribution} -- renders comparison of $\chi^{2}$ values across emotions moot.
+Conversely, we only show the top 100 $\chi^{2}$ bigrams for each emotion, as their distribution has an extremely long tail that converges towards 0 and no substantial score differences can be observed after a threshold of 100. The distribution of the top 100 $\chi^{2}$ bigrams, however, ranges from 9,426 (sadness) to 73.68 (fear) for the top 100 bigrams of each emotion -- as can be seen in figure \ref{fig:chi-square distribution}. These significant value differences render the comparison of $\chi^{2}$ values across emotions moot.
 
 \begin{figure}[bth]
 \includegraphics[width=\linewidth]{gfx/chi_square_bigram_np_cause_comparison_100.jpg}
@@ -335,23 +339,23 @@ Comparing the top 10 NP cause bigrams of sadness, the emotion with the top-ranke
 \begin{table}[h]
 \centering
 \begin{tabular}{l|r|l|r}
-{\bf $\chi^{2}$ bigram} & {\bf $\chi^{2}$ value} & {\bf PMI bigram}        & {\bf PMI value} \\\hline
-loss of:life            & 9426.09                & death of:NUM         & 3.40            \\
-loss of:innocent\_life  & 2317.45                & quake victim            & 3.37            \\
-tragic loss             & 1430.38                & death of:wife           & 3.37            \\
-loss of:civilian\_life  & 1416.05                & loss of:man             & 3.37            \\
-civilian casualty       & 1303.09                & tragic loss             & 3.36            \\
-death of:NUM            & 1208.49                & death of:father         & 3.36            \\
-death of:NUM\_people & 1038.87                & death of:NUM\_people & 3.34            \\
-NUM victim           & 870.43                 & death of:relative       & 3.33            \\
-unfortunate incident    & 677.81                 & loss of:friend          & 3.33            \\
-choice of:word          & 516.71                 & innocent victim         & 3.33           
+{\bf $\chi^{2}$ bigram} & {\bf $\chi^{2}$ value} & {\bf PMI bigram} & {\bf PMI value} \\\hline
+loss of:life & 9426.09 & death of:NUM & 3.40 \\
+loss of:innocent\_life  & 2317.45 & quake victim & 3.37 \\
+tragic loss             & 1430.38 & death of:wife & 3.37 \\
+loss of:civilian\_life  & 1416.05 & loss of:man & 3.37 \\
+civilian casualty       & 1303.09 & tragic loss & 3.36 \\
+death of:NUM            & 1208.49 & death of:father & 3.36 \\
+death of:NUM\_people & 1038.87 & death of:NUM\_people & 3.34 \\
+NUM victim           & 870.43 & death of:relative & 3.33 \\
+unfortunate incident    & 677.81 & loss of:friend & 3.33 \\
+choice of:word          & 516.71 & innocent victim & 3.33 
 \end{tabular}
 \caption{Comparison of $\chi^{2}$ and PMI values for the top 10 sadness NP cause bigrams}
 \label{tab:chi-pmi sadness}
 \end{table}
 
-In light of the lack of comparability across emotions and the semantically injustifiable huge differences for the same emotion with the $\chi^{2}$ measure and given length constraints, we choose to proceed with further analyses using the PMI metric.
+In light of the lack of comparability across emotions and the semantically unjustifiable huge differences for the same emotion with the $\chi^{2}$ measure, we choose to proceed with further analyses using the PMI metric.
 
 \subsection{Bigrams vs. unigrams}
 
@@ -360,17 +364,17 @@ Having seen the top 10 NP cause sadness bigrams, when we take a look at the corr
 \begin{table}[h]
 \centering
 \begin{tabular}{l|r}
-{\bf Unigram}                                    & {\bf PMI score} \\\hline
-inconvenience                                    & 3.43            \\
-misunderstanding                                 & 3.42            \\
-passing                                          & 3.32            \\
-to:embassy                                       & 3.32            \\
-slay                                             & 3.28            \\
-of:grandson                                      & 3.27            \\
-assassinate                                      & 3.27            \\
-of:Princess\_Diana/PERS                          & 3.25            \\
-error                                            & 3.25            \\
-uday                                             & 3.24              
+{\bf Unigram}  & {\bf PMI score} \\\hline
+inconvenience  & 3.43            \\
+misunderstanding  & 3.42            \\
+passing  & 3.32            \\
+to:embassy  & 3.32            \\
+slay & 3.28            \\
+of:grandson & 3.27            \\
+assassinate & 3.27            \\
+of:Princess\_Diana/PERS & 3.25            \\
+error & 3.25            \\
+uday & 3.24              
 \end{tabular}
 \caption{Top 10 NP cause sadness unigrams}
 \label{tab:sadness-unigrams}
@@ -381,7 +385,7 @@ In order to avoid errors in further analyses, we focus on bigrams instead of uni
 \subsection{Ambiguous concepts}
 
 Before investigating individual emotions, we take a look at the most ambiguous bigrams, those who have the highest PMI score summed across all emotions. The top 20 NP cause bigrams are displayed in table \ref{tab:percent-bigrams-overlap-pmi}, with each emotion's portion of the overall PMI score depicted in percent. The same information is displayed in absolute PMI scores for the top 50 bigrams in figures \ref{fig:pmi-bigram-np-cause-emotion-overlap-50} and \ref{fig:pmi-bigram-np-cause-sentiment-overlap-50} across emotions and sentiment respectively. 
-Interestingly, anticipation and fear don't appear among the most ambiguous bigrams.
+Interestingly, anticipation and fear don't appear among the most ambiguous bigrams, even though many of them can be perceived to be associated with fear.
 
 \begin{table}[h]
 \centering
@@ -416,7 +420,7 @@ Named entities like state leaders and states are among the most polarizing conce
 
 If we ignore named entities, expressions that are associated with violence such as \textit{shooting death} and \textit{hostage crisis} or that may potentially be deployed controversially such as \textit{police officer}, \textit{security guard}, and \textit{Russian troops} possess the highest aggregated scores. Trust is placed in the \textit{Russian troops} e.g. by "Tajikistan 's hard-line government", which relied on them in 1998 "to guard the Afghan border against incursions by guerillas and smugglers" (\texttt{APW\_ENG\_19980116.0782/13}). The capability to showcase the development of such emotive trends over time thus presents an interesting research opportunity and will produce further insights on how public opinion on certain concepts fares. Date information can be easily extracted from the extraction ID; as an investigation of the temporal aspect would significantly inflate the scope of this project, we will leave it for future work.
 
-Interestingly, even among such potentially violent concepts as the ones mentioned above, PMI scores for fear are still negative. Conversely, the top 10 NP cause bigrams that have the highest fear PMI scores (cf. \ref{ch:appendix}, table \ref{tab:pmi-fear-np-cause-10}) all spread fear on a national level, while the above mentioned concepts would be condemned by the general public rather than scare it.
+Interestingly, even among such potentially violent concepts as the ones mentioned above, PMI scores for fear are still negative. Conversely, the top 10 NP cause bigrams that have the highest fear PMI scores (cf. appendix \ref{ch:appendix}, table \ref{tab:pmi-fear-np-cause-10}) all spread fear on a national level, e.g. \textit{government reprisal}, \textit{political backlash}, \textit{reprisal attack}, etc. while the above mentioned concepts would be condemned by the general public rather than scare it. While objects that evoke fear frequently also evoke other emotions such as anger and disgust, they do not count to the most controversial concepts, since they mainly negative emotions. Indeed, \textit{missile strike} and \textit{suicide bomber}, two of the first bigram that show moderate degrees of fear also exhibits anger and disgust and -- surprisingly -- trust. Closer inspection reveals that the U.S. relies on missile strikes, while foreign-led organizations such as the Hezbollah depend on suicide bombers. Two other terms, \textit{Liberation Army} and \textit{rocket attack} evoke fear as well as anger, disgust, and surprise.
 
 Finally, considering the two expressions ranked as the most ambiguous, \textit{former president} and \textit{prime minister}, both of them can refer to leader of states that are objects of a diversity of emotions, e.g. "South Korea's former president Roh" (\texttt{AFP\_ENG\_20090528.0118/7}) is mourned by thousands, while Washington loathes "two (corrupt) former presidents (of Nicaragua)" (\texttt{APW\_ENG\_20051205.0005/5}). Even former leader's decisions may still evoke expressions of anger or surprise, but the media will be more cautious with signs of the stronger disgust for current than for former leaders. Furthermore, the degree of anteriority implied by \textit{former president} is linked to sadness, whereas support will rather be given to a current leader.
 
@@ -425,30 +429,53 @@ Finally, considering the two expressions ranked as the most ambiguous, \textit{f
 \caption{Overlap across emotions for the top 50 PMI NP cause bigrams}\label{fig:pmi-bigram-np-cause-emotion-overlap-50}
 \end{figure}
 
-\begin{figure}[bth]
-\includegraphics[width=\linewidth]{gfx/pmi_bigram_np_cause_sentiment_overlap_50.jpg}
-\caption{Overlap across sentiment for the top 50 PMI NP cause bigrams}\label{fig:pmi-bigram-np-cause-sentiment-overlap-50}
-\end{figure}
-
-Considering the entirety of ambiguous expressions displayed in figure \ref{fig:pmi-bigram-np-cause-emotion-overlap-50}, we observe that degrees of anger (\textit{red}), disgust (\textit{cyan}), and surprise (\textit{yellow}) are present in almost all concepts. Trust (\textit{green}) frequently appears as well, sadness (\textit{blue}) less often, although more dominantly if it does, while joy (\textit{magenta}) is hardly visible. All in all, negative sentiment (\textit{red}) prevails as seen in figure \ref{fig:pmi-bigram-np-cause-sentiment-overlap-50}.
-
-\subsection{Emotion holder vs. cause configurations} \label{sec:emolex-evaluation}
-
-We have previously mentioned the NRC Word-Emotion Association Lexicon (EmoLex) \cite{nrc_emolex}. We weren't able to use it for our collection of patterns; we will, though, utilize it in order to partially validate association with an emotion for our concepts. We will initially compare the overlap of the different configurations of bigrams at hand with EmoLex to evaluate which bigrams we will examine more closely in our subsequent human-annotated evaluation.
-
-\begin{inparaenum}[(a)] [\itshape a\upshape)] We will compare at this point bigrams from \item the emotion holder, \item the NP cause, \item the S cause subject and predicate, and \item the S cause predicate and object \end{inparaenum}. As the predicate of the complement is the most meaningful part in a clausal cause, it is always present in the two latter bigrams. We initially calculate the PMI scores for all emotions for all bigram configurations, excluding all bigrams that contain a named entity as these are not present in EmoLex. In order to allow a We select the top 30 bigrams per emotion per configuration and calculate a ternary overlap with EmoLex: As EmoLex only contains unigrams, we assign \texttt{NA} (\textit{grey}) if none of the unigrams of the bigram appears in EmoLex; if one of them appears in EmoLex with the respective emotion, we assign \texttt{TRUE} (\textit{green}); otherwise we assign \texttt{FALSE}. As EmoLex also contains a label for \textit{positive} and \textit{negative}, we also calculate the sentiment overlap by mapping our emotions to its sentiment (see table \ref{tab:emotion2sentiment}) and checking if it appears with the respective sentiment in EmoLex as above. 
+Considering the entirety of ambiguous expressions displayed in figure \ref{fig:pmi-bigram-np-cause-emotion-overlap-50}, we observe that degrees of anger (\textit{red}), disgust (\textit{cyan}), and surprise (\textit{yellow}) are present in almost all concepts. Trust (\textit{green}) frequently appears as well, sadness (\textit{blue}) less often, although more dominantly if it does, while joy (\textit{magenta}) is hardly visible. In order to provide a more coarsely granular distribution of sentiment, we map Plutchik's eight emotions to their corresponding sentiment in table \ref{tab:emotion2sentiment}.
 
 \begin{table}[]
 \centering
 \begin{tabular}{l|l||l|l}
 {\bf Emotion} & {\bf Sentiment} & {\bf Emotion} & {\bf Sentiment} \\\hline
-anticipation  & neutral         & anger         & negative        \\
-surprise      & neutral         & fear          & negative        \\
-joy           & positive        & disgust       & negative        \\
-trust         & positive        & sadness       & negative       
+anticipation  & neutral & anger & negative        \\
+surprise      & neutral & fear  & negative        \\
+joy           & positive & disgust & negative        \\
+trust         & positive & sadness & negative       
 \end{tabular}
 \caption{Mapping of emotions to sentiment}
 \label{tab:emotion2sentiment}
+\end{table}
+
+All in all, negative sentiment (\textit{red}) prevails as seen in figure \ref{fig:pmi-bigram-np-cause-sentiment-overlap-50}.
+
+\begin{figure}[bth]
+\includegraphics[width=\linewidth]{gfx/pmi_bigram_np_cause_sentiment_overlap_50.jpg}
+\caption{Overlap across sentiment for the top 50 PMI NP cause bigrams}\label{fig:pmi-bigram-np-cause-sentiment-overlap-50}
+\end{figure}
+
+\section{Evaluation}
+
+Now that we have compared different association metrics as well as unigrams and bigrams, we will evaluate the quality of the highest-scoring bigrams for each emotion. For this purpose, we will use two evaluations:
+
+\begin{aenumerate}
+	\item We will evaluate against the NRC Word-Emotion Association Lexicon (EmoLex) \cite{nrc_emolex} that we introduced in section \ref{sec:emolex}. As EmoLex lists unigrams together with the emotion and sentiment that they are associated with, we can simply check if the unigrams in a bigram appear in EmoLex and if they are associated there with the same emotion or corresponding sentiment that we assigned. As bigrams' emotion often is compositional, this evaluation mostly serves to inform which bigram sources are most promising.
+	\item We will review these bigrams in a second step with a more rigorous evaluation using manually annotated data. Annotators will label bigrams with an emotion; an evaluation against the gold standard will then provide a comprehensive overview of the quality of our bigrams.
+\end{aenumerate}.
+
+\subsection{Evaluation using EmoLex} \label{sec:emolex-evaluation}
+
+\begin{inparaenum}[(a)] [\itshape a\upshape)] We will compare at this point bigrams from \item the emotion holder, \item the NP cause, \item the S cause subject and predicate, and \item the S cause predicate and object.\end{inparaenum} As the predicate of the complement is the most meaningful part in a clausal cause, it is always present in the two latter bigrams. We initially calculate the PMI scores for all emotions for all bigram configurations, excluding all bigrams that contain a named entity as these are not present in EmoLex. In order to facilitate a subsequent investigation of the results, we select the top 30 bigrams per emotion per configuration and calculate a ternary overlap with EmoLex: As EmoLex only contains unigrams, we assign \texttt{NA} (\textit{grey}) if none of the unigrams of the bigram appears in EmoLex; if one of them appears in EmoLex with the respective emotion, we assign \texttt{TRUE} (\textit{green}); otherwise we assign \texttt{FALSE}. As EmoLex also contains a label for \textit{positive} and \textit{negative}, we also calculate the sentiment overlap by checking if the emotion's corresponding sentiment (see table \ref{tab:emotion2sentiment}) appears with the respective sentiment in EmoLex as above.
+
+To illustrate this procedure, we show the overlap with EmoLex for three sadness bigrams in table \ref{tab:emolex-overlap-example}. \textit{Death} in \textit{death of:number} appears in EmoLex and is labelled with sadness as well as negative and thus is assigned \texttt{TRUE} for both emotion and sentiment overlap. Both \textit{coup} and \textit{today} appear in EmoLex, but neither of them is assigned sadness nor negative; for this reason, \textit{coup today} is assigned \texttt{FALSE} for both emotion and sentiment overlap. Finally, \textit{arrogant response} receives a negative emotion overlap, but a positive sentiment overlap, as neither \textit{arrogant} nor response \textit{response} are associated with sadness in EmoLex, while \textit{arrogant} is associated with a negative sentiment.
+
+\begin{table}[]
+\centering
+\begin{tabular}{l|l|l}
+{\bf Bigram} & {\bf Emotion overlap} & {\bf Sentiment overlap} \\
+death of:number & \texttt{TRUE} & \texttt{TRUE} \\
+coup today & \texttt{FALSE} & \texttt{FALSE} \\
+arrogant response & \texttt{FALSE} & \texttt{TRUE}
+\end{tabular}
+\caption{Overlap with EmoLex for sample sadness bigrams}
+\label{tab:emolex-overlap-example}
 \end{table}
 
 We show the results in tables \ref{tab:emotion-holder-nrc-overlap}, \ref{tab:s-cause-subj-pred-nrc-overlap}, \ref{tab:s-cause-pred-dobj-nrc-overlap}, and \ref{tab:np-cause-nrc-overlap}. We include figure \ref{fig:pmi-np-cause-nrc-overlap} exemplarily to visualize the values in table \ref{tab:np-cause-nrc-overlap}. Sentiment columns for anticipation and surprise only contain \texttt{NA} as EmoLex doesn't contain a \textit{negative} label. All numbers are given as percentage of the top 30 bigrams that were chosen for each emotion respectively. Note that percentages for \texttt{TRUE} equal precision. As our \textit{gold standard} for this evaluation, EmoLex, contains 14,000 terms and we only select the 30 bigrams for this evaluation, we don't provide recall nor F-score as they wouldn't add additional insights.
@@ -456,6 +483,10 @@ We show the results in tables \ref{tab:emotion-holder-nrc-overlap}, \ref{tab:s-c
 As we've outlined before, emotion is a compositional phenomenon. Thus, this evaluation employing comparison on an unigram-level may only serve as a guideline that will inform further investigation.
 
 Another thing worth remarking is that due to data sparseness for S causes of surprise, disgust, and anger (see table \ref{tab:patterns-np-vs-s}), PMI will frequently not be able to determine reliable candidates, particularly regarding direct objects, which are only present in a subset of the instances.
+
+\subsubsection{Emotion holder}
+
+As can be seen in table \ref{tab:emotion-holder-nrc-overlap}, emotion holder bigrams frequently are not associated with the emotion in EmoLex.
 
 \begin{table}[]
 \centering
@@ -475,7 +506,11 @@ Another thing worth remarking is that due to data sparseness for S causes of sur
 \label{tab:emotion-holder-nrc-overlap}
 \end{table}
 
-As can be seen in table \ref{tab:emotion-holder-nrc-overlap}, emotion holder bigrams frequently are not associated with the emotion in EmoLex. This does not surprise, as the experiencer doesn't generally presuppose an emotion, in contrast to the cause of the emotion. The superior precision for anger is due to the fact that \textit{provoke}, the most productive anger pattern, in news frequently refers to inanimate concepts that are -- in fact -- associated with anger, such as \textit{international outcry}, \textit{angry response}, or \textit{international outrage}. 
+This does not surprise, as the experiencer doesn't generally presuppose an emotion, in contrast to the cause of the emotion. The superior precision for anger is due to the fact that \textit{provoke}, the most productive anger pattern, in news frequently refers to inanimate concepts that are -- in fact -- associated with anger, such as \textit{international outcry}, \textit{angry response}, or \textit{international outrage}. 
+
+\subsubsection{S cause subject + predicate}
+
+The low values for anger and disgust in table \ref{tab:s-cause-subj-pred-nrc-overlap} are generally due to data sparseness.
 
 \begin{table}[]
 \centering
@@ -495,11 +530,15 @@ As can be seen in table \ref{tab:emotion-holder-nrc-overlap}, emotion holder big
 \label{tab:s-cause-subj-pred-nrc-overlap}
 \end{table}
 
-The low values for anger and disgust in table \ref{tab:s-cause-subj-pred-nrc-overlap} are generally due to data sparseness. EmoLex only inadequately captures the objects of anticipation that are most prominent in news stories: While \textit{grow} as in \textit{gross grow} appears in EmoLex, synonyms like \textit{rise} or \textit{expand} do not. Many fear bigrams can be attributed to viruses and war. While \textit{flu} and \textit{disease} are associated with fear in EmoLex, \textit{virus} is just associated with negative. EmoLex captures bigrams such as \textit{flu mutate} or \textit{war destabilize}, but does not account for equally fearful ones such as \textit{h5n1 mutate}, \textit{virus mutate}, \textit{strain mutate}, or \textit{bird mutate}.
+EmoLex only inadequately captures the objects of anticipation that are most prominent in news stories: While \textit{grow} as in \textit{gross grow} appears in EmoLex, synonyms like \textit{rise} or \textit{expand} do not. Many fear bigrams can be attributed to viruses and war. While \textit{flu} and \textit{disease} are associated with fear in EmoLex, \textit{virus} is just associated with a negative sentiment. EmoLex captures bigrams such as \textit{flu mutate} or \textit{war destabilize}, but does not account for equally fearful ones such as \textit{h5n1 mutate}, \textit{virus mutate}, \textit{strain mutate}, or \textit{bird mutate}.
 Sports-based joy bigrams such as \textit{team achieve} or \textit{player accomplish} are captured by EmoLex, while others that are only joyful because of their compositionality, e.g. \textit{nobody hurt}, \textit{nobody kill(ed)} are not expressed. Furthermore, our approach captures a lot of terms that are very relevant in politics, such as \textit{condition stabilise}.
 A lot of combinations of subjects and predicates are context-dependent. \textit{Situation occur} or \textit{position arise} might be neutral, positive, or negative, but are associated with sadness in the news domain.
 Suprise bigrams derived from the S cause and predicate are very ambiguous, due to the neutrality of surprise. Bigrams like \textit{settlement allow} or \textit{anyone object} depend on the context more than anything else to elicit surprise.
 Trust bigrams usually refer to the actions of political leaders or powers such as \textit{democrats handle}, \textit{democrats deal}, or \textit{political contribute}. While a few of these are contained in EmoLex, most of them express a partisan trust.
+
+\subsubsection{S cause predicate + object}
+
+A combination of a predicate and its object is more adequate in evoking a sentiment. 
 
 \begin{table}[]
 \centering
@@ -519,12 +558,15 @@ Trust bigrams usually refer to the actions of political leaders or powers such a
 \label{tab:s-cause-pred-dobj-nrc-overlap}
 \end{table}
 
-A combination of a predicate and its object is more adequate in evoking a sentiment. 
 While a few unigrams such as \textit{deny} in \textit{deny honor} are contained in EmoLex, other objects of anger such as \textit{kill teenager}, \textit{refuse plea}, or \textit{molest boy} are not expressed. Some of the highest-ranked bigrams are very context-dependent. For instance, \textit{offer aid} is only a source of anger if is offered virtually unconditionally to a highly controversial entity such as Pyongyang. Even though many bigrams could be correctly considered as source of anticipation, e.g. \textit{rise percent}, \textit{increase percent}, \textit{fall percent}, \textit{reach dollar}, this economics-based anticipation is not captured by EmoLex. Due to data sparseness, we only have a few disgust bigrams, which are very context-dependent.
 Some fear bigrams like \textit{destabilize region}. \textit{upset balance}, or \textit{engulf region} are not expressed in EmoLex, while others like \textit{trigger pandemic} or \textit{spark violence} are, mostly due to their frightening object. Furthermore, others such as \textit{spark (arms) race} or \textit{use (nuclear) program} showcase that more relevant information is needed to satisfactorily determine the relevant emotion without context. Joy bigrams have a very low precision, as unigrams like \textit{survive} in \textit{survive appeal}, \textit{survive attempt}; \textit{escape} in \textit{escape card}, \textit{escape injury}; or \textit{win} in \textit{win set} or \textit{win decision} are not associated with joy in EmoLex, even though they would be a source of joy in the respective bigrams.
 Sadness achieves a higher precision, as bigrams like \textit{light candle}, \textit{announce death}, or \textit{leave friend} are labeled correctly. Others, like \textit{wear skirt} are culturally sensitive or context-dependent.
 Surprise bigrams are highly ambiguous: While \textit{terminate agent}, \textit{include flaw}, \textit{know scientist}, \textit{exclude mortgage}, or \textit{support opposed} might surprise the respective parties, they are not labeled as such in EmoLex.
 The trust bigrams reduce to trusting someone with a certain action, often to \textit{handle} a \textit{problem}, an \textit{issue}, a \textit{matter}, \textit{security}, etc. These are not captured in EmoLex.
+
+\subsubsection{NP cause}
+
+We get the highest agreement numbers overall for bigrams derived from the NP cause.
 
 \begin{table}[]
 \centering
@@ -549,7 +591,7 @@ The trust bigrams reduce to trusting someone with a certain action, often to \te
 \caption{Emotion and sentiment overlap of NP cause bigrams with the NRC Emotion Lexicon}\label{fig:pmi-np-cause-nrc-overlap}
 \end{figure}
 
-We get the highest agreement numbers overall for bigrams derived from the NP cause. Anger bigrams have the lowest precision; the object of anger often is a body part, e.g. \textit{left knee}, \textit{sore right}, \textit{right ankle} that is bothering the professional athletes. We encounter a lot of bigrams of financial anticipation, e.g. \textit{profit of:billion\_yen}, \textit{operating loss}, \textit{net loss}, \textit{earnings per:share} that are not captured by EmoLex. This dichotomy of \textit{profit} and \textit{loss} that can be both a source of anticipation serve to showcase its underlying ambiguity.
+Anger bigrams have the lowest precision; the object of anger often is a body part, e.g. \textit{left knee}, \textit{sore right}, \textit{right ankle} that is bothering the professional athletes. We encounter a lot of bigrams of financial anticipation, e.g. \textit{profit of:billion\_yen}, \textit{operating loss}, \textit{net loss}, \textit{earnings per:share} that are not captured by EmoLex. This dichotomy of \textit{profit} and \textit{loss} that can be both a source of anticipation serve to showcase its underlying ambiguity.
 A lot of disgust bigrams such as \textit{discovery of:uranium\_enrichment\_equipment}, \textit{disproportionate use}, \textit{extreme partisanship}, \textit{killing of:civilian}, \textit{path of:violence}, etc. are not captured by EmoLex. Due to news citing involved parties, bigrams that do not mirror the majority's opinion are ranked highly as well, including the dichotomous pair \textit{white people} and \textit{black people}. The same applies to an \textit{international sporting event} that is only included because it was vehemently shunned by North Korea. Significantly, many more of our disgust bigrams are associated with a negative sentiment than are labeled with disgust in EmoLex.
 In contrast, all our fear bigrams that are associated with fear in EmoLex are also labeled with a negative sentiment. Many -- like \textit{government reprisal}, \textit{attack by:ethnic\_albanian}, \textit{government retribution}, \textit{revenge attack} -- are identified correctly using EmoLex, while others like \textit{political backlash}, \textit{long-term effect}, \textit{unintended consequence}, \textit{new crackdown}, etc. are not identified.
 Our joy bigrams deal with joy particularly in international relations and politics. While bigrams like \textit{diplomatic immunity}, \textit{widespread support}, \textit{comfortable lead}, \textit{high popularity} are not labeled with joy in EmoLex, they are labeled as positive. However, bigrams like \textit{equal rights}, \textit{wide support}, or \textit{best season} are not even labeled as positive.
@@ -557,17 +599,19 @@ For sadness, we generally receive the highest agreement numbers as well as the h
 Without excluding named entities, entities like \textit{Jean-Marie Le Pen}, a far-right French politician or Walt Disney -- which has a track record of surprising audiences as well as investors -- are among the top-ranked bigrams for surprise. As surprise in news usually is large-scale, disastrous events like an \textit{apparent suicide}, a \textit{powerful earthquake}, and a \textit{brutal} or \textit{double murder} are also ranked highly.
 Finally, among the trust bigrams derived from the NP cause, we find many concepts that people or countries rely on, such as \textit{private insurance}, \textit{computer model(s)}, \textit{public transportation}, \textit{fossil fuel}, \textit{immigrant labor}, \textit{subsistence farming}, \textit{foreign worker(s)}, etc. We also get glimpses in objects of trust relevant for particular groups, e.g. sailors trust their \textit{(global) positioning system}, while tennis players trust a \textit{strong serve}.
 
+\subsubsection{Summary}
+
 As we have mentioned initially, EmoLex is only partially reliable to validate our results due to the compositionality of emotion. However, it serves to establish that bigrams derived from the NP cause displayed in figure \ref{fig:pmi-np-cause-nrc-overlap} are generally most evidently associated with a certain emotion. Furthermore, it shows that for anger, disgust, and surprise, data sparseness is for S causes is indeed a problem. However, even if given enough data, disgust is inherently more difficult to assign than fear. An initial investigation of our results has shown that the positive joy and trust and the negative sadness and fear contain the most reliable concepts. Many of them also contain valuable information about certain groups and should be considered with the relevant context of emotion holder and prepositional objects.
 
-\section{Evaluation}
+\subsection{Evaluation using manual annotations}
 
 EmoLex has provided us with a first guideline for our evaluation. In order to further validate our results, we create a gold standard by manually annotating bigrams of the NP cause and the predicate + object of the S cause as these have produced the best results in the previous evaluation.
 
-\citeauthor{nrc} include a question like the following in their annotation task in order to 'anchor' the intended word sense and retrieve the prior probability of that word sense's emotion associaton.
+\citeauthor{nrc} include a question like the following in their annotation task in order to 'anchor' the intended word sense and retrieve the prior probability of that word sense's emotion association.
 
 Q. Which word is closest in meaning (most related) to \textit{startle}?
 \begin{itemize}[noitemsep,nolistsep]
-	\item \textit{automobile}
+	\item \textit{auto mobile}
 	\item \textit{shake}
 	\item \textit{honesty}
 	\item \textit{entertain}
@@ -698,49 +742,53 @@ In total, we obtain a better performance for bigrams derived from the NP cause t
 
 Concerning sentiment, precision is 0.00 for neutral sentiment. As expected, we achieve a higher \textit{F1} score for sentiment than for emotion, with NP cause bigrams being more accurate than predicate + object of the S cause. For the NP cause, all 51 positively annotated bigrams have been predicted correctly, while the many false positives decrease the precision. As annotators have identified bigrams as negative more often, the predicted negative sentiment corresponds more frequently to the annotated sentiment leading to a higher precision.
 
-\subsection{Anger}
+\subsubsection{Anger}
 
 As we have already mentioned, a lot of anger terms are context-dependent. All of our NP cause anger bigrams are assigned no emotion by annotators, while some S cause bigrams are assigned different emotions, e.g. \textit{accept emmy} is labelled with joy, while the term was scored highly by PMI because it was associated on two different occasions with anger in the context of a certain \textit{off-color (emmy acceptance) speech} (\textit{APW\_ENG\_20070920.1099/0}, \texttt{APW\_ENG\_20070919.1625/0} ), while not appearing with any other emotions. This shows that, while our discounting method is able to filter out ngrams that appear only once, it fails more promising candidates given the  The underlying source of this issue is the comparatively low amount of data: Only 7,207 S causes are associated with anger (cf. table \ref{tab:patterns-np-vs-s}, while only a minority of S causes contain direct objects (cf. table \ref{tab:unigram_bigram_count_ngram_type}).
 
-\subsection{Anticipation}
+\subsubsection{Anticipation}
 
 Anticipation NP bigrams have been mostly annotated with no emotion as a lot of them deal with money, e.g. \textit{earnings per:share}, \textit{revenue of:\$}, \textit{cent per:share}, etc. A high-scoring bigram, \textit{map in:color}, is due to a parsing error, as \textit{forecast} in \textit{National forecast map in color} has been continuously misparsed as a verb. Some of them referring to \textit{revenue} or \textit{operating loss} have been labelled with sadness. Anticipation predicates and direct objects have been predominantly annotated with no emotion, with only \textit{see growth} and \textit{post profit} having been labelled with joy.
 
-\subsection{Disgust}
+\subsubsection{Disgust}
 
 Among disgust NP cause bigrams, \textit{brutal persecution} has been labelled with disgust by the annotators. Others have either been labelled with no emotion -- as the expression of disgust mostly depends on context -- or with sadness, e.g. \textit{continued failure}, \textit{path of:violence}, \textit{killing of:civilian}, showcasing the overlap between disgust and sadness and the bias towards sadness. For disgust S cause bigrams, \textit{clergy abuse} has been labelled with disgust by the annotators. Again, others have been labelled either with no emotion or joy. While \textit{buy ring} is generally perceived as positive, "Jerry Seinfeld only (buying) a two-carat ring for his new bride" (\texttt{NYT\_ENG\_20000212.0066/27}) evokes disgust in insiders. These outliers achieve dominance due to lack of data failing to produce better candidates given the only 544 S causes associated with disgust (cf. table \ref{tab:patterns-np-vs-s}.
 
-\subsection{Fear}
+\subsubsection{Fear}
 
 For fear NP causes, we achieve a moderate precision, with \textit{possible reprisal}, \textit{attack by:ethnic\_albanian}, or \textit{humanitarian disaster} having been labelled with fear by the annotators. For others, such as \textit{security vacuum}, \textit{new crackdown}, \textit{long-term effect}, association with fear might be of a more covert and underlying nature, as they have been labelled with no emotion by the annotators. Finally, \textit{loss of:business} or \textit{loss of:sovereignty} have been been labelled with sadness, showcasing a clear bias towards sadness. We achieve a perfect recall, as no other bigrams have been labelled with fear by the annotators.
 Significantly, fear is the only emotion for which S cause bigrams achieve a higher performance than NP cause bigrams. \textit{Trigger pandemic}, \textit{destabilize region}, \textit{spark pandemic}, \textit{upset balance}, \textit{spark violence}, \textit{engulf region}, and \textit{trigger violence} have all been labelled by the annotators as clear indicators of fear. Others were either labelled with no emotion, e.g. \textit{use (uranium) enrichment}, \textit{set precedent}, \textit{spark (weapon) race}, or with sadness, e.g. \textit{disrupt export}, \textit{hurt industry}.
 
-\subsection{Joy}
+\subsubsection{Joy}
 
 Joy NP cause bigrams have almost all been labelled with joy by the annotators, showcasing that concepts like \textit{widespread support}, \textit{traditional friendship}, \textit{excellent relation}, \textit{equal rights}, \textit{high popularity}, \textit{comfortable lead}, etc. are clear indicators of joy. Only \textit{diplomatic immunity} and \textit{degree of:autonomy} have been labelled with no emotion, as their association with joy is more subtle.
 Similarly, we receive a high precision for S cause bigrams, as bigrams such as \textit{win set}, \textit{survive attempt}, \textit{escape injury}, \textit{watch movie}, \textit{win decision}, \textit{avoid injury}, \textit{have insurance} are seen by annotators as being clearly associated with joy. Only \textit{read history}, \textit{get draw}, and \textit{have guy} have been labelled with no emotion, as joy for these is more situation-specific: some people enjoy reading about history, are lucky to get a good draw or to have a good guy on the team.
 
-\subsection{Sadness}
+\subsubsection{Sadness}
 
 All sadness NP cause bigrams -- the top 10 can be seen in table \ref{tab:chi-pmi sadness} -- have been labelled with sadness by the annotators, confirming that sadness is both a strong and unambiguous emotion. The lower recall is due to the observed bias towards sadness, with bigrams of other emotions having been labelled with sadness by the annotators.
 Conversely, S cause bigrams achieve a significantly lower precision. Bigrams such as \textit{announce death}, \textit{create anguish}, \textit{leave friend}, \textit{overshadow day}, and \textit{make weep} have been labelled by annotators with sadness, while the sadness connotation of others was too covert or context-dependent, leading them to label bigrams such as \textit{light candle}, \textit{steal cut}, \textit{prevent compatriot}, etc. with no emotion.
 
-\subsection{Surprise}
+\subsubsection{Surprise}
 
 For surprise NP cause bigrams, a majority agreed on only 7 of 20 bigrams, showcasing the ambiguousness of surprise. All -- except for \textit{apparent suicide}, which was labelled with sadness -- were assigned no emotion, confirming the dependence on context of surprise bigrams that we previously observed.
 Similarly, surprise S cause bigrams have been labelled predominantly with no emotion, with only \textit{terminate agent} and \textit{include flaw}, and \textit{reverse impairment} having been assigned other emotions, sadness and joy, respectively.
 
-\subsection{Trust}
+\subsubsection{Trust}
 
 Significantly, all trust NP and S cause bigrams have been assigned no emotion. The association of nominal phrases such as \textit{public transportation}, \textit{private insurance}, and \textit{computer model}, and predicates and objects such as \textit{handle issue}, \textit{meet payment}, and \textit{implement deal} seems to be too weak to warrant a clear label. Trust as the only other clearly positive emotion besides joy seems to be significantly weaker than its counterpart, justifying its exclusion from other emotion typologies such as Ekman's.
 
-\subsection{Sentiment}
+\subsubsection{Sentiment}
 
 The performance regarding sentiment reflects the performance of the individual emotions, with trust and anger and disgust impacting the precision of positive and negative sentiment respectively.
+
+\subsubsection{Sentences}
 
 On a sentential level, annotators were predominantly able to identify the correct emotion. Some misparses made annotation more difficult, e.g. \textit{hate} in \textit{A bid to pass hate crime legislation after the 1998 attack died in the Texas legislature without Bush's support.} was misparsed as a verb, causing \textit{crime legislation} to be extracted as a cause.
 
 One of our annotators often didn't identify \textit{count on} and \textit{rely on} as indicators of trust, while \textit{harass} was sometimes not seen as an indicator of anger, while \textit{shock} sometimes wasn't seen as an indicator of surprise. \textit{Expect} and \textit{predict} in the context of analyst forecast frequently elicited no association with anticipation. An unemotive connotation of \textit{enjoy} occurs in sentences like \textit{China has adopted various measures to ensure that the disabled enjoy equal rights with other citizens.} (XIN\_ENG\_19951227.0085/4), while one annotator argued that \textit{be lucky to} in \textit{Their driver and interpreter where lucky enough to escape with minor injuries.} (XIN\_ENG\_20050603.0017/24) not associated with joy due to the informative style of the writing.
+
+\subsubsection{Summary}
 
 All things considered, our bigrams weighted with PMI produce reliable results for fear and excellent results for joy, and sadness. For the other emotions, due to data sparseness, emotion selection bias, and dependence on context information, the prior probability of association is not high enough to guarantee dependable outcomes. If they are used in applications, more context is required to inform analyses.
 
