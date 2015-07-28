@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 /**
- * Class to compare emotion annotations of the three annotators, calculate stats and inter-annotator agreeement.
+ * Class to compare pattern and bigram annotations of the three annotators, calculate stats and inter-annotator agreeement.
  *
  * Created by sebastian on 16/05/15.
  */
@@ -15,7 +15,7 @@ public class AnnotationComparer {
 
     /**
      * Main method to compare annotations.
-     * @param args
+     * @param args the input arguments
      * @throws IOException
      */
     public static void main(String[] args) throws IOException {
@@ -29,6 +29,12 @@ public class AnnotationComparer {
         compareBigramAnnotations(bigramPath, noOfBigrams);
     }
 
+    /**
+     * Method to evaluate the bigram annotations.
+     * @param dirPath the path to the directory of the annotated files
+     * @param noOfBigrams the number of annotated bigrams
+     * @throws IOException
+     */
     private static void compareBigramAnnotations(String dirPath, int noOfBigrams) throws IOException {
 
         File dir = new File(dirPath);
@@ -44,9 +50,10 @@ public class AnnotationComparer {
             }
         });
 
-        // the array of emotions, i.e. categories
+        // the array of emotions, i.e. categories; enum is not used due to none category
         String[] emotions = new String[] { "joy", "trust", "fear", "surprise", "sadness", "disgust", "anger", "anticipation", "none" };
 
+        // the array of sentiments; enum is not used due to none category
         String[] sentiments = new String[] { "positive", "negative", "neutral", "none" };
 
         // matrix to store bigram emotion counts
@@ -65,10 +72,10 @@ public class AnnotationComparer {
             }
         }
 
-
         // array to store all annotated bigrams
         String[] bigrams = new String[matrix.length];
 
+        // read in files and add them to emotion and sentiment matrices
         for (String fileName : fileNames) {
             String filePath = dirPath + fileName;
             BufferedReader reader = new BufferedReader(new FileReader(filePath));
@@ -157,9 +164,11 @@ public class AnnotationComparer {
 
         double k = calculateFleissKappa(matrix, 3); // Fleiss' kappa for all expressions
 
+        // retrieve the bigrams used for annotation together with their emotions
         Map<String, String> bigramEmotionMap = AnnotationTaskGenerator.getBigramsForAnnotation(pmiDir, 20);
         Map<String, String> bigramSentimentMap = new HashMap<String, String>();
 
+        // retrieve the sentiment of the labelled bigrams
         for (Map.Entry<String, String> entry : bigramEmotionMap.entrySet()) {
             String emotion = entry.getValue();
             String bigramNgramType = entry.getKey();
@@ -171,46 +180,51 @@ public class AnnotationComparer {
             }
         }
 
-        List<String> ngramTypes = Arrays.asList(new String[] { "np_cause", "s_cause_pred_dobj" });
+        // ngram types for writing the tables
+        List<String> ngramSources = Arrays.asList(new String[] { "np_cause", "s_cause_pred_dobj" });
 
+        // write the headline
         System.out.print("\t");
-        for (String ngramType : ngramTypes) {
-            System.out.printf("%s\t\t\t", ngramType);
+        for (String ngramSource : ngramSources) {
+            System.out.printf("%s\t\t\t", ngramSource);
         }
 
-        System.out.print("\nEmotion/sentiment\tPrecision\tRecall\tF1\tPrecision\tRecall\tF1");
-
-        System.out.println();
+        // compare the emotions of the bigrams of the ngram sources against the gold standard
+        System.out.print("\nEmotion/sentiment\tPrecision\tRecall\tF1\tPrecision\tRecall\tF1\n");
         for (Enums.Emotions emotionEnum : Enums.Emotions.values()) {
             System.out.print(emotionEnum.toString() + "\t");
-            for (String ngramType : ngramTypes) {
+            for (String ngramType : ngramSources) {
                 compareAgainstGoldStandard(goldBigramEmotionMap, bigramEmotionMap, Arrays.asList(new String[]{emotionEnum.toString()}), Arrays.asList(new String[]{ngramType}));
             }
 
             System.out.println();
         }
 
+        // get precision, recall, and f-score for the total
         System.out.print("Total\t");
-        for (String ngramType : ngramTypes) {
+        for (String ngramType : ngramSources) {
             compareAgainstGoldStandard(goldBigramEmotionMap, bigramEmotionMap, Arrays.asList(emotions), Arrays.asList(new String[]{ ngramType }));
         }
 
         System.out.println();
 
+        // get precision, recall, and fscore for sentiment
         for (Enums.Sentiment sentimentEnum : Enums.Sentiment.values()) {
             System.out.print(sentimentEnum.toString() + "\t");
-            for (String ngramType : ngramTypes) {
-                compareAgainstGoldStandard(goldBigramSentimentMap, bigramSentimentMap, Arrays.asList(new String[] {sentimentEnum.toString()}), Arrays.asList(new String[]{ngramType}));
+            for (String ngramSource : ngramSources) {
+                compareAgainstGoldStandard(goldBigramSentimentMap, bigramSentimentMap, Arrays.asList(new String[] {sentimentEnum.toString()}), Arrays.asList(new String[]{ngramSource}));
             }
 
             System.out.println();
         }
 
+        // get precision, recall, and fscore for total sentiment
         System.out.print("total\t");
-        for (String ngramType : ngramTypes) {
+        for (String ngramType : ngramSources) {
             compareAgainstGoldStandard(goldBigramSentimentMap, bigramSentimentMap, Arrays.asList(sentiments), Arrays.asList(new String[]{ ngramType }));
         }
 
+        // print out more statistics
         System.out.printf(
                 "\nExpressions with unanimous emotions: %d\n" +
                         "Expressions with majority emotions: %d\n" +
@@ -245,8 +259,8 @@ public class AnnotationComparer {
     }
 
     /**
-     * Compare a bigram map against a gold standard map. Gold standard contains less bigrams, as only majority bigrams
-     * have been included.
+     * Compares a bigram map against a gold standard map. Gold standard contains less bigrams, as only majority bigrams
+     * have been included. Prints out precision, recall, and f-score.
      * @param goldStandardMap key: bigram, value: gold emotion or sentiment
      * @param map key: bigram, value: emotion or sentiment
      */

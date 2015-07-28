@@ -16,12 +16,10 @@ import org.jfree.chart.renderer.AbstractRenderer;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.chart.renderer.category.GroupedStackedBarRenderer;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
-import org.jfree.chart.title.LegendTitle;
 import org.jfree.data.KeyToGroupMap;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-import org.jfree.ui.RectangleEdge;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.awt.*;
@@ -60,11 +58,11 @@ public class Visualizer {
                 if (ngramEnum.equals(Enums.Ngram.unigram)) continue;
 
                 String ngram = ngramEnum.toString();
-                for (Enums.NgramType ngramTypeEnum : Enums.NgramType.values()) {
+                for (Enums.NgramSource ngramSourceEnum : Enums.NgramSource.values()) {
 
-                    String ngramType = ngramTypeEnum.toString();
+                    String ngramType = ngramSourceEnum.toString();
 
-                    if (ngramTypeEnum.equals(Enums.NgramType.s_cause)) {
+                    if (ngramSourceEnum.equals(Enums.NgramSource.s_cause)) {
                         continue;
                     }
 
@@ -131,7 +129,7 @@ public class Visualizer {
      * x : = the expression. Produces one chart for unigrams and one chart for bigrams.
      * Produces one series chart for unigrams and one series chart for bigrams comparing the scores of the top n
      * expressions of all emotions.
-     * @param rootDir the directory below the metric directory
+     * @param metricDir the metric directory where the files are stored
      * @param metric the association metric which has been used for generating the data
      * @param topN the top n expressions whose score should be visualized for each emotion
      * @param topNSeries the top n expressions that should be compared in the series chart
@@ -166,6 +164,7 @@ public class Visualizer {
 
             seriesData.addSeries(series);
 
+            // create a chart for the emotion
             JFreeChart lineChartObject = ChartFactory.createLineChart(
                     String.format("Top %d %s %ss %s scores", topN, emotion, ngram, metric),
                     ngram,
@@ -187,6 +186,8 @@ public class Visualizer {
         }
 
         if (seriesData.getSeriesCount() > 0) {
+
+            // create a series chart that compares the scores for all emotions
             JFreeChart seriesChart = ChartFactory.createXYLineChart(
                     String.format("%s score of top %d %ss per emotion in %s", metric, topNSeries, ngram, ngramType.replace("_", " ")),
                     "Top expressions",
@@ -201,6 +202,7 @@ public class Visualizer {
                 renderer.setSeriesPaint(emotionEnum.ordinal(), emotionToColor(emotionEnum));
             }
 
+            // increase the font size of the legend
             seriesChart.getLegend().setItemFont(new Font("SansSerif", Font.PLAIN, 25));
             ((AbstractRenderer) xyPlot.getRenderer()).setBaseLegendShape(new Rectangle(30,30));
 
@@ -214,7 +216,7 @@ public class Visualizer {
      * Generates one grouped stacked bar chart for the top n expressions per emotion for one metric to visualize if
      * expressions occurred with the same emotion and the same sentiment in the NRC Emotion Lexicon.
      * Since the emotion lexicon only contains unigrams, this is only done for those.
-     * @param rootDir the directory below the metric directory
+     * @param metricDir the metric directory where the files are stored
      * @param metric the association metric which has been used for generating the data
      * @param topN the top n expressions whose overlap should be visualized
      * @throws IOException if a file wasn't found or couldn't be read
@@ -270,6 +272,7 @@ public class Visualizer {
             reader.close();
         }
 
+        // create the chart
         final JFreeChart chart = ChartFactory.createStackedBarChart(
                 String.format("Emotion/sentiment NRC overlap per emotion for top %d %s expressions", topN, metric),
                 "Emotion",                  // domain axis label
@@ -317,6 +320,12 @@ public class Visualizer {
         printEmotionOverlapValues(4, 8, overlapMap);
     }
 
+    /**
+     * Prints statistics about the emotion overlap from an overlap map.
+     * @param start the start index of the emotion for which statistics should be retrieved
+     * @param end the end index of the emotion for which statistics should be retrieved
+     * @param overlapMap a map with key: emotion; value: map with key: Emotion|Sentiment; value: percentage of overlap
+     */
     public static void printEmotionOverlapValues(int start, int end, Map<Enums.NRCOverlap, Map<Enums.Emotions, Map<String, Double>>> overlapMap) {
 
         System.out.print("Overlap\t");
@@ -351,7 +360,7 @@ public class Visualizer {
      * Generates a stacked bar chart visualizing how much the score of the top n expressions with the highest
      * aggregated association score is distributed among all emotions. Produces one chart for unigrams and one for
      * bigrams.
-     * @param rootDir the directory below the metric directory
+     * @param metricDir the metric directory where the files are stored
      * @param metric the metric that has been used to generate the data
      * @param topN the top n expressions with the highest aggregated association score that should be visualized
      * @throws IOException if a file wasn't found or couldn't be read

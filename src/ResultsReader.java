@@ -68,45 +68,45 @@ public class ResultsReader {
 
                 if (ngramEnum.equals(Enums.Ngram.unigram)) continue;
                 String ngram = ngramEnum.toString();
-                for (Enums.NgramType ngramType : Enums.NgramType.values()) {
+                for (Enums.NgramSource ngramSource : Enums.NgramSource.values()) {
 
                     // no unigram expressions for combinations of S cause predicate and subject/direct object
-                    if (ngramEnum.equals(Enums.Ngram.unigram) && (ngramType.equals(Enums.NgramType.s_cause_subj_pred) ||
-                            ngramType.equals(Enums.NgramType.s_cause_pred_dobj))) {
+                    if (ngramEnum.equals(Enums.Ngram.unigram) && (ngramSource.equals(Enums.NgramSource.s_cause_subj_pred) ||
+                            ngramSource.equals(Enums.NgramSource.s_cause_pred_dobj))) {
                         continue;
                     }
 
                     Map<String, Double> map;
                     switch (metricEnum) {
                         case pmi:
-                            map = analyzer.calculatePMI(ngramType, ngramEnum);
+                            map = analyzer.calculatePMI(ngramSource, ngramEnum);
                             break;
                         case chi_square:
-                            map = analyzer.calculateChiSquare(ngramType, ngramEnum);
+                            map = analyzer.calculateChiSquare(ngramSource, ngramEnum);
                             break;
                         default:
                             throw new NotImplementedException();
                     }
 
                     map = Extensions.sortByValue(map, true);
-                    System.out.printf("metric: %s, ngram: %s, ngram type: %s\n", metric, ngram, ngramType.toString());
+                    System.out.printf("metric: %s, ngram: %s, ngram type: %s\n", metric, ngram, ngramSource.toString());
 
-                    if (ngramType.equals(Enums.NgramType.np_cause) || ngramType.equals(Enums.NgramType.s_cause_pred_dobj)
-                            || ngramType.equals(Enums.NgramType.emotion_holder) || ngramType.equals(Enums.NgramType.s_cause_subj_pred)) {
-                        writeScoreFiles(map, metricEnum, ngramEnum, ngramType, writeNRCOverlap, metricDir.getPath(), emotionLexicon);
+                    if (ngramSource.equals(Enums.NgramSource.np_cause) || ngramSource.equals(Enums.NgramSource.s_cause_pred_dobj)
+                            || ngramSource.equals(Enums.NgramSource.emotion_holder) || ngramSource.equals(Enums.NgramSource.s_cause_subj_pred)) {
+                        writeScoreFiles(map, metricEnum, ngramEnum, ngramSource, writeNRCOverlap, metricDir.getPath(), emotionLexicon);
                     }
 
                     Map<String, Map<String, Double>> overlapMap =
-                            analyzer.calculcateEmotionOverlap(ngramType, ngramEnum, map);
+                            analyzer.calculcateEmotionOverlap(ngramSource, ngramEnum, map);
                     overlapMap = Extensions.sortByAggregatedValue(overlapMap, true);
 
-                    String overlapFileName = String.format("%s_%s_%s.overlap", metric, ngram, ngramType.toString());
+                    String overlapFileName = String.format("%s_%s_%s.overlap", metric, ngram, ngramSource.toString());
 
-                    if (ngramType.equals(Enums.NgramType.np_cause)) {
+                    if (ngramSource.equals(Enums.NgramSource.np_cause)) {
                         writeEmotionOverlapMap(overlapMap, Utils.combine(metricDir.getPath(), overlapFileName));
                     }
 
-                    String sentimentFile = String.format("%s_%s_%s", metricEnum.toString(), ngramEnum.toString(), ngramType.toString());
+                    String sentimentFile = String.format("%s_%s_%s", metricEnum.toString(), ngramEnum.toString(), ngramSource.toString());
                     writeSentiment(overlapMap, Utils.combine(metricDir.getPath(), sentimentFile));
                 }
             }
@@ -268,19 +268,19 @@ public class ResultsReader {
      * @param map key: emotion tab ngram; value: association score
      * @param metricEnum the association metric that was used (pmi, chi-square)
      * @param ngramEnum the ngram that was used (unigram, bigram)
-     * @param ngramTypeEnum the ngram type that was used
+     * @param ngramSourceEnum the ngram type that was used
      * @param writeNRCOverlap if overlap with the NRC Emotion Lexicon should be written
      * @param dir the directory that the files should be written to
      * @throws IOException if the directory was not found
      */
     private static void writeScoreFiles(Map<String, Double> map, Enums.Metric metricEnum, Enums.Ngram ngramEnum,
-                                        Enums.NgramType ngramTypeEnum, boolean writeNRCOverlap, String dir,
+                                        Enums.NgramSource ngramSourceEnum, boolean writeNRCOverlap, String dir,
                                         Map<String, Boolean[]> emotionLexicon) throws IOException {
 
         for (Map.Entry<String, Double> entry: map.entrySet()) {
             String emotion = entry.getKey().split("\t")[0];
             String ngram = entry.getKey().split("\t")[1];
-            String fileName =  String.format("%s_%s_%s_%s.txt", emotion, metricEnum.toString(), ngramEnum.toString(), ngramTypeEnum.toString());
+            String fileName =  String.format("%s_%s_%s_%s.txt", emotion, metricEnum.toString(), ngramEnum.toString(), ngramSourceEnum.toString());
             PrintWriter writer = new PrintWriter(new BufferedWriter(new FileWriter(Utils.combine(dir, fileName), true)));
 
             if (writeNRCOverlap) {
@@ -346,6 +346,14 @@ public class ResultsReader {
         }
     }
 
+    /**
+     * Reads in the NRC Word-Emotion Associaton Lexicon (EmoLex) and stores its entries in a map.
+     * @param fileName the path to the file of the lexicon
+     * @return a map with key: unigram; value: array of booleans indicating agreement with EmoLex; index of boolean
+     * corresponds to index of emotion in <code>Enums.Emotions</code>. 9-th and 10th position are filled by positive and
+     * negative sentiment respectively.
+     * @throws IOException
+     */
     public static Map<String, Boolean[]> readNRCEmotionLexicon(String fileName) throws IOException {
         Map<String, Boolean[]> emotionLexicon = new HashMap<String, Boolean[]>();
         BufferedReader reader = new BufferedReader(new FileReader(fileName));

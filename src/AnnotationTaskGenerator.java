@@ -1,5 +1,3 @@
-import com.sun.javaws.exceptions.InvalidArgumentException;
-
 import java.io.*;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -32,8 +30,14 @@ public class AnnotationTaskGenerator {
      */
     private static int topN = 20;
 
-    public static void main(String[] args) throws IOException, Exception {
+    /**
+     * Main method to create the annotation task.
+     * @param args the input arguments
+     * @throws IOException
+     */
+    public static void main(String[] args) throws IOException {
 
+        // the bigrams that should be annotated
         Map<String, String> bigramEmotionMap = getBigramsForAnnotation(pmiDir, topN);
 
         File file = new File(annotationFilePath);
@@ -55,16 +59,27 @@ public class AnnotationTaskGenerator {
         }
     }
 
+    /**
+     * Retrieves a random member from a list of string.
+     * @param list the list of strings
+     * @return a random member of said list
+     */
     private static String getRandomMember(List<String> list) {
         int randomIdx = (int)(Math.random() * list.size());
         return list.get(randomIdx);
     }
 
+    /**
+     * Matches a bigram and an emotion against the string array of collocations using a predefined pattern and returns
+     * the matched sentences.
+     * @param collocations an array of collocations
+     * @param emotion the emotion that should be matched
+     * @param bigram the bigram that should be matched
+     * @return the matched sentences
+     */
     private static List<String> matchAgainstCollocations(String[] collocations, String emotion, String bigram) {
 
         List<String> matchedSentences = new ArrayList<String>();
-
-
         Pattern pattern = Pattern.compile("emotion" + ".*[^a-z]" + emotion + ".*cause.*[^a-z]" + Extensions.join(bigram.replace("$", "\\$").replace("NUM", "NUMBER").toLowerCase().split(" "), "([^a-z].*[^a-z]| )") + "[^a-z].*cause bow");
 
         for (int i = 1; i < collocations.length; i++) {
@@ -78,6 +93,13 @@ public class AnnotationTaskGenerator {
         return matchedSentences;
     }
 
+    /**
+     * Read in a collocations file and store it in a String array. Note: The standard collocations file that is 4,641,270
+     * lines long is assumed.
+     * @param filePath the file path to the collocations file
+     * @return a string array containing the collocations file
+     * @throws IOException
+     */
     public static String[] readCollocationsFile(String filePath) throws IOException {
 
         String[] collocations = new String[4641271];
@@ -96,11 +118,11 @@ public class AnnotationTaskGenerator {
     }
 
     /**
-     * Return the top n bigrams of NP cause and predicate direct object files in a directory as a map of bigrams and
-     * their emotions.
+     * Return the top n bigrams of NP cause and predicate direct object files in a directory as a map of bigrams + their
+     * ngram source and their emotions.
      * @param dir the directory containing the files
      * @param topN the top n bigrams
-     * @return a map of bigrams and their emotions
+     * @return a map with key: bigram tab ngram type (np_cause|s_cause_pred_dobj); value: emotion
      * @throws IOException
      */
     public static Map<String, String> getBigramsForAnnotation(String dir, int topN) throws IOException {
@@ -112,7 +134,7 @@ public class AnnotationTaskGenerator {
 
         for (String fileName : fileNames) {
 
-            String ngramType = fileName.contains(Enums.NgramType.np_cause.toString()) ? Enums.NgramType.np_cause.toString() : Enums.NgramType.s_cause_pred_dobj.toString();
+            String ngramSource = fileName.contains(Enums.NgramSource.np_cause.toString()) ? Enums.NgramSource.np_cause.toString() : Enums.NgramSource.s_cause_pred_dobj.toString();
 
             int count = 0;
 
@@ -121,8 +143,9 @@ public class AnnotationTaskGenerator {
 
             while (line != null && !line.equals("") && count < topN && count++ < topN + 1) {
 
+                // add ngram source to bigram to be used in evaluation
+                String bigram = line.split("\t")[0] + "\t" + ngramSource;
                 String emotion = fileName.split("_")[0];
-                String bigram = line.split("\t")[0] + "\t" + ngramType;
 
                 // don't get bigrams for named entities
                 if (bigram.contains("/")) {

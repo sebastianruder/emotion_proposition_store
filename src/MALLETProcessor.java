@@ -1,4 +1,3 @@
-import com.sun.javaws.exceptions.InvalidArgumentException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -15,6 +14,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * A class to process topic distributions created with MALLET.
+ *
  * Created by sebastian on 13/07/15.
  */
 public class MALLETProcessor {
@@ -39,19 +40,37 @@ public class MALLETProcessor {
      */
     private static String malletOutputDir = "/home/sebastian/git/sentiment_analysis/mallet/output";
 
-    private static String headlineDirectory = "/home/sebastian/git/sentiment_analysis/mallet/test/input";
+    /**
+     * The directory containing the SemEval 2007 Affective Text dataset.
+     */
+    private static String headlineDirectory = "/home/sebastian/git/sentiment_analysis/mallet/headlines";
 
+    /**
+     * The hash map created by the <code>Results.Reader.readNRCEmotionLexicon</code> method.
+     */
     private static Map<String, Boolean[]> emotionLexicon;
 
+    /**
+     * The topic configuration for which the topic files should be processed.
+     */
+    private static int noOfTopics = 50;
+
+    /**
+     * The top n topic keys in the topic-keys file whose overlap with EmoLex should be measured. Note: Throws an error
+     * if file contains fewer than the specified number of keys.
+     */
+    private static int topN = 30;
+
+    /**
+     * The main method to perform various forms of processing.
+     * @param args the input arguments
+     * @throws IOException
+     */
     public static void main(String[] args) throws IOException {
         // generateEmotionFiles();
 
         emotionLexicon = ResultsReader.readNRCEmotionLexicon("/home/sebastian/git/sentiment_analysis/NRC-Emotion-Lexicon-v0.92/NRC_emotion_lexicon_list.txt");
 
-        int noOfTopics = 50;
-        int topN = 30;
-
-        String headlineTopicsFile = "/home/sebastian/git/sentiment_analysis/mallet/test/output/infered-topics.txt";
         String topicsFile = Utils.combine(malletOutputDir, String.format("topics-%d.txt", noOfTopics));
         String topicsKeyFile = Utils.combine(malletOutputDir, String.format("topic-keys-%d.txt", noOfTopics));
 
@@ -63,6 +82,11 @@ public class MALLETProcessor {
         // extractHeadlines(xmlDoc);
     }
 
+    /**
+     * Extracts the headlines from the SemEval 2007 Affective Text XML document and writes them to files in the headline
+     * directory.
+     * @param xml the XML document
+     */
     private static void extractHeadlines(String xml) {
 
         Document dom;
@@ -96,9 +120,20 @@ public class MALLETProcessor {
 
     }
 
+    /**
+     * Processes the topic distributions.
+     * @param topicsFile the path to the topics file, e.g. "path/to/topics-XX.txt"
+     * @param topicKeysFile the path to the topic keys file, e.g. "path/to/topic-keys-XX.txt"
+     * @param noOfTopics the number of topics that are used
+     * @param topN the top n topic keys for which overlap should be calculated
+     * @throws IOException
+     */
     private static void processTopicDistributions(String topicsFile, String topicKeysFile, int noOfTopics, int topN) throws IOException {
+
+        // retrieve an array of topic keys
         String[] topicKeysArray = processTopicKeysFile(topicKeysFile, noOfTopics);
 
+        // initialize overlap map
         Map<Enums.NRCOverlap, Map<Enums.Emotions, Map<String, Double>>> overlapMap = new HashMap<Enums.NRCOverlap, Map<Enums.Emotions, Map<String, Double>>>();
         for (Enums.NRCOverlap overlap : Enums.NRCOverlap.values()) {
             overlapMap.put(overlap, new HashMap<Enums.Emotions, Map<String, Double>>());
@@ -188,6 +223,14 @@ public class MALLETProcessor {
         }
     }
 
+    /**
+     * Stores the keys of each topic in an array concatenated as strings. The index of the keys corresponds with the
+     * index of the topic.
+     * @param topicKeysFile the path to the topic keys file
+     * @param noOfTopics the number of topics that are used
+     * @return an array of topic keys
+     * @throws IOException
+     */
     private static String[] processTopicKeysFile(String topicKeysFile, int noOfTopics) throws IOException {
 
         String[] topicKeysArray = new String[noOfTopics];
@@ -205,6 +248,10 @@ public class MALLETProcessor {
         return topicKeysArray;
     }
 
+    /**
+     * Prints the number of tokens and types of the pseudo-documents used for topic modelling for each emotion.
+     * @throws IOException
+     */
     private static void getInputStats() throws IOException {
 
         List<String> fileNames = Utils.getFileNames(malletInputDir);
@@ -229,16 +276,16 @@ public class MALLETProcessor {
 
             System.out.printf("%s\t%d\t%d\n", fileName, noOfTokens, typeMap.keySet().size());
         }
-
-
     }
 
+    /**
+     * Generates pseudo-dcouments for the top 200 bigrams of the NP and S cause (predicate + object) to be used for
+     * topic modelling.
+     * @throws IOException
+     */
     private static void generateEmotionFiles() throws IOException {
         Map<Enums.Emotions, List<Extraction>> emotionsExtractionMap = orderExtractionsByEmotions(ResultsReader.readResults(resultsFilePath, false));
-
         Map<String, String> bigramEmotionMap = AnnotationTaskGenerator.getBigramsForAnnotation(pmiDir, 200);
-
-        // TODO get SemEval test data, make topic inference tool
 
         // clean up MALLET input files
         List<String> fileNames = Utils.getFileNames(malletInputDir);
@@ -248,15 +295,14 @@ public class MALLETProcessor {
         }
 
         int count = 0;
-
         for (Map.Entry<String, String> entry : bigramEmotionMap.entrySet()) {
 
             String emotion = entry.getValue();
             String bigram = entry.getKey().split("\t")[0];
             String ngramType = entry.getKey().split("\t")[1];
-
             System.out.printf("#%d\t%s\t%s\t%s\n", ++count, emotion, ngramType, bigram);
 
+            // retrieve the bag-of-words of the causes by matching against the causes
             boolean extractionFound = false;
             Pattern pattern = Pattern.compile(bigram.replace("$", "\\$").replace("NUM", "NUMBER").replace(" ", ".*").toLowerCase() + "([^a-z]|$)");
 
@@ -265,10 +311,10 @@ public class MALLETProcessor {
             for (Extraction extraction : emotionsExtractionMap.get(Enums.Emotions.valueOf(emotion))) {
 
                 String cause;
-                if (ngramType.equals(Enums.NgramType.np_cause.toString())) {
+                if (ngramType.equals(Enums.NgramSource.np_cause.toString())) {
                     cause = extraction.getNPCause();
                 }
-                else if (ngramType.equals(Enums.NgramType.s_cause_pred_dobj.toString())) {
+                else if (ngramType.equals(Enums.NgramSource.s_cause_pred_dobj.toString())) {
                     cause = extraction.getPredSCause() + " " + extraction.getDobjSCause();
                 }
                 else {

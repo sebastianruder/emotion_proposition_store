@@ -16,22 +16,22 @@ public class Analyzer {
     /**
      * Key: np_cause, s_cause_subj_pred, s_cause_pred_dobj, emotion_holder. Value: Map with key: Unigram in ngram type; value: frequency of appearance.
      */
-    private Map<Enums.NgramType, Map<String, Double>> ngramTypeUnigramFreqs = new HashMap<Enums.NgramType, Map<String, Double>>();
+    private Map<Enums.NgramSource, Map<String, Double>> ngramTypeUnigramFreqs = new HashMap<Enums.NgramSource, Map<String, Double>>();
 
     /**
      * Key: np_cause, s_cause_subj_pred, s_cause_pred_dobj, emotion_holder. Value: Map with key: emotion tab unigram in ngram type; value: frequency of appearing together.
      */
-    private Map<Enums.NgramType, Map<String, Double>> emotionNgramTypeUnigramFreqs = new HashMap<Enums.NgramType, Map<String, Double>>();
+    private Map<Enums.NgramSource, Map<String, Double>> emotionNgramTypeUnigramFreqs = new HashMap<Enums.NgramSource, Map<String, Double>>();
 
     /**
      * Key: np_cause, s_cause_subj_pred, s_cause_pred_dobj, emotion_holder. Value: Map with key: bigram in ngram type; value: frequency of appearance.
      */
-    private Map<Enums.NgramType, Map<String, Double>> ngramTypeBigramFreqs = new HashMap<Enums.NgramType, Map<String, Double>>();
+    private Map<Enums.NgramSource, Map<String, Double>> ngramTypeBigramFreqs = new HashMap<Enums.NgramSource, Map<String, Double>>();
 
     /**
      * Key: np_cause, s_cause_subj_pred, s_cause_pred_dobj, emotion_holder. Value: Map with key: emotion tab bigram in ngram type; value: frequency of appearing together.
      */
-    private Map<Enums.NgramType, Map<String, Double>> emotionNgramTypeBigramFreqs = new HashMap<Enums.NgramType, Map<String, Double>>();
+    private Map<Enums.NgramSource, Map<String, Double>> emotionNgramTypeBigramFreqs = new HashMap<Enums.NgramSource, Map<String, Double>>();
 
     /**
      *  Key: ngramType. Value: number of unigrams (tokens) that appeared in cause.
@@ -68,11 +68,11 @@ public class Analyzer {
         }
 
         // initialize maps
-        for (Enums.NgramType ngramType : Enums.NgramType.values()) {
-            this.ngramTypeUnigramFreqs.put(ngramType, new HashMap<String, Double>());
-            this.ngramTypeBigramFreqs.put(ngramType, new HashMap<String, Double>());
-            this.emotionNgramTypeUnigramFreqs.put(ngramType, new HashMap<String, Double>());
-            this.emotionNgramTypeBigramFreqs.put(ngramType, new HashMap<String, Double>());
+        for (Enums.NgramSource ngramSource : Enums.NgramSource.values()) {
+            this.ngramTypeUnigramFreqs.put(ngramSource, new HashMap<String, Double>());
+            this.ngramTypeBigramFreqs.put(ngramSource, new HashMap<String, Double>());
+            this.emotionNgramTypeUnigramFreqs.put(ngramSource, new HashMap<String, Double>());
+            this.emotionNgramTypeBigramFreqs.put(ngramSource, new HashMap<String, Double>());
         }
     }
 
@@ -101,10 +101,10 @@ public class Analyzer {
             String[][] causes = { extractionNPCauseSplit, extractionSCauseSplit, extractionEmotionHolder};
 
             // iterate over NP cause, S cause, and emotion holder
-            Enums.NgramType[] ngramTypes = new Enums.NgramType[] {Enums.NgramType.np_cause, Enums.NgramType.s_cause,
-                    Enums.NgramType.emotion_holder};
-            for (int j = 0; j < ngramTypes.length; j++) {
-                Enums.NgramType ngramType = ngramTypes[j];
+            Enums.NgramSource[] ngramSources = new Enums.NgramSource[] {Enums.NgramSource.np_cause, Enums.NgramSource.s_cause,
+                    Enums.NgramSource.emotion_holder};
+            for (int j = 0; j < ngramSources.length; j++) {
+                Enums.NgramSource ngramSource = ngramSources[j];
 
                 for (int i = 1; i < causes[j].length + 1; i++) {
 
@@ -113,13 +113,13 @@ public class Analyzer {
                         continue;
                     }
 
-                    Extensions.updateMap(this.causeUnigramCount, ngramType.toString());
+                    Extensions.updateMap(this.causeUnigramCount, ngramSource.toString());
 
                     String emotionUnigram = emotion + "\t" + unigram;
 
                     // add unigram and emotion - unigram frequencies
-                    Extensions.updateMap(ngramTypeUnigramFreqs.get(ngramType), unigram);
-                    Extensions.updateMap(emotionNgramTypeUnigramFreqs.get(ngramType), emotionUnigram);
+                    Extensions.updateMap(ngramTypeUnigramFreqs.get(ngramSource), unigram);
+                    Extensions.updateMap(emotionNgramTypeUnigramFreqs.get(ngramSource), emotionUnigram);
 
                     if (i < causes[j].length) {
 
@@ -131,26 +131,30 @@ public class Analyzer {
                         String emotionBigram = emotion + "\t" + bigram;
 
                         // add bigram and emotion - bigram frequencies
-                        Extensions.updateMap(ngramTypeBigramFreqs.get(ngramType), bigram);
-                        Extensions.updateMap(emotionNgramTypeBigramFreqs.get(ngramType), emotionBigram);
+                        Extensions.updateMap(ngramTypeBigramFreqs.get(ngramSource), bigram);
+                        Extensions.updateMap(emotionNgramTypeBigramFreqs.get(ngramSource), emotionBigram);
                     }
                 }
             }
 
             // S cause subj + pred
             String[] subjSCause = extraction.getSubjSCause().split(" ");
+
+            // convert ngram to lower case; replace NE tags
             String predSCause = ngramToLowerCase(extraction.getPredSCause());
             for (String token : subjSCause) {
+
+                // don't consider empty tokens or stop words
                 if (token.equals("") || stopWords.contains(token)) {
                     continue;
                 }
 
-                Enums.NgramType ngramType = Enums.NgramType.s_cause_subj_pred;
+                Enums.NgramSource ngramSource = Enums.NgramSource.s_cause_subj_pred;
                 String bigram = ngramToLowerCase(token) + " " + predSCause;
                 String emotionBigram = emotion + "\t" + bigram;
-                Extensions.updateMap(ngramTypeBigramFreqs.get(ngramType), bigram);
-                Extensions.updateMap(emotionNgramTypeBigramFreqs.get(ngramType), emotionBigram);
-                Extensions.updateMap(this.causeUnigramCount, ngramType.toString());
+                Extensions.updateMap(ngramTypeBigramFreqs.get(ngramSource), bigram);
+                Extensions.updateMap(emotionNgramTypeBigramFreqs.get(ngramSource), emotionBigram);
+                Extensions.updateMap(this.causeUnigramCount, ngramSource.toString());
             }
 
             // S cause pred + dobj
@@ -162,12 +166,12 @@ public class Analyzer {
                     continue;
                 }
                 else {
-                    Enums.NgramType ngramType = Enums.NgramType.s_cause_pred_dobj;
+                    Enums.NgramSource ngramSource = Enums.NgramSource.s_cause_pred_dobj;
                     String bigram = predSCause + " " + ngramToLowerCase(token);
                     String emotionBigram = emotion + "\t" + bigram;
-                    Extensions.updateMap(ngramTypeBigramFreqs.get(ngramType), bigram);
-                    Extensions.updateMap(emotionNgramTypeBigramFreqs.get(Enums.NgramType.s_cause_pred_dobj), emotionBigram);
-                    Extensions.updateMap(this.causeUnigramCount, ngramType.toString());
+                    Extensions.updateMap(ngramTypeBigramFreqs.get(ngramSource), bigram);
+                    Extensions.updateMap(emotionNgramTypeBigramFreqs.get(Enums.NgramSource.s_cause_pred_dobj), emotionBigram);
+                    Extensions.updateMap(this.causeUnigramCount, ngramSource.toString());
                     break;
                 }
             }
@@ -176,6 +180,9 @@ public class Analyzer {
         printFrequencies();
     }
 
+    /**
+     * Prints out the total unigram and bigram frequencies for all ngram types.
+     */
     private void printFrequencies() {
         System.out.println("Ngram type\t# unigrams");
         printTotal(ngramTypeUnigramFreqs);
@@ -183,14 +190,18 @@ public class Analyzer {
         printTotal(ngramTypeBigramFreqs);
     }
 
-    private void printTotal(Map<Enums.NgramType, Map<String, Double>> ngramTypeMap) {
-        for (Enums.NgramType ngramType: ngramTypeMap.keySet()) {
+    /**
+     * Prints out the total frequency of an ngram type given an ngram type map.
+     * @param ngramTypeMap map with key: ngram type; value: map with key: ngram, value: frequency
+     */
+    private void printTotal(Map<Enums.NgramSource, Map<String, Double>> ngramTypeMap) {
+        for (Enums.NgramSource ngramSource : ngramTypeMap.keySet()) {
             double total = 0;
-            for (Map.Entry<String, Double> entry : ngramTypeMap.get(ngramType).entrySet()) {
+            for (Map.Entry<String, Double> entry : ngramTypeMap.get(ngramSource).entrySet()) {
                 total += entry.getValue();
             }
 
-            System.out.printf("%s\t%f\n", ngramType.toString(), total);
+            System.out.printf("%s\t%f\n", ngramSource.toString(), total);
         }
     }
 
@@ -214,23 +225,17 @@ public class Analyzer {
     /**
      * Calculates discounted point-wise mutual information. Discount filters out expressions that occur very rarely.
      * Stores them in a map with the ngram as key and the PMI score as value.
-     * @param isNP if PMI should be calculated from NP ngrams; else: S ngrams
-     * @param isUnigram if PMI should be calculated from unigrams; else: bigrams
+     * @param ngramSource ngram source that the PMI score should be calculated from
+     * @param ngramEnum the ngram that should be used for calculation; unigram or bigram
      * @return the map of ngrams and their PMI score
      */
-    public Map<String, Double> calculatePMI(Enums.NgramType ngramType, Enums.Ngram ngramEnum) {
+    public Map<String, Double> calculatePMI(Enums.NgramSource ngramSource, Enums.Ngram ngramEnum) {
 
         // get the appropriate parameters
-        Map<String, Double> ngramFreqs = ngramEnum.equals(Enums.Ngram.unigram) ? this.ngramTypeUnigramFreqs.get(ngramType) : this.ngramTypeBigramFreqs.get(ngramType);
-        Map<String, Double> emotionNgramFreqs = ngramEnum.equals(Enums.Ngram.unigram) ? this.emotionNgramTypeUnigramFreqs.get(ngramType) : this.emotionNgramTypeBigramFreqs.get(ngramType);
+        Map<String, Double> ngramFreqs = ngramEnum.equals(Enums.Ngram.unigram) ? this.ngramTypeUnigramFreqs.get(ngramSource) : this.ngramTypeBigramFreqs.get(ngramSource);
+        Map<String, Double> emotionNgramFreqs = ngramEnum.equals(Enums.Ngram.unigram) ? this.emotionNgramTypeUnigramFreqs.get(ngramSource) : this.emotionNgramTypeBigramFreqs.get(ngramSource);
         double ngramCount = 0;
-        try {
-            ngramCount = this.causeUnigramCount.get(ngramType.toString());
-        }
-        catch (NullPointerException ex) {
-            System.out.println(ngramType.toString() + " " + ngramEnum.toString());
-            System.out.println();
-        }
+        ngramCount = this.causeUnigramCount.get(ngramSource.toString());
 
         // initializes the final ngram - PMI map
         Map<String, Double> PMIMap = new HashMap<String, Double>();
@@ -276,23 +281,17 @@ public class Analyzer {
 
     /**
      * Calculates chi-square. Stores the scores in a map with the ngram as key and the chi-square score as value.
-     * @param isNP if chi-square should be calculated from NP ngrams; else: S ngrams
-     * @param isUnigram if chi-square should be calculated from unigrams; else: bigrams
+     * @param ngramSource ngram souce that chi-square should be calculated from
+     * @param ngramEnum the ngram used for calculation
      * @return the map of ngrams and their chi-square score
      */
-    public Map<String, Double> calculateChiSquare(Enums.NgramType ngramType, Enums.Ngram ngramEnum) {
+    public Map<String, Double> calculateChiSquare(Enums.NgramSource ngramSource, Enums.Ngram ngramEnum) {
 
         // get the appropriate parameters
-        Map<String, Double> ngramFreqs = ngramEnum.equals(Enums.Ngram.unigram) ? this.ngramTypeUnigramFreqs.get(ngramType) : this.ngramTypeBigramFreqs.get(ngramType);
-        Map<String, Double> emotionNgramFreqs = ngramEnum.equals(Enums.Ngram.unigram) ? this.emotionNgramTypeUnigramFreqs.get(ngramType) : this.emotionNgramTypeBigramFreqs.get(ngramType);
+        Map<String, Double> ngramFreqs = ngramEnum.equals(Enums.Ngram.unigram) ? this.ngramTypeUnigramFreqs.get(ngramSource) : this.ngramTypeBigramFreqs.get(ngramSource);
+        Map<String, Double> emotionNgramFreqs = ngramEnum.equals(Enums.Ngram.unigram) ? this.emotionNgramTypeUnigramFreqs.get(ngramSource) : this.emotionNgramTypeBigramFreqs.get(ngramSource);
         double ngramCount = 0;
-        try {
-            ngramCount = this.causeUnigramCount.get(ngramType.toString());
-        }
-        catch (NullPointerException ex) {
-            System.out.println(ngramType.toString() + " " + ngramEnum.toString());
-            System.out.println();
-        }
+        ngramCount = this.causeUnigramCount.get(ngramSource.toString());
 
         // initialize final chi-square map
         Map<String, Double> chiSquareMap = new HashMap<String, Double>();
@@ -339,26 +338,40 @@ public class Analyzer {
     }
 
     // counts which unigrams/bigrams are shared per emotion
-    public Map<String, Map<String, Double>> calculcateEmotionOverlap(Enums.NgramType ngramType, Enums.Ngram ngramEnum, Map<String, Double> metricMap) {
+
+    /**
+     * Puts the ngrams in a map that lists them along with their positive scores for each emotion.
+     * @param ngramSource the source where the ngrams should be taken from
+     * @param ngramEnum the ngrams that should be used
+     * @param metricMap a map with key: emotion tab ngram; value: their association score
+     * @return a map with key: ngram; value: a map with key: emotion, value: the association score for that emotion
+     */
+    public Map<String, Map<String, Double>> calculcateEmotionOverlap(Enums.NgramSource ngramSource, Enums.Ngram ngramEnum, Map<String, Double> metricMap) {
 
         // get the appropriate parameters
-        Map<String, Double> ngramFreqs = ngramEnum.equals(Enums.Ngram.unigram) ? this.ngramTypeUnigramFreqs.get(ngramType) : this.ngramTypeBigramFreqs.get(ngramType);
+        Map<String, Double> ngramFreqs = ngramEnum.equals(Enums.Ngram.unigram) ? this.ngramTypeUnigramFreqs.get(ngramSource) : this.ngramTypeBigramFreqs.get(ngramSource);
 
+        // create the overlap map
         Map<String, Map<String, Double>> overlapMap = new HashMap<String, Map<String, Double>>();
 
+        // iterate through all ngrams and all emotions
         for (String ngram : ngramFreqs.keySet()) {
 
             for (String emotion : this.emotionFreqs.keySet()) {
 
                 String emotionNgram = emotion + "\t" + ngram;
 
+                // skip emotion if metric map doesn't contain a score for that emotion or score is smaller than 0
                 if (!metricMap.containsKey(emotionNgram) || metricMap.get(emotionNgram) < 0) {
                     continue;
                 }
                 else if (!overlapMap.containsKey(ngram)) {
+
+                    // otherwise create a new map if ngram doesn't exist yet
                     overlapMap.put(ngram, new HashMap<String, Double>());
                 }
 
+                // add ngram along with score for that emotion
                 overlapMap.get(ngram).put(emotion, metricMap.get(emotionNgram));
             }
         }

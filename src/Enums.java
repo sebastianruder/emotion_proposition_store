@@ -46,26 +46,46 @@ public class Enums {
         anger, anticipation, disgust, fear, joy, sadness, surprise, trust
     }
 
+    /**
+     * Enumeration for the two association metrics that are used.
+     */
     public enum Metric {
         pmi, chi_square
     }
 
+    /**
+     * Enumeration containing the two ngrams that are used.
+     */
     public enum Ngram {
         unigram, bigram
     }
 
-    public enum NgramType {
+    /**
+     * Enumeration containing the different sources the ngrams can come from.
+     */
+    public enum NgramSource {
         np_cause, s_cause, s_cause_subj_pred, s_cause_pred_dobj, emotion_holder
     }
 
+    /**
+     * Enumeration containing the different possible sentiments.
+     */
     public enum Sentiment {
         positive, negative, neutral
     }
 
+    /**
+     * Enumeration containing the possible degrees of overlap with the NRC Emotion-Association Lexicon (EmoLex).
+     */
     public enum NRCOverlap {
         FALSE, TRUE, NA
     }
 
+    /**
+     * Converts an emotion enum to its corresponding sentiment.
+     * @param emotion the emotion enum
+     * @return the corresponding sentiment
+     */
     public static Sentiment emotionToSentiment(Emotions emotion) {
         switch (emotion) {
             case anger:
