@@ -9,11 +9,7 @@
 
 \chapter*{Abstract} % Abstract name
 
-This section is still under construction.
-
-Emotions and sentiment are an essential part of what makes us human. While psychology has tried to differentiate between certain emotions, past work on sentiment analysis has focused primarily on classifying sentiment as positive, negative, or neutral. In the following, we use Plutchik's eight base emotions, i.e. anger, anticipation, joy, fear, surprise, disgust, sadness, and trust. We collect patterns that are indicative of said emotions from a diverse set of sentiment resources. Using these patterns, we extract emotion holders and causes from the Gigaword corpus using the Annotated Gigaword API. Distributional analyses of the extractions produce words that evoke certain emotions.
-
-\dots
+Emotion detection, a subtask of sentiment analysis, focuses on identifying emotions in text. Knowledge about emotion expressions and emotions associated with events can be beneficial in applications such as facilitated interaction with AI agents, understanding customer's feeling towards products, assisting governments in recognizing growing anger or fear and pre-empting mass hysterias, and in inferences. For this purpose, we design and evaluate patterns that are frequent and clearly associated with an emotion. These patterns can be used as-is to extract tuples of emotion holders and causes from the web as well as from special domain corpora. Using these patterns, we acquire more than 1,700,000 propositions from the Annotated Gigaword news corpus, filter, and generalize them by employing co-reference resolution and named-entity recognition. These propositions contain information about the emotion, the emotion holder, and the cause of said emotion. We stores these propositions in an emotion proposition store, which we make available to the research community. We analyse and evaluate them to gain further understanding about emotions in news text as well as the capabilities of the resource. Distributional analysis allows us to determine ambiguous concepts, underlying themes, as well as single-word and compound expressions that are highly associated with an emotion, which we make available in emotion lists that can be used as an emotion lexicon for the news domain.
 
 \endgroup			
 
