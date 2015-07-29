@@ -4,7 +4,7 @@ This is the respository for my Bachelor's thesis dealing with the construction a
 - Designing and evaluating patterns that are frequent and clearly associated with an emotion. These patterns can be used as-is to extract tuples of emotion holders and causes from the web as well as from special domain corpora.
 - Acquiring more than 1,700,000 propositions from the Annotated Gigaword news corpus using these patterns, filtering, and generalizing them by employing co-reference resolution and named-entity recognition (NER). These propositions contain information about the emotion, the emotion holder, and the cause of said emotion.
 - Storing these propositions in an emotion proposition store, which we make available to the research community.
-- Analysing and evaluating them to gain further understanding about emotions in news text as well as the capabilities of the resource.Distributional analysis allows us to determine ambiguous concepts as well as single-word and compound expressions that are highly associated with an emotion.
+- Analysing and evaluating them to gain further understanding about emotions in news text as well as the capabilities of the resource. Distributional analysis allows us to determine ambiguous concepts as well as single-word and compound expressions that are highly associated with an emotion. Through topic modelling, we explore underlying themes that are associated with certain emotions or shared between different ones.
 
 ##Structure of this repository
 
