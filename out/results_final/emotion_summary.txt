@@ -1,9 +1,0 @@
-Emotion	#patterns	total_freq	#patterns(>10)	total_freq(>10)
-disgust	25	77016	16	77006
-sadness	28	75901	17	75878
-anger	71	94616	32	94598
-trust	13	113431	9	113421
-joy	60	287652	35	287638
-anticipation	31	1235715	29	1235709
-surprise	42	77368	20	77326
-fear	37	333442	27	333430
