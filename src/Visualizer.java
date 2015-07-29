@@ -515,6 +515,6 @@ public class Visualizer {
     public static void displayChart(String title, JFreeChart chart) {
         ChartFrame frame = new ChartFrame(title, chart);
         frame.pack();
-        frame.setVisible(true);git 
+        frame.setVisible(true);
     }
 }

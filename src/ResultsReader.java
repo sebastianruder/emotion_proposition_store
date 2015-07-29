@@ -66,7 +66,7 @@ public class ResultsReader {
 
             for (Enums.Ngram ngramEnum : Enums.Ngram.values()) {
 
-                if (ngramEnum.equals(Enums.Ngram.unigram)) continue;
+                // if (ngramEnum.equals(Enums.Ngram.unigram)) continue;
                 String ngram = ngramEnum.toString();
                 for (Enums.NgramSource ngramSource : Enums.NgramSource.values()) {
 

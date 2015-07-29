@@ -10,11 +10,19 @@ This is the respository for my Bachelor's thesis dealing with the construction a
 
 This repository is organized as follows:
 
+- [NRC-Emotion-Lexicon-v0.92](NRC-Emotion-Lexicon-v0.92/): The [NRC Word-Emotion Association Lexicon](http://saifmohammad.com/WebPages/NRC-Emotion-Lexicon.htm) by Saif Mohammad.
+- [R](R/): R code to generate summaries for agreement with the NRC Emotion Lexicon.
 - [anno_gigaword](anno_gigaword/): The forked [Annotated Gigaword Java API](https://github.com/mgormley/agiga) by Courtney Napoles, Matthew Gormley, and Benjamin Van Durme.
-- [annotation](annotation/): The annotated files of the two annotation tasks. [annotated](annotation/annotated/) contains the pattern annotation, while [bigrams_annotated](annotation/bigrams_annotated/) contains the annotation of the bigrams.
+- [annotation](annotation/): The annotated files of the two annotation tasks. [patterns_annotated](annotation/patterns_annotated/) contains the pattern annotation, while [bigrams_annotated](annotation/bigrams_annotated/) contains the annotation of the bigrams.
+- [dependencies](dependencies/): The [JCommon](dependencies/jcommon-1.0.23/) and [JFreeChart](dependencies/jfreechart-1.0.19) libraries used for generating charts.
+- [mallet](mallet/): The pseudo-documents and topic models generated using [MALLET](http://mallet.cs.umass.edu/topics.php).
 - [emotion_word_sources](emotion_word_sources/): Related work that was used as a source for the patterns.
 - [out](out/): The directory of the results. 
-  - 
+  - [Emotion proposition store](out/emotion_proposition_store/): The extracted propositions in _shelves_ of 100,000 lines. They have the following format: ID \t emotion \t pattern \t emotion holder \t NP cause \t S cause subject \t S cause predicate \t S cause object \t S cause prepositional objects \t cause bag-of-words.
+  - [Patterns](out/patterns): The pattern templates and the regular expressions.
+  - [Scores](out/scores/): The lists of unigrams and bigrams ranked by point-wise mutual information (PMI) or chi-square for Plutchik's eight emotions, sorted by source (emotion holder, NP cause, S cause subject + predicate, S cause predicate + object).
+  - [Sentences](out/sentences/): The extracted propositions along with the sentences that they were extracted from in chunks of 100,000 lines.
+  - [Stats](out/stats/): Statistics about the patterns and the extracted propositions.
 - [src](src/): The source directory.
   - [AgigaReader](src/AgigagReader.java): Class to extract propositions from the Annotated Gigaword corpus.
   - [Analyzer](src/Analyzer.java): Class to analyze extractions.
