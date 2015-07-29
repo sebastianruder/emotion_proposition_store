@@ -261,9 +261,6 @@ joy	(?<= )be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? comfort/VBN
 joy	(?! not)(?! never)fulfill/VB[DGPZ]/[0-9]+	NP
 joy	(?<= )be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? fulfill/VBN/[0-9]+ that/IN/[0-9]+	S
 joy	(?<= )be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? fulfill/VBN/[0-9]+ by/IN/[0-9]+	NP
-anger	(?! not)(?! never)grate/VB[DGPZ]/[0-9]+	NP
-anger	(?<= )be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? grate/VBN/[0-9]+ that/IN/[0-9]+	S
-anger	(?<= )be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? grate/VBN/[0-9]+ by/IN/[0-9]+	NP
 anger	(?! not)(?! never)harass/VB[DGPZ]/[0-9]+	NP
 anger	(?<= )be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? harass/VBN/[0-9]+ that/IN/[0-9]+	S
 anger	(?<= )be/VB[PDGZ]/([0-9]+)(?! not)(?! never)( [a-z]+/RB/[0-9]+)? harass/VBN/[0-9]+ by/IN/[0-9]+	NP

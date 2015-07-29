@@ -1,14 +1,16 @@
 % Chapter 3
 
-\chapter{Pattern compilation and extraction} % Chapter title
+\chapter{Pattern compilation and extraction}
 
-\label{ch:patterns} % For referencing the chapter elsewhere, use \autoref{ch:examples} 
+\label{ch:pattern_chapter}
 
-In this chapter, we describe our approach to building patterns and using them to extract emotion-bearing propositions from a large corpus. Firstly, we introduce our corpus in section \ref{sec:corpus_selection}. In section \ref{sec:motivations}, we detail the principles that guided the design of a methodology for pattern-based extraction. In section \ref{sec:patterns}, we give examples of patterns and subsequently, in section \ref{sec:pattern_sources}, we describe the various sources on which we base the design of our patterns. Following, in section \ref{sec:regex}, we detail the compilation of regular expression patterns from our collected pattern templates and afterwards, in section \ref{sec:agreement}, we describe the annotation task we use to reduce our collected patterns to a final list of patterns that are clearly indicative of one emotion and that we present in \ref{sec:final_patterns}. In section \ref{sec:extraction}, we describe the actual pattern-based extraction process and finally, in section \ref{sec:representation}, we give an overview of the representation format we have chosen for the extracted emotion-bearing propositions.
+In this chapter, we describe our approach to building patterns and using them to extract emotion-bearing propositions from a large corpus. Firstly, we introduce our corpus in section \ref{sec:corpus_selection}. In section \ref{sec:motivations}, we detail the principles that guided the design of a methodology for pattern-based extraction. In section \ref{sec:patterns}, we give examples of patterns and subsequently, in section \ref{sec:pattern_sources}, we describe the various sources on which we base the design of our patterns. Following, in section \ref{sec:regex}, we detail the compilation of regular expression patterns from our collected pattern templates and afterwards, in section \ref{sec:agreement}, we describe the annotation task we use to reduce our collected patterns to a final list of patterns that are clearly indicative of one emotion and that we present in \ref{sec:final_patterns}. In section \ref{sec:extraction_section}, we describe the actual pattern-based extraction process and finally, in section \ref{sec:representation}, we give an overview of the representation format we have chosen for the extracted emotion-bearing propositions.
 
 \section{Corpus} \label{sec:corpus_selection}
 
-Genre and domain clearly play an important role in the context of emotions and must be taken into consideration for the selection of an adequate corpus. Some genres are designed to elicit emotions, while others are geared to other functions. Insofar, the domain is probably the factor with the most impact on the results. \cite{emotions_novels_fairy_tales} show that fairy tales and certain book genres are rich in emotion. However, as sentiment analysis is already being widely applied to the analysis of news texts, the application of emotion detection constitutes the logical next step in this domain. Additionally, emotions in news are expected to be less overt than in emotional literature, providing for an interesting challenge, and results will be not only relevant in the context of the book but on a national or international scale. Furthermore, the English Gigaword is a resource that provides a wealth of data that is not as readily available for other domains.
+Genre and domain clearly play an important role in the context of emotions and must be taken into consideration for the selection of an adequate corpus. Some genres are designed to elicit emotions, while others are geared to other functions. Insofar, the domain is probably the factor with the most impact on the results. \citeauthor{emotions_novels_fairy_tales} show that fairy tales and certain book genres are rich in emotion.
+
+In the news domain, however, sentiment analysis is already being widely applied; the application of emotion detection to this domain in consequence constitutes the logical next step. Additionally, emotion detection in news poses an interesting challenge, as emotion in news are expected to be less overt than in emotional literature. Furthermore, obtained insights and results will be not only relevant in the context of a particular oeuvre, but on a national or international scale. Finally, the English Gigaword corpus is a resource that provides a wealth of data that is not as readily available for other domains.
 
 \begin{table}[h]
 \centering
@@ -39,7 +41,7 @@ In this section, we present the principles that motivated the design of our emot
 \begin{aenumerate}
 	\item Avoidance of ambiguity: patterns should be unambiguous and clearly indicate one emotion. 
 	\item Extractability of emotion holder and cause: patterns should clearly indicate the holder and the cause of an emotion.
-	\item Diversity of causes: patterns should account a diverse set of causes such as entities, concepts, events, actions, and conditions.
+	\item Diversity of causes: patterns should account for a diverse set of causes such as entities, concepts, events, actions, and conditions.
 \end{aenumerate}
 
 \subsection{Avoidance of ambiguity}
@@ -48,9 +50,9 @@ A clear concern for the compilation of patterns is ambiguity: As emotions are am
 
 We seek to pre-empt this ambiguity in two ways: \begin{inparaenum}[(a)] [\itshape a\upshape)] \item We only select expressions that are listed as pertaining to one emotion in one of our sources as detailed in section \ref{sec:pattern_sources}; and \item measure agreement between three annotators on the selected expressions, choosing only those on which a majority agrees. \end{inparaenum} We could have included multiple emotions for each pattern, but decided against it, as we ultimately wanted to obtain expressions that are clearly associated with one emotion.
 
-Furthermore, \citeauthor{emotion_verbs} note that emotion verbs can overlap with cognition verbs: \textit{shock} can evoke both a judgement or an emotion. \begin{inparaenum}[(a)] [\itshape a\upshape)] We intend to overcome this issue by \item selecting patterns whose dominant sense is emotive; and \item by investigating propositions extracted using our patterns. An analysis of a representative sample will surface erroneous patterns that lead to unemotive contexts in the news domain, which we will be able to retroactively exclude in consequence. \end{inparaenum}
+Furthermore, \citeauthor{emotion_verbs} note that emotion verbs can overlap with cognition verbs: \textit{shock} can evoke both a judgement or an emotion.\begin{inparaenum}[(a)][\itshape a\upshape)] We intend to overcome this issue by \item selecting patterns whose dominant sense is emotive; and \item by investigating propositions extracted using our patterns. An analysis of a representative sample will surface erroneous patterns that lead to unemotive contexts in the news domain, which we will be able to retroactively exclude. \end{inparaenum}
 
-Our overarching goal is the harvesting of emotion-evoking expressions. Insofar, we avoid using complex sentence structures and omit error-prone concepts like proverbs, multiple embeddings, or idiosyncracies. Instead, our patterns should focus on clear-cut cases and structures that can be easily disambiguated should include patterns like \textit{X fear Y}, \textit{X be angry about Y}, \textit{X be happy about Y}, etc. that do not rely on context for disambiguation and are clearly emotion-bearing. Initial experiments have shown that part-of-speech labelling is important, as e.g. \textit{trust} and \textit{fear} can function both as verbs and nouns. In addition, lemma representation is valuable on a representational level to guarantee generalizable results.
+Our overarching goal is the harvesting of emotion-evoking expressions. Insofar, we avoid using complex sentence structures and omit error-prone concepts like proverbs, multiple embeddings, or idiosyncracies. Instead, our patterns focus on clear-cut cases and structures that can be easily disambiguated, including patterns like \textit{X fear Y}, \textit{X be angry about Y}, \textit{X be happy about Y}, etc. that do not rely on context for disambiguation and are clearly emotion-bearing. Initial experiments have shown that part-of-speech labelling is important, as e.g. \textit{trust} and \textit{fear} can function both as verbs and nouns. In addition, lemma representation is valuable on a representational level to guarantee generalizable results.
 
 \subsection{Extractability of emotion holder and cause} \label{sec:extractability}
 
@@ -75,11 +77,11 @@ This leads us to mainly employ transitive constructions. \citeauthor{emotion_ver
 \end{align}
 \end{subequations}
 
-Verbs like \textit{admire}, \textit{deplore}, \textit{abhor}, etc. possess the same property\footnote{They are all contained in VerbNet's \textsc{admire} class, as VerbNet groups verbs with the same syntactic alternation behaviour together.} and are clearly emotion-bearing as well as indicative of emotion holder and cause. In order to adequately capture this property, we include a flag with each pattern that indicates if the order of subject--\textsc{experiencer}, object--\textsc{cause} depicted in example \ref{ex:fear} is reversed.
+Verbs like \textit{admire}, \textit{deplore}, \textit{abhor}, etc. possess the same property\footnote{They are all contained in VerbNet's \textsc{admire} class, as VerbNet groups verbs with the same syntactic alternation behaviour together.} and are clearly emotion-bearing as well as indicative of emotion holder and cause. In order to adequately capture this property, we include information along with each pattern indicating if the order of subject--\textsc{experiencer}, object--\textsc{cause} depicted in example \ref{ex:fear} is reversed.
 
 \subsection{Diversity of causes}
 
-If we only capture objects as causes, we will clearly miss out on a lot of variety that is inherent to emotions. Emotions can equally be evoked by a concept, entity, event, situation, or certain condition. Besides capturing nominal phrases, we thus also want to collect patterns that indicate emotions whose stimulus is an act, event, or condition encompassed in a sub-clause as can be seen in example \ref{ex:s-cause}.
+If we only capture objects as causes, we will clearly miss out on a lot of variety that is inherent to emotions. Emotions can equally be evoked by a concept, entity, event, situation, or condition, with events being a particular focus of research as we described in section \ref{sec:emotive_events}. Besides capturing nominal phrases, we thus also want to collect patterns that indicate emotions whose stimulus is an act, event, or condition encompassed in a sub-clause as can be seen in example \ref{ex:s-cause}.
 
 \begin{align}
 \begin{split}\label{ex:s-cause}
@@ -88,19 +90,25 @@ If we only capture objects as causes, we will clearly miss out on a lot of varie
 \end{split}
 \end{align}
 
-The types of causes we thus expect are nominal phrases or (sub-)clauses. These are labeled as NP and S/SBAR respectively in phrase-structure grammars. In the Penn Treebank tags -- which is the tag set that is used by the Stanford parser in the Annotated Gigaword -- S is a simple declarative clause, SBAR is a declarative clause introduced by a subordinating conjunction, and NP is a noun phrase. In the sentence \textit{After she ate the cake, she visited him.}, \textit{After she ate the cake} is an SBAR introduced by the subordinate conjunction \textit{after}, while \textit{she ate the cake} and the whole sentence are declarative clauses.
+The types of causes we thus expect are nominal phrases or clauses. These are labeled as NP and S/SBAR respectively in phrase-structure grammars. In the Penn Treebank tags -- the tag set that is used by the Stanford parser in the Annotated Gigaword corpus -- S is a simple declarative clause, SBAR is a declarative clause introduced by a subordinating conjunction, and NP is a noun phrase. Thus, in the sentence in example \ref{ex:s-sbar-example}, \textit{after she ate the cake} is an SBAR introduced by the subordinate conjunction \textit{after}, while \textit{she ate the cake} and the whole sentence are declarative clauses.
 
-If a predicate can occur with both a nominal phrase and a sub-clause, we will create a separate pattern for each cause type and add a flag indicating the type.
+\begin{align}
+\begin{split}\label{ex:s-sbar-example}
+&\textnormal{After she ate the cake, she visited him.}
+\end{split}
+\end{align}
+
+If a predicate can occur with both a nominal phrase and a sub-clause, we will create a separate pattern for each cause type and add information to indicate the type.
 
 \section{Patterns} \label{sec:patterns}
 
-So far, we have stated the motivation for the design of our patterns without making abundantly clear what form they will take. For disambiguation purposes, we treat a pattern as an emotion-bearing predicate, while a pattern template contains the pattern along with its emotion and two binary flags:
+So far, we have stated the motivation for the design of our patterns without making abundantly clear what form they will take. For disambiguation purposes, we treat a pattern as an emotion-bearing predicate, e.g. \textit{be happy that}, while a pattern template contains the pattern along with its emotion and two binary flags specifying meta-data:
 \begin{aenumerate}[noitemsep]
 	\item The first one indicates if the cause of the emotion is a nominal phrase or a clause or sub-clause. It takes the values of \textsc{NP} (nominal phrase) and \textsc{S} (clause or sub-clause).
 	\item The second flag specifies if the order of subject--\textsc{experiencer}, object--\textsc{cause} as described in section \ref{sec:extractability} is reversed. It takes as values \textsc{true} -- if the order is reversed -- and \textsc{false} -- if the order is maintained.
 \end{aenumerate}
 
-If a verb or an adjective has been listed in one of our sources specified in section \ref{sec:pattern_sources} with an emotion, we adopt that emotion, given it is among Plutchik's eight emotion classes; if not, we manually label it. We list the pattern in lemma form along with its Penn Treebank part-of-speech tags. We lists verbs with the generic tag \textsc{Verb} to represent the eight verb part-of-speech tags in the Penn Treebank.
+If a verb or an adjective has been listed in one of our sources specified in section \ref{sec:pattern_sources} with an emotion, we adopt that emotion, given it is among Plutchik's eight emotion classes; if not, we manually label it. We list the pattern in lemma form along with its Penn Treebank part-of-speech tags. We list verbs with the generic tag \textsc{Verb} to represent the eight verb part-of-speech tags in the Penn Treebank.
 
 Two pattern templates are given in example \ref{ex:pattern_templates}:
 
@@ -120,7 +128,7 @@ We make use of the selection of emotion lexica available as well as resources me
 
 \subsection{Dictionaries and thesauri}
 
-We use the emotion's definition in the Oxford English Dictionary to generate an initial list of patterns. Oxford English Dictionary is widely acknowledged to be the most comprehensive and authoritative record of the English language, which makes it an apt starting point for our endeavour. For instance, joy is defined as:
+We use the emotion's definition in the Oxford English Dictionary to generate an initial list of patterns. The Oxford English Dictionary is widely acknowledged to be the most comprehensive and authoritative record of the English language, which makes it an apt starting point for our endeavour. For instance, joy is defined as:
 
 \textit{A vivid emotion of pleasure arising from a sense of well-being or
 satisfaction; the feeling or state of being highly pleased or delighted;
@@ -128,13 +136,13 @@ exultation of spirit; gladness, delight.}
 
 From this definition, we are able to extract the patterns \textit{satisfy}, \textit{please}, and \textit{delight}. In total, we retrieve 24 initial patterns from the Oxford English Dictionary.
 
-We then use Merriam-Webster's Dictionary and Roget's Thesaurus -- which was used to produce target terms by \citeauthor{nrc_emolex} -- to retrieve synonyms for those verbs. As Roget's Thesaurus has a relevance ranking, we choose only those synonyms with the highest relevance. For joy, we retrieve in Merriam-Webster's Dictionary patterns such as \textit{rejoice}, \textit{jubilate}, or \textit{triumph}, while we obtain from Roget's Thesaurus patterns such as \textit{exult}, \textit{revel}, \textit{make happy}, \textit{amuse}, \textit{charm}, \textit{enchant}, and many others. Merriam-Webster's Dictionary in total produces 51 patterns, while Roget's Thesaurus produces 101 patterns, confirming the quality of this resource and justifying its frequent application for lexically-based approaches.
+We then use Merriam-Webster's Dictionary and Roget's Thesaurus -- which was used to produce target terms by \citeauthor{nrc_emolex} -- to retrieve synonyms for those verbs. As Roget's Thesaurus has a relevance ranking, we choose only those synonyms with the highest relevance. For joy, we retrieve in Merriam-Webster's Dictionary patterns such as \textit{rejoice}, \textit{jubilate}, or \textit{triumph}, while we obtain from Roget's Thesaurus patterns such as \textit{exult}, \textit{revel}, \textit{make happy}, \textit{amuse}, \textit{charm}, \textit{enchant}, and many others. Merriam-Webster's Dictionary in total produces 51 patterns, while Roget's Thesaurus produces 101 patterns, confirming the quality of this resource and justifying its frequent application in lexically-based approaches.
 
 \subsection{Sentiment lexica and past research}
 
 \subsubsection{Harvard General Inquirer}
 
-While the Harvard General Inquirer \cite{general_inquirer} has found use in a plethora of applications and contains a multitude of useful annotations, its \textsc{emot} doesn't distinguish emotions on the finely granular level that we require for emotion detection, which is why we are not using it for this project.
+While the Harvard General Inquirer \cite{general_inquirer} has found use in a plethora of applications and contains a multitude of useful annotations, its \textsc{emot} does not distinguish emotions on the finely granular level that we require for emotion detection. Furthermore, most of its contained words are nouns that can be used in our predicates. For these reasons, we are not using it in this project.
 
 \subsubsection{NRC Word-Emotion Association Lexicon} \label{sec:emolex}
 
@@ -146,17 +154,17 @@ As has already been mentioned, the NRC Word-Emotion Association Lexicon (also ca
 \end{split}
 \end{align}
 
-However, in the same vein, its entries, which evoke or are associated with emotions, are similar to the kind of entries that we would want to have in our proposition store. Insofar, we will use it for a partial evaluation of our proposition store in chapter \ref{ch:analysis}.
+However, in the same vein, its entries, which evoke or are associated with emotions, are similar to the kind of entries that we would want to have in our proposition store. Insofar, we will use it for a partial evaluation of our proposition store in section \ref{sec:emolex-evaluation}.
 
 \subsubsection{Emotion verb classes}
 
 The manually constructed emotion verb classes by \citeauthor{emotion_verbs} fulfil the requirements for our patterns: They clearly indicate an emotion and the emotion holder and cause can be extracted using the semantic roles.
 
-We incorporate the following ten, five, and nine members as emotion verbs for Plutchik's emotions surprise, fear, and anger, respectively, as anger is a degree of annoyance; for surprise: \textit{astonish}, \textit{surprise}, \textit{amaze}, \textit{astound}, \textit{strike}, \textit{stun}, \textit{floor}, \textit{dumbfound}, \textit{flabbergast}, \textit{stupefy}; for fear: \textit{intimidate}, \textit{scare}, \textit{frighten}, \textit{alarm}, \textit{terrify}; for anger: \textit{irk}, \textit{nettle}, \textit{irritate}, \textit{annoy}, \textit{anger}, \textit{exasperate}, \textit{infuriate}, \textit{enrage}, \textit{incense}.
+We incorporate the following ten, five, and nine members as emotion verbs for Plutchik's emotions surprise, fear, and anger, respectively, as anger is a degree of annoyance; for surprise: \textit{astonish}, \textit{surprise}, \textit{amaze}, \textit{astound}, \textit{strike}, \textit{stun}, \textit{floor}, \textit{dumbfound}, \textit{flabbergast}, and \textit{stupefy}; for fear: \textit{intimidate}, \textit{scare}, \textit{frighten}, \textit{alarm}, and \textit{terrify}; for anger: \textit{irk}, \textit{nettle}, \textit{irritate}, \textit{annoy}, \textit{anger}, \textit{exasperate}, \textit{infuriate}, \textit{enrage}, and \textit{incense}.
 
 \subsubsection{Adjectives}
 
-As we have seen, linguistic triggers for emotions are diverse; not only verbs, but also adjectives are apt in capturing emotions. In WordNet, nouns and verbs are clustered in synsets and supersenses. \citeauthor{adjective_supersenses} induce supersenses for adjectives -- taking GermaNet's guidelines\footnote{http://www.sfs.uni-tuebingen.de/lsd/adjectives.shtml} as inspiration -- in order to create a taxonomy for adjectives.
+As we have seen, linguistic triggers for emotions are diverse; not only verbs, but also adjectives are apt in capturing emotions. In WordNet, nouns and verbs are clustered in synsets and supersenses. \citeauthor{adjective_supersenses} induce supersenses for adjectives -- taking GermaNet's guidelines\footnote{\url{http://www.sfs.uni-tuebingen.de/lsd/adjectives.shtml}} as inspiration -- in order to create a taxonomy for adjectives.
 
 They build a weakly supervised classifier that labels adjective types (irrespective of context), which they train on a small set of seed examples, some of them translations of GermaNet. We take the 126 adjectives that pertain to \textsc{feeling} and manually label them with Plutchik's eight emotion classes.
 
@@ -194,7 +202,7 @@ While these frames all refer to emotions, we have obtained most of their lexical
 
 WordNet \cite{wordnet} synsets by themselves don't contain any information about sentiment or emotion. As was previously mentioned, WordNet-Affect \cite{wordnet-affect}, an additional hierarchy of affective domain labels, annotates WordNet synsets representing affective concepts in the semi-automatically augmented WordNet Domains further with affective labels.
 
-WordNet-Affect-1.1 only contains synsets that were tagged with the label \textsc{emo(tion)} in the previous version and thus should serve our purposes. It further labels these synsets with a set of 279 distinct emotion categories, among them 'exotic' emotions such as \textit{defeatism}, \textit{self-depreciation}, \textit{puppy-love}, etc. These categories are hierarchically connected via \texttt{is-a} relations, which we map to Plutchik's eight emotions.
+WordNet-Affect-1.1 only contains synsets that were tagged with the label \textsc{emo(tion)} in the previous version and thus should serve our purposes. It further labels these synsets with a set of 279 distinct emotion categories, among them uncommon emotions such as \textit{defeatism}, \textit{self-depreciation}, \textit{puppy-love}, etc. These categories are hierarchically connected via \texttt{is-a} relations, which we map to Plutchik's eight emotions.
 
 Given the ID listed in the WordNet-Affect-1.1 synsets, we retrieve the respective WordNet-3.0 synset lemmas using NLTK toolkit \cite{nltk} and the corresponding category. As WordNet focuses on nouns, adjectives, verbs, and adverbs are all listed with the noun that they are derived from. For these, we thus retrieve the category of the corresponding noun. This way, we produce 784 noun-, adjective-, verb-, and adverb synsets labelled with Plutchik's eight emotions. We investigate these and make use of the verb and adjective synonyms that indicate the emotion holder as well as the cause.
 
@@ -202,7 +210,7 @@ SentiWordNet \cite{sentiwordnet}, conversely, does not prove as helpful, as we r
 
 \subsection{Summary}
 
-We give an overview of the number of patterns we extracted from each source in \ref{tab:patterns-from-sources}.
+We give an overview of the number of patterns we extracted from each source in table \ref{tab:patterns-from-sources}.
 
 \begin{table}[]
 \centering
@@ -221,11 +229,11 @@ WordNet-Affect               & 123
 \label{tab:patterns-from-sources}
 \end{table}
 
-We remove duplicates and manually label them with an emotion, if they were not supplied with an emotion in the resource. By adding flags to indicate if the pattern refers to a nominal phrase or a clause and if the order of subject-\textsc{experiencer}, object-\textsc{cause} is reversed, we bring them in the pattern template form depicted in \ref{ex:pattern_templates} in section \ref{sec:patterns}.
+We remove duplicates and manually label them with an emotion, if they were not supplied with an emotion in the resource. By adding flags to indicate if the pattern refers to a nominal phrase or a clause and if the order of subject-\textsc{experiencer}, object-\textsc{cause} is reversed, we transform them to the pattern template form depicted in example \ref{ex:pattern_templates} in section \ref{sec:patterns}.
 
 \section{Regular expression compilation} \label{sec:regex}
 
-For the extraction, in order to match the patterns against our corpus, which we describe in section \ref{sec:corpus_selection}, we convert the pattern templates given in section \ref{sec:patterns} in regular expression patterns. We allow adjectives to be modified, but exclude negation. We add a regular expression to capture the index of a word to enable unambiguous retrieval. If the regular order specified by the second flag is reversed, e.g. for \textit{annoy}, we generate additional regular expressions that capture the passive form. These are constructed with the prepositions \textit{that} and \textit{by} and take a clause and a nominal phrase as complement respectively. Following this approach, we generate three regular expression patterns for \textit{scare} and one for \textit{be happy about}, which can be viewed in figure \ref{fig:patterns}.
+For the extraction, in order to match the patterns against our corpus described in section \ref{sec:corpus_selection}, we convert the pattern templates given in section \ref{sec:patterns} in regular expression patterns. We allow adjectives to be modified, but exclude negation. We add a regular expression capturing the index of a word to enable unambiguous retrieval of the words from the sentence. If the regular order specified by the second flag is reversed, e.g. for \textit{annoy}, we generate additional regular expressions that capture the passive form. These are constructed with the prepositions \textit{that} and \textit{by} and take a clause and a nominal phrase as their complement respectively. Following this approach, we generate three regular expression patterns for \textit{scare} and one for \textit{be happy about}, which can be viewed in figure \ref{fig:patterns}.
 
 \begin{figure}
 \begin{lstlisting}
@@ -237,15 +245,15 @@ joy	(?! not)(?! never)be/VB[DGPZ]/[0-9]+(?! not)(?! never)( [a-z]+/RB/[0-9]+)? h
 \caption{Regex patterns for \textit{fear} and \textit{be happy about}}\label{fig:patterns}
 \end{figure}
 
-Generating regular expressions for both the active and passive form of patterns, if applicable, we arrive at 662 regular expression patterns for Plutchik's eight emotions. We match these patterns against the lemmatized, indexed, and part-of-speech tagged sentences of our corpus.
+Generating regular expressions for both the active and passive form of patterns, if applicable, produces 662 regular expression patterns for Plutchik's eight emotions. We now match these patterns against the lemmatized, indexed, and part-of-speech tagged sentences of our corpus.
 
-We perform a pre-filtering of these regular expressions by running an initial matching against a random sample of 2,000,000 sentences of the corpus. As we want to guarantee accuracy as well as recall, we retain patterns with an NP cause that appear at least ten times -- as these are prevalent; we retain patterns with an S cause that appear at least once.
+We perform a filtering of these regular expressions by running an initial matching against a random sample of 2,000,000 sentences of the corpus. As we want to guarantee accuracy as well as recall, we retain patterns with an NP cause that appear at least ten times -- as these are prevalent; we retain patterns with an S cause that appear at least once.
 
 This leaves us with 190 regular expressions, which include both active and passive forms, and 180 patterns. 
 
 \section{Measuring annotation agreement} \label{sec:agreement}
 
-We want to filter these 180 frequent patterns to keep only those that clearly refer to one emotion. To this end, we create an annotation task containing the 180 patterns that we hand off to three annotators (the author included). The guidelines state that each pattern should be annotated with one of Plutchik's eight emotions. We allow the annotators to label patterns with \texttt{none} in case a pattern doesn't indicate an emotion. We instruct them to label the patterns with a second choice if they think that more than one emotion applies. All three annotators are instructed to label the pattern with the degree of the assigned emotion to allow for an even finer measure of agreement. Two sample entries in the annotation task can be seen in example \ref{ex:annotation_task}, while the completed entries can be viewed in example \ref{ex:annotation_task_completed}.
+We want to filter these 180 frequent patterns to keep only those that clearly refer to one emotion. To this end, we create an annotation task containing the 180 patterns that we hand off to three annotators (the author included). The guidelines of the task state that each pattern should be annotated with one of Plutchik's eight emotions. As a reference, we include Plutchik's emotion wheel depicted in figure \ref{fig:plutchik}. We allow the annotators to label patterns with \texttt{none} in case a pattern does not indicate an emotion. We instruct them to label the patterns with a second choice if they think that more than one emotion applies. All three annotators are instructed to label the pattern with the degree of the assigned emotion to allow for an even finer measure of agreement. Two sample entries in the annotation task can be seen in example \ref{ex:annotation_task}, while the completed entries can be viewed in example \ref{ex:annotation_task_completed}.
 
 \begin{align}
 \begin{split}\label{ex:annotation_task}
@@ -296,7 +304,7 @@ Fleiss' $\kappa$ & 0.65
 \label{tab:annotation}
 \end{table}
 
-Quite significantly, 39 expressions have been labeled with the same emotion as well as the same degree of emotion, which is a number much higher than chance\footnote{For chance, only $(\dfrac{1}{25})^{2} \cdot 180 = 0.3$ of 180 expressions would be labeled with the same degree of emotion by all annotators.} for what is essentially a 25-category classification problem (8 emotions $\cdot$ 3 degrees + 1 \texttt{none}).
+Quite significantly, 39 expressions have been labeled with the same emotion as well as the same degree of emotion, which is a number much higher than chance\footnote{For chance, only $(\dfrac{1}{25})^{2} \cdot 180 = 0.3$ of 180 expressions would be labeled with the same degree of emotion by all annotators.} for what is essentially a 25-category classification problem (8 emotions $\cdot$ 3 degrees + 1 (\texttt{none})).
 
 \section{Final patterns} \label{sec:final_patterns}
 
@@ -324,11 +332,11 @@ All of the patterns can be viewed in appendix \ref{ch:appendix} in table \ref{ta
 
 In general, the middle tier representing the general emotion class is prevalent among the patterns labelled by the majority, with a lot of emotions not appearing in their weakest degree due to selection bias as we tended to collect patterns that were clearly indicative of one emotion.
 
-\section{Extraction} \label{sec:extraction}
+\section{Extraction} \label{sec:extraction_section}
 
-We extract the emotion holder and the cause using dependencies, which are well documented \footnote{http://nlp.stanford.edu/software/dependencies\_manual.pdf} and clearly represent the subjects, objects, and complements, which we then map to their corresponding semantic role of emotion holder or cause.\footnote{Initial experiments with extractions based on depth-first search in constituency trees exposed problems with noise and adaptation to sentential idiosyncrasies.}
+We extract the emotion holder and the cause using dependencies, which are well documented\footnote{\url{http://nlp.stanford.edu/software/dependencies\_manual.pdf}} and clearly represent the subjects, objects, and complements, which we then map to their corresponding semantic role of emotion holder or cause.\footnote{Initial experiments with extractions based on depth-first search in constituency trees exposed problems with noise and adaptation to sentential idiosyncrasies.}
 
-We choose the Stanford collapsed dependencies for our extraction -- in lieu of regular Stanford dependencies --, as these collapse dependencies like conjunctions or prepositional objects and thus make the extraction more straight-forward, e.g. a basic dependency like \textit{prep}(cat, in) in example \ref{ex:prep_dependencies} is collapsed to \textit{prep}(cat, hat).
+We choose the Stanford collapsed dependencies for our extraction -- in lieu of regular Stanford dependencies --, as these collapse dependencies like conjunctions or prepositional objects and thus facilitate extraction, e.g. a basic dependency like \textit{prep}(cat, in) in example \ref{ex:prep_dependencies} is collapsed to \textit{prep}(cat, hat).
 
 \begin{align}
 \begin{split}\label{ex:prep_dependencies}
@@ -337,30 +345,30 @@ We choose the Stanford collapsed dependencies for our extraction -- in lieu of r
 \end{split}
 \end{align}
 
-We extract the subject via the \texttt{nsubj} (nominal subject) or \texttt{nsubjpass} (passive nominal subject) relations and the direct object via the \texttt{dobj} relation. These relations can also be embedded in disjunctions or conjunctions, which we retrieve via the collapsed \texttt{conj\_and}, \texttt{conj\_or}, and \texttt{conj\_but} dependencies\footnote{The uncollapsed \texttt{cc} relation would increase the search depth by another relation.}. If the complement of the verb is a clause, we extract the S cause via the \texttt{ccomp} or \texttt{xcomp} relations, which are clausal complements with and without their own subjects respectively. If the verb or the adjective appears with a preposition, e.g. \textit{take pleasure in}, \textit{be proud of}, we retrieve the complement via the \texttt{pcomp} (prepositional complement) or the \texttt{pobj} (prepositional object) relation respectively. If the verb modifies the subject, e.g. \textit{a ruler loved by the people}, we extract the subject via the \texttt{partmod} relation.\footnote{As of the Stanford dependencies version 3.5.2, \texttt{partmod} has been generalized as a case of \texttt{vmod} (reduced non-finite verbal modifier)}.
+We extract the subject via the \texttt{nsubj} (nominal subject) or \texttt{nsubjpass} (passive nominal subject) relations and the direct object via the \texttt{dobj} relation. These relations can also be embedded in disjunctions or conjunctions, which we retrieve via the collapsed \texttt{conj\_and}, \texttt{conj\_or}, and \texttt{conj\_but} dependencies\footnote{The uncollapsed \texttt{cc} relation would increase the search depth by another relation.}. If the complement of the verb is a clause, we extract the S cause via the \texttt{ccomp} or \texttt{xcomp} relations, which are clausal complements with and without their own subjects respectively. If the verb or the adjective appears with a preposition, e.g. \textit{take pleasure in}, \textit{be proud of}, we retrieve the complement via the \texttt{pcomp} (prepositional complement) or the \texttt{pobj} (prepositional object) relation respectively. If the verb modifies the subject, e.g. \textit{a ruler loved by the people}, we extract the subject via the \texttt{partmod} relation\footnote{As of the Stanford dependencies version 3.5.2, \texttt{partmod} has been generalized as a case of \texttt{vmod} (reduced non-finite verbal modifier)}.
 
-Besides the emotion holder and cause, we want to extract all relevant information that might be useful for further analysis. \citeauthor{adjective_noun_pairs} clearly show that adjectives have significant emotive value by pairing positive or negative adjectives with neutral nouns to construct their adjective-noun pairs as described in \ref{sec:compositionality}. Thus we capture all modifiers as well as prepositional objects using the following relations:
+Besides the emotion holder and cause, we want to extract all relevant information that might be useful for further analysis. \citeauthor{adjective_noun_pairs} clearly show that adjectives have significant emotive value by pairing positive or negative adjectives with neutral nouns to construct their adjective-noun pairs as described in section \ref{sec:compositionality_section}. Thus we capture all modifiers as well as prepositional objects using the following relations:
 \begin{aenumerate}
 	\item the modifiers of the noun:
 	\begin{aenumerate}
-		\item \texttt{nn} (noun compound modifier), e.g. \texttt{nn}(University-10, Harvard-9)
-		\item \texttt{amod} (adjectival modifier)
-		\item \texttt{num} (numeric modifier)\footnote{\texttt{num} is converted to \texttt{nummod} as of version 3.5.2.}
+		\item \texttt{nn} (noun compound modifier), e.g. \texttt{nn}(University-10, Harvard-9),
+		\item \texttt{amod} (adjectival modifier),
+		\item \texttt{num} (numeric modifier)\footnote{\texttt{num} is converted to \texttt{nummod} as of version 3.5.2.};
 	\end{aenumerate}
-	\item the prepositional objects pertaining to the noun and the verb; collapsed prepositional objects consist of the preposition name prefixed with \texttt{prep\_}, e.g. \texttt{prep\_on}
+	\item the prepositional objects pertaining to the noun and the verb; collapsed prepositional objects consist of the preposition name prefixed with \texttt{prep\_}, e.g. \texttt{prep\_on}.
 \end{aenumerate}
 
-We insert adjectival and numeric modifiers before the noun; we append prepositional objects prefixed by the preposition and separated by an underscore, if it is a noun, e.g. \textsc{for}:millionth\_fan. We include prepositional objects modifying the predicate of a clause in a separate bag-of-words.
+We insert adjectival and numeric modifiers before the noun and append prepositional objects prefixed by the preposition and separated by an underscore, if it is a noun, e.g. \texttt{for}:millionth\_fan. We include prepositional objects modifying the predicate of a clause in a separate bag-of-words.
 
 Often, the emotion holder and the cause of an emotion are expressed by pronouns, which by themselves only provide limited information and generalizability. For this reason, we leverage the Stanford coreference resolution annotations of the Annotated Gigaword replacing every mention with its most representative coreferent.
 
-To further make our results more generalizable, we tag every named entity with its named entity tag, i.e. \textsc{location}, \textsc{person}, and \textsc{organization}, replacing numbers with the \textsc{number} tag.
+To further make our results more generalizable, we tag every named entity (NE) with its NE tag, i.e. \textsc{location}, \textsc{person}, and \textsc{organization}, and replace numbers with the \textsc{number} tag.
 
 Dependent on the argument order, we assign the subject and the object/clause to the \textsc{experiencer} or \textsc{cause} respectively; we discard extractions where the cause still contains a pronoun, as we require our extractions to be as generalizable as possible.
 
-Finally, we retrieve all leaves of the phrase-structure tree of the sentence that are dominated by the node of the cause (including subordinate clauses) as well as the node of the cause itself and list them in a bag-of-words tagged with their parts-of-speech. These include adjuncts and embedded relative clauses. The cause and the bag-of-words representation of the cause for the following sentence are depicted in example \ref{fig:cause-bag-of-words}:
+Finally, we retrieve all leaves of the phrase-structure tree of the sentence that are dominated by the node of the cause (including subordinate clauses) as well as the node of the cause itself and list them in a bag-of-words tagged with their parts-of-speech. The cause and the bag-of-words representation of the cause for the following sentence are depicted in example \ref{fig:cause-bag-of-words}:
 
-\textit{World Health Organization experts fear the H5N1 strain will trigger a global influenza pandemic that could kill millions around the world.} (\texttt{APW\_ENG\_20050303.0369/8}).
+\textit{World Health Organization experts fear the H5N1 strain will trigger a global influenza pandemic that could kill millions around the world.}\\(\texttt{APW\_ENG\_20050303.0369/8}).
 
 \begin{figure}
 \begin{lstlisting}
@@ -370,7 +378,7 @@ h5n1 strain	trigger global influenza pandemic
 \caption{Extracted cause and bag-of-words of the cause from an example sentence}\label{fig:cause-bag-of-words}
 \end{figure}
 
-While the cause focuses on the main arguments of the complement, the bag-of-words includes the subordinate clause \textit{that could kill millions around the world}, which provides additional information for the source of the emotion.
+While the cause focuses on the main arguments of the complement, the bag-of-words includes the subordinate clause \textit{that could kill millions around the world}, which provides additional information regarding the source of the emotion.
 
 \section{Representation of extractions} \label{sec:representation}
 
@@ -404,4 +412,4 @@ In both examples, Japan is the emotion holder. In the first instance, the cause 
 	\item a bag-of-words representation of the cause, tagged with parts-of-speech.
 \end{aenumerate}
 
-As we also collect the full propositions, we can easily cross-reference extractions via the ID to extract collocations. 
+As we also collect the full sentences, we can easily cross-reference extractions via the ID to make use of parts of the proposition that have not been extracted initially.

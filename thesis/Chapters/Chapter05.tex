@@ -4,21 +4,19 @@
 
 \label{ch:outlook-conclusion}
 
-We dedicate this final chapter the dual purpose of prospect and retrospection. In section \ref{sec:outlook}, we outline several promising future avenues for investigation and research. Finally, in section \ref{sec:conclusion}, we reiterate our main contributions, summarize our main findings and central themes, and provide a conclusion.
+We dedicate this final chapter to the dual purpose of prospect and retrospection. In section \ref{sec:outlook}, we outline several promising future avenues for investigation and research. Finally, in section \ref{sec:conclusion}, we reiterate our contributions, summarize our main findings and central themes, and provide a conclusion.
 
 \section{Outlook} \label{sec:outlook}
 
-More data generally improves the reliability of measures such as PMI, which would particularly help to improve S cause bigrams for anger, disgust, and surprise. \begin{inparaenum}[(a)] [\itshape a\upshape)] There are two approaches to gathering more data: \item We stay with the existing domain and corpus and learn new patterns using bootstrapping (cf. \cite{harvesting_ontologizing}). This will offer the benefit of expanding our available data, while keeping it relevant for the news domain. \item We use our patterns to mine data from the web  (cf. approaches described in section \ref{sec:web-mining}). This will make the more general-domain, increasing its relevancy for other domains and reducing its significance for the news domain. \end{inparaenum}
-
-\begin{inparaenum}[(a)] [\itshape a\upshape)] We intend to overcome this issue by \item selecting patterns whose dominant sense is emotive; and \item by investigating propositions extracted using our patterns. An analysis of a representative sample will surface erroneous patterns that lead to unemotive contexts in the news domain, which we will be able to retroactively exclude in consequence. \end{inparaenum}
+More data generally improves the reliability of measures such as PMI, which would particularly help to improve S cause bigrams for anger, disgust, and surprise. \begin{inparaenum}[(a)] [\itshape a\upshape)] There are two approaches to gathering more data: \item We stay with the existing domain and corpus and learn new patterns using bootstrapping (cf. \cite{harvesting_ontologizing}). This will offer the benefit of expanding our available data, while keeping it relevant to the news domain. \item We use our patterns to mine data from the web  (cf. approaches described in section \ref{sec:web-mining}). This will make the data more general-domain, thereby increasing its relevancy to other domains, while simultaneously reducing its significance for the news domain. \end{inparaenum}
 
 More data will also improve the language modelling capabilities by allowing us to use more complex ngrams, such as trigrams, which require more data than bigrams to produce relevant results, but have the advantage of taking into account more context.
 
-An LDA involving Dirichlet-multinomial over trigrams rather than unigrams could also be considered in order to render the topic models more context-sensitive and in turn more adequate for language and emotion modelling. Training word vectors for emotion detection rather than sentiment analysis (cf. \cite{word_vectors_sentiment}) would be another interesting research avenue.
+An LDA involving Dirichlet-multinomials over trigrams rather than unigrams could also be considered in order to render the topic models more context-sensitive and consequently more adequate for language and emotion modelling. Training word vectors for emotion detection rather than sentiment analysis (cf. \cite{word_vectors_sentiment}) would be another interesting research avenue.
 
 Our data also allows an investigation of the temporal aspect of emotions, which would reveal which concepts and actions evoke different emotions over time and how the emotions associated with these concepts changes.
 
-Finally, the compositionality warrants further attention. 
+Finally, the compositionality of emotion warrants further attention. What makes certain compounds emotive, while others remain neutral? How can we predict the emotion of an unseen event? \citeauthor{mutual_action}'s histograms described in section \ref{sec:emotive_events} provide an interesting perspective on this.
 
 \section{Conclusion} \label{sec:conclusion}
 
@@ -26,9 +24,9 @@ In this thesis, we have made the following four high-level contributions to the 
 
 \begin{aenumerate}
 	\item We have designed and evaluated patterns that are frequent and clearly associated with an emotion.
-	\item We have acquired more than 1,700,000 propositions from the Annotated Gigaword news corpus \cite{annotated_gigaword} using these patterns, filtered, and generalized them.
-	\item We have stored these propositions in an emotion proposition store, which we make available to the research community.\footnote{The data can be accessed at \url{https://github.com/sebastianruder/sentiment_analysis/tree/master/out}}
-	\item We have analysed the resource, generated lists that can be used as an emotion lexicon for the news domain\footnote{They can be found at \url{https://github.com/sebastianruder/sentiment_analysis/tree/master/out}.}
+	\item We have acquired more than 1,700,000 propositions from the Gigaword news corpus using these patterns, filtered, and generalized them.
+	\item We have stored these propositions in an emotion proposition store, which we made available to the research community.
+	\item We have analysed the resource and generated lists that can be used as an emotion lexicon for the news domain.
 \end{aenumerate}
 
 %----------------------------------------------------------------------------------------
