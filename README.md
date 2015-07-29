@@ -18,9 +18,9 @@ This repository is organized as follows:
 - [mallet](mallet/): The pseudo-documents and topic models generated using [MALLET](http://mallet.cs.umass.edu/topics.php).
 - [emotion_word_sources](emotion_word_sources/): Related work that was used as a source for the patterns.
 - [out](out/): The directory of the results. 
-  - [Emotion proposition store](out/emotion_proposition_store/): The extracted propositions in _shelves_ of 100,000 lines. They have the following format: ID \t emotion \t pattern \t emotion holder \t NP cause \t S cause subject \t S cause predicate \t S cause object \t S cause prepositional objects \t cause bag-of-words.
+  - [Emotion proposition store](out/emotion_proposition_store/): The extracted propositions in _shelves_ of 100,000 lines. They have the following format: `ID \t emotion \t pattern \t emotion holder \t NP cause \t S cause subject \t S cause predicate \t S cause object \t S cause prepositional objects \t cause bag-of-words`.
   - [Patterns](out/patterns): The pattern templates and the regular expressions.
-  - [Scores](out/scores/): The lists of unigrams and bigrams ranked by point-wise mutual information (PMI) or chi-square for Plutchik's eight emotions, sorted by source (emotion holder, NP cause, S cause subject + predicate, S cause predicate + object).
+  - [Scores](out/scores/): The lists of unigrams and bigrams ranked by point-wise mutual information (PMI) or chi-square for Plutchik's eight emotions, sorted by source (emotion holder, NP cause, S cause subject + predicate, S cause predicate + object). These can be used as an emotion lexicon.
   - [Sentences](out/sentences/): The extracted propositions along with the sentences that they were extracted from in chunks of 100,000 lines.
   - [Stats](out/stats/): Statistics about the patterns and the extracted propositions.
 - [src](src/): The source directory.
